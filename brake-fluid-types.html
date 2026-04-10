@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brake Fluid Types — AUTOH 172</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #1a1a1a;
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: #111111;
+    border-bottom: 3px solid #CC0000;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .topbar-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #CC0000;
+  }
+  .topbar-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+  .progress-track {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .pip {
+    width: 28px;
+    height: 6px;
+    border-radius: 3px;
+    background: #333;
+    transition: background 0.3s;
+  }
+  .pip.active { background: #CC0000; }
+  .pip.done   { background: #666; }
+
+  /* ── SLIDE WRAPPER ── */
+  .slides-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+  .slide {
+    position: absolute;
+    inset: 0;
+    padding: 32px 28px 24px;
+    overflow-y: auto;
+    opacity: 0;
+    transform: translateX(40px);
+    pointer-events: none;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+  .slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
+  }
+  .slide.exit {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+
+  /* ── SLIDE TYPOGRAPHY ── */
+  .slide-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #CC0000;
+    margin-bottom: 8px;
+  }
+  .slide-heading {
+    font-size: 22px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+  .slide-sub {
+    font-size: 13px;
+    color: #aaaaaa;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  /* ── FLUID TYPE CARDS ── */
+  .fluid-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .fluid-card {
+    background: #242424;
+    border-left: 4px solid #CC0000;
+    border-radius: 0 6px 6px 0;
+    padding: 14px 16px;
+  }
+  .fluid-card-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: #CC0000;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .fluid-card-detail {
+    font-size: 13px;
+    color: #cccccc;
+    line-height: 1.6;
+  }
+  .fluid-card-detail strong { color: #ffffff; }
+
+  /* ── DATA TABLE ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  .data-table th {
+    background: #CC0000;
+    color: #ffffff;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 9px 12px;
+    text-align: left;
+  }
+  .data-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid #2e2e2e;
+    color: #cccccc;
+    vertical-align: top;
+  }
+  .data-table tr:nth-child(even) td { background: #222222; }
+  .data-table td:first-child { color: #ffffff; font-weight: 700; }
+  .highlight-cell { color: #CC0000 !important; font-weight: 700 !important; }
+
+  /* ── HONDA CALLOUT ── */
+  .honda-callout {
+    background: #fff5f5;
+    border-left: 4px solid #CC0000;
+    border-radius: 0 6px 6px 0;
+    padding: 13px 16px;
+    margin-bottom: 20px;
+  }
+  .honda-callout-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #CC0000;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+  }
+  .honda-callout p {
+    font-size: 13px;
+    color: #1a1a1a;
+    line-height: 1.6;
+  }
+  .honda-callout strong { color: #990000; }
+
+  /* ── SVG DIAGRAM WRAPPER ── */
+  .diagram-wrap {
+    background: #111;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+    border: 1px solid #2e2e2e;
+  }
+  .diagram-label {
+    font-size: 11px;
+    color: #888;
+    text-align: center;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ── INFO ROW (2-col) ── */
+  .info-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .info-box {
+    flex: 1;
+    background: #242424;
+    border-top: 3px solid #CC0000;
+    border-radius: 0 0 6px 6px;
+    padding: 14px;
+  }
+  .info-box-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #CC0000;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .info-box p {
+    font-size: 13px;
+    color: #cccccc;
+    line-height: 1.6;
+  }
+
+  /* ── KNOWLEDGE CHECK ── */
+  .kc-section { margin-bottom: 28px; }
+  .kc-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #CC0000;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .kc-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #333;
+  }
+  .kc-question {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 14px;
+    line-height: 1.4;
+  }
+  .kc-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .kc-option {
+    background: #242424;
+    border: 2px solid #333;
+    border-radius: 6px;
+    padding: 11px 14px;
+    font-size: 13px;
+    color: #cccccc;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, color 0.2s;
+    text-align: left;
+    width: 100%;
+  }
+  .kc-option:hover { border-color: #CC0000; color: #ffffff; background: #2a2020; }
+  .kc-option.correct { border-color: #22bb55; background: #0d2b1a; color: #44ee88; }
+  .kc-option.wrong   { border-color: #CC0000; background: #2b0d0d; color: #ff6666; }
+  .kc-option.revealed-plain { border-color: #555; color: #888; cursor: default; }
+  .kc-option.revealed-plain:hover { border-color: #555; background: #242424; color: #888; }
+
+  .kc-feedback {
+    display: none;
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 11px 14px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+  }
+  .kc-feedback.correct-fb {
+    background: #0d2b1a;
+    border-left: 4px solid #22bb55;
+    color: #44ee88;
+  }
+  .kc-feedback.wrong-fb {
+    background: #2b0d0d;
+    border-left: 4px solid #CC0000;
+    color: #ff9999;
+  }
+
+  /* ── NAV BAR ── */
+  .navbar {
+    background: #111111;
+    border-top: 1px solid #2a2a2a;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .nav-btn {
+    background: none;
+    border: 2px solid #333;
+    border-radius: 4px;
+    color: #aaaaaa;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 20px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover:not(:disabled) { border-color: #CC0000; color: #ffffff; }
+  .nav-btn:disabled { opacity: 0.25; cursor: default; }
+  .nav-btn.primary {
+    background: #CC0000;
+    border-color: #CC0000;
+    color: #ffffff;
+  }
+  .nav-btn.primary:hover:not(:disabled) { background: #990000; border-color: #990000; }
+
+  .slide-counter {
+    font-size: 12px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .slide-counter span { color: #CC0000; font-weight: 700; }
+
+  /* ── COMPLETION SCREEN ── */
+  .completion {
+    text-align: center;
+    padding: 40px 28px;
+  }
+  .completion-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+  .completion h2 {
+    font-size: 24px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 8px;
+  }
+  .completion p {
+    font-size: 14px;
+    color: #aaaaaa;
+    line-height: 1.6;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+  .completion-badge {
+    display: inline-block;
+    margin-top: 24px;
+    background: #CC0000;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div>
+    <div class="topbar-label">AUTOH 172 · Honda Braking Systems</div>
+    <div class="topbar-title">Brake Fluid Types</div>
+  </div>
+  <div class="progress-track" id="progressPips"></div>
+</div>
+
+<!-- SLIDES -->
+<div class="slides-container">
+
+  <!-- ═══ SLIDE 1: INTRO ═══ -->
+  <div class="slide active" id="slide-0">
+    <div class="slide-eyebrow">Slide 1 of 3 · Introduction</div>
+    <div class="slide-heading">What Is Brake Fluid — and Why Does It Matter?</div>
+    <div class="slide-sub">Brake fluid transmits the force from your foot on the pedal through the hydraulic system to the calipers and wheel cylinders. The wrong fluid — or degraded fluid — can cause brake failure.</div>
+
+    <!-- SVG Diagram: Hydraulic system simplified -->
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg" width="100%">
+        <!-- Background -->
+        <rect width="560" height="180" fill="#111111"/>
+
+        <!-- Pedal -->
+        <rect x="18" y="80" width="16" height="60" rx="2" fill="#CC0000"/>
+        <rect x="8" y="136" width="36" height="8" rx="2" fill="#CC0000"/>
+        <text x="26" y="76" text-anchor="middle" fill="#aaa" font-size="10" font-family="Arial">PEDAL</text>
+
+        <!-- Arrow: pedal → master cylinder -->
+        <line x1="44" y1="110" x2="90" y2="110" stroke="#CC0000" stroke-width="2.5" stroke-dasharray="4,3"/>
+        <polygon points="88,106 96,110 88,114" fill="#CC0000"/>
+
+        <!-- Master Cylinder -->
+        <rect x="96" y="90" width="64" height="40" rx="4" fill="#242424" stroke="#CC0000" stroke-width="2"/>
+        <text x="128" y="107" text-anchor="middle" fill="#ffffff" font-size="9" font-family="Arial" font-weight="bold">MASTER</text>
+        <text x="128" y="119" text-anchor="middle" fill="#ffffff" font-size="9" font-family="Arial" font-weight="bold">CYLINDER</text>
+
+        <!-- Reservoir above master cyl -->
+        <rect x="108" y="56" width="40" height="28" rx="3" fill="#1a1a1a" stroke="#CC0000" stroke-width="1.5"/>
+        <rect x="114" y="62" width="28" height="16" rx="2" fill="#CC0000" opacity="0.25"/>
+        <text x="128" y="76" text-anchor="middle" fill="#CC0000" font-size="8" font-family="Arial" font-weight="bold">RESERVOIR</text>
+        <line x1="128" y1="84" x2="128" y2="90" stroke="#CC0000" stroke-width="1.5"/>
+
+        <!-- Fluid line -->
+        <line x1="160" y1="110" x2="390" y2="110" stroke="#CC0000" stroke-width="2"/>
+
+        <!-- Fluid label along line -->
+        <text x="275" y="103" text-anchor="middle" fill="#CC0000" font-size="9" font-family="Arial" font-weight="bold" letter-spacing="1">BRAKE FLUID</text>
+
+        <!-- Left split up to front caliper -->
+        <line x1="280" y1="110" x2="280" y2="60" stroke="#CC0000" stroke-width="1.5"/>
+
+        <!-- Front Left Caliper -->
+        <rect x="240" y="40" width="40" height="28" rx="4" fill="#242424" stroke="#555" stroke-width="1.5"/>
+        <text x="260" y="51" text-anchor="middle" fill="#aaa" font-size="8" font-family="Arial">FRONT</text>
+        <text x="260" y="61" text-anchor="middle" fill="#aaa" font-size="8" font-family="Arial">CALIPER</text>
+        <line x1="260" y1="68" x2="260" y2="60" stroke="#555" stroke-width="1.5"/>
+        <line x1="260" y1="60" x2="280" y2="60" stroke="#555" stroke-width="1.5"/>
+
+        <!-- Front Right Caliper -->
+        <rect x="302" y="40" width="40" height="28" rx="4" fill="#242424" stroke="#555" stroke-width="1.5"/>
+        <text x="322" y="51" text-anchor="middle" fill="#aaa" font-size="8" font-family="Arial">FRONT</text>
+        <text x="322" y="61" text-anchor="middle" fill="#aaa" font-size="8" font-family="Arial">CALIPER</text>
+        <line x1="322" y1="68" x2="322" y2="60" stroke="#555" stroke-width="1.5"/>
+        <line x1="322" y1="60" x2="300" y2="60" stroke="#555" stroke-width="1.5"/>
+        <line x1="300" y1="60" x2="280" y2="60" stroke="#555" stroke-width="1.5"/>
+
+        <!-- Right side: rear wheel cyl -->
+        <line x1="390" y1="110" x2="390" y2="150" stroke="#CC0000" stroke-width="1.5"/>
+        <rect x="370" y="150" width="40" height="24" rx="4" fill="#242424" stroke="#555" stroke-width="1.5"/>
+        <text x="390" y="160" text-anchor="middle" fill="#aaa" font-size="8" font-family="Arial">REAR WHEEL</text>
+        <text x="390" y="170" text-anchor="middle" fill="#aaa" font-size="8" font-family="Arial">CYLINDER</text>
+
+        <!-- ABS unit (optional) -->
+        <rect x="430" y="90" width="56" height="40" rx="4" fill="#1a1a1a" stroke="#444" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="458" y="107" text-anchor="middle" fill="#666" font-size="9" font-family="Arial">ABS</text>
+        <text x="458" y="119" text-anchor="middle" fill="#666" font-size="9" font-family="Arial">MODULE</text>
+        <line x1="430" y1="110" x2="390" y2="110" stroke="#444" stroke-width="1.5" stroke-dasharray="3,2"/>
+      </svg>
+      <div class="diagram-label">Simplified Honda Brake Hydraulic System</div>
+    </div>
+
+    <div class="fluid-cards">
+      <div class="fluid-card">
+        <div class="fluid-card-title">Glycol-Based Fluids (DOT 3, 4, 5.1)</div>
+        <div class="fluid-card-detail">Water-soluble, absorb moisture over time (hygroscopic). This lowers the boiling point — which is why fluid service intervals exist. <strong>Most Honda vehicles use DOT 3 or DOT 4.</strong></div>
+      </div>
+      <div class="fluid-card">
+        <div class="fluid-card-title">Silicone-Based Fluid (DOT 5)</div>
+        <div class="fluid-card-detail">Not hygroscopic. Purple color. <strong>NOT compatible with Honda ABS systems</strong> — do not use in PACT vehicles unless explicitly specified. Can cause ABS failure.</div>
+      </div>
+    </div>
+
+    <div class="honda-callout">
+      <div class="honda-callout-label">⚠ Honda PACT Note</div>
+      <p>Always check the reservoir cap and Honda Service Manual for the vehicle in your bay before recommending or adding fluid. <strong>Mixing fluid types can contaminate the entire system</strong> and require a full flush.</p>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 2: CORE CONCEPT ═══ -->
+  <div class="slide" id="slide-1">
+    <div class="slide-eyebrow">Slide 2 of 3 · Core Concept</div>
+    <div class="slide-heading">DOT Ratings Compared</div>
+    <div class="slide-sub">DOT ratings define minimum boiling points and chemical composition — not brand or quality. Higher number ≠ always better for your Honda.</div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Rating</th>
+          <th>Dry Boiling Pt.</th>
+          <th>Wet Boiling Pt.</th>
+          <th>Base</th>
+          <th>Honda Use?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>DOT 3</td>
+          <td>401°F (205°C)</td>
+          <td>284°F (140°C)</td>
+          <td>Glycol-ether</td>
+          <td class="highlight-cell">✓ Common</td>
+        </tr>
+        <tr>
+          <td>DOT 4</td>
+          <td>446°F (230°C)</td>
+          <td>311°F (155°C)</td>
+          <td>Glycol-ether / borate</td>
+          <td class="highlight-cell">✓ Some models</td>
+        </tr>
+        <tr>
+          <td>DOT 5.1</td>
+          <td>500°F (260°C)</td>
+          <td>356°F (180°C)</td>
+          <td>Glycol-ether</td>
+          <td style="color:#aaaaaa;">Rare / performance</td>
+        </tr>
+        <tr>
+          <td>DOT 5</td>
+          <td>500°F (260°C)</td>
+          <td>356°F (180°C)</td>
+          <td>Silicone</td>
+          <td style="color:#CC0000; font-weight:700;">✗ Not compatible</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Boiling point visual bar -->
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 520 130" xmlns="http://www.w3.org/2000/svg" width="100%">
+        <rect width="520" height="130" fill="#111111"/>
+        <!-- Axis -->
+        <line x1="60" y1="20" x2="60" y2="100" stroke="#444" stroke-width="1"/>
+        <line x1="60" y1="100" x2="500" y2="100" stroke="#444" stroke-width="1"/>
+
+        <!-- Y label -->
+        <text x="14" y="64" fill="#666" font-size="9" font-family="Arial" transform="rotate(-90,14,64)">BOILING °F</text>
+
+        <!-- Scale lines -->
+        <line x1="58" y1="92" x2="62" y2="92" stroke="#444" stroke-width="1"/>
+        <text x="54" y="95" fill="#666" font-size="8" font-family="Arial" text-anchor="end">280</text>
+        <line x1="58" y1="60" x2="62" y2="60" stroke="#333" stroke-width="1" stroke-dasharray="2,3"/>
+        <text x="54" y="63" fill="#666" font-size="8" font-family="Arial" text-anchor="end">400</text>
+        <line x1="58" y1="26" x2="62" y2="26" stroke="#333" stroke-width="1" stroke-dasharray="2,3"/>
+        <text x="54" y="29" fill="#666" font-size="8" font-family="Arial" text-anchor="end">500</text>
+
+        <!-- Bars: DRY boiling points -->
+        <!-- DOT 3: 401°F → map 280–500 range to 92–26px -->
+        <!-- scale: (val-280)/(500-280) * (92-26) = (val-280)/220 * 66 -->
+        <!-- DOT3 dry: (401-280)/220*66 = 36.3 → y = 92-36 = 56 → height=36 -->
+        <rect x="80"  y="55" width="28" height="37" fill="#CC0000" opacity="0.9" rx="2"/>
+        <text x="94"  y="51" fill="#CC0000" font-size="9" font-family="Arial" font-weight="bold" text-anchor="middle">401°</text>
+        <text x="94"  y="113" fill="#aaa" font-size="9" font-family="Arial" text-anchor="middle">DOT 3</text>
+        <text x="94"  y="122" fill="#666" font-size="8" font-family="Arial" text-anchor="middle">DRY</text>
+
+        <!-- DOT3 wet: (284-280)/220*66=1.2 → y=91 h=1 -->
+        <rect x="114" y="91" width="28" height="2" fill="#990000" opacity="0.8" rx="1"/>
+        <text x="128" y="88" fill="#990000" font-size="9" font-family="Arial" font-weight="bold" text-anchor="middle">284°</text>
+        <text x="128" y="113" fill="#aaa" font-size="9" font-family="Arial" text-anchor="middle">DOT 3</text>
+        <text x="128" y="122" fill="#666" font-size="8" font-family="Arial" text-anchor="middle">WET</text>
+
+        <!-- Gap line -->
+        <line x1="155" y1="20" x2="155" y2="100" stroke="#2a2a2a" stroke-width="1.5"/>
+
+        <!-- DOT 4 dry: (446-280)/220*66=49.8 → y=92-50=42 h=50 -->
+        <rect x="170" y="42" width="28" height="50" fill="#CC0000" opacity="0.9" rx="2"/>
+        <text x="184" y="38" fill="#CC0000" font-size="9" font-family="Arial" font-weight="bold" text-anchor="middle">446°</text>
+        <text x="184" y="113" fill="#aaa" font-size="9" font-family="Arial" text-anchor="middle">DOT 4</text>
+        <text x="184" y="122" fill="#666" font-size="8" font-family="Arial" text-anchor="middle">DRY</text>
+
+        <!-- DOT4 wet: (311-280)/220*66=9.3 → y=83 h=9 -->
+        <rect x="204" y="83" width="28" height="9" fill="#990000" opacity="0.8" rx="1"/>
+        <text x="218" y="79" fill="#990000" font-size="9" font-family="Arial" font-weight="bold" text-anchor="middle">311°</text>
+        <text x="218" y="113" fill="#aaa" font-size="9" font-family="Arial" text-anchor="middle">DOT 4</text>
+        <text x="218" y="122" fill="#666" font-size="8" font-family="Arial" text-anchor="middle">WET</text>
+
+        <line x1="244" y1="20" x2="244" y2="100" stroke="#2a2a2a" stroke-width="1.5"/>
+
+        <!-- DOT 5.1 dry: (500-280)/220*66=66 → y=26 h=66 -->
+        <rect x="258" y="26" width="28" height="66" fill="#CC0000" opacity="0.65" rx="2"/>
+        <text x="272" y="22" fill="#aaa" font-size="9" font-family="Arial" font-weight="bold" text-anchor="middle">500°</text>
+        <text x="272" y="113" fill="#aaa" font-size="9" font-family="Arial" text-anchor="middle">DOT 5.1</text>
+        <text x="272" y="122" fill="#666" font-size="8" font-family="Arial" text-anchor="middle">DRY</text>
+
+        <!-- DOT 5.1 wet: (356-280)/220*66=22.8 → y=69 h=23 -->
+        <rect x="292" y="69" width="28" height="23" fill="#990000" opacity="0.6" rx="1"/>
+        <text x="306" y="65" fill="#aaa" font-size="9" font-family="Arial" font-weight="bold" text-anchor="middle">356°</text>
+        <text x="306" y="113" fill="#aaa" font-size="9" font-family="Arial" text-anchor="middle">DOT 5.1</text>
+        <text x="306" y="122" fill="#666" font-size="8" font-family="Arial" text-anchor="middle">WET</text>
+
+        <line x1="333" y1="20" x2="333" y2="100" stroke="#2a2a2a" stroke-width="1.5"/>
+
+        <!-- DOT 5: same height as 5.1 but grayed out / X'd -->
+        <rect x="348" y="26" width="28" height="66" fill="#444" rx="2"/>
+        <line x1="348" y1="26" x2="376" y2="92" stroke="#CC0000" stroke-width="2"/>
+        <line x1="376" y1="26" x2="348" y2="92" stroke="#CC0000" stroke-width="2"/>
+        <text x="362" y="113" fill="#CC0000" font-size="9" font-family="Arial" font-weight="bold" text-anchor="middle">DOT 5</text>
+        <text x="362" y="122" fill="#CC0000" font-size="8" font-family="Arial" text-anchor="middle">NOT FOR HONDA</text>
+
+        <!-- Legend -->
+        <rect x="400" y="30" width="12" height="10" fill="#CC0000" rx="1"/>
+        <text x="416" y="39" fill="#aaa" font-size="9" font-family="Arial">Dry boiling pt.</text>
+        <rect x="400" y="48" width="12" height="10" fill="#990000" rx="1"/>
+        <text x="416" y="57" fill="#aaa" font-size="9" font-family="Arial">Wet boiling pt.</text>
+        <text x="400" y="74" fill="#666" font-size="8" font-family="Arial">Wet = fluid that</text>
+        <text x="400" y="84" fill="#666" font-size="8" font-family="Arial">has absorbed</text>
+        <text x="400" y="94" fill="#666" font-size="8" font-family="Arial">moisture (aged)</text>
+      </svg>
+      <div class="diagram-label">Dry vs. Wet Boiling Points by DOT Rating</div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-box">
+        <div class="info-box-title">🌧 Hygroscopic = Problem</div>
+        <p>DOT 3, 4, and 5.1 absorb moisture from the air over time. Moisture lowers the boiling point — aged fluid can boil under hard braking, creating vapor bubbles and a spongy pedal.</p>
+      </div>
+      <div class="info-box">
+        <div class="info-box-title">🔁 Service Interval</div>
+        <p>Honda recommends brake fluid inspection every 12 months and replacement every <strong>3 years</strong> or 45,000 miles — whichever comes first. Always verify in the vehicle's maintenance minder.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 3: HONDA APPLICATION ═══ -->
+  <div class="slide" id="slide-2">
+    <div class="slide-eyebrow">Slide 3 of 3 · Honda Application</div>
+    <div class="slide-heading">Applying This in the Bay</div>
+    <div class="slide-sub">Knowing DOT ratings is step one. Applying it correctly on a Honda vehicle is the job.</div>
+
+    <div class="fluid-cards">
+      <div class="fluid-card">
+        <div class="fluid-card-title">Step 1 — Find the Spec</div>
+        <div class="fluid-card-detail">Check the reservoir cap first — it's stamped with the minimum DOT rating. Then verify in the Honda Service Manual. The cap wins if there's a conflict only if the manual isn't available — <strong>always defer to the Service Manual.</strong></div>
+      </div>
+      <div class="fluid-card">
+        <div class="fluid-card-title">Step 2 — Assess Current Fluid</div>
+        <div class="fluid-card-detail">New fluid: <strong>clear to light yellow</strong>. Degraded fluid: <strong>dark brown or black</strong>. Contaminated fluid: cloudy, milky, or has visible particles. Any of these = recommend flush, not top-off.</div>
+      </div>
+      <div class="fluid-card">
+        <div class="fluid-card-title">Step 3 — Top Off vs. Flush</div>
+        <div class="fluid-card-detail">Top off only if fluid is correct color, correct type, and level is between MIN and MAX. If level is low <em>and</em> the fluid is dark, a flush is needed — low level may indicate pad wear drawing fluid down, not a leak.</div>
+      </div>
+      <div class="fluid-card">
+        <div class="fluid-card-title">Step 4 — Never Mix Types</div>
+        <div class="fluid-card-detail">DOT 3 and DOT 4 are compatible in an emergency, but mixing degrades both fluids' wet boiling point. <strong>DOT 5 is never compatible</strong> with glycol-based systems — it will destroy seals and ABS components.</div>
+      </div>
+    </div>
+
+    <div class="honda-callout">
+      <div class="honda-callout-label">🔧 Honda PACT Reminder</div>
+      <p>On your lab sheet for this unit, you must identify the DOT spec from the Service Manual — not just the cap — and document your reasoning for a top-off vs. flush recommendation. Citing the spec is part of your grade.</p>
+    </div>
+
+    <!-- Knowledge checks below slide 3 content -->
+    <div style="height:20px;"></div>
+    <div id="kc-section" class="kc-section">
+      <div class="kc-label">Knowledge Check · 3 Questions</div>
+
+      <!-- Q1 -->
+      <div id="q1" style="margin-bottom:24px;">
+        <div class="kc-question">1. A Honda Accord's reservoir cap is stamped "DOT 3." You only have DOT 4 on the shelf. What should you do?</div>
+        <div class="kc-options">
+          <button class="kc-option" onclick="answer(this,'q1',false)">A. Refuse to service — DOT 4 is not compatible with Honda</button>
+          <button class="kc-option" onclick="answer(this,'q1',true)">B. Use DOT 4 — it meets or exceeds DOT 3 spec and is glycol-based</button>
+          <button class="kc-option" onclick="answer(this,'q1',false)">C. Use DOT 5 — it has a higher boiling point</button>
+          <button class="kc-option" onclick="answer(this,'q1',false)">D. Wait until DOT 3 is available; never substitute</button>
+        </div>
+        <div class="kc-feedback correct-fb" id="q1-fb-correct">✓ Correct! DOT 4 exceeds DOT 3 minimum specs and is glycol-based — it is an acceptable substitute. DOT 5 is silicone-based and never compatible with glycol systems.</div>
+        <div class="kc-feedback wrong-fb" id="q1-fb-wrong">✗ Not quite. DOT 4 is glycol-based and exceeds DOT 3 minimums — it is a safe substitute. DOT 5 (silicone) is never compatible and would damage seals and ABS components.</div>
+      </div>
+
+      <!-- Q2 -->
+      <div id="q2" style="margin-bottom:24px;">
+        <div class="kc-question">2. You pull a brake fluid sample that is dark brown and has a slightly burnt smell. The level is at MIN. What is your recommendation?</div>
+        <div class="kc-options">
+          <button class="kc-option" onclick="answer(this,'q2',false)">A. Top off to MAX — fluid degradation is normal and not a safety concern</button>
+          <button class="kc-option" onclick="answer(this,'q2',false)">B. Top off to MAX and add a fluid conditioner</button>
+          <button class="kc-option" onclick="answer(this,'q2',true)">C. Recommend a full brake fluid flush — dark color and smell indicate severe degradation</button>
+          <button class="kc-option" onclick="answer(this,'q2',false)">D. Drain half the reservoir and top off with fresh fluid</button>
+        </div>
+        <div class="kc-feedback correct-fb" id="q2-fb-correct">✓ Correct! Dark brown color and burnt smell are signs of severe moisture contamination and thermal degradation. Topping off only dilutes the problem. A full flush is required.</div>
+        <div class="kc-feedback wrong-fb" id="q2-fb-wrong">✗ Dark brown fluid with a burnt smell indicates heavy contamination and a severely degraded wet boiling point — a top-off won't fix this. A full brake fluid flush is the correct service.</div>
+      </div>
+
+      <!-- Q3 -->
+      <div id="q3" style="margin-bottom:16px;">
+        <div class="kc-question">3. What does the "wet boiling point" rating tell you about a brake fluid?</div>
+        <div class="kc-options">
+          <button class="kc-option" onclick="answer(this,'q3',false)">A. The boiling point when fluid is exposed to rain or puddles</button>
+          <button class="kc-option" onclick="answer(this,'q3',false)">B. The boiling point of brand-new, sealed fluid</button>
+          <button class="kc-option" onclick="answer(this,'q3',true)">C. The boiling point after the fluid has absorbed 3.7% moisture — simulating aged fluid in service</button>
+          <button class="kc-option" onclick="answer(this,'q3',false)">D. The temperature at which fluid turns from clear to brown</button>
+        </div>
+        <div class="kc-feedback correct-fb" id="q3-fb-correct">✓ Correct! The wet boiling point simulates fluid that has absorbed moisture over time (3.7% by weight, per FMVSS 116). This is the more realistic in-service spec — aged DOT 3 wet boiling point drops to only 284°F.</div>
+        <div class="kc-feedback wrong-fb" id="q3-fb-wrong">✗ The wet boiling point represents fluid after absorbing 3.7% moisture — simulating real-world aged fluid. The dry boiling point is for new, sealed fluid. The wet spec is what really matters for in-service safety.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ COMPLETION ═══ -->
+  <div class="slide" id="slide-complete">
+    <div class="completion">
+      <div class="completion-icon">✅</div>
+      <h2>Lesson Complete</h2>
+      <p>You've covered brake fluid types, DOT ratings, boiling point specs, and Honda-specific application. You're ready to apply this on the brake fluid inspection lab.</p>
+      <div class="completion-badge">AUTOH 172 · Brake Fluid Types</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- NAV BAR -->
+<div class="navbar">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)" disabled>← BACK</button>
+  <div class="slide-counter">Slide <span id="slideNum">1</span> of <span id="slideTotal">3</span></div>
+  <button class="nav-btn primary" id="nextBtn" onclick="go(1)">NEXT →</button>
+</div>
+
+<script>
+  const TOTAL = 3; // content slides only
+  let current = 0;
+  const answered = { q1: false, q2: false, q3: false };
+
+  function buildPips() {
+    const track = document.getElementById('progressPips');
+    for (let i = 0; i < TOTAL; i++) {
+      const pip = document.createElement('div');
+      pip.className = 'pip' + (i === 0 ? ' active' : '');
+      pip.id = 'pip-' + i;
+      track.appendChild(pip);
+    }
+  }
+
+  function updatePips() {
+    for (let i = 0; i < TOTAL; i++) {
+      const pip = document.getElementById('pip-' + i);
+      pip.className = 'pip' + (i < current ? ' done' : i === current ? ' active' : '');
+    }
+  }
+
+  function go(dir) {
+    const slides = document.querySelectorAll('.slide');
+    const old = slides[current];
+    old.classList.add('exit');
+    old.classList.remove('active');
+    setTimeout(() => old.classList.remove('exit'), 400);
+
+    current += dir;
+
+    const isComplete = current >= TOTAL;
+    const nextSlide = isComplete ? document.getElementById('slide-complete') : slides[current];
+    nextSlide.classList.add('active');
+
+    document.getElementById('slideNum').textContent = isComplete ? TOTAL : current + 1;
+    document.getElementById('prevBtn').disabled = current <= 0;
+    document.getElementById('nextBtn').disabled = isComplete;
+    document.getElementById('nextBtn').textContent = current === TOTAL - 1 ? 'FINISH →' : 'NEXT →';
+
+    if (!isComplete) updatePips();
+    if (isComplete) {
+      for (let i = 0; i < TOTAL; i++) {
+        document.getElementById('pip-' + i).className = 'pip done';
+      }
+    }
+  }
+
+  function answer(btn, qid, isCorrect) {
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const allBtns = btn.closest('.kc-options').querySelectorAll('.kc-option');
+    allBtns.forEach(b => b.classList.add('revealed-plain'));
+    btn.classList.remove('revealed-plain');
+    btn.classList.add(isCorrect ? 'correct' : 'wrong');
+
+    const fbCorrect = document.getElementById(qid + '-fb-correct');
+    const fbWrong   = document.getElementById(qid + '-fb-wrong');
+    if (isCorrect) {
+      fbCorrect.style.display = 'block';
+    } else {
+      fbWrong.style.display = 'block';
+    }
+  }
+
+  buildPips();
+  document.getElementById('slideTotal').textContent = TOTAL;
+</script>
+</body>
+</html>
