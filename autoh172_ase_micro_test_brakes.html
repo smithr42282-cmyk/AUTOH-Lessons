@@ -1,0 +1,345 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+
+  .exam-wrap { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+
+  .exam-header { background: #1a1a1a; border-left: 5px solid #CC0000; border-radius: 6px; padding: 18px 22px; margin-bottom: 20px; }
+  .exam-header .kicker { color: #CC0000; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .exam-header h1 { color: #ffffff; font-size: 18px; font-weight: 500; margin-bottom: 4px; }
+  .exam-header p { color: #aaaaaa; font-size: 13px; }
+
+  .progress-bar-wrap { background: #e0e0e0; border-radius: 4px; height: 6px; margin-bottom: 6px; overflow: hidden; }
+  .progress-bar-fill { background: #CC0000; height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+  .progress-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 20px; }
+
+  .question-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: 10px; padding: 22px 24px; margin-bottom: 18px; }
+
+  .q-number { display: inline-flex; align-items: center; justify-content: center; background: #CC0000; color: #fff; font-size: 11px; font-weight: 700; width: 22px; height: 22px; border-radius: 50%; margin-bottom: 12px; }
+
+  .q-stem { font-size: 14px; color: var(--color-text-primary); line-height: 1.65; margin-bottom: 18px; }
+
+  .options-grid { display: flex; flex-direction: column; gap: 9px; }
+
+  .option-btn { display: flex; align-items: flex-start; gap: 12px; background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: 8px; padding: 12px 14px; cursor: pointer; text-align: left; transition: border-color 0.15s, background 0.15s; width: 100%; }
+  .option-btn:hover:not(.locked) { border-color: #CC0000; background: #fff5f5; }
+  .option-btn .opt-letter { flex-shrink: 0; background: #1a1a1a; color: #fff; font-size: 11px; font-weight: 700; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .option-btn .opt-text { font-size: 13px; color: var(--color-text-primary); line-height: 1.5; padding-top: 2px; }
+
+  .option-btn.selected { border-color: #CC0000; background: #fff0f0; }
+  .option-btn.selected .opt-letter { background: #CC0000; }
+
+  .option-btn.correct { border-color: #2e7d32; background: #f1f8e9; }
+  .option-btn.correct .opt-letter { background: #2e7d32; }
+  .option-btn.correct .opt-text { color: #2e7d32; font-weight: 500; }
+
+  .option-btn.wrong { border-color: #c62828; background: #ffebee; }
+  .option-btn.wrong .opt-letter { background: #c62828; }
+  .option-btn.wrong .opt-text { color: #c62828; }
+
+  .option-btn.reveal-correct { border-color: #2e7d32; background: #f1f8e9; }
+  .option-btn.reveal-correct .opt-letter { background: #2e7d32; }
+
+  .option-btn.locked { cursor: default; }
+
+  .rationale-box { margin-top: 14px; background: #f5f5f5; border-left: 3px solid #CC0000; border-radius: 0 6px 6px 0; padding: 12px 14px; font-size: 13px; color: var(--color-text-primary); line-height: 1.6; display: none; }
+  .rationale-box.show { display: block; }
+  .rationale-label { color: #CC0000; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+
+  .nav-row { display: flex; align-items: center; justify-content: space-between; margin-top: 24px; }
+  .nav-btn { background: transparent; border: 0.5px solid var(--color-border-secondary); border-radius: 6px; padding: 9px 20px; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--color-text-primary); transition: background 0.15s; }
+  .nav-btn:hover { background: var(--color-background-secondary); }
+  .nav-btn.primary { background: #CC0000; color: #fff; border-color: #CC0000; }
+  .nav-btn.primary:hover { background: #aa0000; }
+  .nav-btn:disabled { opacity: 0.35; cursor: default; }
+
+  .dot-row { display: flex; gap: 6px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #ddd; transition: background 0.2s; }
+  .dot.answered { background: #CC0000; }
+  .dot.current { background: #1a1a1a; }
+
+  .results-panel { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: 10px; padding: 32px 28px; text-align: center; display: none; }
+  .results-panel.show { display: block; }
+  .score-ring { width: 100px; height: 100px; margin: 0 auto 20px; position: relative; }
+  .score-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .score-ring .ring-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24px; font-weight: 500; color: var(--color-text-primary); }
+  .results-title { font-size: 18px; font-weight: 500; margin-bottom: 8px; color: var(--color-text-primary); }
+  .results-sub { font-size: 14px; color: var(--color-text-secondary); margin-bottom: 24px; }
+  .results-breakdown { display: flex; gap: 12px; justify-content: center; margin-bottom: 28px; }
+  .result-pill { background: var(--color-background-secondary); border-radius: 8px; padding: 10px 20px; font-size: 13px; }
+  .result-pill .rp-num { font-size: 22px; font-weight: 500; display: block; }
+  .result-pill .rp-label { color: var(--color-text-secondary); font-size: 12px; }
+  .result-pill.correct-pill .rp-num { color: #2e7d32; }
+  .result-pill.wrong-pill .rp-num { color: #c62828; }
+</style>
+
+<div class="exam-wrap">
+  <div class="exam-header">
+    <div class="kicker">AUTOH 172 · Honda Braking Systems</div>
+    <h1>ASE-Style Knowledge Check — Brakes (BR)</h1>
+    <p>Answer individually &mdash; no notes, no partners. Select the single best answer for each question.</p>
+  </div>
+
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="prog-fill" style="width:0%"></div></div>
+  <div class="progress-label" id="prog-label">Question 1 of 5</div>
+
+  <div id="questions-container"></div>
+
+  <div class="nav-row">
+    <button class="nav-btn" id="btn-prev" onclick="navigate(-1)" disabled>&#8592; Previous</button>
+    <div class="dot-row" id="dot-row"></div>
+    <button class="nav-btn primary" id="btn-next" onclick="navigate(1)">Next &#8594;</button>
+  </div>
+
+  <div class="results-panel" id="results-panel">
+    <div class="score-ring">
+      <svg viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="42" fill="none" stroke="#e0e0e0" stroke-width="9"/>
+        <circle cx="50" cy="50" r="42" fill="none" stroke="#CC0000" stroke-width="9" stroke-linecap="round" id="score-arc" stroke-dasharray="0 264"/>
+      </svg>
+      <div class="ring-text" id="score-pct">0%</div>
+    </div>
+    <div class="results-title" id="results-title">Results</div>
+    <div class="results-sub" id="results-sub"></div>
+    <div class="results-breakdown">
+      <div class="result-pill correct-pill"><span class="rp-num" id="r-correct">0</span><span class="rp-label">Correct</span></div>
+      <div class="result-pill wrong-pill"><span class="rp-num" id="r-wrong">0</span><span class="rp-label">Incorrect</span></div>
+      <div class="result-pill"><span class="rp-num" id="r-pts">0/25</span><span class="rp-label">Points</span></div>
+    </div>
+    <button class="nav-btn primary" onclick="reviewAnswers()" style="margin-right:10px">Review Answers</button>
+    <button class="nav-btn" onclick="restartExam()">Retake Test</button>
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    stem: "A customer reports brake pedal pulsation during highway-speed stops. A technician measures rotor thickness at eight equal points and finds a 0.04 mm variation. The Honda service specification for thickness variation (TV) is 0.015 mm maximum. Technician A says the rotor must be replaced because it exceeds the TV limit. Technician B says the rotor can be machined as long as the finished thickness will be above the minimum discard thickness. Who is correct?",
+    options: [
+      "Technician A only",
+      "Technician B only",
+      "Both Technician A and Technician B",
+      "Neither Technician A nor Technician B"
+    ],
+    correct: 2,
+    rationale: "Both technicians are correct. The rotor exceeds the TV spec (0.04 mm vs. 0.015 mm max), so replacement is a valid call. Machining is also valid if the finished thickness stays above discard spec — both are defensible repair decisions based on accurate reasoning. This is the classic ASE 'both are right' format."
+  },
+  {
+    stem: "On a 2023 Honda Odyssey, the VSA warning light illuminates intermittently and a DTC for a wheel speed sensor fault is stored in the ABS/VSA module. A visual inspection shows the wheel speed sensor connector is clean and undamaged. Which of the following is the MOST likely next step?",
+    options: [
+      "Replace the wheel speed sensor immediately because the DTC confirms sensor failure",
+      "Check wheel bearing play and measure rotor lateral runout at that corner — bearing movement can distort the sensor signal",
+      "Clear the DTC and return the vehicle — the code may have set due to a low battery",
+      "Replace the ABS/VSA modulator control unit because it stores the fault code"
+    ],
+    correct: 1,
+    rationale: "On the 2023 Odyssey, wheel speed sensors are integrated into the hub bearing assembly. A clean connector does not rule out a mechanical root cause. Excessive bearing play allows the tone ring to shift relative to the sensor, producing an erratic or dropout signal — the mechanical cause must be ruled out before condemning the sensor itself."
+  },
+  {
+    stem: "A technician is measuring rotor lateral runout (LRO) using a dial indicator. The total indicator reading (TIR) while rotating the rotor one full revolution is 0.09 mm. Honda's maximum LRO specification is 0.05 mm. Which of the following best describes the relationship between LRO and brake pedal pulsation?",
+    options: [
+      "LRO causes the caliper piston to extend further on one side, wearing pads unevenly but not causing pulsation",
+      "Excessive LRO causes the rotor to push and pull against the brake pads as it rotates, generating thickness variation over time and resulting in pedal pulsation",
+      "LRO only affects steering vibration and has no direct link to pedal pulsation",
+      "LRO is only relevant on rear drum brake conversions and does not apply to disc brake vehicles"
+    ],
+    correct: 1,
+    rationale: "Excessive LRO causes the rotor to wobble side-to-side. Each revolution, the rotor face contacts the brake pads at the high spot. Over time, this creates localized heat and accelerated wear at that spot — producing thickness variation (TV). Once TV develops, the caliper alternately encounters thicker and thinner sections during braking, pushing the pedal up and down. This is the direct mechanical path from LRO to pedal pulsation."
+  },
+  {
+    stem: "After completing brake rotor replacement on a Honda Odyssey, a technician clears the VSA DTC and performs a road test. The VSA light does not return and no new codes are set. What is the MOST likely explanation for why the brake concern caused the VSA light to illuminate in the first place?",
+    options: [
+      "The VSA module detected low brake fluid pressure during hard stops and activated the warning light as a safety precaution",
+      "Rotor runout caused the tone ring to wobble or the rotor face to disturb the sensor gap, producing an erratic wheel speed signal that the VSA module interpreted as a sensor fault",
+      "The VSA light came on because the brake pads were worn below minimum thickness, triggering the pad wear sensor circuit",
+      "The VSA module detected a mismatch between the steering angle sensor and the yaw rate sensor, unrelated to the brake system"
+    ],
+    correct: 1,
+    rationale: "The VSA system relies on wheel speed signals from all four corners to calculate vehicle stability. When rotor runout disturbs the wheel speed sensor gap — or causes the bearing/tone ring to flex at speed — the signal becomes erratic or drops out. The VSA module interprets this as a sensor fault and sets a DTC. Correcting the rotor also restores signal quality, which is why the light did not return after the repair."
+  },
+  {
+    stem: "A technician uses scan tool live data and observes that three of the four wheel speed sensors read consistently, but the right-front sensor drops to zero momentarily at speeds above 45 mph. The right-front rotor LRO measurement is 0.07 mm (spec: 0.05 mm max) and the wheel bearing has 0.3 mm of axial play. Which of the following is the correct diagnostic conclusion?",
+    options: [
+      "Replace only the wheel speed sensor — the live data dropout confirms sensor failure independent of other causes",
+      "The wheel bearing is the root cause — excessive axial play is allowing the integrated tone ring to move out of the sensor's detection range at speed, causing the signal dropout; address the bearing and recheck LRO before condemning the rotor separately",
+      "The rotor is the only concern — replace the rotor and the sensor dropout will resolve on its own",
+      "The vehicle needs a steering angle sensor calibration — speed-dependent faults are typically caused by calibration drift"
+    ],
+    correct: 1,
+    rationale: "The bearing is the root cause. With 0.3 mm of axial play, the integrated tone ring moves out of the sensor's detection window under load at highway speed — producing the momentary dropout. Replacing only the sensor ignores the mechanical failure causing the symptom. The LRO of 0.07 mm (above spec) may also be a consequence of the worn bearing allowing hub movement. Replace the hub bearing assembly first, then re-measure LRO — it may resolve without separate rotor replacement."
+  }
+];
+
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+let locked = new Array(questions.length).fill(false);
+let examDone = false;
+
+function buildQuestions() {
+  const container = document.getElementById('questions-container');
+  container.innerHTML = '';
+  questions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = 'qcard-' + qi;
+    card.style.display = qi === 0 ? 'block' : 'none';
+
+    const qNum = document.createElement('div');
+    qNum.className = 'q-number';
+    qNum.textContent = qi + 1;
+
+    const stem = document.createElement('div');
+    stem.className = 'q-stem';
+    stem.textContent = q.stem;
+
+    const grid = document.createElement('div');
+    grid.className = 'options-grid';
+
+    q.options.forEach((opt, oi) => {
+      const btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.id = 'opt-' + qi + '-' + oi;
+      btn.innerHTML = `<span class="opt-letter">${['A','B','C','D'][oi]}</span><span class="opt-text">${opt}</span>`;
+      btn.onclick = () => selectAnswer(qi, oi);
+      grid.appendChild(btn);
+    });
+
+    const rationale = document.createElement('div');
+    rationale.className = 'rationale-box';
+    rationale.id = 'rationale-' + qi;
+    rationale.innerHTML = `<div class="rationale-label">Rationale</div>${q.rationale}`;
+
+    card.appendChild(qNum);
+    card.appendChild(stem);
+    card.appendChild(grid);
+    card.appendChild(rationale);
+    container.appendChild(card);
+  });
+
+  buildDots();
+  updateUI();
+}
+
+function buildDots() {
+  const row = document.getElementById('dot-row');
+  row.innerHTML = '';
+  questions.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot';
+    d.id = 'dot-' + i;
+    row.appendChild(d);
+  });
+}
+
+function selectAnswer(qi, oi) {
+  if (locked[qi]) return;
+  answers[qi] = oi;
+  locked[qi] = true;
+
+  const q = questions[qi];
+  q.options.forEach((_, idx) => {
+    const btn = document.getElementById('opt-' + qi + '-' + idx);
+    btn.classList.add('locked');
+    if (idx === oi && oi === q.correct) btn.classList.add('correct');
+    else if (idx === oi && oi !== q.correct) btn.classList.add('wrong');
+    else if (idx === q.correct) btn.classList.add('reveal-correct');
+  });
+
+  document.getElementById('rationale-' + qi).classList.add('show');
+  document.getElementById('dot-' + qi).classList.add('answered');
+  updateUI();
+}
+
+function navigate(dir) {
+  const next = current + dir;
+  if (next < 0 || next > questions.length) return;
+
+  if (next === questions.length) {
+    showResults();
+    return;
+  }
+
+  document.getElementById('qcard-' + current).style.display = 'none';
+  current = next;
+  document.getElementById('qcard-' + current).style.display = 'block';
+  updateUI();
+}
+
+function updateUI() {
+  document.getElementById('prog-fill').style.width = ((current / questions.length) * 100) + '%';
+  document.getElementById('prog-label').textContent = 'Question ' + (current + 1) + ' of ' + questions.length;
+
+  document.getElementById('btn-prev').disabled = current === 0;
+
+  const allDone = answers.every(a => a !== null);
+  const btn = document.getElementById('btn-next');
+  if (current === questions.length - 1) {
+    btn.textContent = allDone ? 'See Results' : 'Next \u2192';
+    btn.onclick = allDone ? showResults : () => {};
+    btn.disabled = !allDone;
+  } else {
+    btn.textContent = 'Next \u2192';
+    btn.onclick = () => navigate(1);
+    btn.disabled = false;
+  }
+
+  questions.forEach((_, i) => {
+    const d = document.getElementById('dot-' + i);
+    if (!d) return;
+    d.className = 'dot';
+    if (answers[i] !== null) d.classList.add('answered');
+    if (i === current) d.classList.add('current');
+  });
+}
+
+function showResults() {
+  document.getElementById('questions-container').style.display = 'none';
+  document.querySelector('.nav-row').style.display = 'none';
+  document.getElementById('results-panel').classList.add('show');
+  document.getElementById('prog-fill').style.width = '100%';
+  document.getElementById('prog-label').textContent = 'Complete';
+
+  const correct = answers.filter((a, i) => a === questions[i].correct).length;
+  const wrong = questions.length - correct;
+  const pct = Math.round((correct / questions.length) * 100);
+  const pts = correct * 5;
+
+  document.getElementById('r-correct').textContent = correct;
+  document.getElementById('r-wrong').textContent = wrong;
+  document.getElementById('r-pts').textContent = pts + '/25';
+  document.getElementById('score-pct').textContent = pct + '%';
+
+  const circ = 2 * Math.PI * 42;
+  const fill = (correct / questions.length) * circ;
+  document.getElementById('score-arc').setAttribute('stroke-dasharray', fill + ' ' + circ);
+  document.getElementById('score-arc').setAttribute('stroke', pct >= 80 ? '#2e7d32' : pct >= 60 ? '#e65100' : '#c62828');
+
+  const messages = ['Keep reviewing — revisit each rationale carefully.', 'Getting there — review the rationale for your missed questions.', 'Solid work — almost exam-ready.', 'Strong performance — ASE-level understanding demonstrated.', 'Perfect score — outstanding diagnostic reasoning.'];
+  document.getElementById('results-title').textContent = pct === 100 ? 'Perfect Score!' : pct >= 80 ? 'Strong Performance' : pct >= 60 ? 'Passing — Review Misses' : 'Needs Review';
+  document.getElementById('results-sub').textContent = messages[correct];
+}
+
+function reviewAnswers() {
+  document.getElementById('results-panel').classList.remove('show');
+  document.getElementById('questions-container').style.display = 'block';
+  document.querySelector('.nav-row').style.display = 'flex';
+  current = 0;
+  questions.forEach((_, qi) => {
+    document.getElementById('qcard-' + qi).style.display = qi === 0 ? 'block' : 'none';
+  });
+  updateUI();
+}
+
+function restartExam() {
+  answers = new Array(questions.length).fill(null);
+  locked = new Array(questions.length).fill(false);
+  current = 0;
+  document.getElementById('results-panel').classList.remove('show');
+  document.getElementById('questions-container').style.display = 'block';
+  document.querySelector('.nav-row').style.display = 'flex';
+  buildQuestions();
+}
+
+buildQuestions();
+</script>
