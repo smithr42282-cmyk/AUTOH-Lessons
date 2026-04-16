@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inside Drum Micrometer — AUTOH 172</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f2f2f2;
+    color: #1a1a1a;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .lesson-wrapper {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+  }
+
+  /* ── HEADER ── */
+  .lesson-header {
+    background: #1a1a1a;
+    border-left: 6px solid #CC0000;
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+  }
+  .lesson-header .course-label {
+    color: #CC0000;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 6px;
+  }
+  .lesson-header h1 {
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .lesson-header .sub {
+    color: #cccccc;
+    font-size: 13px;
+  }
+
+  /* ── SLIDE PROGRESS ── */
+  .progress-bar {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+  .progress-bar .dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: #cccccc;
+    transition: background 0.3s;
+    flex-shrink: 0;
+  }
+  .progress-bar .dot.active { background: #CC0000; }
+  .progress-bar .dot.done { background: #888888; }
+  .progress-label {
+    font-size: 12px;
+    color: #666;
+    margin-left: 8px;
+  }
+
+  /* ── SLIDE CARD ── */
+  .slide {
+    display: none;
+    background: #ffffff;
+    border-top: 4px solid #CC0000;
+    border-radius: 4px;
+    padding: 28px 28px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .slide.active { display: block; }
+
+  .slide-tag {
+    background: #CC0000;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+  .slide h2 {
+    font-size: 19px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 14px;
+  }
+  .slide p {
+    color: #333;
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+  .slide ul, .slide ol {
+    padding-left: 20px;
+    color: #333;
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+  .slide li { margin-bottom: 6px; }
+
+  /* ── SVG DIAGRAM ── */
+  .diagram-wrap {
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 16px;
+    margin: 16px 0;
+    text-align: center;
+  }
+  .diagram-wrap svg { max-width: 100%; }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: #fff5f5;
+    border-left: 4px solid #CC0000;
+    border-radius: 0 4px 4px 0;
+    padding: 12px 16px;
+    margin: 14px 0;
+  }
+  .callout .callout-label {
+    color: #CC0000;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .callout p { margin: 0; font-size: 14px; }
+
+  .info-box {
+    background: #f5f5f5;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 14px;
+    color: #333;
+  }
+  .info-box strong { color: #1a1a1a; }
+
+  /* ── TWO COLUMN ── */
+  .two-col {
+    display: flex;
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .two-col .col {
+    flex: 1;
+    background: #f5f5f5;
+    border-top: 3px solid #CC0000;
+    border-radius: 4px;
+    padding: 14px;
+    font-size: 14px;
+    color: #333;
+  }
+  .two-col .col strong {
+    display: block;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+  }
+  @media (max-width: 520px) {
+    .two-col { flex-direction: column; }
+  }
+
+  /* ── KNOWLEDGE CHECK ── */
+  .kc-section {
+    display: none;
+    background: #ffffff;
+    border-top: 4px solid #1a1a1a;
+    border-radius: 4px;
+    padding: 28px 28px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .kc-section.active { display: block; }
+  .kc-section h2 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 20px;
+  }
+
+  .question-block {
+    margin-bottom: 28px;
+  }
+  .question-block .q-number {
+    background: #CC0000;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  .question-block .q-text {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+
+  /* ── Drum image inside question ── */
+  .drum-reading-img {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 14px;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+
+  .choices {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px 0;
+  }
+  .choices li {
+    margin-bottom: 8px;
+  }
+  .choice-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px 14px;
+    background: #f5f5f5;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #1a1a1a;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .choice-btn:hover { border-color: #CC0000; background: #fff5f5; }
+  .choice-btn.correct { background: #e8f5e9; border-color: #2e7d32; color: #1b5e20; }
+  .choice-btn.wrong   { background: #ffebee; border-color: #c62828; color: #7f0000; }
+  .choice-btn:disabled { cursor: default; }
+
+  .feedback {
+    display: none;
+    padding: 10px 14px;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-top: 8px;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: #e8f5e9; border-left: 4px solid #2e7d32; color: #1b5e20; }
+  .feedback.wrong-fb   { background: #ffebee; border-left: 4px solid #c62828; color: #7f0000; }
+
+  /* ── NAVIGATION BUTTONS ── */
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    gap: 10px;
+  }
+  .btn {
+    padding: 10px 22px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .btn-primary { background: #CC0000; color: #fff; }
+  .btn-primary:hover { background: #aa0000; }
+  .btn-secondary { background: #e0e0e0; color: #1a1a1a; }
+  .btn-secondary:hover { background: #cccccc; }
+  .btn:disabled { opacity: 0.4; cursor: default; }
+
+  /* ── COMPLETE BANNER ── */
+  .complete-card {
+    display: none;
+    background: #1a1a1a;
+    border-top: 4px solid #CC0000;
+    border-radius: 4px;
+    padding: 28px;
+    text-align: center;
+    color: #fff;
+  }
+  .complete-card.show { display: block; }
+  .complete-card h2 { font-size: 20px; margin-bottom: 10px; color: #fff; }
+  .complete-card p { color: #cccccc; font-size: 14px; }
+  .score-badge {
+    display: inline-block;
+    background: #CC0000;
+    color: #fff;
+    font-size: 28px;
+    font-weight: 700;
+    padding: 14px 28px;
+    border-radius: 4px;
+    margin: 16px 0;
+  }
+
+  /* ── TABLE ── */
+  .spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin: 14px 0;
+  }
+  .spec-table th {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 9px 12px;
+    text-align: left;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .spec-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #e0e0e0;
+    color: #333;
+  }
+  .spec-table tr:nth-child(even) td { background: #f9f9f9; }
+</style>
+</head>
+<body>
+
+<div class="lesson-wrapper">
+
+  <!-- HEADER -->
+  <div class="lesson-header" role="banner">
+    <p class="course-label">AUTOH 172 · Honda Brake Systems</p>
+    <h1>Inside Drum Micrometer</h1>
+    <p class="sub">Micro Lesson · 3 Slides + 5 Practice Questions</p>
+  </div>
+
+  <!-- PROGRESS -->
+  <nav aria-label="Lesson progress">
+    <div class="progress-bar" id="progressDots">
+      <span class="dot active" id="dot0" aria-label="Slide 1"></span>
+      <span class="dot" id="dot1" aria-label="Slide 2"></span>
+      <span class="dot" id="dot2" aria-label="Slide 3"></span>
+      <span class="dot" id="dot3" aria-label="Practice Questions"></span>
+      <span class="progress-label" id="progressLabel" aria-live="polite">Slide 1 of 3</span>
+    </div>
+  </nav>
+
+  <!-- ════════════════════════════════
+       SLIDE 1 — What Is It & Why It Matters
+  ════════════════════════════════ -->
+  <section class="slide active" id="slide0" aria-labelledby="s0-title">
+    <span class="slide-tag">Slide 1 of 3 — Introduction</span>
+    <h2 id="s0-title">What Is an Inside Drum Micrometer?</h2>
+
+    <p>An <strong>inside drum micrometer</strong> (also called a <strong>brake drum micrometer</strong>) is a precision measuring instrument used to determine the <strong>inside diameter</strong> of a brake drum. This reading tells you whether the drum is still within safe service limits.</p>
+
+    <div class="diagram-wrap" role="img" aria-label="Labeled diagram of an inside drum micrometer showing the anvil, thimble, sleeve, and locking nut">
+      <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- drum background -->
+        <rect x="30" y="40" width="640" height="180" rx="8" fill="#f9f9f9" stroke="#e0e0e0" stroke-width="1"/>
+
+        <!-- drum arc (simplified cross-section) -->
+        <path d="M80 200 Q350 50 620 200" stroke="#888" stroke-width="2.5" fill="none" stroke-dasharray="6,4"/>
+        <text x="340" y="35" text-anchor="middle" font-size="12" fill="#888" font-family="Arial">Drum Inner Surface (simplified)</text>
+
+        <!-- micrometer body -->
+        <!-- main barrel -->
+        <rect x="160" y="110" width="360" height="40" rx="6" fill="#1a1a1a"/>
+        <!-- thimble -->
+        <rect x="460" y="100" width="60" height="60" rx="5" fill="#CC0000"/>
+        <!-- anvil left -->
+        <rect x="130" y="122" width="35" height="16" rx="3" fill="#555"/>
+        <!-- anvil right -->
+        <rect x="515" y="122" width="35" height="16" rx="3" fill="#555"/>
+        <!-- lock nut -->
+        <circle cx="390" cy="130" r="10" fill="#555" stroke="#333" stroke-width="1.5"/>
+
+        <!-- Labels -->
+        <line x1="148" y1="138" x2="148" y2="210" stroke="#CC0000" stroke-width="1.5"/>
+        <text x="148" y="222" text-anchor="middle" font-size="12" fill="#CC0000" font-weight="bold" font-family="Arial">Anvil</text>
+
+        <line x1="340" y1="110" x2="270" y2="75" stroke="#CC0000" stroke-width="1.5"/>
+        <text x="255" y="68" text-anchor="middle" font-size="12" fill="#CC0000" font-weight="bold" font-family="Arial">Sleeve / Barrel</text>
+
+        <line x1="490" y1="100" x2="490" y2="65" stroke="#CC0000" stroke-width="1.5"/>
+        <text x="490" y="57" text-anchor="middle" font-size="12" fill="#CC0000" font-weight="bold" font-family="Arial">Thimble</text>
+
+        <line x1="390" y1="120" x2="390" y2="75" stroke="#CC0000" stroke-width="1.5"/>
+        <text x="390" y="68" text-anchor="middle" font-size="12" fill="#CC0000" font-weight="bold" font-family="Arial">Lock Nut</text>
+
+        <line x1="547" y1="130" x2="600" y2="85" stroke="#CC0000" stroke-width="1.5"/>
+        <text x="600" y="78" text-anchor="middle" font-size="12" fill="#CC0000" font-weight="bold" font-family="Arial">Anvil</text>
+      </svg>
+    </div>
+
+    <div class="two-col">
+      <div class="col">
+        <strong>🔧 Tool Design</strong>
+        The two anvils extend outward to contact the drum's inner wall. Rotating the thimble moves the measuring anvils in or out until they make contact.
+      </div>
+      <div class="col">
+        <strong>📋 ASE Standard</strong>
+        NATEF/ASE Task V.C.1 — "Measure brake drum diameter; determine serviceability." Required at MLR, AST, and MAST levels.
+      </div>
+    </div>
+
+    <div class="callout">
+      <p class="callout-label">⚠ Honda PACT Note</p>
+      <p>Always confirm the drum micrometer is <strong>zeroed and calibrated</strong> before measuring. A mis-calibrated tool is worse than no measurement at all.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-secondary" disabled>← Back</button>
+      <button class="btn btn-primary" onclick="goToSlide(1)">Next →</button>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       SLIDE 2 — How to Read the Micrometer
+  ════════════════════════════════ -->
+  <section class="slide" id="slide1" aria-labelledby="s1-title">
+    <span class="slide-tag">Slide 2 of 3 — Reading the Measurement</span>
+    <h2 id="s1-title">How to Read an Inside Drum Micrometer</h2>
+
+    <p>Inside drum micrometers use the same <strong>sleeve + thimble</strong> reading system as an outside micrometer — just applied to internal diameter.</p>
+
+    <div class="diagram-wrap" role="img" aria-label="Diagram of micrometer sleeve showing sleeve reading of 9.0 mm plus thimble reading of 0.22 mm for a total of 9.22 mm">
+      <svg viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- sleeve body -->
+        <rect x="40" y="55" width="420" height="50" rx="4" fill="#e8e8e8" stroke="#999" stroke-width="1.5"/>
+        <!-- datum line -->
+        <line x1="40" y1="80" x2="460" y2="80" stroke="#333" stroke-width="1.5"/>
+
+        <!-- sleeve 1mm marks -->
+        <!-- major marks every 5mm, minor every 1mm -->
+        <!-- x positions: start 60, each mm = 30px -->
+        <!-- 0mm=60, 1mm=90, 2mm=120, 3mm=150, 4mm=180, 5mm=210, 6mm=240, 7mm=270, 8mm=300, 9mm=330 -->
+        <line x1="60" y1="62" x2="60" y2="80" stroke="#555" stroke-width="1"/>
+        <line x1="90" y1="68" x2="90" y2="80" stroke="#555" stroke-width="1"/>
+        <line x1="120" y1="68" x2="120" y2="80" stroke="#555" stroke-width="1"/>
+        <line x1="150" y1="68" x2="150" y2="80" stroke="#555" stroke-width="1"/>
+        <line x1="180" y1="68" x2="180" y2="80" stroke="#555" stroke-width="1"/>
+        <line x1="210" y1="62" x2="210" y2="80" stroke="#555" stroke-width="1.5"/>
+        <line x1="240" y1="68" x2="240" y2="80" stroke="#555" stroke-width="1"/>
+        <line x1="270" y1="68" x2="270" y2="80" stroke="#555" stroke-width="1"/>
+        <line x1="300" y1="68" x2="300" y2="80" stroke="#555" stroke-width="1"/>
+        <line x1="330" y1="62" x2="330" y2="80" stroke="#555" stroke-width="1.5"/>
+        <line x1="360" y1="68" x2="360" y2="80" stroke="#555" stroke-width="1"/>
+        <line x1="390" y1="68" x2="390" y2="80" stroke="#555" stroke-width="1"/>
+        <line x1="420" y1="68" x2="420" y2="80" stroke="#555" stroke-width="1"/>
+        <line x1="450" y1="62" x2="450" y2="80" stroke="#555" stroke-width="1.5"/>
+
+        <!-- sleeve number labels -->
+        <text x="60"  y="57" text-anchor="middle" font-size="10" fill="#333" font-family="Arial">0</text>
+        <text x="210" y="57" text-anchor="middle" font-size="10" fill="#333" font-family="Arial">5</text>
+        <text x="330" y="57" text-anchor="middle" font-size="10" fill="#333" font-family="Arial">8</text>
+        <text x="450" y="57" text-anchor="middle" font-size="10" fill="#333" font-family="Arial">11</text>
+
+        <!-- thimble overlay -->
+        <rect x="320" y="48" width="80" height="64" rx="4" fill="#CC0000" opacity="0.88"/>
+        <!-- thimble marks -->
+        <line x1="320" y1="80" x2="400" y2="80" stroke="#fff" stroke-width="1.5"/>
+        <line x1="325" y1="68" x2="325" y2="92" stroke="#fff" stroke-width="1"/>
+        <line x1="345" y1="72" x2="345" y2="88" stroke="#fff" stroke-width="1"/>
+        <line x1="365" y1="68" x2="365" y2="92" stroke="#fff" stroke-width="1.5"/><!-- 0.22 mark -->
+        <line x1="385" y1="72" x2="385" y2="88" stroke="#fff" stroke-width="1"/>
+
+        <!-- thimble reading label -->
+        <text x="360" y="44" text-anchor="middle" font-size="11" fill="#CC0000" font-weight="bold" font-family="Arial">0.22</text>
+        <line x1="365" y1="47" x2="365" y2="65" stroke="#CC0000" stroke-width="1.5"/>
+
+        <!-- sleeve reading arrow -->
+        <text x="330" y="115" text-anchor="middle" font-size="11" fill="#333" font-family="Arial" font-weight="bold">9.0 mm</text>
+        <line x1="330" y1="108" x2="330" y2="82" stroke="#333" stroke-width="1.5" marker-end="url(#arrowUp)"/>
+
+        <!-- total label -->
+        <text x="560" y="75" text-anchor="middle" font-size="13" fill="#1a1a1a" font-weight="bold" font-family="Arial">= 9.22 mm</text>
+        <text x="560" y="92" text-anchor="middle" font-size="11" fill="#555" font-family="Arial">Total Reading</text>
+      </svg>
+    </div>
+
+    <p><strong>Reading Steps:</strong></p>
+    <ol>
+      <li><strong>Sleeve reading</strong> — Count the last visible line on the barrel to the left of the thimble edge. Each major line = 1 mm (some tools use 0.025" increments in SAE).</li>
+      <li><strong>Thimble reading</strong> — Read the thimble line that lines up with the datum line on the sleeve. Each line = 0.01 mm.</li>
+      <li><strong>Add them together</strong> — Sleeve + Thimble = Total inside diameter.</li>
+    </ol>
+
+    <table class="spec-table" aria-label="Reading examples for inside drum micrometer">
+      <thead>
+        <tr>
+          <th scope="col">Sleeve Reading</th>
+          <th scope="col">Thimble Reading</th>
+          <th scope="col">Total Diameter</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>228.0 mm</td><td>0.38 mm</td><td><strong>228.38 mm</strong></td></tr>
+        <tr><td>229.0 mm</td><td>0.15 mm</td><td><strong>229.15 mm</strong></td></tr>
+        <tr><td>9.000"</td><td>0.012"</td><td><strong>9.012"</strong></td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <p class="callout-label">⚠ Common Mistake</p>
+      <p>Students often forget to check if the thimble has passed a <strong>half-line</strong> on the sleeve, which adds an extra 0.5 mm. Always confirm both the main line AND the half-line before reading the thimble.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goToSlide(0)">← Back</button>
+      <button class="btn btn-primary" onclick="goToSlide(2)">Next →</button>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       SLIDE 3 — Serviceability & Honda Context
+  ════════════════════════════════ -->
+  <section class="slide" id="slide2" aria-labelledby="s2-title">
+    <span class="slide-tag">Slide 3 of 3 — Serviceability</span>
+    <h2 id="s2-title">Using Your Measurement: Is the Drum Serviceable?</h2>
+
+    <p>A measurement alone means nothing without a <strong>specification to compare it to</strong>. Every drum has two critical numbers stamped directly on it:</p>
+
+    <div class="two-col">
+      <div class="col">
+        <strong>📏 Maximum Diameter</strong>
+        The largest allowable inside diameter after machining. If the drum has been turned or worn beyond this point, it <strong>must be replaced</strong>. Typically cast into the drum's hat or web.
+      </div>
+      <div class="col">
+        <strong>🔄 Discard Diameter</strong>
+        Some manufacturers list this separately as the dimension at which the drum is discarded even without machining. Always check Honda service data — the spec is vehicle-specific.
+      </div>
+    </div>
+
+    <div class="info-box">
+      <strong>Example — Honda Civic Rear Drum:</strong><br>
+      Standard diameter: <strong>180.0 mm</strong> &nbsp;|&nbsp; Maximum diameter: <strong>181.0 mm</strong><br>
+      If your micrometer reads <strong>181.3 mm</strong> → Drum is <strong>out of spec → Replace.</strong>
+    </div>
+
+    <p><strong>3-Step Decision Process:</strong></p>
+    <ol>
+      <li>Take your micrometer reading.</li>
+      <li>Look up the max diameter in the Honda Service Manual (or from the stamp on the drum).</li>
+      <li>Compare: If measured &lt; max → serviceable. If measured ≥ max → replace drum.</li>
+    </ol>
+
+    <div class="callout">
+      <p class="callout-label">🏁 Honda PACT Application</p>
+      <p>When writing your repair order, record the <em>actual measurement</em>, the <em>spec</em>, and your <em>determination</em>. "Drum measures 181.3 mm; spec is 181.0 mm max; recommend replacement" is the Three C format — Concern, Cause, Correction.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goToSlide(1)">← Back</button>
+      <button class="btn btn-primary" onclick="goToKC()">Practice Questions →</button>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       KNOWLEDGE CHECK — 5 Questions
+  ════════════════════════════════ -->
+  <section class="kc-section" id="kcSection" aria-labelledby="kc-title">
+    <span class="slide-tag" style="background:#1a1a1a;">Practice Measurement Questions</span>
+    <h2 id="kc-title">5 Practice Questions — Inside Drum Micrometer</h2>
+
+    <!-- Q1 -->
+    <div class="question-block" id="q1-block">
+      <span class="q-number">Question 1 of 5</span>
+      <p class="q-text">A drum micrometer sleeve reads <strong>228.0 mm</strong> and the thimble reads <strong>0.45 mm</strong>. What is the inside drum diameter?</p>
+      <ul class="choices" role="list">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q1',false)">A. &nbsp;228.045 mm</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q1',true)">B. &nbsp;228.45 mm</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q1',false)">C. &nbsp;228.54 mm</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q1',false)">D. &nbsp;229.45 mm</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q1-correct">✅ <strong>Correct!</strong> 228.0 + 0.45 = <strong>228.45 mm</strong>. You simply add the sleeve and thimble readings together.</div>
+      <div class="feedback wrong-fb"   id="q1-wrong">❌ <strong>Not quite.</strong> Add sleeve + thimble: 228.0 mm + 0.45 mm = <strong>228.45 mm</strong> (Choice B). Watch decimal placement.</div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question-block" id="q2-block">
+      <span class="q-number">Question 2 of 5</span>
+      <p class="q-text">The Honda service manual lists the maximum brake drum diameter as <strong>181.0 mm</strong>. Your micrometer reads <strong>180.72 mm</strong>. What is the correct determination?</p>
+      <ul class="choices" role="list">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q2',false)">A. &nbsp;Replace the drum — it exceeds specification.</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q2',true)">B. &nbsp;Drum is serviceable — measurement is within spec.</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q2',false)">C. &nbsp;Machine the drum by 0.28 mm.</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q2',false)">D. &nbsp;Cannot determine without measuring both sides.</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q2-correct">✅ <strong>Correct!</strong> 180.72 mm is <em>less than</em> the 181.0 mm max → drum is still within specification and serviceable.</div>
+      <div class="feedback wrong-fb"   id="q2-wrong">❌ <strong>Not quite.</strong> 180.72 mm is <em>less than</em> 181.0 mm max, meaning the drum is still <strong>within spec and serviceable</strong> (Choice B). Only replace if measured ≥ max.</div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question-block" id="q3-block">
+      <span class="q-number">Question 3 of 5</span>
+      <p class="q-text">A sleeve reads <strong>9.000"</strong> and the thimble reads <strong>0.018"</strong>. A second measurement at 90° reads <strong>9.021"</strong>. What condition does this indicate?</p>
+      <ul class="choices" role="list">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q3',false)">A. &nbsp;The drum is within specification.</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q3',false)">B. &nbsp;The drum has excessive taper wear.</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q3',true)">C. &nbsp;The drum is out-of-round (egg-shaped).</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q3',false)">D. &nbsp;The micrometer needs recalibration.</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q3-correct">✅ <strong>Correct!</strong> Two different readings taken 90° apart (9.018" vs 9.021") indicate the drum is <strong>out-of-round</strong>. This causes brake pulsation and pedal feedback during stops.</div>
+      <div class="feedback wrong-fb"   id="q3-wrong">❌ <strong>Not quite.</strong> When two diameters measured 90° apart are different (9.018" vs 9.021"), the drum is <strong>out-of-round</strong> (Choice C). Taper would be different readings along the drum's depth, not across it.</div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question-block" id="q4-block">
+      <span class="q-number">Question 4 of 5</span>
+      <p class="q-text">Before measuring a brake drum, what is the <strong>first step</strong> a technician should always perform with the drum micrometer?</p>
+      <ul class="choices" role="list">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q4',false)">A. &nbsp;Apply the drum micrometer with full anvil pressure.</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q4',false)">B. &nbsp;Set the micrometer to the drum's nominal size.</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q4',true)">C. &nbsp;Verify the micrometer is zeroed and calibrated.</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q4',false)">D. &nbsp;Clean the drum with brake cleaner and then measure.</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q4-correct">✅ <strong>Correct!</strong> Always <strong>zero and verify calibration</strong> before use. A mis-calibrated micrometer gives a false reading, which could pass a drum that should be replaced — a safety issue.</div>
+      <div class="feedback wrong-fb"   id="q4-wrong">❌ <strong>Not quite.</strong> The first step is always to <strong>verify calibration and zero the tool</strong> (Choice C). While cleaning the drum is good practice, an uncalibrated tool is the bigger safety risk.</div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question-block" id="q5-block">
+      <span class="q-number">Question 5 of 5</span>
+      <p class="q-text">A drum reads <strong>229.0 mm</strong> on the sleeve. The thimble line aligns at <strong>0.5</strong> on the scale, but you can also see that the sleeve's <strong>half-line is visible</strong>. What is the correct total measurement?</p>
+      <ul class="choices" role="list">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q5',false)">A. &nbsp;229.05 mm</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q5',false)">B. &nbsp;229.50 mm</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q5',false)">C. &nbsp;229.55 mm</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q5',true)">D. &nbsp;230.00 mm</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q5-correct">✅ <strong>Correct!</strong> Sleeve (229.0) + Half-line (0.5) + Thimble (0.5) = <strong>230.00 mm</strong>. Remember: when the half-line is visible, add 0.5 mm <em>before</em> adding the thimble reading.</div>
+      <div class="feedback wrong-fb"   id="q5-wrong">❌ <strong>Not quite.</strong> The half-line visible on the sleeve adds <strong>0.5 mm</strong>: 229.0 + 0.5 (half-line) + 0.5 (thimble) = <strong>230.00 mm</strong> (Choice D). This is the most common reading error on exams!</div>
+    </div>
+
+    <!-- Score + nav -->
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goToSlide(2)">← Back to Slides</button>
+      <button class="btn btn-primary" onclick="showScore()">See My Score →</button>
+    </div>
+  </section>
+
+  <!-- COMPLETE CARD -->
+  <div class="complete-card" id="completeCard" role="region" aria-live="polite" aria-label="Lesson complete summary">
+    <p style="color:#CC0000; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">AUTOH 172 · Micro Lesson Complete</p>
+    <h2>Inside Drum Micrometer</h2>
+    <div class="score-badge" id="scoreBadge" aria-label="Your score">— / 5</div>
+    <p id="scoreMsg">Loading your result...</p>
+    <p style="margin-top:16px; font-size:13px;">Return to Canvas to complete today's lab worksheet.</p>
+  </div>
+
+</div><!-- end lesson-wrapper -->
+
+<script>
+  /* ── STATE ── */
+  var currentSlide = 0;
+  var answers = {}; // { q1: true/false, ... }
+
+  /* ── SLIDE NAVIGATION ── */
+  function goToSlide(n) {
+    document.querySelectorAll('.slide').forEach(function(s){ s.classList.remove('active'); });
+    document.getElementById('kcSection').classList.remove('active');
+    document.getElementById('slide' + n).classList.add('active');
+    currentSlide = n;
+    updateProgress(n);
+    scrollTop();
+  }
+
+  function goToKC() {
+    document.querySelectorAll('.slide').forEach(function(s){ s.classList.remove('active'); });
+    document.getElementById('kcSection').classList.add('active');
+    updateProgress(3);
+    scrollTop();
+  }
+
+  function updateProgress(n) {
+    for (var i = 0; i < 4; i++) {
+      var dot = document.getElementById('dot' + i);
+      dot.className = 'dot';
+      if (i < n) dot.classList.add('done');
+      else if (i === n) dot.classList.add('active');
+    }
+    var labels = ['Slide 1 of 3', 'Slide 2 of 3', 'Slide 3 of 3', 'Practice Questions'];
+    document.getElementById('progressLabel').textContent = labels[n] || '';
+  }
+
+  /* ── ANSWER CHECK ── */
+  function checkAnswer(btn, qid, isCorrect) {
+    // disable all buttons for this question
+    var allBtns = btn.closest('.question-block').querySelectorAll('.choice-btn');
+    allBtns.forEach(function(b){ b.disabled = true; });
+    // style this button
+    btn.classList.add(isCorrect ? 'correct' : 'wrong');
+    // show feedback
+    document.getElementById(qid + '-correct').classList.toggle('show', isCorrect);
+    document.getElementById(qid + '-wrong').classList.toggle('show', !isCorrect);
+    // record
+    answers[qid] = isCorrect;
+  }
+
+  /* ── SCORE ── */
+  function showScore() {
+    var total = 0;
+    ['q1','q2','q3','q4','q5'].forEach(function(q){
+      if (answers[q] === true) total++;
+    });
+    document.getElementById('kcSection').classList.remove('active');
+    var card = document.getElementById('completeCard');
+    card.classList.add('show');
+    document.getElementById('scoreBadge').textContent = total + ' / 5';
+
+    var msgs = [
+      'Keep studying — review the slides and try again.',
+      'Getting there — re-read Slides 2 & 3 on reading and serviceability.',
+      'Good start — focus on the half-line technique (Q5).',
+      'Nice work — almost there! Review any questions you missed.',
+      'Great job! You\'re ready for the drum brake lab.',
+      'Perfect score! Outstanding measurement skills! 🏁'
+    ];
+    document.getElementById('scoreMsg').textContent = msgs[total] || '';
+    scrollTop();
+  }
+
+  function scrollTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
