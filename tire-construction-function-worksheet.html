@@ -1,898 +1,587 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tires: Construction &amp; Function — AUTOH 170</title>
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: #f2f2f2;
-  color: #1a1a1a;
-  font-size: 15px;
-  line-height: 1.6;
-}
-.wrapper { max-width: 860px; margin: 0 auto; padding: 24px 16px 48px; }
-
-/* HEADER */
-.lesson-header {
-  background: #1a1a1a;
-  border-left: 6px solid #CC0000;
-  border-radius: 4px;
-  padding: 20px 24px;
-  margin-bottom: 20px;
-}
-.lesson-header .course-label {
-  color: #CC0000; font-size: 11px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 6px;
-}
-.lesson-header h1 { color: #ffffff; font-size: 22px; font-weight: 700; margin-bottom: 4px; }
-.lesson-header .sub { color: #cccccc; font-size: 13px; }
-
-/* STUDENT INFO */
-.student-info {
-  background: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-top: 3px solid #CC0000;
-  border-radius: 4px;
-  padding: 14px 18px;
-  margin-bottom: 20px;
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-.info-field { display: flex; flex-direction: column; gap: 4px; }
-.info-field label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #888; }
-.info-field input {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 14px;
-  border: none;
-  border-bottom: 1.5px solid #1a1a1a;
-  background: transparent;
-  padding: 2px 0;
-  outline: none;
-  min-width: 160px;
-}
-.info-field input:focus { border-bottom-color: #CC0000; }
-
-/* PROGRESS */
-.progress-row {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  margin-bottom: 20px;
-}
-.progress-row .dot {
-  width: 12px; height: 12px; border-radius: 50%;
-  background: #cccccc; transition: background 0.3s; flex-shrink: 0;
-}
-.progress-row .dot.active { background: #CC0000; }
-.progress-row .dot.done   { background: #888888; }
-.progress-label { font-size: 12px; color: #666; margin-left: 8px; }
-
-/* SECTION CARDS */
-.section-card {
-  display: none;
-  background: #ffffff;
-  border-top: 4px solid #CC0000;
-  border-radius: 4px;
-  padding: 28px 28px 24px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-.section-card.active { display: block; }
-
-.section-tag {
-  background: #CC0000; color: #fff;
-  font-size: 10px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 1px;
-  padding: 3px 10px; border-radius: 2px;
-  display: inline-block; margin-bottom: 12px;
-}
-.section-card h2 {
-  font-size: 19px; font-weight: 700;
-  color: #1a1a1a; margin-bottom: 6px;
-}
-.section-card .section-intro {
-  font-size: 13px; color: #555;
-  font-style: italic; margin-bottom: 16px;
-}
-
-/* WORD BANK */
-.word-bank {
-  background: #f5f5f5;
-  border-left: 4px solid #CC0000;
-  border-radius: 0 4px 4px 0;
-  padding: 10px 14px;
-  margin-bottom: 16px;
-  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
-}
-.word-bank .wb-label {
-  font-size: 10px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.08em;
-  color: #CC0000; margin-right: 4px;
-}
-.word-pill {
-  background: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 99px;
-  padding: 2px 10px;
-  font-size: 12px; font-weight: 700; color: #1a1a1a;
-}
-
-/* TIRE DIAGRAM */
-.diagram-wrap {
-  background: #f9f9f9;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  padding: 16px; margin-bottom: 16px; text-align: center;
-}
-.diagram-wrap svg { max-width: 100%; height: auto; }
-
-/* LABEL GRID */
-.label-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 8px; margin-bottom: 16px;
-}
-.label-box {
-  background: #f5f5f5;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  padding: 8px 10px;
-}
-.label-box .lnum {
-  font-size: 10px; font-weight: 700;
-  text-transform: uppercase; color: #CC0000;
-  letter-spacing: 0.06em; margin-bottom: 4px;
-}
-.label-box input {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 13px; width: 100%;
-  border: none; border-bottom: 1px solid #cccccc;
-  background: transparent; padding: 3px 0;
-  color: #1a1a1a; outline: none;
-}
-.label-box input:focus { border-bottom-color: #CC0000; }
-
-/* MATCH TABLE */
-.match-wrap { border: 1px solid #e0e0e0; border-radius: 4px; overflow: hidden; margin-bottom: 14px; }
-.match-header {
-  display: grid; grid-template-columns: 1fr 1fr;
-  background: #1a1a1a;
-}
-.match-header span {
-  padding: 8px 12px;
-  font-size: 10px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.08em;
-  color: #ffffff;
-}
-.match-header span:first-child { border-right: 1px solid #333; }
-.match-row {
-  display: grid; grid-template-columns: 1fr 1fr;
-  border-bottom: 1px solid #e0e0e0;
-}
-.match-row:last-child { border-bottom: none; }
-.match-row:nth-child(even) { background: #f5f5f5; }
-.match-cell {
-  padding: 9px 12px; font-size: 13px;
-  display: flex; align-items: center; gap: 8px;
-}
-.match-cell:first-child { border-right: 1px solid #e0e0e0; }
-.match-cell .mnum { font-weight: 700; color: #CC0000; min-width: 18px; font-size: 12px; }
-
-.match-answers {
-  display: flex; gap: 0;
-  border: 1px solid #e0e0e0; border-radius: 4px;
-  overflow: hidden; margin-top: 10px;
-}
-.match-ans {
-  flex: 1; display: flex; align-items: center;
-  gap: 6px; padding: 8px 10px;
-  border-right: 1px solid #e0e0e0;
-  font-size: 12px;
-}
-.match-ans:last-child { border-right: none; }
-.match-ans span { font-weight: 700; color: #CC0000; }
-.match-ans select {
-  flex: 1; font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px; border: none;
-  border-bottom: 1px solid #cccccc;
-  background: transparent; outline: none; cursor: pointer;
-}
-.match-ans select:focus { border-bottom-color: #CC0000; }
-
-/* SHORT ANSWER */
-.q-block { margin-bottom: 18px; }
-.q-text { font-size: 14px; line-height: 1.65; margin-bottom: 8px; color: #1a1a1a; }
-.q-num { font-weight: 700; color: #CC0000; }
-textarea {
-  width: 100%; font-family: Arial, Helvetica, sans-serif;
-  font-size: 13px; border: 1px solid #e0e0e0;
-  border-radius: 4px; background: #f9f9f9;
-  padding: 8px 10px; color: #1a1a1a; outline: none;
-  resize: vertical; min-height: 68px; line-height: 1.6;
-}
-textarea:focus { border-color: #CC0000; background: #ffffff; }
-
-/* TRUE FALSE */
-.tf-block {
-  display: flex; justify-content: space-between;
-  align-items: flex-start; gap: 12px;
-  padding: 10px 0; border-bottom: 1px solid #e0e0e0;
-}
-.tf-block:last-child { border-bottom: none; }
-.tf-block .tf-text { font-size: 13px; line-height: 1.55; flex: 1; color: #1a1a1a; }
-.tf-opts { display: flex; gap: 14px; flex-shrink: 0; padding-top: 1px; }
-.tf-opts label {
-  display: flex; align-items: center; gap: 4px;
-  font-size: 12px; font-weight: 700; cursor: pointer; color: #444;
-}
-.tf-opts input[type="radio"] { accent-color: #CC0000; cursor: pointer; }
-
-/* TIRE CODE */
-.tire-code-display {
-  text-align: center;
-  font-size: 26px; font-weight: 700; letter-spacing: 0.1em;
-  padding: 16px; background: #1a1a1a; color: #ffffff;
-  border-radius: 4px; margin-bottom: 14px;
-}
-.tire-code-display span { color: #CC0000; }
-
-.decode-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 14px; }
-.decode-table th {
-  background: #CC0000; color: #fff;
-  font-size: 10px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.08em;
-  padding: 8px 12px; text-align: left;
-}
-.decode-table td { padding: 8px 12px; border-bottom: 1px solid #e0e0e0; vertical-align: middle; }
-.decode-table tr:nth-child(even) td { background: #f5f5f5; }
-.decode-table .code-cell { font-weight: 700; color: #CC0000; font-size: 16px; width: 60px; }
-.decode-table input {
-  font-family: Arial, Helvetica, sans-serif; font-size: 12px;
-  width: 100%; border: none;
-  border-bottom: 1px solid #cccccc;
-  background: transparent; padding: 3px 0; color: #1a1a1a; outline: none;
-}
-.decode-table input:focus { border-bottom-color: #CC0000; }
-
-/* REPAIR TABLE */
-.repair-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 14px; }
-.repair-table th {
-  background: #1a1a1a; color: #fff;
-  font-size: 10px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.08em;
-  padding: 8px 12px; text-align: left;
-}
-.repair-table td { padding: 9px 12px; border-bottom: 1px solid #e0e0e0; vertical-align: middle; }
-.repair-table tr:nth-child(even) td { background: #f5f5f5; }
-.repair-table select, .repair-table input[type="text"] {
-  font-family: Arial, Helvetica, sans-serif; font-size: 12px;
-  width: 100%; border: none;
-  border-bottom: 1px solid #cccccc;
-  background: transparent; padding: 3px 0; color: #1a1a1a; outline: none; cursor: pointer;
-}
-.repair-table select:focus, .repair-table input:focus { border-bottom-color: #CC0000; }
-.repair-table .dec-col { width: 130px; }
-.repair-table .reason-col { width: 40%; }
-
-/* STEP SEQUENCING */
-.step-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
-.step-item {
-  display: flex; align-items: center; gap: 12px;
-  background: #f5f5f5; border: 1px solid #e0e0e0;
-  border-radius: 4px; padding: 10px 14px; font-size: 13px;
-}
-.step-item select {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 13px; font-weight: 700;
-  width: 58px; border: none;
-  border-bottom: 1px solid #cccccc;
-  background: transparent; color: #CC0000; outline: none; cursor: pointer;
-}
-.step-item select:focus { border-bottom-color: #1a1a1a; }
-
-/* FILL BLANKS */
-.fill-para {
-  font-size: 13px; line-height: 2.2;
-  padding: 14px 16px; background: #f5f5f5;
-  border: 1px solid #e0e0e0; border-radius: 4px; margin-bottom: 14px;
-}
-input.fill-blank {
-  display: inline-block;
-  min-width: 110px;
-  border: none; border-bottom: 1.5px solid #1a1a1a;
-  background: transparent;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 13px; font-weight: 700; color: #CC0000;
-  padding: 0 4px; outline: none; vertical-align: bottom;
-}
-input.fill-blank:focus { border-bottom-color: #CC0000; }
-
-/* SCENARIO */
-.scenario-box {
-  border-left: 4px solid #CC0000;
-  background: #fff5f5; border-radius: 0 4px 4px 0;
-  padding: 12px 16px; margin-bottom: 10px;
-  font-size: 13px; line-height: 1.6; color: #444;
-  font-style: italic;
-}
-.yn-row {
-  display: flex; align-items: center; gap: 20px;
-  margin-bottom: 8px; font-size: 13px; font-weight: 700;
-}
-.yn-row label { display: flex; align-items: center; gap: 5px; cursor: pointer; font-weight: 700; }
-.yn-row input[type="radio"] { accent-color: #CC0000; }
-
-/* CALLOUT */
-.callout {
-  background: #fff5f5; border-left: 4px solid #CC0000;
-  border-radius: 0 4px 4px 0; padding: 12px 16px; margin-bottom: 14px;
-}
-.callout .callout-label {
-  color: #CC0000; font-size: 10px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px;
-}
-.callout p { margin: 0; font-size: 13px; color: #1a1a1a; }
-
-/* NAV */
-.nav-row {
-  display: flex; justify-content: space-between;
-  align-items: center; margin-top: 24px; gap: 10px;
-}
-.btn {
-  padding: 10px 22px; border: none; border-radius: 4px;
-  font-size: 14px; font-weight: 700; cursor: pointer;
-  letter-spacing: 0.5px; text-transform: uppercase;
-  font-family: Arial, Helvetica, sans-serif;
-}
-.btn-primary { background: #CC0000; color: #fff; }
-.btn-primary:hover { background: #aa0000; }
-.btn-secondary { background: #e0e0e0; color: #1a1a1a; }
-.btn-secondary:hover { background: #cccccc; }
-.btn:disabled { opacity: 0.4; cursor: default; }
-
-/* PROGRESS BAR STICKY */
-.sticky-progress {
-  position: sticky; top: 0; z-index: 20;
-  background: #1a1a1a;
-  padding: 8px 16px;
-  display: flex; align-items: center; gap: 12px;
-  font-size: 11px; color: #ccc; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.06em;
-}
-.pbar-track {
-  flex: 1; height: 4px; background: #444; border-radius: 99px; overflow: hidden;
-}
-.pbar-fill {
-  height: 100%; background: #CC0000;
-  border-radius: 99px; transition: width 0.4s ease; width: 0%;
-}
-.pbar-label { color: #CC0000; font-family: Arial; white-space: nowrap; }
-
-/* COMPLETE CARD */
-.complete-card {
-  display: none;
-  background: #1a1a1a; border-top: 4px solid #CC0000;
-  border-radius: 4px; padding: 32px 28px; text-align: center;
-}
-.complete-card.show { display: block; }
-.complete-card h2 { color: #CC0000; font-size: 20px; margin-bottom: 8px; }
-.complete-card p { color: #cccccc; font-size: 14px; margin-bottom: 20px; }
-.score-badge {
-  display: inline-block;
-  background: #CC0000; color: #fff;
-  font-size: 32px; font-weight: 700;
-  padding: 14px 28px; border-radius: 4px; margin-bottom: 16px;
-}
-
-/* SECTION DIVIDER */
-.section-divider {
-  background: #CC0000; padding: 8px 14px; border-radius: 4px;
-  margin-bottom: 16px;
-}
-.section-divider p {
-  margin: 0; color: #fff; font-size: 11px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.1em;
-}
-
-/* SCORE FOOTER */
-.score-footer {
-  display: flex; justify-content: space-between; align-items: center;
-  border-top: 2px solid #1a1a1a; margin-top: 28px; padding-top: 12px;
-  font-size: 12px; color: #555;
-}
-.score-footer .score-val { font-weight: 700; color: #1a1a1a; font-size: 14px; }
-
-@media print {
-  .sticky-progress, .nav-row { display: none !important; }
-  .section-card { display: block !important; box-shadow: none; margin-bottom: 24px; }
-  body { background: white; }
-}
-@media (max-width: 600px) {
-  .label-grid { grid-template-columns: 1fr 1fr; }
-  .student-info { flex-direction: column; gap: 12px; }
-  .match-answers { flex-wrap: wrap; }
-}
-</style>
-</head>
-<body>
-
-<div class="sticky-progress">
-  <span>Progress</span>
-  <div class="pbar-track"><div class="pbar-fill" id="pbarFill"></div></div>
-  <span class="pbar-label" id="pbarLabel">0 / 0</span>
-</div>
-
-<div class="wrapper">
-
-  <!-- HEADER -->
-  <div class="lesson-header">
-    <div class="course-label">AUTOH 170 &mdash; Fundamentals of Honda Auto Service Training</div>
-    <h1>Tires: Construction &amp; Function</h1>
-    <div class="sub">Worksheet &mdash; Sections A &ndash; G &nbsp;|&nbsp; 65 points</div>
-  </div>
-
-  <!-- STUDENT INFO -->
-  <div class="student-info">
-    <div class="info-field">
-      <label>Student Name</label>
-      <input type="text" id="f-name" placeholder="First Last" style="min-width:200px">
-    </div>
-    <div class="info-field">
-      <label>Date</label>
-      <input type="text" id="f-date" placeholder="MM / DD / YYYY" style="min-width:130px">
-    </div>
-    <div class="info-field">
-      <label>Period</label>
-      <input type="text" id="f-period" placeholder="—" style="min-width:60px">
-    </div>
-  </div>
-
-  <!-- DOT PROGRESS -->
-  <div class="progress-row" id="dotRow">
-    <div class="dot active" data-sec="0"></div>
-    <div class="dot" data-sec="1"></div>
-    <div class="dot" data-sec="2"></div>
-    <div class="dot" data-sec="3"></div>
-    <div class="dot" data-sec="4"></div>
-    <div class="dot" data-sec="5"></div>
-    <div class="dot" data-sec="6"></div>
-    <span class="progress-label" id="secLabel">Section 1 of 7</span>
-  </div>
-
-  <!-- ══════════════════════════════════════════════
-       SECTION A — Tire Anatomy
-  ══════════════════════════════════════════════ -->
-  <div class="section-card active" id="sec0">
-    <div class="section-tag">Section A</div>
-    <h2>Tire Anatomy — Label the Diagram</h2>
-    <p class="section-intro">Using the word bank, write the correct component name in each numbered box.</p>
-
-    <div class="diagram-wrap">
-      <svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg" width="480" height="290">
-        <circle cx="230" cy="150" r="120" fill="#2C2C2A"/>
-        <circle cx="230" cy="150" r="92" fill="#3C3B38"/>
-        <circle cx="230" cy="150" r="66" fill="#888780"/>
-        <circle cx="230" cy="150" r="48" fill="#CACAC7"/>
-        <circle cx="230" cy="150" r="16" fill="#B4B2A9"/>
-        <g stroke="#CC0000" stroke-width="2.5" stroke-linecap="round">
-          <line x1="230" y1="30" x2="230" y2="58"/>
-          <line x1="196" y1="34" x2="207" y2="60"/>
-          <line x1="264" y1="34" x2="253" y2="60"/>
-          <line x1="230" y1="270" x2="230" y2="242"/>
-          <line x1="196" y1="266" x2="207" y2="240"/>
-          <line x1="264" y1="266" x2="253" y2="240"/>
-        </g>
-        <!-- callout lines LEFT -->
-        <line x1="138" y1="150" x2="72" y2="150" stroke="#888" stroke-width="1" stroke-dasharray="4,3"/>
-        <circle cx="138" cy="150" r="3" fill="#CC0000"/>
-        <text x="68" y="154" text-anchor="end" font-family="Arial" font-size="12" fill="#CC0000" font-weight="bold">①</text>
-
-        <line x1="163" y1="74" x2="72" y2="88" stroke="#888" stroke-width="1" stroke-dasharray="4,3"/>
-        <circle cx="163" cy="74" r="3" fill="#CC0000"/>
-        <text x="68" y="92" text-anchor="end" font-family="Arial" font-size="12" fill="#CC0000" font-weight="bold">②</text>
-
-        <line x1="183" y1="198" x2="72" y2="214" stroke="#888" stroke-width="1" stroke-dasharray="4,3"/>
-        <circle cx="183" cy="198" r="3" fill="#CC0000"/>
-        <text x="68" y="218" text-anchor="end" font-family="Arial" font-size="12" fill="#CC0000" font-weight="bold">③</text>
-
-        <!-- callout lines RIGHT -->
-        <line x1="297" y1="74" x2="390" y2="88" stroke="#888" stroke-width="1" stroke-dasharray="4,3"/>
-        <circle cx="297" cy="74" r="3" fill="#CC0000"/>
-        <text x="394" y="92" font-family="Arial" font-size="12" fill="#CC0000" font-weight="bold">④</text>
-
-        <line x1="296" y1="150" x2="390" y2="150" stroke="#888" stroke-width="1" stroke-dasharray="4,3"/>
-        <circle cx="296" cy="150" r="3" fill="#CC0000"/>
-        <text x="394" y="154" font-family="Arial" font-size="12" fill="#CC0000" font-weight="bold">⑤</text>
-
-        <line x1="271" y1="210" x2="390" y2="214" stroke="#888" stroke-width="1" stroke-dasharray="4,3"/>
-        <circle cx="271" cy="210" r="3" fill="#CC0000"/>
-        <text x="394" y="218" font-family="Arial" font-size="12" fill="#CC0000" font-weight="bold">⑥</text>
-
-        <text x="230" y="294" text-anchor="middle" font-family="Arial" font-size="9" fill="#999">Tire cross-section (not to scale)</text>
-      </svg>
-    </div>
-
-    <div class="label-grid">
-      <div class="label-box"><div class="lnum">① Component</div><input type="text" id="a1" placeholder="Enter name…"></div>
-      <div class="label-box"><div class="lnum">② Component</div><input type="text" id="a2" placeholder="Enter name…"></div>
-      <div class="label-box"><div class="lnum">③ Component</div><input type="text" id="a3" placeholder="Enter name…"></div>
-      <div class="label-box"><div class="lnum">④ Component</div><input type="text" id="a4" placeholder="Enter name…"></div>
-      <div class="label-box"><div class="lnum">⑤ Component</div><input type="text" id="a5" placeholder="Enter name…"></div>
-      <div class="label-box"><div class="lnum">⑥ Component</div><input type="text" id="a6" placeholder="Enter name…"></div>
-    </div>
-
-    <div class="word-bank">
-      <span class="wb-label">Word bank:</span>
-      <span class="word-pill">Sidewall</span>
-      <span class="word-pill">Tread</span>
-      <span class="word-pill">Bead</span>
-      <span class="word-pill">Steel belt</span>
-      <span class="word-pill">Inner liner</span>
-      <span class="word-pill">Body ply (carcass)</span>
-    </div>
-
-    <div class="nav-row">
-      <button class="btn btn-secondary" disabled>&#8592; Back</button>
-      <button class="btn btn-primary" onclick="goTo(1)">Next: Matching &#8594;</button>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════
-       SECTION B — Matching
-  ══════════════════════════════════════════════ -->
-  <div class="section-card" id="sec1">
-    <div class="section-tag">Section B</div>
-    <h2>Match the Component to Its Function</h2>
-    <p class="section-intro">Draw the match by selecting the correct letter for each numbered component below.</p>
-
-    <div class="match-wrap">
-      <div class="match-header">
-        <span>Component</span><span>Function</span>
-      </div>
-      <div class="match-row"><div class="match-cell"><span class="mnum">1.</span>Tread</div><div class="match-cell">A. Seals the tire to the rim</div></div>
-      <div class="match-row"><div class="match-cell"><span class="mnum">2.</span>Sidewall</div><div class="match-cell">B. Provides structural strength &amp; shape</div></div>
-      <div class="match-row"><div class="match-cell"><span class="mnum">3.</span>Steel belt</div><div class="match-cell">C. Acts as an airtight rubber layer (no inner tube)</div></div>
-      <div class="match-row"><div class="match-cell"><span class="mnum">4.</span>Bead</div><div class="match-cell">D. Grips the road surface</div></div>
-      <div class="match-row"><div class="match-cell"><span class="mnum">5.</span>Inner liner</div><div class="match-cell">E. Stabilises tread &amp; resists punctures</div></div>
-      <div class="match-row"><div class="match-cell"><span class="mnum">6.</span>Body ply</div><div class="match-cell">F. Flexes to absorb road impacts</div></div>
-    </div>
-
-    <div class="match-answers">
-      <div class="match-ans"><span>1—</span><select id="b1"><option value="">?</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></div>
-      <div class="match-ans"><span>2—</span><select id="b2"><option value="">?</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></div>
-      <div class="match-ans"><span>3—</span><select id="b3"><option value="">?</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></div>
-      <div class="match-ans"><span>4—</span><select id="b4"><option value="">?</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></div>
-      <div class="match-ans"><span>5—</span><select id="b5"><option value="">?</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></div>
-      <div class="match-ans"><span>6—</span><select id="b6"><option value="">?</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></div>
-    </div>
-
-    <div class="nav-row">
-      <button class="btn btn-secondary" onclick="goTo(0)">&#8592; Back</button>
-      <button class="btn btn-primary" onclick="goTo(2)">Next: Short Answer &#8594;</button>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════
-       SECTION C + D — Short Answer & T/F
-  ══════════════════════════════════════════════ -->
-  <div class="section-card" id="sec2">
-    <div class="section-tag">Section C</div>
-    <h2>Short Answer</h2>
-
-    <div class="q-block">
-      <p class="q-text"><span class="q-num">1.</span> What does the term <em>aspect ratio</em> mean in a tire size code such as 205/55R16? How does a low aspect ratio affect handling?</p>
-      <textarea id="c1" rows="3" placeholder="Your answer…"></textarea>
-    </div>
-    <div class="q-block">
-      <p class="q-text"><span class="q-num">2.</span> Explain the difference between a radial-ply tire and a bias-ply tire. Which type is most common on modern passenger cars, and why?</p>
-      <textarea id="c2" rows="3" placeholder="Your answer…"></textarea>
-    </div>
-    <div class="q-block">
-      <p class="q-text"><span class="q-num">3.</span> A customer's tires show excessive wear only in the center of the tread. What does this indicate, and what corrective action would you recommend?</p>
-      <textarea id="c3" rows="3" placeholder="Your answer…"></textarea>
-    </div>
-    <div class="q-block">
-      <p class="q-text"><span class="q-num">4.</span> Why is nitrogen sometimes used to inflate tires instead of compressed air? List two advantages.</p>
-      <textarea id="c4" rows="2" placeholder="Your answer…"></textarea>
-    </div>
-
-    <div class="section-divider" style="margin-top:24px;"><p>Section D &mdash; True or False</p></div>
-
-    <div class="tf-block">
-      <span class="tf-text">1. A run-flat tire can support the vehicle's weight for a limited distance after losing all air pressure.</span>
-      <div class="tf-opts"><label><input type="radio" name="d1" value="T"> True</label><label><input type="radio" name="d1" value="F"> False</label></div>
-    </div>
-    <div class="tf-block">
-      <span class="tf-text">2. The tread depth legal minimum in most US states is 4/32".</span>
-      <div class="tf-opts"><label><input type="radio" name="d2" value="T"> True</label><label><input type="radio" name="d2" value="F"> False</label></div>
-    </div>
-    <div class="tf-block">
-      <span class="tf-text">3. Over-inflation increases the tire's contact patch with the road, improving grip.</span>
-      <div class="tf-opts"><label><input type="radio" name="d3" value="T"> True</label><label><input type="radio" name="d3" value="F"> False</label></div>
-    </div>
-    <div class="tf-block">
-      <span class="tf-text">4. The UTQG treadwear rating is a comparative grade set by the tire manufacturer, not a government standard.</span>
-      <div class="tf-opts"><label><input type="radio" name="d4" value="T"> True</label><label><input type="radio" name="d4" value="F"> False</label></div>
-    </div>
-    <div class="tf-block">
-      <span class="tf-text">5. Tire rotation should typically be performed every 5,000–8,000 miles to promote even wear.</span>
-      <div class="tf-opts"><label><input type="radio" name="d5" value="T"> True</label><label><input type="radio" name="d5" value="F"> False</label></div>
-    </div>
-
-    <div class="nav-row">
-      <button class="btn btn-secondary" onclick="goTo(1)">&#8592; Back</button>
-      <button class="btn btn-primary" onclick="goTo(3)">Next: Tire Size &#8594;</button>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════
-       SECTION E + F — Decode & Critical Thinking
-  ══════════════════════════════════════════════ -->
-  <div class="section-card" id="sec3">
-    <div class="section-tag">Section E</div>
-    <h2>Decode the Tire Size</h2>
-    <p class="section-intro">Identify what each part of the tire size code means.</p>
-
-    <div class="tire-code-display">
-      <span>225</span> / <span>65</span> R <span>17</span> &nbsp;<span>104</span> <span>H</span>
-    </div>
-
-    <table class="decode-table">
-      <thead><tr><th>Code</th><th>Meaning</th><th>Your Answer</th></tr></thead>
-      <tbody>
-        <tr><td class="code-cell">225</td><td>Section width (mm)</td><td><input type="text" id="e1" placeholder="What this means…"></td></tr>
-        <tr><td class="code-cell">65</td><td>Aspect ratio (%)</td><td><input type="text" id="e2" placeholder="What this means…"></td></tr>
-        <tr><td class="code-cell">R</td><td>Construction type</td><td><input type="text" id="e3" placeholder="Stands for…"></td></tr>
-        <tr><td class="code-cell">17</td><td>Rim diameter</td><td><input type="text" id="e4" placeholder="Unit?"></td></tr>
-        <tr><td class="code-cell">104</td><td>Load index</td><td><input type="text" id="e5" placeholder="Max load in kg…"></td></tr>
-        <tr><td class="code-cell">H</td><td>Speed rating</td><td><input type="text" id="e6" placeholder="Max speed in km/h…"></td></tr>
-      </tbody>
-    </table>
-
-    <div class="section-divider" style="margin-top:24px;"><p>Section F &mdash; Critical Thinking</p></div>
-
-    <div class="q-block">
-      <p class="q-text"><strong>A driver replaces two worn rear tires with brand-new ones but keeps the original worn tires on the front.</strong> A colleague argues the new tires should go on the front for better steering. Who is correct? Explain using your knowledge of tire function and vehicle dynamics.</p>
-      <textarea id="f1" rows="5" placeholder="Your answer…"></textarea>
-    </div>
-
-    <div class="nav-row">
-      <button class="btn btn-secondary" onclick="goTo(2)">&#8592; Back</button>
-      <button class="btn btn-primary" onclick="goTo(4)">Next: Repair &#8594;</button>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════
-       SECTION G1 + G2 — Repair / Replace & Sequencing
-  ══════════════════════════════════════════════ -->
-  <div class="section-card" id="sec4">
-    <div class="section-tag">Section G &mdash; Tire Repair</div>
-    <h2>Repair or Replace?</h2>
-    <p class="section-intro">Select the correct decision for each scenario, then explain your reasoning.</p>
-
-    <div class="word-bank">
-      <span class="wb-label">Options:</span>
-      <span class="word-pill">Repair</span>
-      <span class="word-pill">Replace</span>
-      <span class="word-pill">Assess further</span>
-    </div>
-
-    <table class="repair-table">
-      <thead><tr><th>Damage Scenario</th><th class="dec-col">Decision</th><th class="reason-col">Reason</th></tr></thead>
-      <tbody>
-        <tr><td>6 mm nail in center of tread, no sidewall damage</td><td><select id="g1a"><option value="">Select…</option><option>Repair</option><option>Replace</option><option>Assess further</option></select></td><td><input type="text" id="g1ar" placeholder="Because…"></td></tr>
-        <tr><td>Puncture 15 mm from sidewall edge</td><td><select id="g1b"><option value="">Select…</option><option>Repair</option><option>Replace</option><option>Assess further</option></select></td><td><input type="text" id="g1br" placeholder="Because…"></td></tr>
-        <tr><td>Sidewall bulge / bubble visible</td><td><select id="g1c"><option value="">Select…</option><option>Repair</option><option>Replace</option><option>Assess further</option></select></td><td><input type="text" id="g1cr" placeholder="Because…"></td></tr>
-        <tr><td>12 mm screw in tread, tread depth 5/32"</td><td><select id="g1d"><option value="">Select…</option><option>Repair</option><option>Replace</option><option>Assess further</option></select></td><td><input type="text" id="g1dr" placeholder="Because…"></td></tr>
-        <tr><td>Tread depth worn to 1/32" — no puncture</td><td><select id="g1e"><option value="">Select…</option><option>Repair</option><option>Replace</option><option>Assess further</option></select></td><td><input type="text" id="g1er" placeholder="Because…"></td></tr>
-        <tr><td>Slow leak, bead area, previously repaired twice</td><td><select id="g1f"><option value="">Select…</option><option>Repair</option><option>Replace</option><option>Assess further</option></select></td><td><input type="text" id="g1fr" placeholder="Because…"></td></tr>
-      </tbody>
-    </table>
-
-    <div class="section-divider" style="margin-top:24px;"><p>G2 &mdash; Plug-Patch Repair: Order the Steps (1–7)</p></div>
-
-    <div class="step-list">
-      <div class="step-item"><select id="g2a"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select> Buff and clean the repair area from the inside</div>
-      <div class="step-item"><select id="g2b"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select> Remove the tire from the rim and inspect internally</div>
-      <div class="step-item"><select id="g2c"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select> Apply vulcanizing cement to the buffed area</div>
-      <div class="step-item"><select id="g2d"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select> Re-mount, inflate to spec, check for leaks with soapy water</div>
-      <div class="step-item"><select id="g2e"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select> Mark the puncture location and remove the object</div>
-      <div class="step-item"><select id="g2f"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select> Install the combination plug-patch from the inside</div>
-      <div class="step-item"><select id="g2g"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select> Ream the puncture channel to create a uniform hole</div>
-    </div>
-
-    <div class="nav-row">
-      <button class="btn btn-secondary" onclick="goTo(3)">&#8592; Back</button>
-      <button class="btn btn-primary" onclick="goTo(5)">Next: Fill in the Blanks &#8594;</button>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════
-       SECTION G3 + G4 — Fill Blanks & T/F
-  ══════════════════════════════════════════════ -->
-  <div class="section-card" id="sec5">
-    <div class="section-tag">G3 &mdash; Fill in the Blanks</div>
-    <h2>Repair Terminology</h2>
-
-    <div class="word-bank">
-      <span class="wb-label">Word bank:</span>
-      <span class="word-pill">plug</span><span class="word-pill">patch</span>
-      <span class="word-pill">6 mm</span><span class="word-pill">repairable zone</span>
-      <span class="word-pill">sidewall</span><span class="word-pill">demounted</span>
-      <span class="word-pill">speed rating</span><span class="word-pill">two</span>
-    </div>
-
-    <div class="fill-para">
-      A proper tire repair requires the tire to be
-      <input class="fill-blank" type="text" id="g3a" placeholder="________">
-      from the rim so the technician can inspect the damage from inside. Only punctures within the
-      <input class="fill-blank" type="text" id="g3b" placeholder="________">
-      of the tread may be repaired; damage to the
-      <input class="fill-blank" type="text" id="g3c" placeholder="________">
-      or shoulder is not repairable. The maximum repairable puncture diameter is
-      <input class="fill-blank" style="min-width:70px" type="text" id="g3d" placeholder="____">.
-      A combination
-      <input class="fill-blank" style="min-width:70px" type="text" id="g3e" placeholder="____">–<input class="fill-blank" style="min-width:70px" type="text" id="g3f" placeholder="____">
-      repair seals the injury from the inside and fills the channel. A tire should not be repaired more than
-      <input class="fill-blank" style="min-width:60px" type="text" id="g3g" placeholder="____">
-      times, and a repaired tire may have its
-      <input class="fill-blank" type="text" id="g3h" placeholder="________">
-      reduced.
-    </div>
-
-    <div class="section-divider" style="margin-top:24px;"><p>G4 &mdash; True or False: Repair Rules</p></div>
-
-    <div class="tf-block">
-      <span class="tf-text">1. A plug-only repair (rope plug without removing the tire) is an industry-accepted permanent fix.</span>
-      <div class="tf-opts"><label><input type="radio" name="g4_1" value="T"> True</label><label><input type="radio" name="g4_1" value="F"> False</label></div>
-    </div>
-    <div class="tf-block">
-      <span class="tf-text">2. A puncture in the shoulder area may be safely repaired if the hole is smaller than 6 mm.</span>
-      <div class="tf-opts"><label><input type="radio" name="g4_2" value="T"> True</label><label><input type="radio" name="g4_2" value="F"> False</label></div>
-    </div>
-    <div class="tf-block">
-      <span class="tf-text">3. A run-flat tire that has been driven on while flat cannot be repaired and must be replaced.</span>
-      <div class="tf-opts"><label><input type="radio" name="g4_3" value="T"> True</label><label><input type="radio" name="g4_3" value="F"> False</label></div>
-    </div>
-    <div class="tf-block">
-      <span class="tf-text">4. After a successful plug-patch repair, the tire must be balanced before going back on the vehicle.</span>
-      <div class="tf-opts"><label><input type="radio" name="g4_4" value="T"> True</label><label><input type="radio" name="g4_4" value="F"> False</label></div>
-    </div>
-    <div class="tf-block">
-      <span class="tf-text">5. Tire sealant (e.g., Fix-a-Flat) as a permanent repair method is approved by most tire manufacturers.</span>
-      <div class="tf-opts"><label><input type="radio" name="g4_5" value="T"> True</label><label><input type="radio" name="g4_5" value="F"> False</label></div>
-    </div>
-
-    <div class="nav-row">
-      <button class="btn btn-secondary" onclick="goTo(4)">&#8592; Back</button>
-      <button class="btn btn-primary" onclick="goTo(6)">Next: Applied Scenarios &#8594;</button>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════
-       SECTION G5 — Applied Scenarios
-  ══════════════════════════════════════════════ -->
-  <div class="section-card" id="sec6">
-    <div class="section-tag">G5 &mdash; Applied Scenarios</div>
-    <h2>Apply Your Knowledge</h2>
-
-    <div class="q-block">
-      <div class="scenario-box">A customer brings in a tire with a 4 mm screw embedded in the tread. The tread depth is 6/32" and there is no visible sidewall damage. The tire has never been repaired before.</div>
-      <div class="yn-row">
-        <strong>Can this tire be repaired?</strong>
-        <label><input type="radio" name="g5_1" value="Y"> Yes</label>
-        <label><input type="radio" name="g5_1" value="N"> No</label>
-      </div>
-      <textarea id="g5_1e" rows="2" placeholder="Explain your answer…"></textarea>
-    </div>
-
-    <div class="q-block">
-      <div class="scenario-box">A technician finds a nail near the inner shoulder of the tread — approximately 20 mm from the sidewall. The hole is 5 mm in diameter.</div>
-      <div class="yn-row">
-        <strong>Can this tire be repaired?</strong>
-        <label><input type="radio" name="g5_2" value="Y"> Yes</label>
-        <label><input type="radio" name="g5_2" value="N"> No</label>
-      </div>
-      <textarea id="g5_2e" rows="2" placeholder="Explain your answer…"></textarea>
-    </div>
-
-    <div class="q-block">
-      <p class="q-text"><strong>A customer insists on a plug-only repair to save money. How would you explain to them why a full demount plug-patch repair is necessary?</strong></p>
-      <textarea id="g5_3" rows="4" placeholder="Your answer…"></textarea>
-    </div>
-
-    <div class="callout">
-      <div class="callout-label">&#9888; Canvas Submission Reminder</div>
-      <p>Print this page or use your browser's Save as PDF function, then upload to Canvas under the <strong>Tires: Construction &amp; Function</strong> assignment.</p>
-    </div>
-
-    <div class="nav-row">
-      <button class="btn btn-secondary" onclick="goTo(5)">&#8592; Back</button>
-      <button class="btn btn-primary" onclick="submitWorksheet()">Submit Worksheet &#10003;</button>
-    </div>
-  </div>
-
-  <!-- COMPLETE CARD -->
-  <div class="complete-card" id="completeCard">
-    <h2>Worksheet Complete</h2>
-    <p>All sections finished. Print or save as PDF to submit to Canvas.</p>
-    <div class="score-badge" id="completeBadge">&#10003;</div>
-    <p style="color:#888; font-size:12px; margin-top:8px;">AUTOH 170 &mdash; Tires: Construction &amp; Function</p>
-    <div style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-      <button class="btn btn-secondary" onclick="goTo(0); document.getElementById('completeCard').style.display='none';">Review Answers</button>
-      <button class="btn btn-primary" onclick="window.print()">Print / Save PDF</button>
-    </div>
-  </div>
-
-  <!-- SCORE FOOTER -->
-  <div class="score-footer">
-    <span>AUTOH 170 &mdash; Tires: Construction &amp; Function Worksheet</span>
-    <span class="score-val">_____ / 65 pts</span>
-  </div>
-
-</div><!-- /wrapper -->
-
-<script>
-var currentSec = 0;
-var totalSecs = 7;
-
-function goTo(n) {
-  document.getElementById('sec' + currentSec).classList.remove('active');
-  currentSec = n;
-  document.getElementById('sec' + currentSec).classList.add('active');
-  updateDots();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function updateDots() {
-  document.querySelectorAll('.progress-row .dot').forEach(function(d, i) {
-    d.classList.remove('active', 'done');
-    if (i === currentSec) d.classList.add('active');
-    else if (i < currentSec) d.classList.add('done');
-  });
-  document.getElementById('secLabel').textContent = 'Section ' + (currentSec + 1) + ' of ' + totalSecs;
-}
-
-function countFilled() {
-  var total = 0, filled = 0;
-  document.querySelectorAll('input[type="text"], textarea').forEach(function(el) {
-    total++; if (el.value.trim()) filled++;
-  });
-  document.querySelectorAll('select').forEach(function(el) {
-    total++; if (el.value) filled++;
-  });
-  var groups = {};
-  document.querySelectorAll('input[type="radio"]').forEach(function(el) { groups[el.name] = true; });
-  Object.keys(groups).forEach(function(name) {
-    total++;
-    if (document.querySelector('input[name="' + name + '"]:checked')) filled++;
-  });
-  return { total: total, filled: filled };
-}
-
-function updateProgress() {
-  var r = countFilled();
-  var pct = r.total ? Math.round((r.filled / r.total) * 100) : 0;
-  document.getElementById('pbarFill').style.width = pct + '%';
-  document.getElementById('pbarLabel').textContent = r.filled + ' / ' + r.total;
-}
-
-function submitWorksheet() {
-  document.querySelectorAll('.section-card').forEach(function(c) { c.classList.remove('active'); });
-  var card = document.getElementById('completeCard');
-  card.style.display = 'block';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  updateProgress();
-}
-
-document.addEventListener('input', updateProgress);
-document.addEventListener('change', updateProgress);
-updateProgress();
-updateDots();
-</script>
-</body>
-</html>
+<!-- ============================================================
+     TIRES: CONSTRUCTION & FUNCTION — WORKSHEET
+     AUTOH 170 | Canvas-safe | Table layouts | Inline styles only
+     No flex, no grid, no external CSS, no JS
+     ============================================================ -->
+
+<!-- PAGE HEADER -->
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
+  <tr>
+    <td style="background:#1a1a1a; border-left:6px solid #478be7; padding:20px 24px; border-radius:4px;">
+      <p style="margin:0 0 4px 0; color:#478be7; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">AUTOH 170 &mdash; Fundamentals of Honda Auto Service Training</p>
+      <h2 style="margin:0 0 6px 0; color:#ffffff; font-size:22px; font-weight:700;">Tires: Construction &amp; Function</h2>
+      <p style="margin:0; color:#cccccc; font-size:13px;">Worksheet &mdash; Sections A &ndash; G &nbsp;|&nbsp; 65 points</p>
+    </td>
+  </tr>
+</table>
+
+<!-- STUDENT INFO -->
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
+  <tr>
+    <td style="background:#ffffff; border:1px solid #e0e0e0; border-top:3px solid #478be7; padding:14px 18px; border-radius:4px;">
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td style="padding-right:24px;">
+            <p style="margin:0 0 3px 0; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#888888;">Name</p>
+            <p style="margin:0; font-size:14px; border-bottom:1.5px solid #1a1a1a; min-width:200px; padding-bottom:2px;">&nbsp;</p>
+          </td>
+          <td style="padding-right:24px;">
+            <p style="margin:0 0 3px 0; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#888888;">Date</p>
+            <p style="margin:0; font-size:14px; border-bottom:1.5px solid #1a1a1a; min-width:130px; padding-bottom:2px;">&nbsp;</p>
+          </td>
+          <td>
+            <p style="margin:0 0 3px 0; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#888888;">Period</p>
+            <p style="margin:0; font-size:14px; border-bottom:1.5px solid #1a1a1a; min-width:60px; padding-bottom:2px;">&nbsp;</p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<!-- ══════════════════════════════════════
+     SECTION A — Tire Anatomy
+══════════════════════════════════════ -->
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
+  <tr>
+    <td style="background:#478be7; padding:8px 14px; border-radius:4px;">
+      <p style="margin:0; color:#ffffff; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Section A &mdash; Tire Anatomy: Label the Diagram</p>
+    </td>
+  </tr>
+</table>
+
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:12px;">
+  <tr>
+    <td style="background:#ffffff; border:1px solid #e0e0e0; border-top:4px solid #478be7; padding:20px; border-radius:4px;">
+      <p style="margin:0 0 12px 0; font-size:13px; color:#555555; font-style:italic;">Using the word bank, write the correct component name on the line next to each number.</p>
+
+      <!-- SVG DIAGRAM -->
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:14px;">
+        <tr>
+          <td style="background:#f9f9f9; border:1px solid #e0e0e0; border-radius:4px; padding:16px; text-align:center;">
+            <svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg" width="460" height="276" style="max-width:100%;">
+              <circle cx="230" cy="150" r="120" fill="#2C2C2A"/>
+              <circle cx="230" cy="150" r="92" fill="#3C3B38"/>
+              <circle cx="230" cy="150" r="66" fill="#888780"/>
+              <circle cx="230" cy="150" r="48" fill="#CACAC7"/>
+              <circle cx="230" cy="150" r="16" fill="#B4B2A9"/>
+              <g stroke="#478be7" stroke-width="2.5" stroke-linecap="round">
+                <line x1="230" y1="30" x2="230" y2="58"/>
+                <line x1="196" y1="34" x2="207" y2="60"/>
+                <line x1="264" y1="34" x2="253" y2="60"/>
+                <line x1="230" y1="270" x2="230" y2="242"/>
+                <line x1="196" y1="266" x2="207" y2="240"/>
+                <line x1="264" y1="266" x2="253" y2="240"/>
+              </g>
+              <line x1="138" y1="150" x2="72" y2="150" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+              <circle cx="138" cy="150" r="3" fill="#478be7"/>
+              <text x="68" y="154" text-anchor="end" font-family="Arial" font-size="13" fill="#478be7" font-weight="bold">&#9312;</text>
+              <line x1="163" y1="74" x2="72" y2="88" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+              <circle cx="163" cy="74" r="3" fill="#478be7"/>
+              <text x="68" y="92" text-anchor="end" font-family="Arial" font-size="13" fill="#478be7" font-weight="bold">&#9313;</text>
+              <line x1="183" y1="198" x2="72" y2="214" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+              <circle cx="183" cy="198" r="3" fill="#478be7"/>
+              <text x="68" y="218" text-anchor="end" font-family="Arial" font-size="13" fill="#478be7" font-weight="bold">&#9314;</text>
+              <line x1="297" y1="74" x2="390" y2="88" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+              <circle cx="297" cy="74" r="3" fill="#478be7"/>
+              <text x="394" y="92" font-family="Arial" font-size="13" fill="#478be7" font-weight="bold">&#9315;</text>
+              <line x1="296" y1="150" x2="390" y2="150" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+              <circle cx="296" cy="150" r="3" fill="#478be7"/>
+              <text x="394" y="154" font-family="Arial" font-size="13" fill="#478be7" font-weight="bold">&#9316;</text>
+              <line x1="271" y1="210" x2="390" y2="214" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+              <circle cx="271" cy="210" r="3" fill="#478be7"/>
+              <text x="394" y="218" font-family="Arial" font-size="13" fill="#478be7" font-weight="bold">&#9317;</text>
+              <text x="230" y="294" text-anchor="middle" font-family="Arial" font-size="9" fill="#aaaaaa">Tire cross-section (not to scale)</text>
+            </svg>
+          </td>
+        </tr>
+      </table>
+
+      <!-- LABEL BOXES — 3 per row -->
+      <table width="100%" cellpadding="4" cellspacing="6" style="margin-bottom:12px;">
+        <tr>
+          <td width="33%" style="background:#f5f5f5; border:1px solid #e0e0e0; border-radius:4px; padding:8px 10px;">
+            <p style="margin:0 0 4px 0; font-size:10px; font-weight:700; color:#478be7; text-transform:uppercase; letter-spacing:1px;">&#9312; Component</p>
+            <p style="margin:0; border-bottom:1px solid #cccccc; font-size:13px; padding-bottom:4px;">&nbsp;</p>
+          </td>
+          <td width="33%" style="background:#f5f5f5; border:1px solid #e0e0e0; border-radius:4px; padding:8px 10px;">
+            <p style="margin:0 0 4px 0; font-size:10px; font-weight:700; color:#478be7; text-transform:uppercase; letter-spacing:1px;">&#9313; Component</p>
+            <p style="margin:0; border-bottom:1px solid #cccccc; font-size:13px; padding-bottom:4px;">&nbsp;</p>
+          </td>
+          <td width="33%" style="background:#f5f5f5; border:1px solid #e0e0e0; border-radius:4px; padding:8px 10px;">
+            <p style="margin:0 0 4px 0; font-size:10px; font-weight:700; color:#478be7; text-transform:uppercase; letter-spacing:1px;">&#9314; Component</p>
+            <p style="margin:0; border-bottom:1px solid #cccccc; font-size:13px; padding-bottom:4px;">&nbsp;</p>
+          </td>
+        </tr>
+        <tr>
+          <td width="33%" style="background:#f5f5f5; border:1px solid #e0e0e0; border-radius:4px; padding:8px 10px;">
+            <p style="margin:0 0 4px 0; font-size:10px; font-weight:700; color:#478be7; text-transform:uppercase; letter-spacing:1px;">&#9315; Component</p>
+            <p style="margin:0; border-bottom:1px solid #cccccc; font-size:13px; padding-bottom:4px;">&nbsp;</p>
+          </td>
+          <td width="33%" style="background:#f5f5f5; border:1px solid #e0e0e0; border-radius:4px; padding:8px 10px;">
+            <p style="margin:0 0 4px 0; font-size:10px; font-weight:700; color:#478be7; text-transform:uppercase; letter-spacing:1px;">&#9316; Component</p>
+            <p style="margin:0; border-bottom:1px solid #cccccc; font-size:13px; padding-bottom:4px;">&nbsp;</p>
+          </td>
+          <td width="33%" style="background:#f5f5f5; border:1px solid #e0e0e0; border-radius:4px; padding:8px 10px;">
+            <p style="margin:0 0 4px 0; font-size:10px; font-weight:700; color:#478be7; text-transform:uppercase; letter-spacing:1px;">&#9317; Component</p>
+            <p style="margin:0; border-bottom:1px solid #cccccc; font-size:13px; padding-bottom:4px;">&nbsp;</p>
+          </td>
+        </tr>
+      </table>
+
+      <!-- WORD BANK -->
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td style="background:#f5f5f5; border-left:4px solid #478be7; padding:10px 14px; border-radius:0 4px 4px 0;">
+            <p style="margin:0; font-size:13px; color:#1a1a1a;"><strong style="color:#478be7; font-size:10px; text-transform:uppercase; letter-spacing:1px;">Word Bank: &nbsp;</strong>Sidewall &nbsp;&bull;&nbsp; Tread &nbsp;&bull;&nbsp; Bead &nbsp;&bull;&nbsp; Steel belt &nbsp;&bull;&nbsp; Inner liner &nbsp;&bull;&nbsp; Body ply (carcass)</p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<!-- ══════════════════════════════════════
+     SECTION B — Matching
+══════════════════════════════════════ -->
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
+  <tr>
+    <td style="background:#478be7; padding:8px 14px; border-radius:4px;">
+      <p style="margin:0; color:#ffffff; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Section B &mdash; Match the Component to Its Function</p>
+    </td>
+  </tr>
+</table>
+
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
+  <tr>
+    <td style="background:#ffffff; border:1px solid #e0e0e0; border-top:4px solid #478be7; padding:20px; border-radius:4px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:12px;">
+        <tr>
+          <td width="50%" style="background:#1a1a1a; padding:8px 12px; border-right:1px solid #333333;">
+            <p style="margin:0; color:#ffffff; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Component</p>
+          </td>
+          <td width="50%" style="background:#1a1a1a; padding:8px 12px;">
+            <p style="margin:0; color:#ffffff; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Function</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;"><strong style="color:#478be7;">1.</strong> Tread</td>
+          <td style="background:#f5f5f5; padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;">A. Seals the tire to the rim</td>
+        </tr>
+        <tr>
+          <td style="padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;"><strong style="color:#478be7;">2.</strong> Sidewall</td>
+          <td style="padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;">B. Provides structural strength &amp; shape</td>
+        </tr>
+        <tr>
+          <td style="padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;"><strong style="color:#478be7;">3.</strong> Steel belt</td>
+          <td style="background:#f5f5f5; padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;">C. Acts as an airtight rubber layer (no inner tube)</td>
+        </tr>
+        <tr>
+          <td style="padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;"><strong style="color:#478be7;">4.</strong> Bead</td>
+          <td style="padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;">D. Grips the road surface</td>
+        </tr>
+        <tr>
+          <td style="padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;"><strong style="color:#478be7;">5.</strong> Inner liner</td>
+          <td style="background:#f5f5f5; padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;">E. Stabilises tread &amp; resists punctures</td>
+        </tr>
+        <tr>
+          <td style="padding:9px 12px; font-size:13px;"><strong style="color:#478be7;">6.</strong> Body ply</td>
+          <td style="padding:9px 12px; font-size:13px;">F. Flexes to absorb road impacts</td>
+        </tr>
+      </table>
+      <p style="margin:0 0 6px 0; font-size:12px; font-weight:700; color:#1a1a1a; text-transform:uppercase; letter-spacing:1px;">Answers:</p>
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td style="border:1px solid #e0e0e0; padding:8px 10px; font-size:13px; text-align:center;">1 &mdash; ____</td>
+          <td style="border:1px solid #e0e0e0; border-left:none; padding:8px 10px; font-size:13px; text-align:center;">2 &mdash; ____</td>
+          <td style="border:1px solid #e0e0e0; border-left:none; padding:8px 10px; font-size:13px; text-align:center;">3 &mdash; ____</td>
+          <td style="border:1px solid #e0e0e0; border-left:none; padding:8px 10px; font-size:13px; text-align:center;">4 &mdash; ____</td>
+          <td style="border:1px solid #e0e0e0; border-left:none; padding:8px 10px; font-size:13px; text-align:center;">5 &mdash; ____</td>
+          <td style="border:1px solid #e0e0e0; border-left:none; padding:8px 10px; font-size:13px; text-align:center;">6 &mdash; ____</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<!-- ══════════════════════════════════════
+     SECTION C — Short Answer
+══════════════════════════════════════ -->
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
+  <tr>
+    <td style="background:#478be7; padding:8px 14px; border-radius:4px;">
+      <p style="margin:0; color:#ffffff; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Section C &mdash; Short Answer</p>
+    </td>
+  </tr>
+</table>
+
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
+  <tr>
+    <td style="background:#ffffff; border:1px solid #e0e0e0; border-top:4px solid #478be7; padding:20px; border-radius:4px;">
+
+      <p style="margin:0 0 6px 0; font-size:13px; color:#1a1a1a;"><strong style="color:#478be7;">1.</strong> What does the term <em>aspect ratio</em> mean in a tire size code such as 205/55R16? How does a low aspect ratio affect handling?</p>
+      <p style="margin:0 0 6px 0; border-bottom:1px solid #e0e0e0; padding-bottom:18px;">&nbsp;</p>
+      <p style="margin:0 0 16px 0; border-bottom:1px solid #e0e0e0; padding-bottom:18px;">&nbsp;</p>
+
+      <p style="margin:0 0 6px 0; font-size:13px; color:#1a1a1a;"><strong style="color:#478be7;">2.</strong> Explain the difference between a radial-ply tire and a bias-ply tire. Which type is most common on modern passenger cars, and why?</p>
+      <p style="margin:0 0 6px 0; border-bottom:1px solid #e0e0e0; padding-bottom:18px;">&nbsp;</p>
+      <p style="margin:0 0 16px 0; border-bottom:1px solid #e0e0e0; padding-bottom:18px;">&nbsp;</p>
+
+      <p style="margin:0 0 6px 0; font-size:13px; color:#1a1a1a;"><strong style="color:#478be7;">3.</strong> A customer's tires show excessive wear only in the center of the tread. What does this indicate, and what corrective action would you recommend?</p>
+      <p style="margin:0 0 6px 0; border-bottom:1px solid #e0e0e0; padding-bottom:18px;">&nbsp;</p>
+      <p style="margin:0 0 16px 0; border-bottom:1px solid #e0e0e0; padding-bottom:18px;">&nbsp;</p>
+
+      <p style="margin:0 0 6px 0; font-size:13px; color:#1a1a1a;"><strong style="color:#478be7;">4.</strong> Why is nitrogen sometimes used to inflate tires instead of compressed air? List two advantages.</p>
+      <p style="margin:0 0 6px 0; border-bottom:1px solid #e0e0e0; padding-bottom:18px;">&nbsp;</p>
+      <p style="margin:0; border-bottom:1px solid #e0e0e0; padding-bottom:18px;">&nbsp;</p>
+    </td>
+  </tr>
+</table>
+
+<!-- ══════════════════════════════════════
+     SECTION D — True or False
+══════════════════════════════════════ -->
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
+  <tr>
+    <td style="background:#478be7; padding:8px 14px; border-radius:4px;">
+      <p style="margin:0; color:#ffffff; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Section D &mdash; True or False</p>
+    </td>
+  </tr>
+</table>
+
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
+  <tr>
+    <td style="background:#ffffff; border:1px solid #e0e0e0; border-top:4px solid #478be7; padding:20px; border-radius:4px;">
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td style="padding:9px 0; border-bottom:1px solid #e0e0e0; font-size:13px; color:#1a1a1a;">1. A run-flat tire can support the vehicle's weight for a limited distance after losing all air pressure.</td>
+          <td style="padding:9px 0 9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px; white-space:nowrap; font-weight:700;">&#9633; True &nbsp; &#9633; False</td>
+        </tr>
+        <tr>
+          <td style="padding:9px 0; border-bottom:1px solid #e0e0e0; font-size:13px; color:#1a1a1a;">2. The tread depth legal minimum in most US states is 4/32".</td>
+          <td style="padding:9px 0 9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px; white-space:nowrap; font-weight:700;">&#9633; True &nbsp; &#9633; False</td>
+        </tr>
+        <tr>
+          <td style="padding:9px 0; border-bottom:1px solid #e0e0e0; font-size:13px; color:#1a1a1a;">3. Over-inflation increases the tire's contact patch with the road, improving grip.</td>
+          <td style="padding:9px 0 9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px; white-space:nowrap; font-weight:700;">&#9633; True &nbsp; &#9633; False</td>
+        </tr>
+        <tr>
+          <td style="padding:9px 0; border-bottom:1px solid #e0e0e0; font-size:13px; color:#1a1a1a;">4. The UTQG treadwear rating is a comparative grade set by the tire manufacturer, not a government standard.</td>
+          <td style="padding:9px 0 9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px; white-space:nowrap; font-weight:700;">&#9633; True &nbsp; &#9633; False</td>
+        </tr>
+        <tr>
+          <td style="padding:9px 0; font-size:13px; color:#1a1a1a;">5. Tire rotation should typically be performed every 5,000&ndash;8,000 miles to promote even wear.</td>
+          <td style="padding:9px 0 9px 12px; font-size:13px; white-space:nowrap; font-weight:700;">&#9633; True &nbsp; &#9633; False</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<!-- ══════════════════════════════════════
+     SECTION E — Decode the Tire Size
+══════════════════════════════════════ -->
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
+  <tr>
+    <td style="background:#478be7; padding:8px 14px; border-radius:4px;">
+      <p style="margin:0; color:#ffffff; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Section E &mdash; Decode the Tire Size</p>
+    </td>
+  </tr>
+</table>
+
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
+  <tr>
+    <td style="background:#ffffff; border:1px solid #e0e0e0; border-top:4px solid #478be7; padding:20px; border-radius:4px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:14px;">
+        <tr>
+          <td style="background:#1a1a1a; padding:14px; border-radius:4px; text-align:center;">
+            <p style="margin:0; color:#ffffff; font-size:24px; font-weight:700; letter-spacing:4px;"><span style="color:#478be7;">225</span> / <span style="color:#478be7;">65</span> R <span style="color:#478be7;">17</span> &nbsp;<span style="color:#478be7;">104</span> <span style="color:#478be7;">H</span></p>
+          </td>
+        </tr>
+      </table>
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td style="background:#1a1a1a; padding:8px 12px; border-right:1px solid #333;"><p style="margin:0; color:#fff; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Code</p></td>
+          <td style="background:#1a1a1a; padding:8px 12px; border-right:1px solid #333;"><p style="margin:0; color:#fff; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Meaning</p></td>
+          <td style="background:#1a1a1a; padding:8px 12px;"><p style="margin:0; color:#fff; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Your Answer</p></td>
+        </tr>
+        <tr>
+          <td style="padding:8px 12px; border-bottom:1px solid #e0e0e0; font-size:16px; font-weight:700; color:#478be7; width:70px;">225</td>
+          <td style="padding:8px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;">Section width (mm)</td>
+          <td style="padding:8px 12px; border-bottom:1px solid #e0e0e0; border-bottom:1px solid #cccccc; font-size:13px;">&nbsp;</td>
+        </tr>
+        <tr>
+          <td style="background:#f5f5f5; padding:8px 12px; border-bottom:1px solid #e0e0e0; font-size:16px; font-weight:700; color:#478be7;">65</td>
+          <td style="background:#f5f5f5; padding:8px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;">Aspect ratio (%)</td>
+          <td style="background:#f5f5f5; padding:8px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;">&nbsp;</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 12px; border-bottom:1px solid #e0e0e0; font-size:16px; font-weight:700; color:#478be7;">R</td>
+          <td style="padding:8px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;">Construction type</td>
+          <td style="padding:8px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;">&nbsp;</td>
+        </tr>
+        <tr>
+          <td style="background:#f5f5f5; padding:8px 12px; border-bottom:1px solid #e0e0e0; font-size:16px; font-weight:700; color:#478be7;">17</td>
+          <td style="background:#f5f5f5; padding:8px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;">Rim diameter</td>
+          <td style="background:#f5f5f5; padding:8px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;">&nbsp;</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 12px; border-bottom:1px solid #e0e0e0; font-size:16px; font-weight:700; color:#478be7;">104</td>
+          <td style="padding:8px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;">Load index</td>
+          <td style="padding:8px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;">Max load: __________ kg</td>
+        </tr>
+        <tr>
+          <td style="background:#f5f5f5; padding:8px 12px; font-size:16px; font-weight:700; color:#478be7;">H</td>
+          <td style="background:#f5f5f5; padding:8px 12px; font-size:13px;">Speed rating</td>
+          <td style="background:#f5f5f5; padding:8px 12px; font-size:13px;">Max speed: __________ km/h</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<!-- ══════════════════════════════════════
+     SECTION F — Critical Thinking
+══════════════════════════════════════ -->
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
+  <tr>
+    <td style="background:#478be7; padding:8px 14px; border-radius:4px;">
+      <p style="margin:0; color:#ffffff; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Section F &mdash; Critical Thinking</p>
+    </td>
+  </tr>
+</table>
+
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
+  <tr>
+    <td style="background:#ffffff; border:1px solid #e0e0e0; border-top:4px solid #478be7; padding:20px; border-radius:4px;">
+      <p style="margin:0 0 10px 0; font-size:13px; color:#1a1a1a;"><strong>A driver replaces two worn rear tires with brand-new ones but keeps the original worn tires on the front.</strong> A colleague argues the new tires should go on the front for better steering. Who is correct? Explain your reasoning using knowledge of tire function and vehicle dynamics.</p>
+      <p style="margin:0 0 6px 0; border-bottom:1px solid #e0e0e0; padding-bottom:18px;">&nbsp;</p>
+      <p style="margin:0 0 6px 0; border-bottom:1px solid #e0e0e0; padding-bottom:18px;">&nbsp;</p>
+      <p style="margin:0 0 6px 0; border-bottom:1px solid #e0e0e0; padding-bottom:18px;">&nbsp;</p>
+      <p style="margin:0; border-bottom:1px solid #e0e0e0; padding-bottom:18px;">&nbsp;</p>
+    </td>
+  </tr>
+</table>
+
+<!-- ══════════════════════════════════════
+     SECTION G — TIRE REPAIR
+══════════════════════════════════════ -->
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
+  <tr>
+    <td style="background:#1a1a1a; border-left:6px solid #478be7; padding:12px 16px; border-radius:4px;">
+      <p style="margin:0; color:#478be7; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Section G &mdash; Tire Repair</p>
+    </td>
+  </tr>
+</table>
+
+<!-- G1 -->
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
+  <tr>
+    <td style="background:#478be7; padding:8px 14px; border-radius:4px;">
+      <p style="margin:0; color:#ffffff; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">G1 &mdash; Repair or Replace? Complete the Table</p>
+    </td>
+  </tr>
+</table>
+
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
+  <tr>
+    <td style="background:#ffffff; border:1px solid #e0e0e0; border-top:4px solid #478be7; padding:20px; border-radius:4px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:10px;">
+        <tr>
+          <td style="background:#f5f5f5; border-left:4px solid #478be7; padding:8px 12px; border-radius:0 4px 4px 0;">
+            <p style="margin:0; font-size:13px; color:#1a1a1a;"><strong style="color:#478be7; font-size:10px; text-transform:uppercase; letter-spacing:1px;">Options: &nbsp;</strong>Repair &nbsp;&bull;&nbsp; Replace &nbsp;&bull;&nbsp; Assess further</p>
+          </td>
+        </tr>
+      </table>
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td style="background:#1a1a1a; padding:8px 12px; border-right:1px solid #333;"><p style="margin:0; color:#fff; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Damage Scenario</p></td>
+          <td style="background:#1a1a1a; padding:8px 12px; border-right:1px solid #333; width:140px;"><p style="margin:0; color:#fff; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Decision</p></td>
+          <td style="background:#1a1a1a; padding:8px 12px; width:38%;"><p style="margin:0; color:#fff; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Reason</p></td>
+        </tr>
+        <tr>
+          <td style="padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;">6 mm nail in center of tread, no sidewall damage</td>
+          <td style="padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px; border-left:1px solid #e0e0e0;">&nbsp;</td>
+          <td style="padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px; border-left:1px solid #e0e0e0;">&nbsp;</td>
+        </tr>
+        <tr>
+          <td style="background:#f5f5f5; padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;">Puncture 15 mm from sidewall edge</td>
+          <td style="background:#f5f5f5; padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px; border-left:1px solid #e0e0e0;">&nbsp;</td>
+          <td style="background:#f5f5f5; padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px; border-left:1px solid #e0e0e0;">&nbsp;</td>
+        </tr>
+        <tr>
+          <td style="padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;">Sidewall bulge / bubble visible</td>
+          <td style="padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px; border-left:1px solid #e0e0e0;">&nbsp;</td>
+          <td style="padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px; border-left:1px solid #e0e0e0;">&nbsp;</td>
+        </tr>
+        <tr>
+          <td style="background:#f5f5f5; padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;">12 mm screw in tread, tread depth 5/32"</td>
+          <td style="background:#f5f5f5; padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px; border-left:1px solid #e0e0e0;">&nbsp;</td>
+          <td style="background:#f5f5f5; padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px; border-left:1px solid #e0e0e0;">&nbsp;</td>
+        </tr>
+        <tr>
+          <td style="padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px;">Tread depth worn to 1/32" &mdash; no puncture</td>
+          <td style="padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px; border-left:1px solid #e0e0e0;">&nbsp;</td>
+          <td style="padding:9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px; border-left:1px solid #e0e0e0;">&nbsp;</td>
+        </tr>
+        <tr>
+          <td style="background:#f5f5f5; padding:9px 12px; font-size:13px;">Slow leak, bead area, previously repaired twice</td>
+          <td style="background:#f5f5f5; padding:9px 12px; font-size:13px; border-left:1px solid #e0e0e0;">&nbsp;</td>
+          <td style="background:#f5f5f5; padding:9px 12px; font-size:13px; border-left:1px solid #e0e0e0;">&nbsp;</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<!-- G2 -->
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
+  <tr>
+    <td style="background:#478be7; padding:8px 14px; border-radius:4px;">
+      <p style="margin:0; color:#ffffff; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">G2 &mdash; Plug-Patch Repair: Number the Steps in Correct Order (1&ndash;7)</p>
+    </td>
+  </tr>
+</table>
+
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
+  <tr>
+    <td style="background:#ffffff; border:1px solid #e0e0e0; border-top:4px solid #478be7; padding:20px; border-radius:4px;">
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr><td style="background:#f5f5f5; border:1px solid #e0e0e0; border-radius:4px; padding:10px 14px; font-size:13px; margin-bottom:6px;"><strong style="color:#478be7; min-width:30px; display:inline-block;">___</strong> Buff and clean the repair area from the inside</td></tr>
+        <tr><td style="padding:3px 0;"></td></tr>
+        <tr><td style="background:#f5f5f5; border:1px solid #e0e0e0; border-radius:4px; padding:10px 14px; font-size:13px;"><strong style="color:#478be7; min-width:30px; display:inline-block;">___</strong> Remove the tire from the rim and inspect internally</td></tr>
+        <tr><td style="padding:3px 0;"></td></tr>
+        <tr><td style="background:#f5f5f5; border:1px solid #e0e0e0; border-radius:4px; padding:10px 14px; font-size:13px;"><strong style="color:#478be7; min-width:30px; display:inline-block;">___</strong> Apply vulcanizing cement to the buffed area</td></tr>
+        <tr><td style="padding:3px 0;"></td></tr>
+        <tr><td style="background:#f5f5f5; border:1px solid #e0e0e0; border-radius:4px; padding:10px 14px; font-size:13px;"><strong style="color:#478be7; min-width:30px; display:inline-block;">___</strong> Re-mount, inflate to spec, and check for leaks with soapy water</td></tr>
+        <tr><td style="padding:3px 0;"></td></tr>
+        <tr><td style="background:#f5f5f5; border:1px solid #e0e0e0; border-radius:4px; padding:10px 14px; font-size:13px;"><strong style="color:#478be7; min-width:30px; display:inline-block;">___</strong> Mark the puncture location and remove the object</td></tr>
+        <tr><td style="padding:3px 0;"></td></tr>
+        <tr><td style="background:#f5f5f5; border:1px solid #e0e0e0; border-radius:4px; padding:10px 14px; font-size:13px;"><strong style="color:#478be7; min-width:30px; display:inline-block;">___</strong> Install the combination plug-patch from the inside</td></tr>
+        <tr><td style="padding:3px 0;"></td></tr>
+        <tr><td style="background:#f5f5f5; border:1px solid #e0e0e0; border-radius:4px; padding:10px 14px; font-size:13px;"><strong style="color:#478be7; min-width:30px; display:inline-block;">___</strong> Ream the puncture channel to create a uniform hole</td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<!-- G3 -->
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
+  <tr>
+    <td style="background:#478be7; padding:8px 14px; border-radius:4px;">
+      <p style="margin:0; color:#ffffff; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">G3 &mdash; Fill in the Blanks</p>
+    </td>
+  </tr>
+</table>
+
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
+  <tr>
+    <td style="background:#ffffff; border:1px solid #e0e0e0; border-top:4px solid #478be7; padding:20px; border-radius:4px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:12px;">
+        <tr>
+          <td style="background:#f5f5f5; border-left:4px solid #478be7; padding:8px 12px; border-radius:0 4px 4px 0;">
+            <p style="margin:0; font-size:13px; color:#1a1a1a;"><strong style="color:#478be7; font-size:10px; text-transform:uppercase; letter-spacing:1px;">Word Bank: &nbsp;</strong>plug &nbsp;&bull;&nbsp; patch &nbsp;&bull;&nbsp; 6 mm &nbsp;&bull;&nbsp; repairable zone &nbsp;&bull;&nbsp; sidewall &nbsp;&bull;&nbsp; demounted &nbsp;&bull;&nbsp; speed rating &nbsp;&bull;&nbsp; two</p>
+          </td>
+        </tr>
+      </table>
+      <p style="margin:0; font-size:13px; color:#1a1a1a; line-height:2.2;">
+        A proper tire repair requires the tire to be <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> from the rim so the technician can inspect the damage from inside. Only punctures within the <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> of the tread may be repaired; damage to the <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> or shoulder is not repairable. The maximum repairable puncture diameter is <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>. A combination <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>&ndash;<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> repair seals the injury from the inside and fills the channel. A tire should not be repaired more than <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> times, and a repaired tire may have its <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> reduced.
+      </p>
+    </td>
+  </tr>
+</table>
+
+<!-- G4 -->
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
+  <tr>
+    <td style="background:#478be7; padding:8px 14px; border-radius:4px;">
+      <p style="margin:0; color:#ffffff; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">G4 &mdash; True or False: Repair Rules</p>
+    </td>
+  </tr>
+</table>
+
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
+  <tr>
+    <td style="background:#ffffff; border:1px solid #e0e0e0; border-top:4px solid #478be7; padding:20px; border-radius:4px;">
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td style="padding:9px 0; border-bottom:1px solid #e0e0e0; font-size:13px; color:#1a1a1a;">1. A plug-only repair (rope plug without removing the tire) is an industry-accepted permanent fix.</td>
+          <td style="padding:9px 0 9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px; white-space:nowrap; font-weight:700;">&#9633; True &nbsp; &#9633; False</td>
+        </tr>
+        <tr>
+          <td style="padding:9px 0; border-bottom:1px solid #e0e0e0; font-size:13px; color:#1a1a1a;">2. A puncture in the shoulder area may be safely repaired if the hole is smaller than 6 mm.</td>
+          <td style="padding:9px 0 9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px; white-space:nowrap; font-weight:700;">&#9633; True &nbsp; &#9633; False</td>
+        </tr>
+        <tr>
+          <td style="padding:9px 0; border-bottom:1px solid #e0e0e0; font-size:13px; color:#1a1a1a;">3. A run-flat tire that has been driven on while flat cannot be repaired and must be replaced.</td>
+          <td style="padding:9px 0 9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px; white-space:nowrap; font-weight:700;">&#9633; True &nbsp; &#9633; False</td>
+        </tr>
+        <tr>
+          <td style="padding:9px 0; border-bottom:1px solid #e0e0e0; font-size:13px; color:#1a1a1a;">4. After a successful plug-patch repair, the tire must be balanced before going back on the vehicle.</td>
+          <td style="padding:9px 0 9px 12px; border-bottom:1px solid #e0e0e0; font-size:13px; white-space:nowrap; font-weight:700;">&#9633; True &nbsp; &#9633; False</td>
+        </tr>
+        <tr>
+          <td style="padding:9px 0; font-size:13px; color:#1a1a1a;">5. Tire sealant (e.g., Fix-a-Flat) as a permanent repair is approved by most tire manufacturers.</td>
+          <td style="padding:9px 0 9px 12px; font-size:13px; white-space:nowrap; font-weight:700;">&#9633; True &nbsp; &#9633; False</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<!-- G5 -->
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
+  <tr>
+    <td style="background:#478be7; padding:8px 14px; border-radius:4px;">
+      <p style="margin:0; color:#ffffff; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">G5 &mdash; Applied Scenarios</p>
+    </td>
+  </tr>
+</table>
+
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
+  <tr>
+    <td style="background:#ffffff; border:1px solid #e0e0e0; border-top:4px solid #478be7; padding:20px; border-radius:4px;">
+
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:14px;">
+        <tr>
+          <td style="background:#f0f5ff; border-left:4px solid #478be7; padding:10px 14px; border-radius:0 4px 4px 0; font-size:13px; color:#555555; font-style:italic;">A customer brings in a tire with a 4 mm screw embedded in the tread. The tread depth is 6/32" and there is no visible sidewall damage. The tire has never been repaired before.</td>
+        </tr>
+      </table>
+      <p style="margin:0 0 6px 0; font-size:13px; font-weight:700; color:#1a1a1a;">Can this tire be repaired? &nbsp; &#9633; Yes &nbsp;&nbsp; &#9633; No &nbsp;&nbsp; Explain:</p>
+      <p style="margin:0 0 6px 0; border-bottom:1px solid #e0e0e0; padding-bottom:18px;">&nbsp;</p>
+      <p style="margin:0 0 20px 0; border-bottom:1px solid #e0e0e0; padding-bottom:18px;">&nbsp;</p>
+
+      <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:14px;">
+        <tr>
+          <td style="background:#f0f5ff; border-left:4px solid #478be7; padding:10px 14px; border-radius:0 4px 4px 0; font-size:13px; color:#555555; font-style:italic;">A technician finds a nail near the inner shoulder of the tread &mdash; approximately 20 mm from the sidewall. The hole is 5 mm in diameter.</td>
+        </tr>
+      </table>
+      <p style="margin:0 0 6px 0; font-size:13px; font-weight:700; color:#1a1a1a;">Can this tire be repaired? &nbsp; &#9633; Yes &nbsp;&nbsp; &#9633; No &nbsp;&nbsp; Explain:</p>
+      <p style="margin:0 0 6px 0; border-bottom:1px solid #e0e0e0; padding-bottom:18px;">&nbsp;</p>
+      <p style="margin:0 0 20px 0; border-bottom:1px solid #e0e0e0; padding-bottom:18px;">&nbsp;</p>
+
+      <p style="margin:0 0 8px 0; font-size:13px; color:#1a1a1a;"><strong>A customer insists on a plug-only repair to save money. How would you explain to them why a full demount plug-patch repair is necessary?</strong></p>
+      <p style="margin:0 0 6px 0; border-bottom:1px solid #e0e0e0; padding-bottom:18px;">&nbsp;</p>
+      <p style="margin:0 0 6px 0; border-bottom:1px solid #e0e0e0; padding-bottom:18px;">&nbsp;</p>
+      <p style="margin:0; border-bottom:1px solid #e0e0e0; padding-bottom:18px;">&nbsp;</p>
+    </td>
+  </tr>
+</table>
+
+<!-- SUBMISSION CALLOUT -->
+<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
+  <tr>
+    <td style="background:#f0f5ff; border-left:4px solid #478be7; padding:14px 16px; border-radius:0 4px 4px 0;">
+      <p style="margin:0 0 4px 0; color:#478be7; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">&#9888; Submission Instructions</p>
+      <p style="margin:0; color:#1a1a1a; font-size:13px;">Complete all sections, then submit this page as directed by your instructor. For printed copies, use File &rarr; Print. For digital submission, save as PDF and upload to Canvas.</p>
+    </td>
+  </tr>
+</table>
+
+<!-- SCORE FOOTER -->
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr>
+    <td style="border-top:2px solid #1a1a1a; padding-top:10px; font-size:12px; color:#555555;">AUTOH 170 &mdash; Tires: Construction &amp; Function Worksheet</td>
+    <td style="border-top:2px solid #1a1a1a; padding-top:10px; font-size:13px; font-weight:700; color:#1a1a1a; text-align:right;">Total: _______ / 65 pts</td>
+  </tr>
+</table>
