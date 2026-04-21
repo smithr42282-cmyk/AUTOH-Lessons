@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPS Steering Linkage &amp; Gearbox Inspection — AUTOH 173</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f2f2f2;
+    color: #1a1a1a;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .lesson-wrapper { max-width: 860px; margin: 0 auto; padding: 24px 16px 48px; }
+
+  /* HEADER */
+  .lesson-header {
+    background: #1a1a1a;
+    border-left: 6px solid #CC0000;
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+  .lesson-header .course-label {
+    color: #CC0000; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 6px;
+  }
+  .lesson-header h1 { color: #ffffff; font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .lesson-header .sub { color: #cccccc; font-size: 13px; }
+
+  /* PROGRESS */
+  .progress-bar { display: flex; gap: 6px; margin-bottom: 20px; align-items: center; flex-wrap: wrap; }
+  .progress-bar .dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: #cccccc; transition: background 0.3s; flex-shrink: 0;
+  }
+  .progress-bar .dot.active { background: #CC0000; }
+  .progress-bar .dot.done   { background: #888888; }
+  .progress-label { font-size: 12px; color: #666; margin-left: 8px; }
+
+  /* SLIDE */
+  .slide {
+    display: none;
+    background: #ffffff;
+    border-top: 4px solid #CC0000;
+    border-radius: 4px;
+    padding: 28px 28px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .slide.active { display: block; }
+  .slide-tag {
+    background: #CC0000; color: #fff;
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px;
+    padding: 3px 10px; border-radius: 2px;
+    display: inline-block; margin-bottom: 12px;
+  }
+  .slide h2 { font-size: 19px; font-weight: 700; color: #1a1a1a; margin-bottom: 14px; }
+  .slide p  { color: #333; font-size: 14px; margin-bottom: 12px; }
+  .slide ul, .slide ol { padding-left: 20px; color: #333; font-size: 14px; margin-bottom: 14px; }
+  .slide li { margin-bottom: 6px; }
+
+  /* IMAGE WRAP */
+  .img-wrap {
+    background: #f9f9f9; border: 1px solid #e0e0e0;
+    border-radius: 4px; padding: 16px; margin: 16px 0; text-align: center;
+  }
+  .img-wrap img { max-width: 100%; height: auto; border-radius: 2px; }
+  .img-caption {
+    font-size: 11px; color: #888; margin-top: 8px; font-style: italic;
+  }
+
+  /* CALLOUT */
+  .callout {
+    background: #fff5f5; border-left: 4px solid #CC0000;
+    border-radius: 0 4px 4px 0; padding: 12px 16px; margin: 14px 0;
+  }
+  .callout .callout-label {
+    color: #CC0000; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; margin-bottom: 4px;
+  }
+  .callout p { margin: 0; font-size: 14px; }
+
+  .info-box {
+    background: #f5f5f5; border-radius: 4px;
+    padding: 12px 16px; margin: 14px 0; font-size: 14px; color: #333;
+  }
+  .info-box strong { color: #1a1a1a; }
+
+  /* TWO COL */
+  .two-col { display: flex; gap: 12px; margin: 14px 0; }
+  .two-col .col {
+    flex: 1; background: #f5f5f5;
+    border-top: 3px solid #CC0000; border-radius: 4px;
+    padding: 14px; font-size: 14px; color: #333;
+  }
+  .two-col .col strong {
+    display: block; font-size: 13px; text-transform: uppercase;
+    letter-spacing: 0.5px; color: #1a1a1a; margin-bottom: 8px;
+  }
+  @media (max-width: 520px) { .two-col { flex-direction: column; } }
+
+  /* INSPECTION TABLE */
+  .spec-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 14px 0; }
+  .spec-table th {
+    background: #1a1a1a; color: #fff; padding: 8px 12px;
+    text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .spec-table td { padding: 8px 12px; border-bottom: 1px solid #e0e0e0; color: #333; vertical-align: top; }
+  .spec-table tr:nth-child(even) td { background: #f9f9f9; }
+  .spec-table .loc { font-weight: 700; color: #1a1a1a; white-space: nowrap; }
+  .spec-table .normal { color: #2e7d32; font-weight: 700; }
+  .badge {
+    display: inline-block; background: #CC0000; color: #fff;
+    font-size: 10px; font-weight: 700; padding: 1px 7px;
+    border-radius: 2px; margin-right: 4px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+
+  /* KC */
+  .kc-section {
+    display: none; background: #ffffff; border-top: 4px solid #1a1a1a;
+    border-radius: 4px; padding: 28px 28px 24px;
+    margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .kc-section.active { display: block; }
+  .kc-section h2 { font-size: 17px; font-weight: 700; color: #1a1a1a; margin-bottom: 20px; }
+  .question-block { margin-bottom: 28px; }
+  .question-block .q-number {
+    background: #CC0000; color: #fff; font-size: 11px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase; padding: 3px 10px;
+    border-radius: 2px; display: inline-block; margin-bottom: 8px;
+  }
+  .question-block .q-text {
+    font-size: 15px; font-weight: 700; color: #1a1a1a; margin-bottom: 14px; line-height: 1.5;
+  }
+  .choices { list-style: none; padding: 0; margin: 0 0 12px 0; }
+  .choices li { margin-bottom: 8px; }
+  .choice-btn {
+    display: block; width: 100%; text-align: left;
+    padding: 10px 14px; background: #f5f5f5;
+    border: 2px solid #e0e0e0; border-radius: 4px;
+    font-size: 14px; color: #1a1a1a; cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .choice-btn:hover { border-color: #CC0000; background: #fff5f5; }
+  .choice-btn.correct { background: #e8f5e9; border-color: #2e7d32; color: #1b5e20; }
+  .choice-btn.wrong   { background: #ffebee; border-color: #c62828; color: #7f0000; }
+  .choice-btn:disabled { cursor: default; }
+  .feedback { display: none; padding: 10px 14px; border-radius: 4px; font-size: 14px; margin-top: 8px; }
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: #e8f5e9; border-left: 4px solid #2e7d32; color: #1b5e20; }
+  .feedback.wrong-fb   { background: #ffebee; border-left: 4px solid #c62828; color: #7f0000; }
+
+  /* NAV */
+  .nav-row {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-top: 24px; gap: 10px;
+  }
+  .btn {
+    padding: 10px 22px; border: none; border-radius: 4px;
+    font-size: 14px; font-weight: 700; cursor: pointer;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .btn-primary { background: #CC0000; color: #fff; }
+  .btn-primary:hover { background: #aa0000; }
+  .btn-secondary { background: #e0e0e0; color: #1a1a1a; }
+  .btn-secondary:hover { background: #cccccc; }
+  .btn:disabled { opacity: 0.4; cursor: default; }
+
+  /* COMPLETE */
+  .complete-card {
+    display: none; background: #1a1a1a; border-top: 4px solid #CC0000;
+    border-radius: 4px; padding: 28px; text-align: center; color: #fff;
+  }
+  .complete-card.show { display: block; }
+  .complete-card h2 { font-size: 20px; margin-bottom: 10px; color: #fff; }
+  .complete-card p { color: #cccccc; font-size: 14px; }
+  .score-badge {
+    display: inline-block; background: #CC0000; color: #fff;
+    font-size: 28px; font-weight: 700; padding: 14px 28px; border-radius: 4px; margin: 16px 0;
+  }
+</style>
+</head>
+<body>
+<div class="lesson-wrapper">
+
+  <!-- HEADER -->
+  <div class="lesson-header" role="banner">
+    <p class="course-label">AUTOH 173 &middot; Honda Steering &amp; Suspension Systems</p>
+    <h1>EPS Steering Linkage &amp; Gearbox Inspection</h1>
+    <p class="sub">Micro Lesson &middot; 3 Slides + 5 Knowledge Check Questions</p>
+  </div>
+
+  <!-- PROGRESS -->
+  <nav aria-label="Lesson progress">
+    <div class="progress-bar" id="progressDots">
+      <span class="dot active" id="dot0"></span>
+      <span class="dot" id="dot1"></span>
+      <span class="dot" id="dot2"></span>
+      <span class="dot" id="dot3"></span>
+      <span class="progress-label" id="progressLabel" aria-live="polite">Slide 1 of 3</span>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 1 — What Is EPS & Why Inspect It
+  ═══════════════════════════════════════ -->
+  <section class="slide active" id="slide0" aria-labelledby="s0-title">
+    <span class="slide-tag">Slide 1 of 3 &mdash; Introduction</span>
+    <h2 id="s0-title">Electric Power Steering — Overview</h2>
+
+    <p><strong>Electric Power Steering (EPS)</strong> replaces the traditional hydraulic pump with an <strong>electric motor</strong> mounted on the steering column or rack. The motor provides steering assist on demand, reducing engine load and improving fuel efficiency.</p>
+
+    <div class="img-wrap">
+      <img src="data:image/png;base64,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" alt="Honda EPS steering gearbox and linkage assembly showing rack, tie rods, column and steering wheel connection" style="max-width:100%; height:auto;">
+      <p class="img-caption">Honda EPS assembly — steering column, gearbox, tie rods, and linkage</p>
+    </div>
+
+    <div class="two-col">
+      <div class="col">
+        <strong>EPS Key Components</strong>
+        <ul>
+          <li>Steering column &amp; shaft</li>
+          <li>Steering joint (U-joint)</li>
+          <li>Steering gearbox (rack &amp; pinion)</li>
+          <li>Tie-rod ends &amp; locknuts</li>
+          <li>Pinion shaft grommet</li>
+          <li>Ball joint boots</li>
+        </ul>
+      </div>
+      <div class="col">
+        <strong>Why Regular Inspection?</strong>
+        <ul>
+          <li>Loose or worn components cause <strong>vague steering feel</strong></li>
+          <li>Damaged boots allow grease loss &amp; corrosion</li>
+          <li>Loose gearbox bolts cause clunking &amp; vibration</li>
+          <li>Worn tie-rod ends affect alignment &amp; tire wear</li>
+          <li>Honda requires inspection at every service interval</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p class="callout-label">&#9888; Safety First</p>
+      <p>Steering system faults are a <strong>safety-critical</strong> concern. Always complete the full inspection checklist — never skip items because a vehicle looks undamaged. A vehicle can fail steering suddenly if a component is overlooked.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-secondary" disabled>&#8592; Back</button>
+      <button class="btn btn-primary" onclick="goToSlide(1)">Next: Pre-Inspection Checks &#8594;</button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 2 — Pre-Inspection Procedures
+  ═══════════════════════════════════════ -->
+  <section class="slide" id="slide1" aria-labelledby="s1-title">
+    <span class="slide-tag">Slide 2 of 3 &mdash; Pre-Inspection Procedure</span>
+    <h2 id="s1-title">Inspection Procedure — Steps 1 &amp; 2</h2>
+
+    <p>Before inspecting individual components, Honda requires <strong>two preliminary checks</strong> performed from inside the vehicle with the engine running and EPS active.</p>
+
+    <div class="info-box">
+      <strong>Step 1 — Steering Wheel Play (Longitudinal &amp; Lateral)</strong><br>
+      With the vehicle on level ground and wheels pointing straight ahead, gently push and pull the steering wheel <strong>toward and away from you (longitudinal)</strong> and <strong>side to side (lateral)</strong>. Listen and feel for any noise or clearance. Normal condition: <span style="color:#2e7d32; font-weight:700;">No noise, no clearance.</span>
+    </div>
+
+    <div class="info-box">
+      <strong>Step 2 — Steering Wheel Rotation Check</strong><br>
+      Slowly rotate the steering wheel through its full range of motion — lock to lock. Feel for <strong>noise, binding, unevenness, or dead spots</strong> as the wheel turns. Normal condition: <span style="color:#2e7d32; font-weight:700;">Smooth, even movement with no noise or clearance throughout full rotation.</span>
+    </div>
+
+    <div class="callout">
+      <p class="callout-label">&#9888; Honda Tech Note</p>
+      <p>If <strong>any noise or roughness</strong> is detected during Steps 1 or 2, do not proceed directly to component inspection. First, document the symptom precisely — whether it occurs at a specific steering angle, under load, or only when stationary — as this helps narrow the root cause.</p>
+    </div>
+
+    <div class="two-col">
+      <div class="col">
+        <strong>What Noise May Indicate</strong>
+        <ul>
+          <li>Clunk on input &rarr; loose gearbox mount or joint</li>
+          <li>Creak when stationary &rarr; upper strut bearing or column</li>
+          <li>Grinding through rotation &rarr; worn steering joint</li>
+          <li>Vibration &rarr; loose tie-rod end or boot damage</li>
+        </ul>
+      </div>
+      <div class="col">
+        <strong>What Clearance May Indicate</strong>
+        <ul>
+          <li>Longitudinal play &rarr; column shaft wear</li>
+          <li>Lateral play &rarr; steering joint or column looseness</li>
+          <li>Rotational dead spot &rarr; worn rack or pinion</li>
+          <li>Any clearance = further component inspection required</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goToSlide(0)">&#8592; Back</button>
+      <button class="btn btn-primary" onclick="goToSlide(2)">Next: Inspection Checklist &#8594;</button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 3 — Full Inspection Checklist
+  ═══════════════════════════════════════ -->
+  <section class="slide" id="slide2" aria-labelledby="s2-title">
+    <span class="slide-tag">Slide 3 of 3 &mdash; Inspection Checklist</span>
+    <h2 id="s2-title">Steering Linkage &amp; Gearbox — Inspection Items</h2>
+
+    <p>Honda specifies the following <strong>8 inspection locations</strong> for EPS steering linkage and gearbox. Each must be checked and documented. Normal condition for all items is noted in green.</p>
+
+    <table class="spec-table" aria-label="Steering inspection checklist">
+      <thead>
+        <tr>
+          <th>Location</th>
+          <th>Component</th>
+          <th>Inspection Item</th>
+          <th>Normal Condition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="loc"><span class="badge">A</span>Steering Column</td>
+          <td>Nuts &amp; bolts<br>Column shaft</td>
+          <td>Looseness<br>Clearance</td>
+          <td class="normal">No looseness<br>No clearance</td>
+        </tr>
+        <tr>
+          <td class="loc"><span class="badge">B</span>Steering Joint</td>
+          <td>Bolt<br>Joints<br>Movement</td>
+          <td>Looseness<br>Clearance<br>Operation</td>
+          <td class="normal">No looseness<br>No clearance<br>Smooth movement</td>
+        </tr>
+        <tr>
+          <td class="loc"><span class="badge">C</span>Ball Joint Boot</td>
+          <td>Boot condition</td>
+          <td>Deterioration, damage, grease leak</td>
+          <td class="normal">No defects</td>
+        </tr>
+        <tr>
+          <td class="loc"><span class="badge">D</span>Steering Gearbox</td>
+          <td>Mounting bolts</td>
+          <td>Looseness</td>
+          <td class="normal">No looseness</td>
+        </tr>
+        <tr>
+          <td class="loc"><span class="badge">E</span>Gearbox Boot</td>
+          <td>Boot condition</td>
+          <td>Twist, damage, grease leak</td>
+          <td class="normal">No defects</td>
+        </tr>
+        <tr>
+          <td class="loc"><span class="badge">F</span>Tie-Rod End Locknut</td>
+          <td>Locknut</td>
+          <td>Looseness</td>
+          <td class="normal">No looseness</td>
+        </tr>
+        <tr>
+          <td class="loc"><span class="badge">G</span>Tie-Rod End Ball Joint</td>
+          <td>Ball joint</td>
+          <td>Clearance of joint</td>
+          <td class="normal">No clearance</td>
+        </tr>
+        <tr>
+          <td class="loc"><span class="badge">H</span>Pinion Shaft Grommet</td>
+          <td>Grommet</td>
+          <td>Deterioration &amp; damage</td>
+          <td class="normal">No defects</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <p class="callout-label">&#9888; Document Everything</p>
+      <p>If <strong>any</strong> inspection item is not in normal condition, record the exact location (A–H), the specific defect found, and whether it requires <strong>immediate repair</strong> or <strong>monitoring</strong>. Never return a vehicle with a failed safety inspection item uncorrected.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goToSlide(1)">&#8592; Back</button>
+      <button class="btn btn-primary" onclick="goToKC()">Knowledge Check &#8594;</button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       KNOWLEDGE CHECK
+  ═══════════════════════════════════════ -->
+  <section class="kc-section" id="kcSection" aria-labelledby="kc-title">
+    <h2 id="kc-title">&#10003; Knowledge Check &mdash; 5 Questions</h2>
+
+    <!-- Q1 -->
+    <div class="question-block">
+      <span class="q-number">Question 1</span>
+      <p class="q-text">During the Step 1 pre-inspection, you push and pull the steering wheel toward and away from you. What are you checking for?</p>
+      <ul class="choices">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q1',false)">A. Tie-rod end clearance</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q1',true)">B. Noise and clearance in the longitudinal direction</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q1',false)">C. Gearbox boot damage</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q1',false)">D. Pinion shaft grommet condition</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q1-correct">&#9989; <strong>Correct!</strong> Step 1 checks for noise and clearance in both the longitudinal (toward/away) and lateral (side-to-side) directions of the steering wheel.</div>
+      <div class="feedback wrong-fb" id="q1-wrong">&#10060; <strong>Not quite.</strong> Answer <strong>B</strong> is correct. Pushing and pulling the wheel in Step 1 checks for longitudinal noise and clearance — one of two directions checked before the component-level inspection.</div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question-block">
+      <span class="q-number">Question 2</span>
+      <p class="q-text">What is the normal condition for the Steering Joint (Location B) during inspection?</p>
+      <ul class="choices">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q2',false)">A. Minor clearance is acceptable at the joint</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q2',false)">B. The bolt may have slight looseness under load</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q2',true)">C. No looseness, no clearance, and smooth movement</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q2',false)">D. Smooth movement only — clearance is not inspected here</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q2-correct">&#9989; <strong>Correct!</strong> Location B requires all three conditions: no bolt looseness, no joint clearance, and smooth movement. All three must pass — not just one.</div>
+      <div class="feedback wrong-fb" id="q2-wrong">&#10060; <strong>Not quite.</strong> Answer <strong>C</strong> is correct. The steering joint inspection covers three items — looseness, clearance, and movement — and all must be normal. Any single failure requires repair.</div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question-block">
+      <span class="q-number">Question 3</span>
+      <p class="q-text">You find grease leaking from the gearbox boot (Location E). What does this indicate and what is required?</p>
+      <ul class="choices">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q3',false)">A. Normal — boots weep grease slightly over time</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q3',false)">B. Add grease to the boot and re-inspect next service</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q3',true)">C. The boot has failed — this is not a normal condition and requires repair</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q3',false)">D. Only a concern if the boot is also twisted or torn</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q3-correct">&#9989; <strong>Correct!</strong> Grease leaking from Location E (gearbox boot) is not a normal condition. The boot must be replaced to prevent contamination and further damage to the rack and pinion.</div>
+      <div class="feedback wrong-fb" id="q3-wrong">&#10060; <strong>Not quite.</strong> Answer <strong>C</strong> is correct. The Honda spec lists "no defects" as the normal condition for the gearbox boot. Any grease leak means the boot has failed and must be repaired — not monitored.</div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question-block">
+      <span class="q-number">Question 4</span>
+      <p class="q-text">Which inspection location specifically requires you to check for clearance at the joint — not just looseness?</p>
+      <ul class="choices">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q4',false)">A. Location D — Steering Gearbox</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q4',false)">B. Location F — Tie-Rod End Locknut</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q4',true)">C. Location G — Tie-Rod End Ball Joint</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q4',false)">D. Location H — Pinion Shaft Grommet</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q4-correct">&#9989; <strong>Correct!</strong> Location G (Tie-Rod End Ball Joint) requires checking for clearance at the joint. Even a small amount of play here causes imprecise steering and must be corrected.</div>
+      <div class="feedback wrong-fb" id="q4-wrong">&#10060; <strong>Not quite.</strong> The answer is <strong>C — Location G</strong>. The tie-rod end ball joint is specifically inspected for clearance. Location F checks the locknut for looseness, not the ball joint itself.</div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question-block">
+      <span class="q-number">Question 5</span>
+      <p class="q-text">A technician inspects the pinion shaft grommet (Location H) and finds it is cracked and hardened. What should they do?</p>
+      <ul class="choices">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q5',false)">A. Mark it for monitoring at the next service interval</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q5',false)">B. Apply silicone sealant to the crack and recheck</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q5',false)">C. No action needed — this is a cosmetic component only</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q5',true)">D. Document the defect and replace the grommet — it is not in normal condition</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q5-correct">&#9989; <strong>Correct!</strong> The normal condition for the pinion shaft grommet is no deterioration and no damage. A cracked, hardened grommet has failed and must be replaced to prevent moisture and debris from entering the gearbox.</div>
+      <div class="feedback wrong-fb" id="q5-wrong">&#10060; <strong>Not quite.</strong> Answer <strong>D</strong> is correct. Location H specifies "no deterioration and no damage" as normal. A cracked grommet is a failed component — it must be replaced, not monitored or patched.</div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goToSlide(2)">&#8592; Back to Slides</button>
+      <button class="btn btn-primary" onclick="showScore()">See My Score &#8594;</button>
+    </div>
+  </section>
+
+  <!-- COMPLETE -->
+  <div class="complete-card" id="completeCard" role="region" aria-live="polite">
+    <p style="color:#CC0000; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">AUTOH 173 &middot; Micro Lesson Complete</p>
+    <h2>EPS Steering Linkage &amp; Gearbox Inspection</h2>
+    <div class="score-badge" id="scoreBadge">&#8212; / 5</div>
+    <p id="scoreMsg" style="margin-top:8px;">Loading result&hellip;</p>
+    <p style="margin-top:16px; font-size:13px;">Return to Canvas to complete today&rsquo;s lab worksheet.</p>
+  </div>
+
+</div><!-- /lesson-wrapper -->
+
+<script>
+  var currentSlide = 0;
+  var answers = {};
+
+  function goToSlide(n) {
+    document.querySelectorAll('.slide').forEach(function(s) { s.classList.remove('active'); });
+    document.getElementById('kcSection').classList.remove('active');
+    document.getElementById('slide' + n).classList.add('active');
+    currentSlide = n;
+    updateProgress(n);
+    scrollTop();
+  }
+
+  function goToKC() {
+    document.querySelectorAll('.slide').forEach(function(s) { s.classList.remove('active'); });
+    document.getElementById('kcSection').classList.add('active');
+    updateProgress(3);
+    scrollTop();
+  }
+
+  function updateProgress(n) {
+    for (var i = 0; i < 4; i++) {
+      var dot = document.getElementById('dot' + i);
+      if (!dot) continue;
+      dot.className = 'dot';
+      if (i < n) dot.classList.add('done');
+      else if (i === n) dot.classList.add('active');
+    }
+    var labels = [
+      'Slide 1 of 3 — EPS Overview',
+      'Slide 2 of 3 — Pre-Inspection',
+      'Slide 3 of 3 — Inspection Checklist',
+      'Knowledge Check'
+    ];
+    document.getElementById('progressLabel').textContent = labels[n] || '';
+  }
+
+  function checkAnswer(btn, qid, isCorrect) {
+    var allBtns = btn.closest('.question-block').querySelectorAll('.choice-btn');
+    allBtns.forEach(function(b) { b.disabled = true; });
+    btn.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.getElementById(qid + '-correct').classList.toggle('show', isCorrect);
+    document.getElementById(qid + '-wrong').classList.toggle('show', !isCorrect);
+    answers[qid] = isCorrect;
+  }
+
+  function showScore() {
+    var total = 0;
+    ['q1','q2','q3','q4','q5'].forEach(function(q) {
+      if (answers[q] === true) total++;
+    });
+    document.getElementById('kcSection').classList.remove('active');
+    var card = document.getElementById('completeCard');
+    card.classList.add('show');
+    document.getElementById('scoreBadge').textContent = total + ' / 5';
+    var msgs = [
+      "Review all 3 slides and try again — focus on the inspection table.",
+      "Keep going — re-read the checklist on Slide 3.",
+      "Getting there — review the boot and grommet items.",
+      "Good work — check the questions you missed.",
+      "Nice job! Almost perfect — review that last question.",
+      "Perfect score! Outstanding — you're ready for the lab! &#127937;"
+    ];
+    document.getElementById('scoreMsg').innerHTML = msgs[total] || '';
+    scrollTop();
+  }
+
+  function scrollTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
