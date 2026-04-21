@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suspension System Types — AUTOH 173</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f2f2f2;
+    color: #1a1a1a;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .lesson-wrapper { max-width: 860px; margin: 0 auto; padding: 24px 16px 48px; }
+
+  /* HEADER */
+  .lesson-header {
+    background: #1a1a1a;
+    border-left: 6px solid #CC0000;
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+  .lesson-header .course-label {
+    color: #CC0000; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 6px;
+  }
+  .lesson-header h1 { color: #ffffff; font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .lesson-header .sub { color: #cccccc; font-size: 13px; }
+
+  /* PROGRESS */
+  .progress-bar { display: flex; gap: 6px; margin-bottom: 20px; align-items: center; flex-wrap: wrap; }
+  .progress-bar .dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: #cccccc; transition: background 0.3s; flex-shrink: 0;
+  }
+  .progress-bar .dot.active { background: #CC0000; }
+  .progress-bar .dot.done   { background: #888888; }
+  .progress-label { font-size: 12px; color: #666; margin-left: 8px; }
+
+  /* SLIDE CARD */
+  .slide {
+    display: none;
+    background: #ffffff;
+    border-top: 4px solid #CC0000;
+    border-radius: 4px;
+    padding: 28px 28px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .slide.active { display: block; }
+  .slide-tag {
+    background: #CC0000; color: #fff;
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px;
+    padding: 3px 10px; border-radius: 2px;
+    display: inline-block; margin-bottom: 12px;
+  }
+  .slide h2 { font-size: 19px; font-weight: 700; color: #1a1a1a; margin-bottom: 14px; }
+  .slide p  { color: #333; font-size: 14px; margin-bottom: 12px; }
+  .slide ul, .slide ol { padding-left: 20px; color: #333; font-size: 14px; margin-bottom: 14px; }
+  .slide li { margin-bottom: 6px; }
+
+  /* DIAGRAM */
+  .diagram-wrap {
+    background: #f9f9f9; border: 1px solid #e0e0e0;
+    border-radius: 4px; padding: 16px; margin: 16px 0; text-align: center;
+  }
+  .diagram-wrap svg { max-width: 100%; }
+
+  /* CALLOUT */
+  .callout {
+    background: #fff5f5; border-left: 4px solid #CC0000;
+    border-radius: 0 4px 4px 0; padding: 12px 16px; margin: 14px 0;
+  }
+  .callout .callout-label {
+    color: #CC0000; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; margin-bottom: 4px;
+  }
+  .callout p { margin: 0; font-size: 14px; }
+
+  .info-box {
+    background: #f5f5f5; border-radius: 4px;
+    padding: 12px 16px; margin: 14px 0;
+    font-size: 14px; color: #333;
+  }
+  .info-box strong { color: #1a1a1a; }
+
+  /* TWO COLUMN — uses flex but only inside slide (GitHub Pages, not Canvas) */
+  .two-col { display: flex; gap: 12px; margin: 14px 0; }
+  .two-col .col {
+    flex: 1; background: #f5f5f5;
+    border-top: 3px solid #CC0000; border-radius: 4px;
+    padding: 14px; font-size: 14px; color: #333;
+  }
+  .two-col .col strong {
+    display: block; font-size: 13px; text-transform: uppercase;
+    letter-spacing: 0.5px; color: #1a1a1a; margin-bottom: 8px;
+  }
+  @media (max-width: 520px) { .two-col { flex-direction: column; } }
+
+  /* SPEC TABLE */
+  .spec-table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 14px 0; }
+  .spec-table th {
+    background: #1a1a1a; color: #fff;
+    padding: 9px 12px; text-align: left;
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .spec-table td { padding: 8px 12px; border-bottom: 1px solid #e0e0e0; color: #333; }
+  .spec-table tr:nth-child(even) td { background: #f9f9f9; }
+
+  /* KNOWLEDGE CHECK */
+  .kc-section {
+    display: none;
+    background: #ffffff; border-top: 4px solid #1a1a1a;
+    border-radius: 4px; padding: 28px 28px 24px;
+    margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .kc-section.active { display: block; }
+  .kc-section h2 { font-size: 17px; font-weight: 700; color: #1a1a1a; margin-bottom: 20px; }
+
+  .question-block { margin-bottom: 28px; }
+  .question-block .q-number {
+    background: #CC0000; color: #fff;
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; padding: 3px 10px;
+    border-radius: 2px; display: inline-block; margin-bottom: 8px;
+  }
+  .question-block .q-text {
+    font-size: 15px; font-weight: 700;
+    color: #1a1a1a; margin-bottom: 14px; line-height: 1.5;
+  }
+  .choices { list-style: none; padding: 0; margin: 0 0 12px 0; }
+  .choices li { margin-bottom: 8px; }
+  .choice-btn {
+    display: block; width: 100%; text-align: left;
+    padding: 10px 14px; background: #f5f5f5;
+    border: 2px solid #e0e0e0; border-radius: 4px;
+    font-size: 14px; color: #1a1a1a; cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .choice-btn:hover { border-color: #CC0000; background: #fff5f5; }
+  .choice-btn.correct { background: #e8f5e9; border-color: #2e7d32; color: #1b5e20; }
+  .choice-btn.wrong   { background: #ffebee; border-color: #c62828; color: #7f0000; }
+  .choice-btn:disabled { cursor: default; }
+
+  .feedback { display: none; padding: 10px 14px; border-radius: 4px; font-size: 14px; margin-top: 8px; }
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: #e8f5e9; border-left: 4px solid #2e7d32; color: #1b5e20; }
+  .feedback.wrong-fb   { background: #ffebee; border-left: 4px solid #c62828; color: #7f0000; }
+
+  /* NAV */
+  .nav-row {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-top: 24px; gap: 10px;
+  }
+  .btn {
+    padding: 10px 22px; border: none; border-radius: 4px;
+    font-size: 14px; font-weight: 700; cursor: pointer;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .btn-primary { background: #CC0000; color: #fff; }
+  .btn-primary:hover { background: #aa0000; }
+  .btn-secondary { background: #e0e0e0; color: #1a1a1a; }
+  .btn-secondary:hover { background: #cccccc; }
+  .btn:disabled { opacity: 0.4; cursor: default; }
+
+  /* COMPLETE CARD */
+  .complete-card {
+    display: none; background: #1a1a1a;
+    border-top: 4px solid #CC0000; border-radius: 4px;
+    padding: 28px; text-align: center; color: #fff;
+  }
+  .complete-card.show { display: block; }
+  .complete-card h2 { font-size: 20px; margin-bottom: 10px; color: #fff; }
+  .complete-card p { color: #cccccc; font-size: 14px; }
+  .score-badge {
+    display: inline-block; background: #CC0000; color: #fff;
+    font-size: 28px; font-weight: 700;
+    padding: 14px 28px; border-radius: 4px; margin: 16px 0;
+  }
+</style>
+</head>
+<body>
+<div class="lesson-wrapper">
+
+  <!-- HEADER -->
+  <div class="lesson-header" role="banner">
+    <p class="course-label">AUTOH 173 &middot; Honda Steering &amp; Suspension Systems</p>
+    <h1>Suspension System Types</h1>
+    <p class="sub">Micro Lesson &middot; 6 Slides + 6 Knowledge Check Questions</p>
+  </div>
+
+  <!-- PROGRESS DOTS -->
+  <nav aria-label="Lesson progress">
+    <div class="progress-bar" id="progressDots">
+      <span class="dot active" id="dot0" aria-label="Slide 1"></span>
+      <span class="dot" id="dot1" aria-label="Slide 2"></span>
+      <span class="dot" id="dot2" aria-label="Slide 3"></span>
+      <span class="dot" id="dot3" aria-label="Slide 4"></span>
+      <span class="dot" id="dot4" aria-label="Slide 5"></span>
+      <span class="dot" id="dot5" aria-label="Slide 6"></span>
+      <span class="dot" id="dot6" aria-label="Knowledge Check"></span>
+      <span class="progress-label" id="progressLabel" aria-live="polite">Slide 1 of 6</span>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 1 — MacPherson Strut
+  ═══════════════════════════════════════ -->
+  <section class="slide active" id="slide0" aria-labelledby="s0-title">
+    <span class="slide-tag">Slide 1 of 6 &mdash; MacPherson Strut</span>
+    <h2 id="s0-title">MacPherson Strut Suspension</h2>
+
+    <p>The <strong>MacPherson strut</strong> is the most widely used front suspension design on modern passenger vehicles, including many Honda models. It combines the shock absorber and coil spring into a single compact unit called a <strong>strut assembly</strong>.</p>
+
+    <div class="diagram-wrap" style="min-height:220px; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cccccc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      <p style="margin:0; font-size:13px; color:#aaaaaa; font-style:italic;">Image placeholder — add your diagram here</p>
+    </div>
+
+    <div class="two-col">
+      <div class="col">
+        <strong>Key Components</strong>
+        <ul>
+          <li>Strut assembly (damper + spring)</li>
+          <li>Upper strut mount &amp; bearing</li>
+          <li>Steering knuckle</li>
+          <li>Lower control arm with ball joint</li>
+          <li>Stabilizer bar (sway bar)</li>
+        </ul>
+      </div>
+      <div class="col">
+        <strong>Honda Applications</strong>
+        <ul>
+          <li>Civic, Accord, CR-V (front)</li>
+          <li>Simple, lightweight design</li>
+          <li>Allows wheel to steer</li>
+          <li>Compact — ideal for FWD engines</li>
+          <li>Easy to service</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p class="callout-label">&#9888; Honda Tech Tip</p>
+      <p>When replacing a strut on a Honda, always use a <strong>spring compressor</strong> before removing the strut nut. The spring is under high tension and can cause serious injury if released suddenly.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-secondary" disabled>&#8592; Back</button>
+      <button class="btn btn-primary" onclick="goToSlide(1)">Next: Modified Strut &#8594;</button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 2 — Modified Strut
+  ═══════════════════════════════════════ -->
+  <section class="slide" id="slide1" aria-labelledby="s1-title">
+    <span class="slide-tag">Slide 2 of 6 &mdash; Modified Strut</span>
+    <h2 id="s1-title">Modified Strut Suspension</h2>
+
+    <p>The <strong>modified strut</strong> (also called a <strong>strut with lower lateral link</strong>) is similar to a MacPherson strut but adds a <strong>second lower lateral link</strong> for improved geometry control. It provides better camber stiffness under cornering loads.</p>
+
+    <div class="diagram-wrap" style="min-height:220px; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cccccc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      <p style="margin:0; font-size:13px; color:#aaaaaa; font-style:italic;">Image placeholder — add your diagram here</p>
+    </div>
+
+    <div class="two-col">
+      <div class="col">
+        <strong>How It Differs from MacPherson</strong>
+        <ul>
+          <li>Adds a <strong>second lower lateral link</strong></li>
+          <li>Better controls wheel camber under load</li>
+          <li>Separates lateral &amp; longitudinal forces</li>
+          <li>More complex than standard MacPherson</li>
+        </ul>
+      </div>
+      <div class="col">
+        <strong>Honda / Acura Use</strong>
+        <ul>
+          <li>Found on Acura TL, TSX rear suspension</li>
+          <li>Some Honda Pilot configurations</li>
+          <li>Improves handling vs. standard strut</li>
+          <li>More bushings = more wear points</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <strong>Compare to MacPherson:</strong> The standard MacPherson uses one lower control arm. The modified strut splits that into two links, allowing each to handle a specific direction of force — lateral (side) vs. longitudinal (front/back).
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goToSlide(0)">&#8592; Back</button>
+      <button class="btn btn-primary" onclick="goToSlide(2)">Next: Double Wishbone &#8594;</button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 3 — Modified Double Wishbone
+  ═══════════════════════════════════════ -->
+  <section class="slide" id="slide2" aria-labelledby="s2-title">
+    <span class="slide-tag">Slide 3 of 6 &mdash; Modified Double Wishbone</span>
+    <h2 id="s2-title">Modified Double Wishbone Suspension</h2>
+
+    <p>The <strong>double wishbone</strong> (also called <strong>double A-arm</strong>) uses two wishbone-shaped control arms — one upper and one lower — to locate the wheel. Honda's <strong>modified version</strong> relocates the upper arm inboard to improve space and geometry.</p>
+
+    <div class="diagram-wrap" style="min-height:220px; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cccccc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      <p style="margin:0; font-size:13px; color:#aaaaaa; font-style:italic;">Image placeholder — add your diagram here</p>
+    </div>
+
+    <div class="two-col">
+      <div class="col">
+        <strong>Advantages</strong>
+        <ul>
+          <li>Excellent camber control through suspension travel</li>
+          <li>Better handling &amp; cornering stability</li>
+          <li>Each arm independently tunable</li>
+          <li>Used on performance &amp; sporty Hondas</li>
+        </ul>
+      </div>
+      <div class="col">
+        <strong>Honda Applications</strong>
+        <ul>
+          <li>Honda Civic Si, Accord (rear)</li>
+          <li>Honda S2000 (front &amp; rear)</li>
+          <li>Acura NSX, Integra</li>
+          <li>"Modified" = inboard upper mount for packaging</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p class="callout-label">&#9888; Key Difference</p>
+      <p>On Honda's <strong>modified</strong> double wishbone, the upper arm pivot is moved inboard toward the engine bay. This frees up space for a wider engine while maintaining excellent suspension geometry.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goToSlide(1)">&#8592; Back</button>
+      <button class="btn btn-primary" onclick="goToSlide(3)">Next: SLA &#8594;</button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 4 — Short/Long Arm (SLA)
+  ═══════════════════════════════════════ -->
+  <section class="slide" id="slide3" aria-labelledby="s3-title">
+    <span class="slide-tag">Slide 4 of 6 &mdash; Short/Long Arm (SLA)</span>
+    <h2 id="s3-title">Short/Long Arm (SLA) Suspension</h2>
+
+    <p><strong>SLA suspension</strong> uses two unequal-length control arms — a <strong>shorter upper arm</strong> and a <strong>longer lower arm</strong>. This intentional length difference creates a slight negative camber gain as the wheel rises, keeping the tire more upright under cornering.</p>
+
+    <div class="diagram-wrap" style="min-height:220px; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cccccc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      <p style="margin:0; font-size:13px; color:#aaaaaa; font-style:italic;">Image placeholder — add your diagram here</p>
+    </div>
+
+    <div class="info-box">
+      <strong>Why unequal lengths?</strong> As the wheel rises (bump), the shorter upper arm moves through a greater arc. This pulls the top of the wheel inward, creating <strong>negative camber</strong> — keeping the tire contact patch flat for better grip during cornering.
+    </div>
+
+    <div class="two-col">
+      <div class="col">
+        <strong>Advantages</strong>
+        <ul>
+          <li>Controlled camber change in bumps</li>
+          <li>Better tire contact during cornering</li>
+          <li>Tunable via arm length ratio</li>
+          <li>Common on rear-wheel-drive vehicles</li>
+        </ul>
+      </div>
+      <div class="col">
+        <strong>Disadvantages</strong>
+        <ul>
+          <li>More parts = more cost &amp; weight</li>
+          <li>Requires precise alignment</li>
+          <li>More wear points than MacPherson</li>
+          <li>Wider packaging space needed</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goToSlide(2)">&#8592; Back</button>
+      <button class="btn btn-primary" onclick="goToSlide(4)">Next: Solid Axle &#8594;</button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 5 — Solid Axle Suspension
+  ═══════════════════════════════════════ -->
+  <section class="slide" id="slide4" aria-labelledby="s4-title">
+    <span class="slide-tag">Slide 5 of 6 &mdash; Solid Axle</span>
+    <h2 id="s4-title">Solid Axle (Dependent) Suspension</h2>
+
+    <p>A <strong>solid axle</strong> connects both wheels on the same axle beam. When one wheel hits a bump, <strong>both wheels are affected</strong>. This is called a <strong>dependent</strong> suspension because the two wheels are not independent of each other.</p>
+
+    <div class="diagram-wrap" style="min-height:220px; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cccccc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      <p style="margin:0; font-size:13px; color:#aaaaaa; font-style:italic;">Image placeholder — add your diagram here</p>
+    </div>
+
+    <div class="two-col">
+      <div class="col">
+        <strong>Where It's Used</strong>
+        <ul>
+          <li>Trucks &amp; SUVs (rear axle)</li>
+          <li>Heavy-duty &amp; off-road vehicles</li>
+          <li>Older RWD vehicles</li>
+          <li>Honda Ridgeline (IRS used instead)</li>
+        </ul>
+      </div>
+      <div class="col">
+        <strong>Pros &amp; Cons</strong>
+        <ul>
+          <li>&#10003; Strong, simple, durable</li>
+          <li>&#10003; High load-carrying capacity</li>
+          <li>&#10007; Poor ride quality on bumps</li>
+          <li>&#10007; Heavy unsprung weight</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p class="callout-label">&#9888; Key Term</p>
+      <p><strong>Unsprung weight</strong> — the weight of suspension components below the spring (axle, wheels, brakes). Solid axles have high unsprung weight, which hurts handling because the heavy axle takes longer to follow road irregularities.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goToSlide(3)">&#8592; Back</button>
+      <button class="btn btn-primary" onclick="goToSlide(5)">Next: Torsion Bar &#8594;</button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 6 — Torsion Bar
+  ═══════════════════════════════════════ -->
+  <section class="slide" id="slide5" aria-labelledby="s5-title">
+    <span class="slide-tag">Slide 6 of 6 &mdash; Torsion Bar</span>
+    <h2 id="s5-title">Torsion Bar Suspension</h2>
+
+    <p>A <strong>torsion bar</strong> replaces the coil spring with a long steel bar that <strong>twists (torsion)</strong> to absorb bumps. One end anchors to the frame; the other attaches to the control arm. As the wheel rises, the bar twists — storing and releasing energy like a spring.</p>
+
+    <div class="diagram-wrap" style="min-height:220px; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cccccc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      <p style="margin:0; font-size:13px; color:#aaaaaa; font-style:italic;">Image placeholder — add your diagram here</p>
+    </div>
+
+    <div class="two-col">
+      <div class="col">
+        <strong>Key Features</strong>
+        <ul>
+          <li>Steel bar twists instead of coil spring compressing</li>
+          <li>Ride height is <strong>adjustable</strong> via anchor bolt</li>
+          <li>Separate shock absorber required</li>
+          <li>Lightweight, compact design</li>
+        </ul>
+      </div>
+      <div class="col">
+        <strong>Vehicle Use</strong>
+        <ul>
+          <li>Honda / Acura SUVs (some front suspension)</li>
+          <li>Mitsubishi, GM trucks historically</li>
+          <li>Popular in off-road applications</li>
+          <li>Easy ride height adjustment for load</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p class="callout-label">&#9888; Service Note</p>
+      <p>Torsion bar ride height is adjusted by turning an <strong>anchor bolt</strong> at the rear of the bar. Raising the bolt increases pre-load (raises the vehicle); lowering it reduces pre-load. Always check alignment after adjusting ride height.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goToSlide(4)">&#8592; Back</button>
+      <button class="btn btn-primary" onclick="goToKC()">Knowledge Check &#8594;</button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       KNOWLEDGE CHECK
+  ═══════════════════════════════════════ -->
+  <section class="kc-section" id="kcSection" aria-labelledby="kc-title">
+    <h2 id="kc-title">&#10003; Knowledge Check &mdash; 6 Questions</h2>
+
+    <!-- Q1 -->
+    <div class="question-block">
+      <span class="q-number">Question 1</span>
+      <p class="q-text">Which suspension type combines the shock absorber and coil spring into a single unit called a strut assembly?</p>
+      <ul class="choices">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q1',false)">A. Short/Long Arm (SLA)</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q1',false)">B. Solid Axle</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q1',true)">C. MacPherson Strut</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q1',false)">D. Torsion Bar</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q1-correct">&#9989; <strong>Correct!</strong> The MacPherson strut integrates the damper and spring into one strut assembly. It's the most common front suspension on Honda vehicles.</div>
+      <div class="feedback wrong-fb" id="q1-wrong">&#10060; <strong>Not quite.</strong> The correct answer is <strong>C — MacPherson Strut</strong>. It's the design that packages the spring and shock absorber into one compact unit attached to the steering knuckle.</div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question-block">
+      <span class="q-number">Question 2</span>
+      <p class="q-text">The modified strut differs from a standard MacPherson strut by adding which component?</p>
+      <ul class="choices">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q2',false)">A. An upper control arm</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q2',true)">B. A second lower lateral link</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q2',false)">C. A torsion bar</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q2',false)">D. A solid axle beam</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q2-correct">&#9989; <strong>Correct!</strong> The modified strut adds a second lower lateral link to improve camber control and separate lateral from longitudinal forces.</div>
+      <div class="feedback wrong-fb" id="q2-wrong">&#10060; <strong>Not quite.</strong> The answer is <strong>B</strong>. A second lower lateral link is added, providing better geometry control compared to the standard single lower arm MacPherson design.</div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question-block">
+      <span class="q-number">Question 3</span>
+      <p class="q-text">On an SLA suspension, why is the upper control arm intentionally shorter than the lower control arm?</p>
+      <ul class="choices">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q3',false)">A. To reduce manufacturing cost</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q3',false)">B. To allow more suspension travel</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q3',true)">C. To create negative camber gain during bump travel, improving cornering grip</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q3',false)">D. To make room for the engine</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q3-correct">&#9989; <strong>Correct!</strong> The shorter upper arm sweeps through a greater arc, pulling the wheel top inward as it rises. This negative camber keeps the tire contact patch flat during cornering.</div>
+      <div class="feedback wrong-fb" id="q3-wrong">&#10060; <strong>Not quite.</strong> Answer <strong>C</strong> is correct. The geometry of unequal arms produces negative camber gain during bump travel — this is the whole point of SLA design and improves cornering stability.</div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question-block">
+      <span class="q-number">Question 4</span>
+      <p class="q-text">A solid axle suspension is described as "dependent." What does this mean?</p>
+      <ul class="choices">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q4',false)">A. Both wheels are independently sprung and can move separately</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q4',true)">B. Movement of one wheel directly affects the opposite wheel on the same axle</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q4',false)">C. The suspension depends on the engine weight for balance</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q4',false)">D. It uses a dependent torsion bar for springing</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q4-correct">&#9989; <strong>Correct!</strong> "Dependent" means the two wheels share a rigid axle beam. When one hits a bump, the axle rotates and the other wheel is forced to move too.</div>
+      <div class="feedback wrong-fb" id="q4-wrong">&#10060; <strong>Not quite.</strong> Answer <strong>B</strong> is correct. On a solid axle, both wheels are rigidly connected — movement from one side is transferred directly to the other through the beam.</div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question-block">
+      <span class="q-number">Question 5</span>
+      <p class="q-text">A torsion bar performs the same function as which component in a conventional suspension?</p>
+      <ul class="choices">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q5',false)">A. The shock absorber</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q5',false)">B. The control arm</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q5',true)">C. The coil spring</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q5',false)">D. The stabilizer bar</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q5-correct">&#9989; <strong>Correct!</strong> The torsion bar acts as the spring element — it twists to store energy when the wheel rises and releases it on rebound, just like a coil spring compresses and extends.</div>
+      <div class="feedback wrong-fb" id="q5-wrong">&#10060; <strong>Not quite.</strong> Answer <strong>C</strong> is correct. The torsion bar is the spring — it replaces the coil spring. A separate shock absorber is still needed to dampen oscillations.</div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="question-block">
+      <span class="q-number">Question 6</span>
+      <p class="q-text">Which suspension system is most commonly found on the front axle of modern Honda FWD vehicles due to its compact, lightweight design?</p>
+      <ul class="choices">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q6',false)">A. Solid axle</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q6',false)">B. Short/Long Arm (SLA)</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q6',false)">C. Torsion bar</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q6',true)">D. MacPherson strut</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q6-correct">&#9989; <strong>Correct!</strong> MacPherson struts are standard on most Honda FWD models (Civic, Accord, CR-V). Their compact design works well in tight engine bays and keeps weight low.</div>
+      <div class="feedback wrong-fb" id="q6-wrong">&#10060; <strong>Not quite.</strong> Answer <strong>D — MacPherson strut</strong> is correct. It's the dominant front suspension design for Honda FWD vehicles because of its compact packaging and simplicity.</div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goToSlide(5)">&#8592; Back to Slides</button>
+      <button class="btn btn-primary" onclick="showScore()">See My Score &#8594;</button>
+    </div>
+  </section>
+
+  <!-- COMPLETE CARD -->
+  <div class="complete-card" id="completeCard" role="region" aria-live="polite" aria-label="Lesson complete">
+    <p style="color:#CC0000; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">AUTOH 173 &middot; Micro Lesson Complete</p>
+    <h2>Suspension System Types</h2>
+    <div class="score-badge" id="scoreBadge" aria-label="Your score">&#8212; / 6</div>
+    <p id="scoreMsg" style="margin-top:8px;">Loading your result&hellip;</p>
+    <p style="margin-top:16px; font-size:13px;">Return to Canvas to complete today&rsquo;s lab worksheet.</p>
+  </div>
+
+</div><!-- /lesson-wrapper -->
+
+<script>
+  var currentSlide = 0;
+  var answers = {};
+  var TOTAL_DOTS = 7; // 6 slides + 1 KC
+
+  function goToSlide(n) {
+    document.querySelectorAll('.slide').forEach(function(s) { s.classList.remove('active'); });
+    document.getElementById('kcSection').classList.remove('active');
+    document.getElementById('slide' + n).classList.add('active');
+    currentSlide = n;
+    updateProgress(n);
+    scrollTop();
+  }
+
+  function goToKC() {
+    document.querySelectorAll('.slide').forEach(function(s) { s.classList.remove('active'); });
+    document.getElementById('kcSection').classList.add('active');
+    updateProgress(6);
+    scrollTop();
+  }
+
+  function updateProgress(n) {
+    for (var i = 0; i < TOTAL_DOTS; i++) {
+      var dot = document.getElementById('dot' + i);
+      if (!dot) continue;
+      dot.className = 'dot';
+      if (i < n) dot.classList.add('done');
+      else if (i === n) dot.classList.add('active');
+    }
+    var labels = [
+      'Slide 1 of 6 — MacPherson Strut',
+      'Slide 2 of 6 — Modified Strut',
+      'Slide 3 of 6 — Double Wishbone',
+      'Slide 4 of 6 — SLA',
+      'Slide 5 of 6 — Solid Axle',
+      'Slide 6 of 6 — Torsion Bar',
+      'Knowledge Check'
+    ];
+    document.getElementById('progressLabel').textContent = labels[n] || '';
+  }
+
+  function checkAnswer(btn, qid, isCorrect) {
+    var allBtns = btn.closest('.question-block').querySelectorAll('.choice-btn');
+    allBtns.forEach(function(b) { b.disabled = true; });
+    btn.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.getElementById(qid + '-correct').classList.toggle('show', isCorrect);
+    document.getElementById(qid + '-wrong').classList.toggle('show', !isCorrect);
+    answers[qid] = isCorrect;
+  }
+
+  function showScore() {
+    var total = 0;
+    ['q1','q2','q3','q4','q5','q6'].forEach(function(q) {
+      if (answers[q] === true) total++;
+    });
+    document.getElementById('kcSection').classList.remove('active');
+    var card = document.getElementById('completeCard');
+    card.classList.add('show');
+    document.getElementById('scoreBadge').textContent = total + ' / 6';
+    var msgs = [
+      'Review all 6 slides and try again — you\'ve got this!',
+      'Keep reviewing — focus on the slides you found tricky.',
+      'Getting there — re-read Slides 3, 4 & 5.',
+      'Good effort! Review the systems you missed.',
+      'Nice work — almost there! Check your missed questions.',
+      'Great job! Strong understanding of suspension types.',
+      'Perfect score! Outstanding work — you\'re ready for the lab! &#127937;'
+    ];
+    document.getElementById('scoreMsg').textContent = msgs[total] || '';
+    scrollTop();
+  }
+
+  function scrollTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
