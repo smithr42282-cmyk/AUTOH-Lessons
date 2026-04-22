@@ -333,6 +333,217 @@
     margin: 16px 0;
   }
 
+  /* ── PRINT BUTTON BAR ── */
+  .print-bar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  /* ══════════════════════════════
+     PRINT STYLES
+  ══════════════════════════════ */
+  @media print {
+    @page {
+      size: letter;
+      margin: 0.65in 0.7in;
+    }
+
+    /* Reset page chrome */
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+    body {
+      background: #fff !important;
+      font-size: 11pt;
+      color: #000;
+    }
+
+    .wrapper { max-width: 100%; padding: 0; }
+
+    /* Hide interactive-only elements */
+    .print-bar,
+    .submit-row,
+    .score-card,
+    .field-hint { display: none !important; }
+
+    /* Page header — keep dark bg for impact */
+    .page-header {
+      background: #1a1a1a !important;
+      border-left: 6px solid #CC0000 !important;
+      border-radius: 0;
+      padding: 14px 18px;
+      margin-bottom: 14px;
+      page-break-inside: avoid;
+    }
+    .page-header .course-label { color: #CC0000 !important; font-size: 9pt; }
+    .page-header h1 { color: #fff !important; font-size: 16pt; }
+    .page-header .sub { color: #ccc !important; font-size: 9pt; }
+
+    /* Callout */
+    .callout {
+      background: #fff5f5 !important;
+      border-left: 4px solid #CC0000 !important;
+      font-size: 9.5pt;
+      padding: 8px 12px;
+      margin-bottom: 12px;
+    }
+    .callout strong { color: #CC0000 !important; }
+
+    /* NATEF box */
+    .natef-box {
+      background: #f5f5f5 !important;
+      border-left: 3px solid #1a1a1a !important;
+      font-size: 9pt;
+      padding: 8px 12px;
+      margin-bottom: 12px;
+    }
+
+    /* Section headers */
+    .section-hdr {
+      background: #CC0000 !important;
+      color: #fff !important;
+      font-size: 10pt;
+      padding: 6px 12px;
+      margin: 16px 0 8px;
+      border-radius: 0;
+      page-break-after: avoid;
+    }
+
+    /* Cards */
+    .card {
+      background: #fff !important;
+      border-top: 3px solid #CC0000 !important;
+      border-radius: 0;
+      box-shadow: none !important;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      page-break-inside: avoid;
+    }
+
+    /* Badges */
+    .q-badge {
+      background: #1a1a1a !important;
+      color: #fff !important;
+      font-size: 8pt;
+      padding: 1px 7px;
+    }
+    .q-text { font-size: 10.5pt; font-weight: 700; margin-bottom: 6px; }
+    .field-label { font-size: 9pt; margin-bottom: 4px; }
+    .divider { margin: 10px 0; }
+
+    /* ── Hide all interactive inputs; show print lines instead ── */
+    input.input-short,
+    textarea.input-long,
+    textarea.input-xl { display: none !important; }
+
+    .print-line-short { display: block !important; }
+    .print-line-long  { display: block !important; }
+    .print-line-xl    { display: block !important; }
+
+    /* Torque grid — 2 col table in print */
+    .torque-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .torque-item label { font-size: 9.5pt; }
+    .torque-item .letter {
+      background: #CC0000 !important;
+      color: #fff !important;
+      font-size: 9pt;
+      width: 17px; height: 17px; line-height: 17px;
+    }
+
+    /* Sign-off box */
+    .signoff-box {
+      border: 2px dashed #CC0000 !important;
+      padding: 10px 14px;
+      page-break-inside: avoid;
+    }
+    .signoff-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    /* ── KNOWLEDGE CHECK in print ── */
+    .kc-header {
+      background: #1a1a1a !important;
+      border-top: 4px solid #CC0000 !important;
+      page-break-before: always;
+      border-radius: 0;
+      padding: 12px 16px;
+      margin: 0 0 10px;
+    }
+    .kc-header h2 { color: #fff !important; font-size: 13pt; }
+    .kc-header p  { color: #ccc !important; font-size: 9pt; }
+
+    .kc-card {
+      background: #fff !important;
+      border-top: 2px solid #1a1a1a !important;
+      box-shadow: none !important;
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      page-break-inside: avoid;
+    }
+    .kc-q-num {
+      background: #CC0000 !important;
+      color: #fff !important;
+      font-size: 8pt;
+    }
+    .kc-q-text { font-size: 10.5pt; margin-bottom: 8px; }
+
+    /* Show MC choices as plain list in print */
+    .choice-list { gap: 4px; }
+    .choice-btn {
+      background: #fff !important;
+      border: 1px solid #999 !important;
+      border-radius: 2px;
+      font-size: 9.5pt;
+      padding: 5px 10px;
+      color: #000 !important;
+      cursor: default;
+      display: block;
+      width: 100%;
+      text-align: left;
+    }
+    /* Show a circle/bubble before each choice */
+    .choice-btn::before {
+      content: "○  ";
+      font-size: 10pt;
+      color: #555;
+    }
+
+    /* Hide feedback divs in print */
+    .feedback { display: none !important; }
+
+    /* Score / submit area hidden */
+    .submit-row,
+    .score-card { display: none !important; }
+  }
+
+  /* ── Print lines (hidden on screen, visible in print) ── */
+  .print-line-short {
+    display: none;
+    border-bottom: 1px solid #aaa;
+    min-height: 22px;
+    margin: 2px 0 6px;
+    width: 100%;
+    max-width: 340px;
+  }
+  .print-line-long {
+    display: none;
+    border-bottom: 1px solid #aaa;
+    min-height: 18px;
+    width: 100%;
+    margin: 2px 0 2px;
+  }
+  .print-line-xl {
+    display: none;
+    width: 100%;
+  }
+  .print-line-xl .print-line-long {
+    display: none; /* overridden in print */
+    margin-bottom: 4px;
+  }
+
   /* ── SUBMIT ROW ── */
   .submit-row {
     display: flex;
@@ -380,6 +591,11 @@
 
 <div class="wrapper">
 
+  <!-- ══ PRINT BAR ══ -->
+  <div class="print-bar" aria-hidden="true">
+    <button class="btn btn-secondary" onclick="window.print()" style="background:#1a1a1a;color:#fff;padding:9px 20px;border-radius:4px;font-size:13px;font-weight:700;border:none;cursor:pointer;">🖨&nbsp; Print / Save as PDF</button>
+  </div>
+
   <!-- ══ PAGE HEADER ══ -->
   <header class="page-header" role="banner">
     <p class="course-label">AUTOH 174 · Honda Manual Gear Trains &amp; Transaxles</p>
@@ -413,6 +629,7 @@
       <p class="q-text">Vehicle Model and Year</p>
       <label class="field-label" for="vehicle-id">Year / Make / Model</label>
       <input class="input-short" type="text" id="vehicle-id" name="vehicle-id" placeholder="e.g., 2019 Honda Accord" autocomplete="off" />
+      <div class="print-line-short"></div>
     </div>
 
     <hr class="divider" />
@@ -424,6 +641,7 @@
       <label class="field-label" for="bulletins">Service News / Bulletin Dates &amp; Numbers</label>
       <span class="field-hint">Check Honda Service Express (HSE) or iN before beginning work.</span>
       <textarea class="input-long" id="bulletins" name="bulletins" placeholder="e.g., SB 18-073 dated 03/15/2018 — CV boot replacement procedure update..."></textarea>
+      <div class="print-line-xl"><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div></div>
     </div>
 
     <hr class="divider" />
@@ -436,10 +654,12 @@
         <div>
           <label class="field-label" for="sm-section">Section</label>
           <input class="input-short" style="max-width:180px;" type="text" id="sm-section" name="sm-section" placeholder="e.g., Drive Shaft" />
+          <div class="print-line-short" style="max-width:180px;"></div>
         </div>
         <div>
           <label class="field-label" for="sm-page">Page #</label>
           <input class="input-short" style="max-width:120px;" type="text" id="sm-page" name="sm-page" placeholder="e.g., 14-4" />
+          <div class="print-line-short" style="max-width:120px;"></div>
         </div>
       </div>
     </div>
@@ -459,22 +679,27 @@
       <div class="torque-item">
         <label for="torq-a"><span class="letter">A</span> Spindle Nut Torque</label>
         <input class="input-short" style="max-width:100%;" type="text" id="torq-a" name="torq-a" placeholder="N·m / lb·ft" />
+        <div class="print-line-short" style="max-width:100%;"></div>
       </div>
       <div class="torque-item">
         <label for="torq-b"><span class="letter">B</span> Damper Fork Torque</label>
         <input class="input-short" style="max-width:100%;" type="text" id="torq-b" name="torq-b" placeholder="N·m / lb·ft" />
+        <div class="print-line-short" style="max-width:100%;"></div>
       </div>
       <div class="torque-item">
         <label for="torq-c"><span class="letter">C</span> Pinch Bolt Torque</label>
         <input class="input-short" style="max-width:100%;" type="text" id="torq-c" name="torq-c" placeholder="N·m / lb·ft" />
+        <div class="print-line-short" style="max-width:100%;"></div>
       </div>
       <div class="torque-item">
         <label for="torq-d"><span class="letter">D</span> Castle Nut Torque</label>
         <input class="input-short" style="max-width:100%;" type="text" id="torq-d" name="torq-d" placeholder="N·m / lb·ft" />
+        <div class="print-line-short" style="max-width:100%;"></div>
       </div>
       <div class="torque-item">
         <label for="torq-e"><span class="letter">E</span> Wheel Lug Nut Torque</label>
         <input class="input-short" style="max-width:100%;" type="text" id="torq-e" name="torq-e" placeholder="N·m / lb·ft" />
+        <div class="print-line-short" style="max-width:100%;"></div>
       </div>
     </div>
   </div>
@@ -490,6 +715,7 @@
     <p class="q-text">Why should the rollers and roller grooves be marked during disassembly?</p>
     <label class="field-label" for="q4f">Your Answer</label>
     <textarea class="input-long" id="q4f" name="q4f" placeholder="Explain the reason for marking rollers and roller grooves before removal..."></textarea>
+    <div class="print-line-xl"><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div></div>
   </div>
 
   <!-- Q4G -->
@@ -498,6 +724,7 @@
     <p class="q-text">Which joint is removed to replace the boots?</p>
     <label class="field-label" for="q4g">Your Answer</label>
     <textarea class="input-long" id="q4g" name="q4g" placeholder="Identify which CV joint must be removed and explain why..."></textarea>
+    <div class="print-line-xl"><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div></div>
   </div>
 
   <!-- Q4H -->
@@ -507,6 +734,7 @@
     <label class="field-label" for="q4h">Your Answer</label>
     <span class="field-hint">Include the Honda part number or specification if listed in the service manual.</span>
     <textarea class="input-long" id="q4h" name="q4h" placeholder="Identify the grease type, specification, and quantity used..."></textarea>
+    <div class="print-line-xl"><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div></div>
   </div>
 
   <!-- Q4I -->
@@ -516,6 +744,7 @@
     <label class="field-label" for="q4i">Your Answer</label>
     <span class="field-hint">Reference service manual procedure. Pay attention to groove alignment and orientation.</span>
     <textarea class="input-long" id="q4i" name="q4i" placeholder="Describe the correct roller-to-spider positioning including any orientation marks or alignment requirements..."></textarea>
+    <div class="print-line-xl"><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div></div>
   </div>
 
   <!-- Q4J -->
@@ -525,6 +754,7 @@
     <label class="field-label" for="q4j">Your Answer</label>
     <span class="field-hint">Include measurement or visual reference point used to confirm correct position.</span>
     <textarea class="input-long" id="q4j" name="q4j" placeholder="Describe the dynamic damper position on the driveshaft, including any dimension or alignment reference..."></textarea>
+    <div class="print-line-xl"><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div></div>
   </div>
 
   <!-- Q4K -->
@@ -534,6 +764,7 @@
     <label class="field-label" for="q4k">Your Answer</label>
     <span class="field-hint">Check service manual for single-use / torque-to-yield parts. List each item.</span>
     <textarea class="input-long" id="q4k" name="q4k" placeholder="e.g., spindle nut, lock tab, snap rings, boot clamps... List all that apply per the service manual."></textarea>
+    <div class="print-line-xl"><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div></div>
   </div>
 
   <!-- ══════════════════════════════════
@@ -547,10 +778,12 @@
       <div>
         <label class="field-label" for="insp-init">Instructor Initials</label>
         <input class="input-short" style="max-width:100%;" type="text" id="insp-init" name="insp-init" placeholder="Instructor initials" />
+        <div class="print-line-short" style="max-width:100%;"></div>
       </div>
       <div>
         <label class="field-label" for="insp-time">Date / Time</label>
         <input class="input-short" style="max-width:100%;" type="text" id="insp-time" name="insp-time" placeholder="MM/DD/YYYY — HH:MM" />
+        <div class="print-line-short" style="max-width:100%;"></div>
       </div>
     </div>
   </div>
@@ -567,6 +800,7 @@
     <label class="field-label" for="q5">Detailed Procedure</label>
     <span class="field-hint">Write in step-by-step format. Include safety precautions, torque specs, grease amounts, and any required tool references from the service manual. There is no character limit — be thorough.</span>
     <textarea class="input-xl" id="q5" name="q5" placeholder="Step 1: Raise and support the vehicle on jack stands...&#10;Step 2: Remove the front wheel...&#10;Step 3: Remove the spindle nut (torque to spec upon reassembly)...&#10;&#10;Continue step-by-step through full removal, disassembly, reassembly, and reinstallation..."></textarea>
+    <div class="print-line-xl"><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div></div>
   </div>
 
   <!-- Q6 -->
@@ -576,6 +810,7 @@
     <label class="field-label" for="q6">Observations &amp; Findings</label>
     <span class="field-hint">Document what you found during disassembly: condition of grease, boot condition, wear patterns, snap ring condition, any damage or scoring observed on rollers or grooves.</span>
     <textarea class="input-xl" id="q6" name="q6" placeholder="Inner CV joint findings:&#10;— Grease condition:&#10;— Boot condition:&#10;— Roller/groove wear:&#10;— Snap ring condition:&#10;&#10;Outer CV joint findings:&#10;— Grease condition:&#10;— Boot condition:&#10;— Ball bearing condition:&#10;— Race scoring or damage:&#10;&#10;Additional observations:"></textarea>
+    <div class="print-line-xl"><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div><div class="print-line-long"></div></div>
   </div>
 
   <!-- ══════════════════════════════════════
