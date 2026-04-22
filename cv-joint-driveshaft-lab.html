@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Driveshaft &amp; CV Joint Service Lab — AUTOH 174</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f2f2f2;
+    color: #1a1a1a;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .wrapper {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    background: #1a1a1a;
+    border-left: 6px solid #CC0000;
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+  .page-header .course-label {
+    color: #CC0000;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 6px;
+  }
+  .page-header h1 {
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .page-header .sub {
+    color: #cccccc;
+    font-size: 13px;
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: #fff5f5;
+    border-left: 4px solid #CC0000;
+    border-radius: 0 4px 4px 0;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #1a1a1a;
+  }
+  .callout strong { color: #CC0000; }
+
+  /* ── SECTION HEADER ── */
+  .section-hdr {
+    background: #CC0000;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 9px 14px;
+    border-radius: 4px;
+    margin: 24px 0 14px;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: #fff;
+    border-top: 4px solid #CC0000;
+    border-radius: 4px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  }
+
+  /* ── FIELD LABEL ── */
+  .field-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a1a1a;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .field-hint {
+    font-size: 12px;
+    color: #666;
+    font-style: italic;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  /* ── INPUTS ── */
+  .input-short {
+    width: 100%;
+    max-width: 340px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px 10px;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #1a1a1a;
+    background: #fafafa;
+    margin-bottom: 4px;
+    transition: border-color 0.15s;
+  }
+  .input-short:focus {
+    outline: none;
+    border-color: #CC0000;
+    background: #fff;
+  }
+  textarea.input-long {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #1a1a1a;
+    background: #fafafa;
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color 0.15s;
+  }
+  textarea.input-long:focus {
+    outline: none;
+    border-color: #CC0000;
+    background: #fff;
+  }
+  textarea.input-xl {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #1a1a1a;
+    background: #fafafa;
+    resize: vertical;
+    min-height: 160px;
+    transition: border-color 0.15s;
+  }
+  textarea.input-xl:focus {
+    outline: none;
+    border-color: #CC0000;
+    background: #fff;
+  }
+
+  /* ── TORQUE GRID ── */
+  .torque-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 4px;
+  }
+  .torque-item {}
+  .torque-item label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 5px;
+  }
+  .torque-item .letter {
+    display: inline-block;
+    background: #CC0000;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 3px;
+    margin-right: 6px;
+  }
+  @media (max-width: 520px) {
+    .torque-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── QUESTION NUMBER BADGE ── */
+  .q-badge {
+    display: inline-block;
+    background: #1a1a1a;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 2px;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+  .q-text {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 18px 0;
+  }
+
+  /* ── NATEF BOX ── */
+  .natef-box {
+    background: #f5f5f5;
+    border-radius: 4px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #333;
+    margin-bottom: 20px;
+    border-left: 3px solid #1a1a1a;
+  }
+  .natef-box strong { color: #1a1a1a; }
+
+  /* ════════════════════════
+     KNOWLEDGE CHECK SECTION
+  ════════════════════════ */
+  .kc-header {
+    background: #1a1a1a;
+    border-top: 4px solid #CC0000;
+    border-radius: 4px;
+    padding: 18px 22px;
+    margin: 32px 0 16px;
+  }
+  .kc-header h2 {
+    color: #fff;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .kc-header p {
+    color: #ccc;
+    font-size: 13px;
+  }
+
+  .kc-card {
+    background: #fff;
+    border-top: 4px solid #1a1a1a;
+    border-radius: 4px;
+    padding: 20px 22px;
+    margin-bottom: 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  }
+  .kc-q-num {
+    display: inline-block;
+    background: #CC0000;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 2px 10px;
+    border-radius: 2px;
+    margin-bottom: 8px;
+  }
+  .kc-q-text {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+  }
+  .choice-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .choice-btn {
+    width: 100%;
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: #1a1a1a;
+    text-align: left;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .choice-btn:hover:not(:disabled) { background: #ffe8e8; border-color: #CC0000; }
+  .choice-btn.correct  { background: #e6f4ea; border-color: #2d7a3a; color: #1a4d22; font-weight: 700; }
+  .choice-btn.wrong    { background: #fdecea; border-color: #CC0000; color: #7a1a1a; }
+  .choice-btn:disabled { cursor: default; }
+
+  .feedback {
+    display: none;
+    font-size: 13px;
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin-top: 8px;
+  }
+  .feedback.show { display: block; }
+  .correct-fb { background: #e6f4ea; color: #1a4d22; border: 1px solid #2d7a3a; }
+  .wrong-fb   { background: #fdecea; color: #7a1a1a; border: 1px solid #CC0000; }
+
+  /* ── SCORE CARD ── */
+  .score-card {
+    display: none;
+    background: #1a1a1a;
+    border-top: 4px solid #CC0000;
+    border-radius: 4px;
+    padding: 32px 24px;
+    text-align: center;
+    margin-top: 16px;
+  }
+  .score-card.show { display: block; }
+  .score-card h3 { color: #fff; font-size: 18px; margin-bottom: 8px; }
+  .score-card p  { color: #ccc; font-size: 14px; }
+  .score-badge {
+    display: inline-block;
+    background: #CC0000;
+    color: #fff;
+    font-size: 32px;
+    font-weight: 700;
+    padding: 14px 32px;
+    border-radius: 4px;
+    margin: 16px 0;
+  }
+
+  /* ── SUBMIT ROW ── */
+  .submit-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: 10px 22px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    transition: opacity 0.15s;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn-primary   { background: #CC0000; color: #fff; }
+  .btn-secondary { background: #1a1a1a; color: #fff; }
+
+  /* ── INSPECTOR SIGN-OFF ── */
+  .signoff-box {
+    background: #fff;
+    border: 2px dashed #CC0000;
+    border-radius: 4px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+  }
+  .signoff-box p {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 10px;
+  }
+  .signoff-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 480px) { .signoff-fields { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- ══ PAGE HEADER ══ -->
+  <header class="page-header" role="banner">
+    <p class="course-label">AUTOH 174 · Honda Manual Gear Trains &amp; Transaxles</p>
+    <h1>Driveshaft &amp; C.V. Joint Service Lab</h1>
+    <p class="sub">Lab Worksheet · Complete all sections · Instructor sign-off required after disassembly</p>
+  </header>
+
+  <!-- ══ IMPORTANT CALLOUT ══ -->
+  <div class="callout" role="note">
+    <strong>⚠ Before You Begin:</strong> Locate the service manual for your assigned vehicle. Research any applicable Service News articles and Service Bulletins before starting disassembly. Have your instructor inspect your work <em>after</em> disassembly and before reassembly begins.
+  </div>
+
+  <!-- ══ NATEF OUTCOMES ══ -->
+  <div class="natef-box" role="note">
+    <strong>NATEF / 2022 Program Standards — Applicable Tasks:</strong><br>
+    III.D.1 — Inspect and/or remove/replace bearings, hubs, and seals. (P-1)<br>
+    III.D.2 — Inspect and/or service/replace shafts, yokes, boots, and universal/CV joints. (P-1)<br>
+    III.D.4 — Diagnose CV joint noise and vibration concerns; determine needed action. (P-1)<br>
+    III.E.2 — Remove and replace drive axle shafts. (P-1)
+  </div>
+
+  <!-- ══════════════════════════════════
+       SECTION 1 — VEHICLE & SERVICE INFO
+  ══════════════════════════════════ -->
+  <div class="section-hdr" role="heading" aria-level="2">Section 1 — Vehicle &amp; Service Information</div>
+
+  <div class="card">
+    <!-- Q1: Vehicle ID -->
+    <div style="margin-bottom:18px;">
+      <span class="q-badge">1</span>
+      <p class="q-text">Vehicle Model and Year</p>
+      <label class="field-label" for="vehicle-id">Year / Make / Model</label>
+      <input class="input-short" type="text" id="vehicle-id" name="vehicle-id" placeholder="e.g., 2019 Honda Accord" autocomplete="off" />
+    </div>
+
+    <hr class="divider" />
+
+    <!-- Q2: Service News / Bulletins -->
+    <div style="margin-bottom:18px;">
+      <span class="q-badge">2</span>
+      <p class="q-text">List the dates of any Service News articles and Service Bulletins that relate to driveshaft and C.V. joint service.</p>
+      <label class="field-label" for="bulletins">Service News / Bulletin Dates &amp; Numbers</label>
+      <span class="field-hint">Check Honda Service Express (HSE) or iN before beginning work.</span>
+      <textarea class="input-long" id="bulletins" name="bulletins" placeholder="e.g., SB 18-073 dated 03/15/2018 — CV boot replacement procedure update..."></textarea>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- Q3: Service Manual -->
+    <div>
+      <span class="q-badge">3</span>
+      <p class="q-text">Service Manual Section and Page Number</p>
+      <div style="display:flex; gap:16px; flex-wrap:wrap;">
+        <div>
+          <label class="field-label" for="sm-section">Section</label>
+          <input class="input-short" style="max-width:180px;" type="text" id="sm-section" name="sm-section" placeholder="e.g., Drive Shaft" />
+        </div>
+        <div>
+          <label class="field-label" for="sm-page">Page #</label>
+          <input class="input-short" style="max-width:120px;" type="text" id="sm-page" name="sm-page" placeholder="e.g., 14-4" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SECTION 2 — TORQUE SPECIFICATIONS
+  ══════════════════════════════════ -->
+  <div class="section-hdr" role="heading" aria-level="2">Section 2 — Torque Specifications</div>
+
+  <div class="card">
+    <span class="q-badge">4A – 4E</span>
+    <p class="q-text" style="margin-bottom:14px;">Using the service manual, record the following torque specifications for your vehicle.</p>
+    <span class="field-hint" style="margin-bottom:14px; display:block;">Include units — N·m and lb·ft (e.g., 134 N·m / 99 lb·ft). These values vary by model and year — always verify in the service manual.</span>
+
+    <div class="torque-grid">
+      <div class="torque-item">
+        <label for="torq-a"><span class="letter">A</span> Spindle Nut Torque</label>
+        <input class="input-short" style="max-width:100%;" type="text" id="torq-a" name="torq-a" placeholder="N·m / lb·ft" />
+      </div>
+      <div class="torque-item">
+        <label for="torq-b"><span class="letter">B</span> Damper Fork Torque</label>
+        <input class="input-short" style="max-width:100%;" type="text" id="torq-b" name="torq-b" placeholder="N·m / lb·ft" />
+      </div>
+      <div class="torque-item">
+        <label for="torq-c"><span class="letter">C</span> Pinch Bolt Torque</label>
+        <input class="input-short" style="max-width:100%;" type="text" id="torq-c" name="torq-c" placeholder="N·m / lb·ft" />
+      </div>
+      <div class="torque-item">
+        <label for="torq-d"><span class="letter">D</span> Castle Nut Torque</label>
+        <input class="input-short" style="max-width:100%;" type="text" id="torq-d" name="torq-d" placeholder="N·m / lb·ft" />
+      </div>
+      <div class="torque-item">
+        <label for="torq-e"><span class="letter">E</span> Wheel Lug Nut Torque</label>
+        <input class="input-short" style="max-width:100%;" type="text" id="torq-e" name="torq-e" placeholder="N·m / lb·ft" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SECTION 3 — SHORT ANSWER QUESTIONS
+  ══════════════════════════════════ -->
+  <div class="section-hdr" role="heading" aria-level="2">Section 3 — Service Manual Research Questions</div>
+
+  <!-- Q4F -->
+  <div class="card">
+    <span class="q-badge">4F</span>
+    <p class="q-text">Why should the rollers and roller grooves be marked during disassembly?</p>
+    <label class="field-label" for="q4f">Your Answer</label>
+    <textarea class="input-long" id="q4f" name="q4f" placeholder="Explain the reason for marking rollers and roller grooves before removal..."></textarea>
+  </div>
+
+  <!-- Q4G -->
+  <div class="card">
+    <span class="q-badge">4G</span>
+    <p class="q-text">Which joint is removed to replace the boots?</p>
+    <label class="field-label" for="q4g">Your Answer</label>
+    <textarea class="input-long" id="q4g" name="q4g" placeholder="Identify which CV joint must be removed and explain why..."></textarea>
+  </div>
+
+  <!-- Q4H -->
+  <div class="card">
+    <span class="q-badge">4H</span>
+    <p class="q-text">What type of grease is used to pack the C.V. joint boots?</p>
+    <label class="field-label" for="q4h">Your Answer</label>
+    <span class="field-hint">Include the Honda part number or specification if listed in the service manual.</span>
+    <textarea class="input-long" id="q4h" name="q4h" placeholder="Identify the grease type, specification, and quantity used..."></textarea>
+  </div>
+
+  <!-- Q4I -->
+  <div class="card">
+    <span class="q-badge">4I</span>
+    <p class="q-text">Describe how the roller should be positioned on the spider.</p>
+    <label class="field-label" for="q4i">Your Answer</label>
+    <span class="field-hint">Reference service manual procedure. Pay attention to groove alignment and orientation.</span>
+    <textarea class="input-long" id="q4i" name="q4i" placeholder="Describe the correct roller-to-spider positioning including any orientation marks or alignment requirements..."></textarea>
+  </div>
+
+  <!-- Q4J -->
+  <div class="card">
+    <span class="q-badge">4J</span>
+    <p class="q-text">How should the dynamic damper be positioned onto the driveshaft?</p>
+    <label class="field-label" for="q4j">Your Answer</label>
+    <span class="field-hint">Include measurement or visual reference point used to confirm correct position.</span>
+    <textarea class="input-long" id="q4j" name="q4j" placeholder="Describe the dynamic damper position on the driveshaft, including any dimension or alignment reference..."></textarea>
+  </div>
+
+  <!-- Q4K -->
+  <div class="card">
+    <span class="q-badge">4K</span>
+    <p class="q-text">List all fastener hardware that should be replaced (not reused) when servicing C.V. joints.</p>
+    <label class="field-label" for="q4k">Your Answer</label>
+    <span class="field-hint">Check service manual for single-use / torque-to-yield parts. List each item.</span>
+    <textarea class="input-long" id="q4k" name="q4k" placeholder="e.g., spindle nut, lock tab, snap rings, boot clamps... List all that apply per the service manual."></textarea>
+  </div>
+
+  <!-- ══════════════════════════════════
+       INSPECTOR SIGN-OFF
+  ══════════════════════════════════ -->
+  <div class="section-hdr" role="heading" aria-level="2">Instructor Sign-Off — After Disassembly</div>
+
+  <div class="signoff-box" role="note">
+    <p>⚠ <strong>Stop here.</strong> Call your instructor to inspect your disassembled driveshaft and CV joints before proceeding with reassembly. The instructor must initial below before you continue.</p>
+    <div class="signoff-fields">
+      <div>
+        <label class="field-label" for="insp-init">Instructor Initials</label>
+        <input class="input-short" style="max-width:100%;" type="text" id="insp-init" name="insp-init" placeholder="Instructor initials" />
+      </div>
+      <div>
+        <label class="field-label" for="insp-time">Date / Time</label>
+        <input class="input-short" style="max-width:100%;" type="text" id="insp-time" name="insp-time" placeholder="MM/DD/YYYY — HH:MM" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SECTION 4 — PROCEDURE WRITE-UPS
+  ══════════════════════════════════ -->
+  <div class="section-hdr" role="heading" aria-level="2">Section 4 — Procedure Descriptions</div>
+
+  <!-- Q5 -->
+  <div class="card">
+    <span class="q-badge">5</span>
+    <p class="q-text">Describe in detail the procedure to replace a driveshaft, an inner C.V. joint, an outer C.V. joint, and the C.V. boots.</p>
+    <label class="field-label" for="q5">Detailed Procedure</label>
+    <span class="field-hint">Write in step-by-step format. Include safety precautions, torque specs, grease amounts, and any required tool references from the service manual. There is no character limit — be thorough.</span>
+    <textarea class="input-xl" id="q5" name="q5" placeholder="Step 1: Raise and support the vehicle on jack stands...&#10;Step 2: Remove the front wheel...&#10;Step 3: Remove the spindle nut (torque to spec upon reassembly)...&#10;&#10;Continue step-by-step through full removal, disassembly, reassembly, and reinstallation..."></textarea>
+  </div>
+
+  <!-- Q6 -->
+  <div class="card">
+    <span class="q-badge">6</span>
+    <p class="q-text">Disassemble inner &amp; outer CV joints from the supplied axle assembly — Observation Notes</p>
+    <label class="field-label" for="q6">Observations &amp; Findings</label>
+    <span class="field-hint">Document what you found during disassembly: condition of grease, boot condition, wear patterns, snap ring condition, any damage or scoring observed on rollers or grooves.</span>
+    <textarea class="input-xl" id="q6" name="q6" placeholder="Inner CV joint findings:&#10;— Grease condition:&#10;— Boot condition:&#10;— Roller/groove wear:&#10;— Snap ring condition:&#10;&#10;Outer CV joint findings:&#10;— Grease condition:&#10;— Boot condition:&#10;— Ball bearing condition:&#10;— Race scoring or damage:&#10;&#10;Additional observations:"></textarea>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       KNOWLEDGE CHECK — 6 QUESTIONS
+  ══════════════════════════════════════ -->
+  <div class="kc-header" role="region" aria-label="Knowledge Check">
+    <h2>🔧 Knowledge Check — 6 Questions</h2>
+    <p>Click an answer to reveal instant feedback. These do not replace your written answers above.</p>
+  </div>
+
+  <!-- KC Q1 -->
+  <div class="kc-card">
+    <span class="kc-q-num">KC Question 1 of 6</span>
+    <p class="kc-q-text">What is the primary reason rollers and roller grooves must be marked before disassembling an inner CV joint?</p>
+    <ul class="choice-list" role="list">
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc1',false)">A. So the correct grease type can be matched to each roller groove during reassembly</button></li>
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc1',true)">B. Rollers and grooves wear together as a matched set — installing them in different grooves causes premature wear and noise</button></li>
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc1',false)">C. To identify which roller was last torqued by the factory during assembly</button></li>
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc1',false)">D. Because the rollers are different sizes and must be matched by diameter measurement</button></li>
+    </ul>
+    <div class="feedback correct-fb" id="kc1-correct">✅ <strong>Correct!</strong> Rollers and their specific grooves wear to each other over time. Installing a roller in a different groove — even on the same spider — will cause accelerated wear, vibration, and noise. Always mark before disassembly.</div>
+    <div class="feedback wrong-fb"   id="kc1-wrong">❌ <strong>Not quite.</strong> The reason is fit: rollers and grooves wear together as a matched set. Swapping positions — even within the same joint — causes uneven contact, vibration, and premature failure.</div>
+  </div>
+
+  <!-- KC Q2 -->
+  <div class="kc-card">
+    <span class="kc-q-num">KC Question 2 of 6</span>
+    <p class="kc-q-text">On most Honda FWD vehicles, which CV joint must be removed to access and replace the CV boots?</p>
+    <ul class="choice-list" role="list">
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc2',false)">A. The outer (wheel-side) joint, because it unbolts from the knuckle first</button></li>
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc2',true)">B. The inner (differential-side) joint, because the boot must slide off from that end of the shaft</button></li>
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc2',false)">C. Both joints must be removed simultaneously before any boot can be replaced</button></li>
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc2',false)">D. Neither joint is removed — the boot is split and re-clamped in place on the vehicle</button></li>
+    </ul>
+    <div class="feedback correct-fb" id="kc2-correct">✅ <strong>Correct!</strong> On Honda driveshafts, the inner CV joint (inboard) must be disassembled and removed from the shaft so the boots can slide off toward the differential end. The outer joint stays assembled in most procedures.</div>
+    <div class="feedback wrong-fb"   id="kc2-wrong">❌ <strong>Not quite.</strong> The inner (inboard) CV joint must be removed so the boot can slide off the shaft. The outer joint typically remains assembled. Always verify in the service manual for your specific model.</div>
+  </div>
+
+  <!-- KC Q3 -->
+  <div class="kc-card">
+    <span class="kc-q-num">KC Question 3 of 6</span>
+    <p class="kc-q-text">Why is it critical to use <strong>only Honda-specified CV joint grease</strong> and not a generic grease substitute?</p>
+    <ul class="choice-list" role="list">
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc3',false)">A. Generic grease is too thick and will expand the boot, causing it to split at the clamp</button></li>
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc3',false)">B. Only Honda grease is the correct color for visual inspection during warranty claims</button></li>
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc3',true)">C. CV joint grease must have specific EP (extreme pressure) additives and viscosity for the heat and load in the joint — incorrect grease causes inadequate lubrication and premature failure</button></li>
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc3',false)">D. Generic grease reacts with the boot material, shrinking the boot and causing air leaks</button></li>
+    </ul>
+    <div class="feedback correct-fb" id="kc3-correct">✅ <strong>Correct!</strong> CV joints operate under extreme pressure and wide temperature ranges. Honda-spec grease has the correct EP additive package, viscosity, and compatibility with the boot material. Substituting generic grease leads to inadequate film strength and bearing failure.</div>
+    <div class="feedback wrong-fb"   id="kc3-wrong">❌ <strong>Not quite.</strong> The real issue is lubrication chemistry: CV grease is formulated with EP (extreme pressure) additives that handle the high loads and temperature swings inside the joint. Generic grease lacks this formulation and will fail under CV joint conditions.</div>
+  </div>
+
+  <!-- KC Q4 -->
+  <div class="kc-card">
+    <span class="kc-q-num">KC Question 4 of 6</span>
+    <p class="kc-q-text">A vehicle comes in with a clicking noise during slow turns. The noise disappears on straight roads. Which component is the most likely cause?</p>
+    <ul class="choice-list" role="list">
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc4',false)">A. Worn inner CV joint, because inner joints are stressed most during cornering</button></li>
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc4',true)">B. Worn outer CV joint, because outer joints operate at high angles during turns and are the most common cause of clicking</button></li>
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc4',false)">C. Worn wheel bearing, because bearing noise typically increases with steering input</button></li>
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc4',false)">D. Loose lug nuts, because they allow the wheel to shift slightly during cornering</button></li>
+    </ul>
+    <div class="feedback correct-fb" id="kc4-correct">✅ <strong>Correct!</strong> Clicking during slow turns is the classic symptom of a worn <strong>outer (outboard) CV joint</strong>. The outer joint operates at its maximum angle during low-speed turns, and worn ball grooves cause the characteristic clicking. Confirm with inspection of boot condition — torn boots accelerate wear.</div>
+    <div class="feedback wrong-fb"   id="kc4-wrong">❌ <strong>Not quite.</strong> Clicking during slow turns is the textbook symptom of a worn <strong>outer CV joint</strong>. The outer joint bends to its maximum angle during low-speed turns. Inner joints typically cause vibration at highway speeds under load, not slow-turn clicking.</div>
+  </div>
+
+  <!-- KC Q5 -->
+  <div class="kc-card">
+    <span class="kc-q-num">KC Question 5 of 6</span>
+    <p class="kc-q-text">The spindle nut on most Honda vehicles is a <strong>single-use fastener</strong>. What does this mean for service?</p>
+    <ul class="choice-list" role="list">
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc5',false)">A. The nut can only be torqued once — after that it must be replaced regardless of whether it was removed</button></li>
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc5',true)">B. Once the spindle nut is removed, it must be replaced with a new nut — it cannot be reinstalled and properly torqued a second time because the locking feature is deformed on removal</button></li>
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc5',false)">C. The nut is only rated for one specific torque value and must be replaced if over-torqued</button></li>
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc5',false)">D. The nut includes a one-time thread-locking patch that must be replaced after each removal</button></li>
+    </ul>
+    <div class="feedback correct-fb" id="kc5-correct">✅ <strong>Correct!</strong> Honda spindle nuts use a crimped or staked locking feature that deforms permanently when removed. Reinstalling a used spindle nut risks it loosening in service — which can allow the hub to separate from the shaft. Always install a new nut and torque to spec.</div>
+    <div class="feedback wrong-fb"   id="kc5-wrong">❌ <strong>Not quite.</strong> Single-use means the nut's locking feature (staking or crimping) is destroyed on removal. A used spindle nut cannot reliably lock itself and risks coming loose, causing catastrophic hub separation. Always replace spindle nuts on installation.</div>
+  </div>
+
+  <!-- KC Q6 -->
+  <div class="kc-card">
+    <span class="kc-q-num">KC Question 6 of 6</span>
+    <p class="kc-q-text">After installing a new CV boot, a technician does not equalize the air pressure inside the boot before clamping it. What is the likely result?</p>
+    <ul class="choice-list" role="list">
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc6',false)">A. The boot will immediately collapse because of the pressure differential between inside and outside</button></li>
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc6',false)">B. The grease inside will foam and lose its lubricating properties due to air entrapment</button></li>
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc6',true)">C. As the joint heats up and cools during driving, the unequalized air pressure may cause the boot to balloon, distort, or crack prematurely</button></li>
+      <li><button class="choice-btn" onclick="checkAnswer(this,'kc6',false)">D. Nothing — boot pressure has no effect on boot life or joint operation</button></li>
+    </ul>
+    <div class="feedback correct-fb" id="kc6-correct">✅ <strong>Correct!</strong> The air inside the boot expands when the CV joint heats up. If pressure isn't equalized before clamping, thermal cycling will balloon the boot and stress the clamp seal, leading to premature cracking or clamp failure. Honda procedure specifies squeezing the boot to proper shape and releasing trapped air before installing the final clamp.</div>
+    <div class="feedback wrong-fb"   id="kc6-wrong">❌ <strong>Not quite.</strong> Trapped air in the boot expands as the joint heats up during operation. This causes the boot to balloon outward, stressing the boot material and clamp seal. Over time it leads to cracking and grease loss — exactly what you were trying to prevent. Always equalize boot pressure before clamping.</div>
+  </div>
+
+  <!-- SCORE SUBMIT -->
+  <div class="submit-row">
+    <button class="btn btn-secondary" onclick="resetKC()">Reset Answers</button>
+    <button class="btn btn-primary" onclick="showScore()">See My Score →</button>
+  </div>
+
+  <!-- SCORE CARD -->
+  <div class="score-card" id="scoreCard" role="region" aria-live="polite">
+    <p style="color:#CC0000; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">AUTOH 174 · Knowledge Check Complete</p>
+    <h3>Driveshaft &amp; C.V. Joint Service</h3>
+    <div class="score-badge" id="scoreBadge">— / 6</div>
+    <p id="scoreMsg" style="margin-top:4px;"></p>
+    <p style="margin-top:14px; font-size:13px;">Complete all written sections above and submit your worksheet to Canvas.</p>
+  </div>
+
+</div><!-- end wrapper -->
+
+<script>
+  var kcAnswers = {};
+
+  function checkAnswer(btn, qid, isCorrect) {
+    var allBtns = btn.closest('.kc-card').querySelectorAll('.choice-btn');
+    allBtns.forEach(function(b){ b.disabled = true; });
+    btn.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.getElementById(qid + '-correct').classList.toggle('show', isCorrect);
+    document.getElementById(qid + '-wrong').classList.toggle('show', !isCorrect);
+    kcAnswers[qid] = isCorrect;
+  }
+
+  function showScore() {
+    var total = 0;
+    ['kc1','kc2','kc3','kc4','kc5','kc6'].forEach(function(q){
+      if (kcAnswers[q] === true) total++;
+    });
+    var card = document.getElementById('scoreCard');
+    card.classList.add('show');
+    document.getElementById('scoreBadge').textContent = total + ' / 6';
+    var msgs = [
+      'Review all 6 questions and re-read your service manual sections.',
+      'Getting there — focus on joint symptom diagnosis and single-use fasteners.',
+      'Good effort — review roller marking, boot pressure, and grease selection.',
+      'Solid — double-check the questions you missed before the lab.',
+      'Nice work — you\'re ready to tackle the driveshaft bench assignment.',
+      'Almost perfect — review that last question before your lab sign-off.',
+      'Perfect score! Outstanding CV joint knowledge! 🏁'
+    ];
+    document.getElementById('scoreMsg').textContent = msgs[total] || '';
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function resetKC() {
+    kcAnswers = {};
+    document.querySelectorAll('.choice-btn').forEach(function(b){
+      b.disabled = false;
+      b.classList.remove('correct','wrong');
+    });
+    document.querySelectorAll('.feedback').forEach(function(f){
+      f.classList.remove('show');
+    });
+    var card = document.getElementById('scoreCard');
+    card.classList.remove('show');
+    document.getElementById('scoreBadge').textContent = '— / 6';
+    document.getElementById('scoreMsg').textContent = '';
+  }
+</script>
+
+</body>
+</html>
