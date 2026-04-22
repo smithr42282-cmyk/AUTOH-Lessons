@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Honda TPMS — Construction &amp; Function — AUTOH 173</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f2f2f2;
+    color: #1a1a1a;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .lesson-wrapper {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+  }
+
+  /* ── HEADER ── */
+  .lesson-header {
+    background: #1a1a1a;
+    border-left: 6px solid #CC0000;
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+  }
+  .lesson-header .course-label {
+    color: #CC0000;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 6px;
+  }
+  .lesson-header h1 {
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .lesson-header .sub {
+    color: #cccccc;
+    font-size: 13px;
+  }
+
+  /* ── PROGRESS ── */
+  .progress-bar {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+  .progress-bar .dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: #cccccc;
+    transition: background 0.3s;
+    flex-shrink: 0;
+  }
+  .progress-bar .dot.active { background: #CC0000; }
+  .progress-bar .dot.done  { background: #888888; }
+  .progress-label {
+    font-size: 12px;
+    color: #666;
+    margin-left: 8px;
+  }
+
+  /* ── SLIDE CARD ── */
+  .slide {
+    display: none;
+    background: #ffffff;
+    border-top: 4px solid #CC0000;
+    border-radius: 4px;
+    padding: 28px 28px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .slide.active { display: block; }
+
+  .slide-tag {
+    background: #CC0000;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+  .slide h2 {
+    font-size: 19px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 14px;
+  }
+  .slide p {
+    color: #333;
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+  .slide ul, .slide ol {
+    padding-left: 20px;
+    color: #333;
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+  .slide li { margin-bottom: 6px; }
+
+  /* ── DIAGRAM ── */
+  .diagram-wrap {
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 16px;
+    margin: 16px 0;
+    text-align: center;
+  }
+  .diagram-wrap img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+  .diagram-caption {
+    font-size: 12px;
+    color: #666;
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: #fff5f5;
+    border-left: 4px solid #CC0000;
+    border-radius: 0 4px 4px 0;
+    padding: 12px 16px;
+    margin: 14px 0;
+  }
+  .callout .callout-label {
+    color: #CC0000;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .callout p { margin: 0; font-size: 14px; }
+
+  .info-box {
+    background: #f5f5f5;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 14px;
+    color: #333;
+  }
+  .info-box strong { color: #1a1a1a; }
+
+  /* ── TWO COLUMN ── */
+  .two-col {
+    display: flex;
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .two-col .col {
+    flex: 1;
+    background: #f5f5f5;
+    border-top: 3px solid #CC0000;
+    border-radius: 4px;
+    padding: 14px;
+    font-size: 14px;
+    color: #333;
+  }
+  .two-col .col strong {
+    display: block;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+  }
+  @media (max-width: 520px) { .two-col { flex-direction: column; } }
+
+  /* ── TABLE ── */
+  .spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin: 14px 0;
+  }
+  .spec-table th {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 9px 12px;
+    text-align: left;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .spec-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #e0e0e0;
+    color: #333;
+  }
+  .spec-table tr:nth-child(even) td { background: #f9f9f9; }
+
+  /* ── KNOWLEDGE CHECK ── */
+  .kc-section {
+    display: none;
+    background: #ffffff;
+    border-top: 4px solid #1a1a1a;
+    border-radius: 4px;
+    padding: 28px 28px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .kc-section.active { display: block; }
+  .kc-section h2 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 20px;
+  }
+
+  .question-block { margin-bottom: 28px; }
+  .question-block .q-number {
+    background: #CC0000;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  .question-block .q-text {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+  }
+
+  .choice-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .choice-btn {
+    width: 100%;
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: #1a1a1a;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .choice-btn:hover:not(:disabled) { background: #ffe8e8; border-color: #CC0000; }
+  .choice-btn.correct  { background: #e6f4ea; border-color: #2d7a3a; color: #1a4d22; font-weight: 700; }
+  .choice-btn.wrong    { background: #fdecea; border-color: #CC0000; color: #7a1a1a; }
+  .choice-btn:disabled { cursor: default; }
+
+  .feedback {
+    display: none;
+    font-size: 13px;
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin-top: 8px;
+  }
+  .feedback.show { display: block; }
+  .correct-fb { background: #e6f4ea; color: #1a4d22; border: 1px solid #2d7a3a; }
+  .wrong-fb   { background: #fdecea; color: #7a1a1a; border: 1px solid #CC0000; }
+
+  /* ── NAV BUTTONS ── */
+  .nav-row {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn-primary   { background: #CC0000; color: #fff; }
+  .btn-secondary { background: #1a1a1a; color: #fff; }
+
+  /* ── COMPLETE CARD ── */
+  .complete-card {
+    display: none;
+    background: #1a1a1a;
+    border-top: 4px solid #CC0000;
+    border-radius: 4px;
+    padding: 36px 28px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #fff;
+  }
+  .complete-card.show { display: block; }
+  .complete-card h2 { font-size: 20px; margin-bottom: 10px; color: #fff; }
+  .complete-card p  { color: #cccccc; font-size: 14px; }
+  .score-badge {
+    display: inline-block;
+    background: #CC0000;
+    color: #fff;
+    font-size: 28px;
+    font-weight: 700;
+    padding: 14px 28px;
+    border-radius: 4px;
+    margin: 16px 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="lesson-wrapper">
+
+  <!-- HEADER -->
+  <header class="lesson-header" role="banner">
+    <p class="course-label">AUTOH 173 · Honda Steering &amp; Suspension Systems</p>
+    <h1>Honda TPMS — Construction &amp; Function</h1>
+    <p class="sub">Micro Lesson · 3 Slides + 5 Practice Questions</p>
+  </header>
+
+  <!-- PROGRESS -->
+  <nav aria-label="Lesson progress">
+    <div class="progress-bar" id="progressDots">
+      <span class="dot active" id="dot0" aria-label="Slide 1"></span>
+      <span class="dot" id="dot1" aria-label="Slide 2"></span>
+      <span class="dot" id="dot2" aria-label="Slide 3"></span>
+      <span class="dot" id="dot3" aria-label="Practice Questions"></span>
+      <span class="progress-label" id="progressLabel" aria-live="polite">Slide 1 of 3</span>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════
+       SLIDE 1 — System Overview & Components
+  ══════════════════════════════ -->
+  <section class="slide active" id="slide0" aria-labelledby="s0-title">
+    <span class="slide-tag">Slide 1 of 3 — System Overview</span>
+    <h2 id="s0-title">What Is Honda TPMS?</h2>
+
+    <p>Honda's <strong>Tire Pressure Monitoring System (TPMS)</strong> is a <strong>direct TPMS</strong> — meaning it uses actual pressure sensors inside each wheel to monitor tire pressure in real time. When any tire drops below the threshold, the system alerts the driver via the low-pressure indicator on the instrument panel.</p>
+
+    <div class="diagram-wrap" role="img" aria-label="Honda TPMS components: TPMS Control Unit with radio frequency antenna (left) and Tire Pressure Sensor — a sensor-transmitter with acceleration sensor (right)">
+      <img
+        src="data:image/jpeg;base64,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but3BdWrRwysBdtvyl8jwwfrbSbb8rtsw5zF7YjlUXPK5nlnrgnK62XzzqO0c8lgoiLGiIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAsVmtXstY2zBFMI5GyMEjA7le07tcN+xB6g+iyogIiICIiAiIgIiICIiAozUmndP6lpspajwWLzNWOTxWQ36kdhjX7Ecwa8EA7Ejf5lSaIPmGOOGJkUUbY42NDWMaNg0DsAPQL6RE0mgWDIU6mQoz0L9WC3UsRuimgnjD45WEbFrmnoQR0IKzomkamHxmNw2NhxmIx9THUYAWw1qsLYoowTvs1rQAOpJ6D1W2iJM2aBERAREQFhnqVZ7FexPWhlmrOL4JHsBdE4tLSWk9WktJHT0JCzIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiIMU9avPJDJPBFK+B/iQuewExv5S3maT2PK5w3HoSPVZURAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQFhgqVYJ554K0MU1lwfPIxgDpXBoaC4jq4hoA3PoAFmRAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQERVjrPjHh6Gbk0rozG2tb6sb0djsW4GOsd9t7E58kLQeh33IPcILORUx/6PeLmqQ7K6q4r29N2n7Or4vTcDW1qnyfI/d8x+O+w3326bL5j1rxA4XbV+KlQ6l0407N1biKmz4G797lVu5YB+vHuO3clBdKLQ0/msRqHEQZfB5KrkqFhvNFYrSh7HD7x6j1HcLfQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQFyvFDXmD4eaZObzXtM3iTM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wl4V6nz1rMQUrODzsjv5ZJi78tCwXf7RkbgCT35tuvfc7oLGvf5wY3/hT/8AkUkqC+jPjKuE1ZrjC0JbMlOlqi5FD49h8zthXrdS5xJJPqVYHEni1o7QtiPG3rU+Tz0+wq4TFxGzencewEbfd3+LtgfTdB3qrXX3GXTOnMv+TWHguat1W7cR4XDM8aVp+Mrh5YmjpuXHcDrsVzX5P8XeKfn1bkn8OtLSdsPiZg/J2WfCax2jBH6LB2JBHqrM0BoXSeg8R9V6TwdXGQHYyOjbvJMR+lJId3PPzcSgrUcP+IvEw+0cV899RYGTqNKYGctD2/q2rI80nwLWeX1BCtjSmm8BpTDRYfTeIp4qhF7sFaIMbv8AE+rnH1J3J9SpVEBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERBTXGm9Sh48cG6WQuV6td13J2C6aQMaXsqhsbdz03L5AAPU9lu8Rdfae0ZgqM2Usvmv27FySljqjfFuW5JDIxjY4gd3b+IBv2+a7zWmkNMa0xDsTqnB0stTO+zLEe5YT6sd7zHfNpBXN8NuDfDzQFlt7A4FjsoAR9ZXHmxa2I22D378o26bN26IOVrcc7MNaKtBwT4uuMTGs8+ngwdBt38QrPFxX4j5Q7ae4C6mf8AtZfIV8cB8/NzH9yuNEFPvj+kVqHp7RofRFV/YxtlyVxn9bliK+YuAeIzUjbXEzVeo9e2d+bwrtt1akx3xZXhLWt+7cq4kQcnorhtoPRVqe1pbSmLxVmc/aTQwjxNtgNg47kN6e6CB67bldYiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiIPmaKOaF8M0bJI5Glr2PG7XA9CCD3CqPK8JcnpbIz5/g1mYtN2pX+LZwNprpMRdd67xjrA49PNH8ANu6t5EH5t1XndG8RdTYjTHFbH5HhzrTGxTSUbLrvgFkjnM5ZalseSRp5T0d6gjYkbqMyXEbWPDrU40llq2neL9u69vsQxs3JlGtDGgOsQtjkY3y7eYEbgcxPVfpLUun8FqXGuxmocNQy1Jx5jBcrtlZuOxAcDsfn3Wlo3RGkNGwyxaV01i8OJtvGdUrNY+TbfbmcBu7bc7bk7boKdp6V4zazufaUMFwgwk0kj7keIkZZylkvDQT4rAI2uIY0c42cNvXoFaHDXhjo3h9XkGncU0XZ+trI2XeNcsuPUmSV3U7nrsNhv6LskQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQf/Z"
+        alt="Two Honda TPMS components side by side. Left: TPMS Control Unit, a rectangular black module with radio frequency antenna and connector plug. Right: Tire Pressure Sensor, a curved sensor-transmitter unit with valve stem and built-in acceleration sensor that mounts inside the wheel."
+        style="max-width:100%; height:auto; display:block; margin:0 auto;"
+        width="760"
+      />
+      <p class="diagram-caption">Figure 1 — Honda TPMS hardware: Control Unit (left) receives RF signals from each Tire Pressure Sensor (right). (Source: Honda service training material)</p>
+    </div>
+
+    <div class="two-col">
+      <div class="col">
+        <strong>TPMS Control Unit</strong>
+        <ul>
+          <li>Mounted in the vehicle body (not the wheel)</li>
+          <li>Contains a <strong>radio frequency (RF) antenna</strong> to receive signals from all four sensors</li>
+          <li>Processes pressure data and communicates with the gauge control module</li>
+          <li>Stores sensor IDs — required for relearn after tire rotation or sensor replacement</li>
+          <li>Communicates faults via DTCs over the CAN bus</li>
+        </ul>
+      </div>
+      <div class="col">
+        <strong>Tire Pressure Sensor</strong>
+        <ul>
+          <li>Mounted inside the wheel on the valve stem</li>
+          <li>Contains a <strong>pressure transducer</strong>, <strong>temperature sensor</strong>, and <strong>acceleration sensor</strong></li>
+          <li>Acceleration sensor detects when the wheel is rolling — activates transmit mode</li>
+          <li>Transmits pressure, temperature, and battery status to the control unit via RF (~315 MHz on Honda)</li>
+          <li>Battery is <strong>non-replaceable</strong> — full sensor must be replaced when battery dies (~7–10 years)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout" role="note">
+      <p class="callout-label">⚠ Honda TPMS vs Indirect TPMS</p>
+      <p>Honda uses <strong>direct TPMS</strong> — physical sensors in each wheel. Do not confuse this with <strong>indirect TPMS</strong>, which uses ABS wheel speed sensors to infer pressure from rolling diameter changes. Honda's system reads actual pressure; indirect systems do not. Always confirm system type before service.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-primary" onclick="goToSlide(1)">Next: How It Works →</button>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       SLIDE 2 — System Operation & Signal Flow
+  ══════════════════════════════ -->
+  <section class="slide" id="slide1" aria-labelledby="s1-title">
+    <span class="slide-tag">Slide 2 of 3 — System Operation</span>
+    <h2 id="s1-title">How Honda TPMS Works — Signal Flow</h2>
+
+    <p>Understanding the signal path from sensor to warning light is essential for accurate diagnosis. Honda TPMS uses a <strong>one-way RF communication loop</strong>: the sensor transmits, the control unit receives and processes, then triggers the instrument panel indicator if needed.</p>
+
+    <!-- Signal flow visual using spec-table -->
+    <table class="spec-table" role="table" aria-label="TPMS signal flow from sensor to driver warning">
+      <thead>
+        <tr>
+          <th scope="col">Step</th>
+          <th scope="col">Component</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1</strong></td>
+          <td>Tire Pressure Sensor</td>
+          <td>Detects wheel rotation via acceleration sensor → wakes from sleep mode</td>
+        </tr>
+        <tr>
+          <td><strong>2</strong></td>
+          <td>Tire Pressure Sensor</td>
+          <td>Measures tire pressure and temperature; transmits RF signal (~315 MHz) with sensor ID, pressure, temp, and battery status</td>
+        </tr>
+        <tr>
+          <td><strong>3</strong></td>
+          <td>TPMS Control Unit</td>
+          <td>RF antenna receives signal; matches sensor ID to stored vehicle positions</td>
+        </tr>
+        <tr>
+          <td><strong>4</strong></td>
+          <td>TPMS Control Unit</td>
+          <td>Compares measured pressure to threshold (~28 psi or per placard); if low, sends signal over CAN bus</td>
+        </tr>
+        <tr>
+          <td><strong>5</strong></td>
+          <td>Gauge Control Module</td>
+          <td>Receives CAN message; illuminates TPMS low-pressure indicator on instrument cluster</td>
+        </tr>
+        <tr>
+          <td><strong>6</strong></td>
+          <td>Driver</td>
+          <td>Sees low-pressure warning light; inflates tire to spec; system resets automatically after driving ~10 minutes</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Key Operating Modes of the Sensor:</strong></p>
+    <ul>
+      <li><strong>Sleep mode</strong> — wheel stationary; sensor conserves battery, transmits only occasionally</li>
+      <li><strong>Active/Rolling mode</strong> — acceleration sensor detects motion; sensor transmits every ~60 seconds</li>
+      <li><strong>Low-pressure alert mode</strong> — pressure drops below threshold; sensor transmits immediately at a faster rate</li>
+      <li><strong>Tool activation mode</strong> — TPMS relearn tool activates sensor via low-frequency trigger (used during relearn procedure)</li>
+    </ul>
+
+    <div class="callout" role="note">
+      <p class="callout-label">⚠ Sensor Position Learning</p>
+      <p>After any tire rotation, sensor replacement, or wheel swap, the <strong>TPMS control unit must relearn which sensor is in which corner</strong>. Honda requires a specific relearn procedure using the HDS (Honda Diagnostic System) or a TPMS relearn tool. Skipping this step will cause a TPMS fault or incorrect location reporting.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goToSlide(0)">← Back</button>
+      <button class="btn btn-primary"   onclick="goToSlide(2)">Next: Service &amp; Standards →</button>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       SLIDE 3 — Service, Diagnosis & NATEF Standards
+  ══════════════════════════════ -->
+  <section class="slide" id="slide2" aria-labelledby="s2-title">
+    <span class="slide-tag">Slide 3 of 3 — Service &amp; Diagnosis</span>
+    <h2 id="s2-title">TPMS Service, Diagnosis &amp; NATEF Standards</h2>
+
+    <p>Honda TPMS service comes up in multiple lab scenarios: tire rotation, sensor replacement, wheel mounting, and warning light diagnosis. Each one requires a specific process — rushing any step causes unnecessary comebacks.</p>
+
+    <table class="spec-table" role="table" aria-label="TPMS service scenarios and procedures">
+      <thead>
+        <tr>
+          <th scope="col">Service Scenario</th>
+          <th scope="col">Key Steps</th>
+          <th scope="col">Common Mistake</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Tire Rotation</td>
+          <td>Rotate per Honda pattern → perform TPMS position relearn with HDS or relearn tool</td>
+          <td>Skipping relearn — system reports wrong corner or MIL illuminates</td>
+        </tr>
+        <tr>
+          <td>Sensor Replacement</td>
+          <td>Use Honda OEM or approved sensor → mount valve stem to spec torque → relearn new sensor ID</td>
+          <td>Over-torquing valve stem nut (cracks sensor body); using incorrect aftermarket sensor</td>
+        </tr>
+        <tr>
+          <td>Tire Dismount/Mount</td>
+          <td>Note sensor location on rim before dismount → protect sensor from tire machine head → inspect grommet and valve stem</td>
+          <td>Machine head hitting sensor during dismount — destroys sensor body ≈ $60–$120 per sensor</td>
+        </tr>
+        <tr>
+          <td>Low-Pressure Light On</td>
+          <td>Check all 4 tire pressures → inflate to placard spec → drive 10+ min → light resets</td>
+          <td>Customer returns thinking light is broken; technician didn't explain reset delay</td>
+        </tr>
+        <tr>
+          <td>TPMS MIL (Flashing)</td>
+          <td>Scan for DTCs with HDS → diagnose: dead battery in sensor, sensor not learned, or control unit fault</td>
+          <td>Replacing sensor without scanning first — may be a control unit or antenna fault</td>
+        </tr>
+        <tr>
+          <td>Valve Stem Service</td>
+          <td>Inspect rubber grommet and nut at every tire service → replace grommet if cracked or compressed</td>
+          <td>Leaking valve stem blamed on sensor — grommet replacement alone fixes it without sensor cost</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info-box">
+      <strong>NATEF / 2022 Automobile Program Standards — Applicable Tasks (all P-1):</strong><br>
+      IV.F.2 — Rotate tires per manufacturer recommendation including vehicles with TPMS.<br>
+      IV.F.3 — Dismount, inspect, and remount tire on wheel (with/without TPMS); balance assembly.<br>
+      IV.F.6 — Identify direct and indirect TPMS; calibrate/relearn system; verify instrument panel lamp operation.<br>
+      IV.F.7 — Demonstrate knowledge of steps to remove and replace TPMS sensors per OEM/sensor manufacturer.
+    </div>
+
+    <div class="callout" role="note">
+      <p class="callout-label">🔧 Honda-Specific: Valve Stem Torque</p>
+      <p>Honda specifies the TPMS valve stem nut torque at <strong>4 N·m (35 lb·in)</strong>. Exceeding this cracks the sensor housing. Always use a calibrated torque wrench or torque-limiting valve stem tool — never tighten by feel or with pliers.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goToSlide(1)">← Back</button>
+      <button class="btn btn-primary"   onclick="goToKC()">Practice Questions →</button>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       KNOWLEDGE CHECK
+  ══════════════════════════════ -->
+  <section class="kc-section" id="kcSection" aria-labelledby="kc-title">
+    <h2 id="kc-title">🔧 Knowledge Check — 5 Questions</h2>
+    <p style="font-size:13px; color:#555; margin-bottom:20px;">Click an answer to reveal instant feedback. Answer all 5 before seeing your score.</p>
+
+    <!-- Q1 -->
+    <div class="question-block">
+      <span class="q-number">Question 1 of 5</span>
+      <p class="q-text">Honda's TPMS is classified as a <strong>direct</strong> system. What makes it "direct"?</p>
+      <ul class="choice-list" role="list">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q1',false)">A. It uses ABS wheel speed sensors to calculate pressure from rolling diameter differences</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q1',true)">B. It uses physical pressure sensors inside each wheel that transmit actual pressure readings via RF signal</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q1',false)">C. It directly connects to the tire via a wired pressure gauge</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q1',false)">D. It measures inflation pressure at the valve stem only, not inside the tire</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q1-correct">✅ <strong>Correct!</strong> Direct TPMS uses a physical sensor inside the wheel cavity that measures actual tire pressure and transmits it wirelessly to the control unit. Indirect systems infer pressure from wheel speed data — Honda does NOT use that method.</div>
+      <div class="feedback wrong-fb"   id="q1-wrong">❌ <strong>Not quite.</strong> "Direct" means the system uses actual sensors inside the wheels to measure real pressure — not inferred from ABS data (that's indirect). Honda's sensor transmits measured pressure wirelessly via RF to the control unit.</div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question-block">
+      <span class="q-number">Question 2 of 5</span>
+      <p class="q-text">What is the purpose of the <strong>acceleration sensor</strong> built into the Honda tire pressure sensor?</p>
+      <ul class="choice-list" role="list">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q2',false)">A. It measures g-forces during hard cornering to adjust pressure thresholds</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q2',false)">B. It detects impacts that could damage the sensor and triggers an alert</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q2',true)">C. It detects wheel rotation so the sensor knows when to wake from sleep mode and transmit</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q2',false)">D. It helps the control unit calculate vehicle speed from wheel spin rate</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q2-correct">✅ <strong>Correct!</strong> The acceleration sensor tells the pressure sensor when the wheel is spinning — transitioning the sensor from battery-conserving sleep mode into active transmit mode. Without it, the sensor would drain its non-replaceable battery quickly by transmitting continuously.</div>
+      <div class="feedback wrong-fb"   id="q2-wrong">❌ <strong>Not quite.</strong> The acceleration sensor detects wheel rotation (centrifugal force as the wheel spins). This wakes the sensor from sleep mode so it transmits pressure data — saving the non-replaceable battery during parked/stationary periods.</div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question-block">
+      <span class="q-number">Question 3 of 5</span>
+      <p class="q-text">After completing a 4-wheel tire rotation on a Honda with direct TPMS, what is the <strong>required next step</strong> before returning the vehicle?</p>
+      <ul class="choice-list" role="list">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q3',false)">A. Nothing — the system relearns sensor positions automatically within one drive cycle</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q3',false)">B. Deflate and reinflate each tire to force the sensors to retransmit</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q3',true)">C. Perform a TPMS sensor position relearn using the HDS or a TPMS relearn tool</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q3',false)">D. Replace all four valve stem grommets, then drive the vehicle for 10 minutes</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q3-correct">✅ <strong>Correct!</strong> After any tire rotation or wheel swap, the TPMS control unit must be retaught which sensor ID is in which wheel position. Without a relearn, the system will report incorrect corner locations or illuminate a fault. Use HDS or an approved TPMS relearn tool.</div>
+      <div class="feedback wrong-fb"   id="q3-wrong">❌ <strong>Not quite.</strong> Honda's direct TPMS stores specific sensor IDs per wheel position. After rotation, those positions change — the system cannot figure this out on its own. A formal relearn procedure using HDS or a TPMS tool is required before the vehicle is returned to the customer.</div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question-block">
+      <span class="q-number">Question 4 of 5</span>
+      <p class="q-text">While dismounting a tire, a technician's tire machine head contacts and cracks the TPMS sensor. What was the <strong>root cause</strong> of this error?</p>
+      <ul class="choice-list" role="list">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q4',false)">A. The technician used a rim-clamp machine instead of a center-post machine</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q4',true)">B. The technician did not note the sensor's position on the rim before starting, so the machine head struck it</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q4',false)">C. The sensor was already faulty and broke under normal tire changing force</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q4',false)">D. The tire bead was too tight, causing the sensor to shift into the path of the machine head</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q4-correct">✅ <strong>Correct!</strong> Before dismounting any tire with TPMS, technicians must visually locate the sensor on the rim (typically 180° opposite the valve stem on some designs, or at the valve stem itself on Honda). Start the machine head away from the sensor location and work carefully around it.</div>
+      <div class="feedback wrong-fb"   id="q4-wrong">❌ <strong>Not quite.</strong> The most common cause of sensor damage during tire service is failing to identify the sensor position before starting the dismount. Always locate the sensor first and position the machine head opposite the sensor, working carefully around it.</div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question-block">
+      <span class="q-number">Question 5 of 5</span>
+      <p class="q-text">Honda specifies the TPMS valve stem nut torque at <strong>4 N·m (35 lb·in)</strong>. What happens if this is significantly over-torqued?</p>
+      <ul class="choice-list" role="list">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q5',false)">A. The RF signal frequency shifts, causing the control unit to lose communication</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q5',false)">B. The sensor's battery is compressed and shorts out immediately</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q5',true)">C. The sensor housing or valve stem can crack, causing air leakage or sensor failure requiring replacement</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q5',false)">D. The acceleration sensor becomes mis-calibrated and the sensor stays in sleep mode permanently</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q5-correct">✅ <strong>Correct!</strong> Over-torquing the valve stem nut is one of the most common causes of TPMS sensor damage during installation. The sensor housing is plastic/aluminum — cracking it means an immediate sensor replacement at $60–$120+. Always use a torque wrench or torque-limiting tool set to 4 N·m / 35 lb·in.</div>
+      <div class="feedback wrong-fb"   id="q5-wrong">❌ <strong>Not quite.</strong> The TPMS sensor body is made of relatively fragile plastic and aluminum. Over-torquing the valve stem nut cracks the housing, causing an air leak or sensor failure — the entire sensor unit must be replaced. This is a preventable and expensive mistake. Always torque to spec: <strong>4 N·m / 35 lb·in</strong>.</div>
+    </div>
+
+    <!-- Nav -->
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goToSlide(2)">← Back to Slides</button>
+      <button class="btn btn-primary" onclick="showScore()">See My Score →</button>
+    </div>
+  </section>
+
+  <!-- COMPLETE CARD -->
+  <div class="complete-card" id="completeCard" role="region" aria-live="polite" aria-label="Lesson complete summary">
+    <p style="color:#CC0000; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">AUTOH 173 · Micro Lesson Complete</p>
+    <h2>Honda TPMS — Construction &amp; Function</h2>
+    <div class="score-badge" id="scoreBadge" aria-label="Your score">— / 5</div>
+    <p id="scoreMsg">Loading your result...</p>
+    <p style="margin-top:16px; font-size:13px;">Return to Canvas to complete today's lab worksheet.</p>
+  </div>
+
+</div><!-- end lesson-wrapper -->
+
+<script>
+  var currentSlide = 0;
+  var answers = {};
+
+  function goToSlide(n) {
+    document.querySelectorAll('.slide').forEach(function(s){ s.classList.remove('active'); });
+    document.getElementById('kcSection').classList.remove('active');
+    document.getElementById('slide' + n).classList.add('active');
+    currentSlide = n;
+    updateProgress(n);
+    scrollTop();
+  }
+
+  function goToKC() {
+    document.querySelectorAll('.slide').forEach(function(s){ s.classList.remove('active'); });
+    document.getElementById('kcSection').classList.add('active');
+    updateProgress(3);
+    scrollTop();
+  }
+
+  function updateProgress(n) {
+    for (var i = 0; i < 4; i++) {
+      var dot = document.getElementById('dot' + i);
+      dot.className = 'dot';
+      if (i < n) dot.classList.add('done');
+      else if (i === n) dot.classList.add('active');
+    }
+    var labels = ['Slide 1 of 3','Slide 2 of 3','Slide 3 of 3','Practice Questions'];
+    document.getElementById('progressLabel').textContent = labels[n] || '';
+  }
+
+  function checkAnswer(btn, qid, isCorrect) {
+    var allBtns = btn.closest('.question-block').querySelectorAll('.choice-btn');
+    allBtns.forEach(function(b){ b.disabled = true; });
+    btn.classList.add(isCorrect ? 'correct' : 'wrong');
+    document.getElementById(qid + '-correct').classList.toggle('show', isCorrect);
+    document.getElementById(qid + '-wrong').classList.toggle('show', !isCorrect);
+    answers[qid] = isCorrect;
+  }
+
+  function showScore() {
+    var total = 0;
+    ['q1','q2','q3','q4','q5'].forEach(function(q){
+      if (answers[q] === true) total++;
+    });
+    document.getElementById('kcSection').classList.remove('active');
+    var card = document.getElementById('completeCard');
+    card.classList.add('show');
+    document.getElementById('scoreBadge').textContent = total + ' / 5';
+    var msgs = [
+      'Keep studying — review all 3 slides and try again.',
+      'Getting there — focus on Slide 2: signal flow and sensor modes.',
+      'Good start — review the relearn procedure and torque spec.',
+      'Nice work — double-check any questions you missed.',
+      "Great job! You're ready for the TPMS service lab.",
+      'Perfect score! Outstanding TPMS knowledge! 🏁'
+    ];
+    document.getElementById('scoreMsg').textContent = msgs[total] || '';
+    scrollTop();
+  }
+
+  function scrollTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
