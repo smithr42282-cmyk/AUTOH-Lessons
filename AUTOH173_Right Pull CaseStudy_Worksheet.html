@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUTOH 173 — Case Study Worksheet</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:#e8eef6;color:#1a1a1a;padding:28px 14px 60px;font-size:14px}
+.shell{max-width:900px;margin:0 auto;background:#fff;border:1px solid #c8d4e0;border-radius:4px;box-shadow:0 6px 28px rgba(15,34,64,.14);overflow:hidden}
+.pg-hd{background:#1a1a1a;border-left:6px solid #CC0000;padding:18px 24px}
+.pg-hd .eye{color:#CC0000;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.pg-hd h1{color:#fff;font-size:19px;font-weight:700;margin-bottom:4px;line-height:1.25}
+.pg-hd .sub{color:#aaa;font-size:12px}
+.toolbar{background:#f4f4f4;border-bottom:1px solid #e0e0e0;padding:9px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.t-info{font-size:11.5px;color:#666}
+.dl-btns{display:flex;gap:7px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;border:none;border-radius:3px;cursor:pointer;font-family:Arial,Helvetica,sans-serif;white-space:nowrap}
+.btn-w{background:#1a1a1a;color:#fff;border:2px solid #CC0000}
+.btn-p{background:#CC0000;color:#fff}
+.btn-h{background:#444;color:#fff}
+.btn-c{background:#f0f0f0;color:#555;border:1px solid #ccc}
+.btn:hover{opacity:.88}
+.cnt{padding:22px 26px 34px}
+.sh{background:#CC0000;color:#fff;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:9px 13px;border-radius:3px 3px 0 0;margin-top:18px}
+.sh:first-child{margin-top:0}
+.sth{background:#1a1a1a;border-top:3px solid #CC0000;color:#fff;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:9px 13px;border-radius:3px 3px 0 0;margin-top:18px}
+.fg{border:1px solid #e0e0e0;border-top:none;border-radius:0 0 3px 3px;overflow:hidden;margin-bottom:6px}
+.fr{border-bottom:1px solid #e0e0e0;padding:10px 13px;background:#f9f9f9}
+.fr:last-child{border-bottom:none}
+.fr:nth-child(even){background:#fff}
+.fr.red-hi{background:#fff5f5;border-left:3px solid #CC0000}
+.fl{font-size:12px;font-weight:700;color:#1a1a1a;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.fl .n{background:#CC0000;color:#fff;font-size:11px;font-weight:700;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.fl .nd{background:#1a1a1a}
+.fl .hint{font-size:10.5px;color:#999;font-weight:400;font-style:italic}
+textarea{width:100%;min-height:76px;border:1px solid #ccc;border-radius:3px;padding:7px 9px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1a1a1a;background:#fefefe;resize:vertical;line-height:1.5;transition:border-color .15s}
+textarea:focus{outline:none;border-color:#CC0000;background:#fffcfc}
+textarea.sh2{min-height:50px}
+textarea.tl{min-height:115px}
+textarea.xtl{min-height:155px}
+.ifl{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.if1{flex:1;min-width:120px}
+.if1 label{font-size:10.5px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:3px}
+.if1 input{width:100%;border:1px solid #ccc;border-radius:3px;padding:6px 8px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1a1a1a}
+.if1 input:focus{outline:none;border-color:#CC0000}
+.it{width:100%;border-collapse:collapse;border:1px solid #e0e0e0;border-top:none;margin-bottom:6px}
+.it td{padding:9px 11px;font-size:13px;vertical-align:top;border:1px solid #e0e0e0}
+.it .lbl{color:#CC0000;font-size:10px;font-weight:700;text-transform:uppercase;display:block;margin-bottom:3px}
+.it .ccr{background:#1a1a1a;color:#fff;font-style:italic;font-size:13px}
+.callout{background:#fff5f5;border-left:4px solid #CC0000;padding:9px 13px;font-size:12.5px;color:#1a1a1a;border:1px solid #f0c0c0;border-left:4px solid #CC0000;margin-bottom:0}
+.callout .clbl{color:#CC0000;font-size:10px;font-weight:700;text-transform:uppercase;margin-bottom:4px}
+.gn{background:#D3D3D3;padding:8px 13px;font-size:11.5px;color:#1a1a1a;border-radius:0 0 3px 3px;margin-bottom:16px;border:1px solid #e0e0e0;border-top:none}
+.at{width:100%;border-collapse:collapse;border:1px solid #e0e0e0;border-top:none;margin-bottom:6px}
+.at th{background:#1a1a1a;color:#CC0000;font-size:10.5px;font-weight:700;text-transform:uppercase;padding:7px 9px;text-align:left;border-right:1px solid #333}
+.at th:last-child{border-right:none}
+.at td{padding:5px 7px;border:1px solid #e0e0e0;vertical-align:top;font-size:12px}
+.at td:first-child{background:#f9f9f9;font-weight:700;color:#1a1a1a;white-space:nowrap}
+.at input[type=text]{width:100%;border:1px solid #ccc;border-radius:2px;padding:4px 6px;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#1a1a1a}
+.at input[type=text]:focus{outline:none;border-color:#CC0000}
+.at select{width:100%;border:1px solid #ccc;border-radius:2px;padding:4px 6px;font-family:Arial,Helvetica,sans-serif;font-size:11.5px;color:#1a1a1a;background:#fff}
+.qb{border:1px solid #e0e0e0;border-radius:4px;overflow:hidden;margin-bottom:12px}
+.qh{background:#CC0000;padding:8px 13px;display:flex;align-items:center;gap:9px}
+.qn{background:rgba(255,255,255,.2);color:#fff;font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px}
+.qt{color:#fff;font-size:13px;font-weight:700}
+.qb2{background:#f9f9f9;padding:11px 13px;border-bottom:1px solid #e0e0e0;font-size:13px;color:#1a1a1a;line-height:1.55}
+.qc{margin-top:7px}
+.qc label{display:flex;align-items:flex-start;gap:8px;margin-bottom:5px;font-size:13px;cursor:pointer;line-height:1.4}
+.qc input[type=radio]{margin-top:2px;accent-color:#CC0000;flex-shrink:0}
+.qa{background:#fff;padding:9px 13px}
+.qal{font-size:10px;font-weight:700;text-transform:uppercase;color:#CC0000;margin-bottom:4px;letter-spacing:.4px}
+.doc-ft{border-top:2px solid #e0e0e0;margin-top:24px;padding-top:9px;text-align:center;font-size:10.5px;color:#999}
+@media print{
+  body{background:#fff;padding:0}
+  .shell{box-shadow:none;border:none;max-width:100%}
+  .toolbar{display:none}
+  textarea,input[type=text],select{border:1px solid #ccc!important}
+  .pg-hd,.sh,.sth,.qh,.at th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div class="shell" id="ws">
+
+<div class="pg-hd">
+  <div class="eye">AUTOH 173 · Steering &amp; Suspension · Case Study Worksheet</div>
+  <h1>Student Worksheet — Vehicle Pulls to the Right After Suspension Repair</h1>
+  <div class="sub">Diagnostic Procedure &nbsp;·&nbsp; Check &amp; Advise &nbsp;·&nbsp; No Test Drive Required</div>
+</div>
+
+<div class="toolbar">
+  <div class="t-info">Complete all fields. Answers stay in this tab until you download or close.</div>
+  <div class="dl-btns">
+    <button class="btn btn-w" onclick="dlWord()">📄 Word (.docx)</button>
+    <button class="btn btn-p" onclick="dlPDF()">📄 PDF</button>
+    <button class="btn btn-h" onclick="dlHTML()">💻 Save HTML</button>
+    <button class="btn btn-c" onclick="clearAll()">✕ Clear All</button>
+  </div>
+</div>
+
+<div class="cnt">
+
+<!-- STUDENT INFO -->
+<div class="sh">Student Information</div>
+<div class="fg"><div class="fr">
+  <div class="ifl">
+    <div class="if1"><label>Student Name</label><input type="text" id="sn" placeholder="Last, First"></div>
+    <div class="if1"><label>Date</label><input type="text" id="sd" placeholder="MM / DD / YYYY"></div>
+    <div class="if1"><label>Period / Section</label><input type="text" id="sp" placeholder="e.g. Period 2"></div>
+    <div class="if1"><label>Instructor</label><input type="text" id="si" value="R. Smith"></div>
+  </div>
+</div></div>
+
+<!-- REPAIR ORDER -->
+<div class="sh" style="margin-top:16px;">Repair Order — Vehicle Information (Given)</div>
+<table class="it">
+  <tr>
+    <td style="width:50%;background:#f9f9f9"><span class="lbl">Vehicle</span>2019 Honda Accord Sport &nbsp;|&nbsp; 1.5T CVT &nbsp;|&nbsp; FWD &nbsp;|&nbsp; 58,420 mi</td>
+    <td style="background:#f9f9f9"><span class="lbl">Previous Repair (same visit)</span>Right front strut assembly replaced — OEM Honda strut, spring, and upper mount. <strong>No alignment performed after repair.</strong></td>
+  </tr>
+  <tr>
+    <td colspan="2" class="ccr"><span class="lbl" style="color:#CC0000;">Customer Concern</span>"After getting my strut replaced, the car pulls hard to the right. It didn't pull before the repair. I have to hold the steering wheel to the left to drive straight."</td>
+  </tr>
+</table>
+<div class="callout" style="margin-bottom:16px;">
+  <div class="clbl">📋 Your Task</div>
+  Work through each step. Complete <strong>all</strong> fields. No test drive needed — use static inspection and the alignment data provided. Reference Canvas: <strong>Alignment Angles Reference &nbsp;·&nbsp; Vehicle-Specific Alignment Procedures &nbsp;·&nbsp; Suspension Component Inspection Notes</strong>
+</div>
+
+<!-- STEP 1 -->
+<div class="sth">Step 1 — Verify the Concern (Static, No Test Drive)</div>
+<div class="fg">
+  <div class="fr"><div class="fl"><span class="n nd">1</span>With vehicle started, in park, on a level surface — hands off the wheel — what do you observe about steering wheel position? <span class="hint">(centered / cocked left / cocked right)</span></div><textarea id="s1a" class="sh2" placeholder="Describe your observation..."></textarea></div>
+  <div class="fr"><div class="fl"><span class="n nd">2</span>List any warning lights present and their likely meaning for this concern.</div><textarea id="s1b" class="sh2" placeholder="List active warning lights (TPMS, VSA, EPS) or write NONE..."></textarea></div>
+  <div class="fr"><div class="fl"><span class="n nd">3</span>Turn the wheel slowly lock-to-lock. Describe any binding, uneven resistance, or side-to-side differences you feel.</div><textarea id="s1c" class="sh2" placeholder="Describe steering feel lock-to-lock. Note any binding or tight spots..."></textarea></div>
+  <div class="fr"><div class="fl"><span class="n nd">4</span>Based on Step 1 observations only — what is your initial hypothesis for the cause of the pull?</div><textarea id="s1d" class="sh2" placeholder="Write your initial hypothesis based on visual and static observations only..."></textarea></div>
+</div>
+<div class="gn">📚 <strong>Canvas Reference:</strong> Review the <em>Alignment Angles Reference</em> — Caster section — before continuing to Step 2.</div>
+
+<!-- STEP 2 -->
+<div class="sth">Step 2 — Pre-Alignment Inspection</div>
+<div class="fg">
+  <div class="fr">
+    <div class="fl"><span class="n">A</span>Tire Pressure — Record cold pressure at each corner. Compare to door placard.</div>
+    <div class="ifl">
+      <div class="if1"><label>LF (psi)</label><input type="text" id="t-lf" placeholder="Measured"></div>
+      <div class="if1"><label>RF (psi)</label><input type="text" id="t-rf" placeholder="Measured"></div>
+      <div class="if1"><label>LR (psi)</label><input type="text" id="t-lr" placeholder="Measured"></div>
+      <div class="if1"><label>RR (psi)</label><input type="text" id="t-rr" placeholder="Measured"></div>
+      <div class="if1"><label>Placard Spec</label><input type="text" id="t-sp" placeholder="Spec psi"></div>
+    </div>
+    <textarea id="s2a" class="sh2" placeholder="Summary: Are tires within spec? Could a pressure difference be contributing to the pull?"></textarea>
+  </div>
+  <div class="fr red-hi">
+    <div class="fl"><span class="n">B</span>★ Strut Upper Mount Inspection — Right Front <span class="hint">Primary suspect</span></div>
+    <textarea id="s2b" class="tl" placeholder="Describe what you found inspecting the right front strut upper mount orientation. Is the index/positioning mark aligned correctly? What is the condition of the upper strut nut and lower pinch bolt? What alignment angles does a misaligned mount directly affect and why?"></textarea>
+  </div>
+  <div class="fr">
+    <div class="fl"><span class="n">C</span>Ball Joint &amp; Tie Rod End Inspection — Both Front Corners</div>
+    <textarea id="s2c" class="sh2" placeholder="Describe inspection findings for both front ball joints and outer tie rod ends. Any play detected? Any loose or improperly reinstalled components?"></textarea>
+  </div>
+  <div class="fr">
+    <div class="fl"><span class="n">D</span>Ride Height Measurement — Left Front vs. Right Front</div>
+    <div class="ifl">
+      <div class="if1"><label>Left Front</label><input type="text" id="rh-lf" placeholder="mm or in"></div>
+      <div class="if1"><label>Right Front</label><input type="text" id="rh-rf" placeholder="mm or in"></div>
+      <div class="if1"><label>OEM Spec (iN)</label><input type="text" id="rh-sp" placeholder="Spec"></div>
+      <div class="if1"><label>Difference</label><input type="text" id="rh-df" placeholder="LF − RF"></div>
+    </div>
+    <textarea id="s2d" class="sh2" placeholder="What does the side-to-side ride height difference tell you? Is the new spring/upper mount installed correctly?"></textarea>
+  </div>
+</div>
+<div class="gn">📚 <strong>Canvas Reference:</strong> Refer to <em>Suspension Component Inspection Notes</em> for strut upper mount orientation procedure. Review <em>Alignment Angles Reference</em> — Camber section.</div>
+
+<!-- STEP 3 -->
+<div class="sth">Step 3 — Alignment Machine Data Entry &amp; Analysis</div>
+<div class="callout" style="border-radius:0;margin-bottom:0;">
+  <div class="clbl">📋 Directions</div>
+  Machine readings are provided. Enter the OEM spec from <em>iN / Service Express</em> for each angle. Select the status. In the Analysis column, explain the reading and its effect on the vehicle.
+</div>
+<table class="at">
+  <thead>
+    <tr>
+      <th style="width:14%">Angle</th>
+      <th style="width:13%">Machine Reading</th>
+      <th style="width:18%">OEM Spec (iN)</th>
+      <th style="width:13%">Status</th>
+      <th>Analysis — Effect on Vehicle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Caster Left</td>
+      <td style="text-align:center;font-weight:700">+3° 00'</td>
+      <td><input type="text" id="cl-sp" placeholder="e.g. +2°30' ±1°"></td>
+      <td><select id="cl-st"><option value="">— Select —</option><option>IN SPEC</option><option>OUT OF SPEC</option><option>NOTE</option></select></td>
+      <td><textarea id="cl-nt" class="sh2" style="min-height:46px" placeholder="Explain..."></textarea></td>
+    </tr>
+    <tr>
+      <td>Caster Right ⚠</td>
+      <td style="text-align:center;font-weight:700;color:#CC0000">+1° 15'</td>
+      <td><input type="text" id="cr-sp" placeholder="e.g. +2°30' ±1°"></td>
+      <td><select id="cr-st"><option value="">— Select —</option><option>IN SPEC</option><option>OUT OF SPEC</option><option>NOTE</option></select></td>
+      <td><textarea id="cr-nt" class="sh2" style="min-height:46px" placeholder="Side-to-side difference? Pull direction?"></textarea></td>
+    </tr>
+    <tr>
+      <td>Camber Left</td>
+      <td style="text-align:center;font-weight:700">−0° 40'</td>
+      <td><input type="text" id="cml-sp" placeholder="e.g. −0°45' ±0°45'"></td>
+      <td><select id="cml-st"><option value="">— Select —</option><option>IN SPEC</option><option>OUT OF SPEC</option><option>NOTE</option></select></td>
+      <td><textarea id="cml-nt" class="sh2" style="min-height:46px" placeholder="Within spec? Tire contact effect?"></textarea></td>
+    </tr>
+    <tr>
+      <td>Camber Right ⚠</td>
+      <td style="text-align:center;font-weight:700;color:#CC0000">+0° 50'</td>
+      <td><input type="text" id="cmr-sp" placeholder="e.g. −0°45' ±0°45'"></td>
+      <td><select id="cmr-st"><option value="">— Select —</option><option>IN SPEC</option><option>OUT OF SPEC</option><option>NOTE</option></select></td>
+      <td><textarea id="cmr-nt" class="sh2" style="min-height:46px" placeholder="Positive camber — pull direction? Tire wear?"></textarea></td>
+    </tr>
+    <tr>
+      <td>Toe Left</td>
+      <td style="text-align:center;font-weight:700">0° 08'</td>
+      <td><input type="text" id="tl-sp" placeholder="e.g. 0°10' ±0°10'"></td>
+      <td><select id="tl-st"><option value="">— Select —</option><option>IN SPEC</option><option>OUT OF SPEC</option><option>NOTE</option></select></td>
+      <td><textarea id="tl-nt" class="sh2" style="min-height:46px" placeholder="Within spec?"></textarea></td>
+    </tr>
+    <tr>
+      <td>Toe Right ⚠</td>
+      <td style="text-align:center;font-weight:700;color:#CC0000">0° 28'</td>
+      <td><input type="text" id="tr-sp" placeholder="e.g. 0°10' ±0°10'"></td>
+      <td><select id="tr-st"><option value="">— Select —</option><option>IN SPEC</option><option>OUT OF SPEC</option><option>NOTE</option></select></td>
+      <td><textarea id="tr-nt" class="sh2" style="min-height:46px" placeholder="Convert 0°28' to decimal. Tire wear pattern?"></textarea></td>
+    </tr>
+    <tr>
+      <td>SAI L / R</td>
+      <td style="text-align:center;font-weight:700">15°10' / 15°00'</td>
+      <td><input type="text" id="sai-sp" placeholder="e.g. 14°–16°, diff &lt;1°"></td>
+      <td><select id="sai-st"><option value="">— Select —</option><option>IN SPEC</option><option>OUT OF SPEC</option><option>NOTE</option></select></td>
+      <td><textarea id="sai-nt" class="sh2" style="min-height:46px" placeholder="What does SAI within range tell you about component condition?"></textarea></td>
+    </tr>
+    <tr>
+      <td>Thrust Angle</td>
+      <td style="text-align:center;font-weight:700">0° 05'</td>
+      <td><input type="text" id="ta-sp" placeholder="e.g. 0° ± 0°10'"></td>
+      <td><select id="ta-st"><option value="">— Select —</option><option>IN SPEC</option><option>OUT OF SPEC</option><option>NOTE</option></select></td>
+      <td><textarea id="ta-nt" class="sh2" style="min-height:46px" placeholder="Rear axle tracking? Origin of pull — front or rear?"></textarea></td>
+    </tr>
+  </tbody>
+</table>
+<div class="gn">📚 <strong>Canvas Reference:</strong> Return to the <em>Alignment Angles Reference</em> — Caster and Camber sections. Confirm which side the vehicle pulls toward based on these readings.</div>
+
+<!-- STEP 4 -->
+<div class="sth">Step 4 — Root Cause Analysis</div>
+<div class="fg">
+  <div class="fr"><div class="fl"><span class="n nd">1</span>State the primary root cause. Identify the component, the failure mode, and which alignment angles it affected.</div><textarea id="s4a" class="tl" placeholder="Primary root cause: [component] — [failure mode] — This caused [angles] to be [condition], resulting in pull [direction]..."></textarea></div>
+  <div class="fr"><div class="fl"><span class="n nd">2</span>State any secondary causes. What step in the repair process was missed and what did it directly cause?</div><textarea id="s4b" placeholder="Secondary cause: [what was skipped?] — This caused [what condition?]..."></textarea></div>
+  <div class="fr"><div class="fl"><span class="n nd">3</span>Explain what the SAI reading tells you about the structural condition of the suspension. Does this change your diagnosis? Why or why not?</div><textarea id="s4c" placeholder="The SAI readings indicate... This [does / does not] change my diagnosis because..."></textarea></div>
+  <div class="fr"><div class="fl"><span class="n nd">4</span>Could the thrust angle reading explain the pull? Explain using the specification.</div><textarea id="s4d" placeholder="The thrust angle reads 0°05' against spec 0° ± 0°10'. This means... Therefore, the rear [is / is not] contributing to the pull because..."></textarea></div>
+</div>
+<div class="gn">📚 <strong>Canvas Reference:</strong> Review <em>Vehicle-Specific Alignment Procedures</em>. Confirm Honda iN alignment requirement after strut replacement.</div>
+
+<!-- STEP 5 -->
+<div class="sth">Step 5 — Recommended Fix &amp; Repair Plan</div>
+<div class="fg">
+  <div class="fr"><div class="fl"><span class="n">1</span>Customer communication — Who is responsible for this correction and why? Write what you would tell the service advisor.</div><textarea id="s5a" class="tl" placeholder="This repair should be at [cost/no cost] because... I would tell the service advisor: '...'"></textarea></div>
+  <div class="fr"><div class="fl"><span class="n">2</span>List the complete repair steps in order, from first correction through returning the vehicle.</div><textarea id="s5b" class="xtl" placeholder="Step 1 — &#10;Step 2 — &#10;Step 3 — &#10;Step 4 — &#10;Step 5 — "></textarea></div>
+  <div class="fr"><div class="fl"><span class="n">3</span>What documentation must be completed and attached to the repair order?</div><textarea id="s5c" class="sh2" placeholder="List all required documentation (alignment printout, torque specs, customer communication, etc.)..."></textarea></div>
+</div>
+
+<!-- KNOWLEDGE CHECK -->
+<div class="sh" style="margin-top:22px;">Knowledge Check — Answer All 5 Questions</div>
+
+<div class="qb">
+  <div class="qh"><span class="qn">Q 1</span><span class="qt">Multiple Choice — Caster Side-to-Side Difference</span></div>
+  <div class="qb2">The alignment data shows right front caster is +1° 15' and left front is +3° 00'. OEM spec is +2° 30' ± 1° 00'. Which statement best describes what is happening?
+    <div class="qc">
+      <label><input type="radio" name="q1" value="A"> A. &nbsp;Both sides are within spec; no action required</label>
+      <label><input type="radio" name="q1" value="B"> B. &nbsp;Right caster is out of spec and the side-to-side difference exceeds the 0° 30' max — vehicle will pull right</label>
+      <label><input type="radio" name="q1" value="C"> C. &nbsp;Left caster is out of spec — vehicle will pull left</label>
+      <label><input type="radio" name="q1" value="D"> D. &nbsp;Caster does not cause pull — only toe causes pull</label>
+    </div>
+  </div>
+  <div class="qa"><div class="qal">Explain your answer:</div><textarea id="kc1" class="sh2" placeholder="Explain why you selected that answer. Reference the OEM spec range, the side-to-side difference limit, and the pull direction rule for caster..."></textarea></div>
+</div>
+
+<div class="qb">
+  <div class="qh"><span class="qn">Q 2</span><span class="qt">Multiple Choice — SAI Diagnostic Interpretation</span></div>
+  <div class="qb2">SAI readings: Left 15° 10' / Right 15° 00'. What does this tell you about the right side suspension components?
+    <div class="qc">
+      <label><input type="radio" name="q2" value="A"> A. &nbsp;The lower control arm is bent and needs replacement</label>
+      <label><input type="radio" name="q2" value="B"> B. &nbsp;The steering knuckle is damaged</label>
+      <label><input type="radio" name="q2" value="C"> C. &nbsp;SAI is within normal range — knuckle, lower control arm, and subframe are not damaged; fault is in the strut/upper mount only</label>
+      <label><input type="radio" name="q2" value="D"> D. &nbsp;SAI confirms the strut tube is bent</label>
+    </div>
+  </div>
+  <div class="qa"><div class="qal">Explain your answer:</div><textarea id="kc2" class="sh2" placeholder="Explain what SAI measures, why it is non-adjustable, and what the side-to-side difference tells you about component condition..."></textarea></div>
+</div>
+
+<div class="qb">
+  <div class="qh"><span class="qn">Q 3</span><span class="qt">Calculation — Toe Conversion &amp; Tire Wear</span></div>
+  <div class="qb2">Right front toe reads 0° 28' toe-in. OEM spec: 0° 10' ± 0° 10' (range: 0° to 0° 20'). Convert both values to decimal degrees. Explain what tire wear pattern this causes if left uncorrected.</div>
+  <div class="qa"><div class="qal">Show your work and answer:</div><textarea id="kc3" class="tl" placeholder="0°28' conversion: 28 ÷ 60 = _____°&#10;0°20' conversion: 20 ÷ 60 = _____°&#10;&#10;Is 0.47° within the 0.33° max? ___&#10;&#10;Tire wear pattern caused: ...&#10;&#10;Why does toe cause this type of wear? ..."></textarea></div>
+</div>
+
+<div class="qb">
+  <div class="qh"><span class="qn">Q 4</span><span class="qt">Critical Thinking — Thrust Angle Decision</span></div>
+  <div class="qb2">Thrust angle reads 0° 05'. A classmate says: <em>"We should adjust the rear toe to fix the pull."</em> Is this correct? Explain using the specification and what you know about thrust angle.</div>
+  <div class="qa"><div class="qal">Your response:</div><textarea id="kc4" class="tl" placeholder="Is your classmate correct? YES / NO&#10;&#10;Reason: Thrust angle 0°05' vs spec 0° ±0°10' means...&#10;&#10;Therefore, adjusting rear toe [would / would not] fix this pull because...&#10;&#10;What could unnecessarily adjusting rear toe cause?"></textarea></div>
+</div>
+
+<div class="qb">
+  <div class="qh"><span class="qn">Q 5</span><span class="qt">Written Communication — Customer Explanation</span></div>
+  <div class="qb2">Write a 3–5 sentence customer-friendly explanation of what caused the pull and what was done to fix it. Write as if speaking to the service advisor. No jargon — plain language only.</div>
+  <div class="qa"><div class="qal">Your customer-friendly explanation:</div><textarea id="kc5" class="xtl" placeholder="Write your full 3–5 sentence response in your own words. Cover: what was found, why it caused the pull, what was done to fix it, cost responsibility, and any follow-up the customer should know about."></textarea></div>
+</div>
+
+<div class="doc-ft">AUTOH 173 · Honda PACT · Shoreline Community College · Case Study Worksheet: Vehicle Pulls Right After Suspension Repair</div>
+</div>
+</div>
+
+<script>
+function g(id){return document.getElementById(id)}
+function v(id){return (g(id)?g(id).value:'') || ''}
+function e(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/\n/g,'</w:t><w:br/><w:t xml:space="preserve">')}
+function clearAll(){if(!confirm('Clear all answers?'))return;document.querySelectorAll('textarea,input[type=text]').forEach(el=>el.value='');document.querySelectorAll('select').forEach(el=>el.selectedIndex=0);document.querySelectorAll('input[type=radio]').forEach(el=>el.checked=false);g('si').value='R. Smith'}
+
+function dlHTML(){
+  const clone=document.documentElement.cloneNode(true);
+  clone.querySelectorAll('textarea').forEach(el=>{const src=g(el.id);if(src)el.textContent=src.value});
+  clone.querySelectorAll('input[type=text]').forEach(el=>{const src=g(el.id);if(src)el.setAttribute('value',src.value)});
+  clone.querySelectorAll('select').forEach(el=>{const src=g(el.id);if(src){const sv=src.value;Array.from(el.options).forEach(o=>{o.removeAttribute('selected');if(o.value===sv)o.setAttribute('selected','selected')})}});
+  clone.querySelectorAll('input[type=radio]').forEach(el=>{const src=document.querySelector(`input[name="${el.name}"][value="${el.value}"]`);if(src&&src.checked)el.setAttribute('checked','checked');else el.removeAttribute('checked')});
+  const nm=(v('sn')||'Student').replace(/\s+/g,'_');
+  const blob=new Blob(['<!DOCTYPE html>'+clone.outerHTML],{type:'text/html'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`AUTOH173_Worksheet_${nm}.html`;a.click();
+}
+
+function dlPDF(){alert('Your browser\'s Print dialog will open.\nChoose "Save as PDF" as the destination.');setTimeout(()=>window.print(),300)}
+
+function dlWord(){
+  const nm=(v('sn')||'Student').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
+  const q1sel=document.querySelector('input[name=q1]:checked');
+  const q2sel=document.querySelector('input[name=q2]:checked');
+
+  function s(t){return`<w:p><w:pPr><w:shd w:val="clear" w:color="auto" w:fill="CC0000"/></w:pPr><w:r><w:rPr><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="21"/></w:rPr><w:t>${t}</w:t></w:r></w:p>`}
+  function lbl(t){return`<w:p><w:pPr><w:spacing w:before="100" w:after="40"/></w:pPr><w:r><w:rPr><w:b/><w:sz w:val="19"/></w:rPr><w:t xml:space="preserve">${t}</w:t></w:r></w:p>`}
+  function ans(id){const val=v(id);return`<w:p><w:pPr><w:shd w:val="clear" w:color="auto" w:fill="F9F9F9"/><w:spacing w:after="80"/></w:pPr><w:r><w:rPr><w:sz w:val="19"/></w:rPr><w:t xml:space="preserve">${e(val)||'(No answer entered)'}</w:t></w:r></w:p>`}
+  function inf(l,id){return`<w:p><w:pPr><w:spacing w:after="40"/></w:pPr><w:r><w:rPr><w:b/><w:sz w:val="18"/><w:color w:val="555555"/></w:rPr><w:t xml:space="preserve">${l}: </w:t></w:r><w:r><w:rPr><w:sz w:val="18"/></w:rPr><w:t xml:space="preserve">${e(v(id))||'—'}</w:t></w:r></w:p>`}
+  function arow(angle,reading,sp_id,st_id,nt_id){return`<w:tr><w:tc><w:tcPr><w:tcW w:w="1200" w:type="dxa"/><w:shd w:val="clear" w:color="auto" w:fill="F9F9F9"/></w:tcPr><w:p><w:r><w:rPr><w:b/><w:sz w:val="17"/></w:rPr><w:t>${angle}</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="900" w:type="dxa"/></w:tcPr><w:p><w:r><w:rPr><w:sz w:val="17"/></w:rPr><w:t>${reading}</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="1260" w:type="dxa"/></w:tcPr><w:p><w:r><w:rPr><w:sz w:val="17"/></w:rPr><w:t xml:space="preserve">${e(v(sp_id))||'—'}</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="1080" w:type="dxa"/></w:tcPr><w:p><w:r><w:rPr><w:sz w:val="17"/></w:rPr><w:t xml:space="preserve">${e(v(st_id))||'—'}</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="2960" w:type="dxa"/></w:tcPr><w:p><w:r><w:rPr><w:sz w:val="17"/></w:rPr><w:t xml:space="preserve">${e(v(nt_id))||'—'}</w:t></w:r></w:p></w:tc></w:tr>`}
+
+  const xml=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+<w:body>
+<w:p><w:pPr><w:shd w:val="clear" w:color="auto" w:fill="1A1A1A"/><w:spacing w:after="40"/></w:pPr><w:r><w:rPr><w:b/><w:color w:val="CC0000"/><w:sz w:val="18"/></w:rPr><w:t>AUTOH 173 · Steering &amp; Suspension · Case Study Worksheet</w:t></w:r></w:p>
+<w:p><w:pPr><w:shd w:val="clear" w:color="auto" w:fill="1A1A1A"/><w:spacing w:after="40"/></w:pPr><w:r><w:rPr><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="26"/></w:rPr><w:t>Vehicle Pulls to the Right After Suspension Repair</w:t></w:r></w:p>
+<w:p><w:pPr><w:shd w:val="clear" w:color="auto" w:fill="1A1A1A"/><w:spacing w:after="200"/></w:pPr><w:r><w:rPr><w:color w:val="AAAAAA"/><w:sz w:val="18"/></w:rPr><w:t>Diagnostic Procedure · Check &amp; Advise · No Test Drive Required</w:t></w:r></w:p>
+${s('STUDENT INFORMATION')}
+${inf('Name','sn')}${inf('Date','sd')}${inf('Period','sp')}${inf('Instructor','si')}
+${s('STEP 1 — Verify the Concern')}
+${lbl('1. Steering wheel position:')}${ans('s1a')}
+${lbl('2. Warning lights:')}${ans('s1b')}
+${lbl('3. Steering feel lock-to-lock:')}${ans('s1c')}
+${lbl('4. Initial hypothesis:')}${ans('s1d')}
+${s('STEP 2 — Pre-Alignment Inspection')}
+${lbl('A. Tire Pressure:')}${inf('LF',  't-lf')}${inf('RF','t-rf')}${inf('LR','t-lr')}${inf('RR','t-rr')}${inf('Spec','t-sp')}${ans('s2a')}
+${lbl('B. ★ Strut Upper Mount — Right Front:')}${ans('s2b')}
+${lbl('C. Ball Joint &amp; Tie Rod Inspection:')}${ans('s2c')}
+${lbl('D. Ride Height:')}${inf('Left Front','rh-lf')}${inf('Right Front','rh-rf')}${inf('Spec','rh-sp')}${inf('Difference','rh-df')}${ans('s2d')}
+${s('STEP 3 — Alignment Machine Data')}
+<w:tbl><w:tblPr><w:tblW w:w="7400" w:type="dxa"/><w:tblBorders><w:top w:val="single" w:sz="4" w:color="CCCCCC"/><w:left w:val="single" w:sz="4" w:color="CCCCCC"/><w:bottom w:val="single" w:sz="4" w:color="CCCCCC"/><w:right w:val="single" w:sz="4" w:color="CCCCCC"/><w:insideH w:val="single" w:sz="4" w:color="CCCCCC"/><w:insideV w:val="single" w:sz="4" w:color="CCCCCC"/></w:tblBorders></w:tblPr>
+<w:tblGrid><w:gridCol w:w="1200"/><w:gridCol w:w="900"/><w:gridCol w:w="1260"/><w:gridCol w:w="1080"/><w:gridCol w:w="2960"/></w:tblGrid>
+<w:tr><w:tc><w:tcPr><w:tcW w:w="1200" w:type="dxa"/><w:shd w:val="clear" w:color="auto" w:fill="1A1A1A"/></w:tcPr><w:p><w:r><w:rPr><w:b/><w:color w:val="CC0000"/><w:sz w:val="17"/></w:rPr><w:t>Angle</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="900" w:type="dxa"/><w:shd w:val="clear" w:color="auto" w:fill="1A1A1A"/></w:tcPr><w:p><w:r><w:rPr><w:b/><w:color w:val="CC0000"/><w:sz w:val="17"/></w:rPr><w:t>Reading</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="1260" w:type="dxa"/><w:shd w:val="clear" w:color="auto" w:fill="1A1A1A"/></w:tcPr><w:p><w:r><w:rPr><w:b/><w:color w:val="CC0000"/><w:sz w:val="17"/></w:rPr><w:t>OEM Spec</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="1080" w:type="dxa"/><w:shd w:val="clear" w:color="auto" w:fill="1A1A1A"/></w:tcPr><w:p><w:r><w:rPr><w:b/><w:color w:val="CC0000"/><w:sz w:val="17"/></w:rPr><w:t>Status</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="2960" w:type="dxa"/><w:shd w:val="clear" w:color="auto" w:fill="1A1A1A"/></w:tcPr><w:p><w:r><w:rPr><w:b/><w:color w:val="CC0000"/><w:sz w:val="17"/></w:rPr><w:t>Analysis</w:t></w:r></w:p></w:tc></w:tr>
+${arow("Caster Left","+3° 00'","cl-sp","cl-st","cl-nt")}
+${arow("Caster Right","+ 1° 15'","cr-sp","cr-st","cr-nt")}
+${arow("Camber Left","−0° 40'","cml-sp","cml-st","cml-nt")}
+${arow("Camber Right","+0° 50'","cmr-sp","cmr-st","cmr-nt")}
+${arow("Toe Left","0° 08'","tl-sp","tl-st","tl-nt")}
+${arow("Toe Right","0° 28'","tr-sp","tr-st","tr-nt")}
+${arow("SAI","15°10'/15°00'","sai-sp","sai-st","sai-nt")}
+${arow("Thrust Angle","0° 05'","ta-sp","ta-st","ta-nt")}
+</w:tbl>
+${s('STEP 4 — Root Cause Analysis')}
+${lbl('1. Primary root cause:')}${ans('s4a')}
+${lbl('2. Secondary causes:')}${ans('s4b')}
+${lbl('3. SAI interpretation:')}${ans('s4c')}
+${lbl('4. Thrust angle — does it explain the pull?')}${ans('s4d')}
+${s('STEP 5 — Repair Plan')}
+${lbl('1. Customer communication:')}${ans('s5a')}
+${lbl('2. Repair steps in order:')}${ans('s5b')}
+${lbl('3. Required documentation:')}${ans('s5c')}
+${s('KNOWLEDGE CHECK')}
+${lbl('Q1 — Selected: '+(q1sel?q1sel.value:'(none)')+' — Explanation:')}${ans('kc1')}
+${lbl('Q2 — Selected: '+(q2sel?q2sel.value:'(none)')+' — Explanation:')}${ans('kc2')}
+${lbl('Q3 — Calculation &amp; tire wear:')}${ans('kc3')}
+${lbl('Q4 — Thrust angle challenge:')}${ans('kc4')}
+${lbl('Q5 — Customer explanation:')}${ans('kc5')}
+<w:p><w:pPr><w:jc w:val="center"/><w:spacing w:before="240"/></w:pPr><w:r><w:rPr><w:color w:val="999999"/><w:sz w:val="16"/></w:rPr><w:t>AUTOH 173 · Honda PACT · Shoreline Community College · Case Study Worksheet</w:t></w:r></w:p>
+<w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1080" w:right="1080" w:bottom="1080" w:left="1080"/></w:sectPr>
+</w:body></w:document>`;
+
+  const zip=new JSZip();
+  zip.file('[Content_Types].xml',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>`);
+  zip.file('_rels/.rels',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>`);
+  zip.file('word/_rels/document.xml.rels',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"></Relationships>`);
+  zip.file('word/document.xml',xml);
+  zip.generateAsync({type:'blob',mimeType:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'}).then(blob=>{
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+    a.download=`AUTOH173_CaseStudy_Worksheet_${nm.replace(/\s+/g,'_')}.docx`;a.click();
+  });
+}
+</script>
+</body>
+</html>
