@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tire Repair, Mounting & Balancing — Reference Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f2240;
+    --navy-mid: #1b3a6b;
+    --blue: #2058a8;
+    --blue-light: #3b82c4;
+    --ice: #deedf8;
+    --ice-pale: #f0f7fd;
+    --gold: #c47b14;
+    --gold-light: #fef3dc;
+    --red: #b91c1c;
+    --red-light: #fef2f2;
+    --green: #166534;
+    --green-light: #dcfce7;
+    --ink: #1c2940;
+    --muted: #5a6a82;
+    --rule: #c8d8e8;
+    --page: #f7fafd;
+    --white: #ffffff;
+    --step-dot: #2058a8;
+    --warning-stripe: repeating-linear-gradient(
+      -45deg,
+      #b91c1c 0px, #b91c1c 8px,
+      #7f1212 8px, #7f1212 16px
+    );
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: #e8eef6;
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 40px 20px 60px;
+  }
+
+  /* ---- CANVAS EMBED SHELL ---- */
+  .canvas-shell {
+    max-width: 960px;
+    margin: 0 auto;
+    background: var(--white);
+    border: 1px solid #b8ccdf;
+    border-radius: 4px;
+    box-shadow: 0 8px 40px rgba(15,34,64,.18), 0 2px 8px rgba(15,34,64,.10);
+    overflow: hidden;
+  }
+
+  /* ---- CANVAS TOOLBAR ---- */
+  .canvas-toolbar {
+    background: #f0f4f8;
+    border-bottom: 1px solid #ccd8e4;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .toolbar-dots { display: flex; gap: 6px; }
+  .toolbar-dots span {
+    width: 12px; height: 12px; border-radius: 50%;
+    display: block;
+  }
+  .toolbar-dots .d1 { background: #fc5c5c; }
+  .toolbar-dots .d2 { background: #fdbc40; }
+  .toolbar-dots .d3 { background: #34c84a; }
+  .toolbar-title {
+    flex: 1;
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--muted);
+    letter-spacing: .04em;
+  }
+  .toolbar-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    background: var(--navy);
+    color: #a8c5e8;
+    padding: 2px 10px;
+    border-radius: 20px;
+    letter-spacing: .06em;
+  }
+
+  /* ---- DOCUMENT AREA ---- */
+  .doc-area {
+    background: var(--page);
+    padding: 0;
+  }
+
+  /* ---- COVER BAND ---- */
+  .cover {
+    background: var(--navy);
+    padding: 40px 52px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(32,88,168,.45) 0%, transparent 70%);
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold) 0%, var(--blue-light) 50%, var(--gold) 100%);
+  }
+  .cover-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: #6a9ec5;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .cover-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.0;
+    letter-spacing: .01em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .cover-title em {
+    color: #7bbde8;
+    font-style: normal;
+  }
+  .cover-sub {
+    font-size: 14px;
+    color: #8ab4d4;
+    font-weight: 300;
+    font-style: italic;
+  }
+  .cover-tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+  }
+  .cover-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.15);
+    color: #a8cce6;
+    padding: 3px 12px;
+    border-radius: 3px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  /* ---- SECTION TABS ---- */
+  .tabs {
+    display: flex;
+    background: var(--navy-mid);
+    border-bottom: 3px solid var(--blue);
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 12px 8px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: #7aa8cc;
+    background: none;
+    border: none;
+    border-right: 1px solid rgba(255,255,255,.08);
+    cursor: pointer;
+    transition: background .18s, color .18s;
+    position: relative;
+  }
+  .tab-btn:last-child { border-right: none; }
+  .tab-btn.active {
+    background: var(--blue);
+    color: var(--white);
+  }
+  .tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -6px; left: 50%;
+    transform: translateX(-50%);
+    width: 10px; height: 10px;
+    background: var(--blue);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+  }
+  .tab-num {
+    display: inline-block;
+    width: 18px; height: 18px;
+    background: rgba(255,255,255,.12);
+    border-radius: 50%;
+    font-size: 11px;
+    line-height: 18px;
+    text-align: center;
+    margin-right: 5px;
+  }
+  .tab-btn.active .tab-num {
+    background: rgba(255,255,255,.25);
+  }
+
+  /* ---- CONTENT PANELS ---- */
+  .panel { display: none; padding: 40px 52px 48px; }
+  .panel.active { display: block; }
+
+  /* ---- SECTION HEADING ---- */
+  .sec-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--rule);
+  }
+  .sec-icon {
+    width: 44px; height: 44px;
+    background: var(--navy);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .sec-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    line-height: 1.1;
+  }
+  .sec-desc {
+    font-size: 13.5px;
+    color: var(--muted);
+    font-weight: 300;
+    margin-top: 2px;
+  }
+
+  /* ---- SUB-SECTION ---- */
+  .subsec {
+    margin-bottom: 32px;
+  }
+  .subsec-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .subsec-title::before {
+    content: '';
+    display: block;
+    width: 4px; height: 18px;
+    background: var(--blue);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .subsec-body {
+    font-size: 13.5px;
+    color: var(--muted);
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: 14px;
+    padding-left: 12px;
+  }
+
+  /* ---- STEPS ---- */
+  .steps { list-style: none; padding: 0; }
+  .step {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+  }
+  .step-num {
+    width: 26px; height: 26px;
+    background: var(--navy);
+    color: var(--white);
+    border-radius: 50%;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .step-content { flex: 1; }
+  .step-text {
+    font-size: 13.5px;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .step-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--blue);
+    font-weight: 500;
+  }
+  .step-note {
+    font-size: 11.5px;
+    color: var(--muted);
+    font-style: italic;
+    margin-top: 2px;
+    padding-left: 0;
+  }
+  .step-note::before { content: '→ '; color: var(--gold); }
+
+  /* ---- BOXES ---- */
+  .box {
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 18px 0;
+  }
+  .box-header {
+    padding: 10px 16px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .box-body { padding: 6px 0 6px; }
+  .box-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 6px 16px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .box-bullet { flex-shrink: 0; margin-top: 3px; font-size: 11px; }
+
+  /* Warning */
+  .box-warning .box-header { background: var(--red); color: var(--white); }
+  .box-warning .box-body { background: var(--red-light); }
+  .box-warning .box-item { color: #5c0000; }
+  .box-warning .box-bullet { color: var(--red); }
+
+  /* Info */
+  .box-info .box-header { background: var(--navy-mid); color: var(--white); }
+  .box-info .box-body { background: var(--ice-pale); }
+  .box-info .box-item { color: #1a2e4a; }
+  .box-info .box-bullet { color: var(--blue); }
+
+  /* Success */
+  .box-success .box-header { background: var(--green); color: var(--white); }
+  .box-success .box-body { background: var(--green-light); }
+  .box-success .box-item { color: #14532d; }
+  .box-success .box-bullet { color: var(--green); }
+
+  /* Gold */
+  .box-gold .box-header { background: var(--gold); color: var(--white); }
+  .box-gold .box-body { background: var(--gold-light); }
+  .box-gold .box-item { color: #4a2c00; }
+  .box-gold .box-bullet { color: var(--gold); }
+
+  /* ---- REPAIR TABLE ---- */
+  .repair-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 18px 0;
+  }
+  .rg-header {
+    padding: 10px 16px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14.5px;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-align: center;
+  }
+  .rg-header.ok { background: var(--green); }
+  .rg-header.no { background: var(--red); }
+  .rg-item {
+    padding: 8px 16px;
+    font-size: 12.5px;
+    color: var(--ink);
+    border-top: 1px solid var(--rule);
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    line-height: 1.4;
+  }
+  .rg-item.ok-row { background: #f0faf0; }
+  .rg-item.ok-row:nth-child(even) { background: var(--green-light); }
+  .rg-item.no-row { background: #fff7f7; }
+  .rg-item.no-row:nth-child(even) { background: var(--red-light); }
+  .rg-dot { flex-shrink: 0; margin-top: 4px; width: 7px; height: 7px; border-radius: 50%; }
+  .rg-dot.ok { background: var(--green); }
+  .rg-dot.no { background: var(--red); }
+
+  /* ---- BALANCE TABLE ---- */
+  .bal-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 18px 0;
+    font-size: 13px;
+  }
+  .bal-table th {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 13px;
+  }
+  .bal-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .bal-table tr:nth-child(even) td { background: var(--ice-pale); }
+  .bal-table tr:last-child td { border-bottom: none; }
+
+  /* ---- SUMMARY TABLE ---- */
+  .sum-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .sum-col { }
+  .sum-col-head {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    padding: 9px 12px;
+    border-radius: 3px 3px 0 0;
+    text-align: center;
+  }
+  .sum-col-head.c2 { background: var(--blue); }
+  .sum-col-head.c3 { background: #1d6faa; }
+  .sum-item {
+    padding: 7px 10px;
+    font-size: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--white);
+    line-height: 1.4;
+    color: var(--ink);
+  }
+  .sum-item:nth-child(even) { background: var(--ice-pale); }
+  .sum-item:last-child { border-bottom: none; border-radius: 0 0 3px 3px; }
+  .sum-check { color: var(--green); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+  /* ---- DIVIDER ---- */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 24px 0;
+  }
+
+  /* ---- FOOTER ---- */
+  .doc-footer {
+    background: var(--navy);
+    padding: 14px 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .doc-footer-text {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: #5a82a8;
+    letter-spacing: .05em;
+  }
+  .doc-footer-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    background: rgba(255,255,255,.07);
+    color: #7aa0bf;
+    border: 1px solid rgba(255,255,255,.1);
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: .08em;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 680px) {
+    .panel { padding: 24px 20px 32px; }
+    .cover { padding: 28px 20px 24px; }
+    .cover-title { font-size: 28px; }
+    .tab-btn { font-size: 11px; padding: 10px 4px; }
+    .sum-grid { grid-template-columns: 1fr; }
+    .repair-grid { grid-template-columns: 1fr; }
+    .doc-footer { flex-direction: column; gap: 6px; padding: 14px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="canvas-shell" role="main" aria-label="Tire Repair, Mounting and Balancing Reference Sheet">
+
+  <!-- TOOLBAR -->
+  <div class="canvas-toolbar" role="banner" aria-label="Document toolbar">
+    <div class="toolbar-dots" aria-hidden="true">
+      <span class="d1"></span><span class="d2"></span><span class="d3"></span>
+    </div>
+    <div class="toolbar-title" id="doc-title">tire-repair-reference.canvas</div>
+    <div class="toolbar-badge" aria-label="Document type: Embedded Reference">EMBED · REF</div>
+  </div>
+
+  <!-- COVER -->
+  <div class="cover" role="heading" aria-level="1">
+    <div class="cover-eyebrow">Automotive Technology Program · Student Reference</div>
+    <div class="cover-title">Tire <em>Repair,</em> Mounting<br>&amp; Balancing</div>
+    <div class="cover-sub">Step-by-step procedures with safety emphasis and verification checklists</div>
+    <div class="cover-tags" role="list" aria-label="Topics covered">
+      <span class="cover-tag" role="listitem">Puncture Inspection</span>
+      <span class="cover-tag" role="listitem">Plug + Patch Repair</span>
+      <span class="cover-tag" role="listitem">Tire Mounting</span>
+      <span class="cover-tag" role="listitem">Wheel Balancing</span>
+      <span class="cover-tag" role="listitem">Shop Safety</span>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs" role="tablist" aria-label="Reference sections">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-1" id="tab-1" onclick="switchTab(1)">
+      <span class="tab-num" aria-hidden="true">1</span>Tire Repair
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-2" id="tab-2" onclick="switchTab(2)">
+      <span class="tab-num" aria-hidden="true">2</span>Mounting
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-3" id="tab-3" onclick="switchTab(3)">
+      <span class="tab-num" aria-hidden="true">3</span>Balancing
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-4" id="tab-4" onclick="switchTab(4)">
+      <span class="tab-num" aria-hidden="true">✓</span>Quick Ref
+    </button>
+  </div>
+
+  <!-- PANEL 1: TIRE REPAIR -->
+  <div class="panel active" id="panel-1" role="tabpanel" aria-labelledby="tab-1">
+    <div class="sec-head">
+      <div class="sec-icon" aria-hidden="true">🔧</div>
+      <div>
+        <div class="sec-title">Section 1 — Tire Repair Procedures</div>
+        <div class="sec-desc">Puncture inspection · Damage evaluation · Approved repair method</div>
+      </div>
+    </div>
+
+    <!-- 1A Inspection -->
+    <div class="subsec">
+      <h2 class="subsec-title">1A. Puncture Inspection</h2>
+      <p class="subsec-body">Perform a thorough visual and physical inspection before any repair attempt.</p>
+      <ol class="steps" aria-label="Puncture inspection steps">
+        <li class="step">
+          <span class="step-num" aria-label="Step 1">1</span>
+          <div class="step-content">
+            <div class="step-text">Park safely; engage parking brake. Raise and support vehicle on jack stands.</div>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-label="Step 2">2</span>
+          <div class="step-content">
+            <div class="step-text">Remove the wheel assembly from the vehicle.</div>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-label="Step 3">3</span>
+          <div class="step-content">
+            <div class="step-text">Visually inspect the full tread surface for foreign objects — nails, screws, glass, wire.</div>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-label="Step 4">4</span>
+          <div class="step-content">
+            <div class="step-text">Listen for escaping air; apply soapy water to suspicious areas to reveal leaks.</div>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-label="Step 5">5</span>
+          <div class="step-content">
+            <div class="step-text">Mark the puncture location with chalk or tire marker <strong>before</strong> removing the object.</div>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-label="Step 6">6</span>
+          <div class="step-content">
+            <div class="step-text">Measure puncture diameter with probe or calipers.</div>
+            <div class="step-note">Do not remove the object until ready to repair.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <hr class="divider" aria-hidden="true">
+
+    <!-- 1B Nail Penetration -->
+    <div class="subsec">
+      <h2 class="subsec-title">1B. Nail Penetration Evaluation</h2>
+      <p class="subsec-body">Evaluate nail depth, angle, and location to determine if repair is possible.</p>
+      <ol class="steps" aria-label="Nail penetration evaluation steps">
+        <li class="step">
+          <span class="step-num" aria-label="Step 1">1</span>
+          <div class="step-content">
+            <div class="step-text">With object still in place, note the angle of penetration relative to the tread surface.</div>
+            <div class="step-note">Within 10° of perpendicular = potentially repairable.</div>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-label="Step 2">2</span>
+          <div class="step-content">
+            <div class="step-text">Assess puncture diameter: <strong>1/4 inch (6 mm) maximum</strong> for repair eligibility.</div>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-label="Step 3">3</span>
+          <div class="step-content">
+            <div class="step-text">Carefully remove the object with pliers. Note depth of penetration.</div>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-label="Step 4">4</span>
+          <div class="step-content">
+            <div class="step-text">Probe the hole with a round-tipped reamer to check for internal cord or belt damage.</div>
+            <div class="step-note">Resistance or fraying = non-repairable.</div>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-label="Step 5">5</span>
+          <div class="step-content">
+            <div class="step-text">Record findings on the repair order.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <hr class="divider" aria-hidden="true">
+
+    <!-- 1C Repair Decision -->
+    <div class="subsec">
+      <h2 class="subsec-title">1C. Repairable vs. Non-Repairable Damage</h2>
+      <p class="subsec-body">Use this table to make the repair/replace decision. When in doubt — replace the tire.</p>
+
+      <div class="repair-grid" role="table" aria-label="Repairable versus non-repairable tire damage conditions">
+        <div class="rg-header ok" role="columnheader">✓ Repairable</div>
+        <div class="rg-header no" role="columnheader">✗ Non-Repairable — Replace Tire</div>
+
+        <div class="rg-item ok-row" role="row">
+          <span class="rg-dot ok" aria-hidden="true"></span>
+          <span role="cell">Puncture in tread area only</span>
+        </div>
+        <div class="rg-item no-row" role="row">
+          <span class="rg-dot no" aria-hidden="true"></span>
+          <span role="cell">Any sidewall or shoulder damage</span>
+        </div>
+        <div class="rg-item ok-row" role="row">
+          <span class="rg-dot ok" aria-hidden="true"></span>
+          <span role="cell">Nail/screw diameter ≤ 1/4 inch (6 mm)</span>
+        </div>
+        <div class="rg-item no-row" role="row">
+          <span class="rg-dot no" aria-hidden="true"></span>
+          <span role="cell">Puncture diameter &gt; 1/4 inch</span>
+        </div>
+        <div class="rg-item ok-row" role="row">
+          <span class="rg-dot ok" aria-hidden="true"></span>
+          <span role="cell">Damage angle within 10° of perpendicular</span>
+        </div>
+        <div class="rg-item no-row" role="row">
+          <span class="rg-dot no" aria-hidden="true"></span>
+          <span role="cell">Run-flat damage (driven while flat)</span>
+        </div>
+        <div class="rg-item ok-row" role="row">
+          <span class="rg-dot ok" aria-hidden="true"></span>
+          <span role="cell">No prior plug-only repair at same location</span>
+        </div>
+        <div class="rg-item no-row" role="row">
+          <span class="rg-dot no" aria-hidden="true"></span>
+          <span role="cell">Multiple punctures within 16 inches</span>
+        </div>
+        <div class="rg-item ok-row" role="row">
+          <span class="rg-dot ok" aria-hidden="true"></span>
+          <span role="cell">No cord or belt damage visible</span>
+        </div>
+        <div class="rg-item no-row" role="row">
+          <span class="rg-dot no" aria-hidden="true"></span>
+          <span role="cell">Exposed belt or cord damage</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-warning" role="alert" aria-label="Safety rules warning">
+      <div class="box-header">⚠ Safety Rules — No Exceptions</div>
+      <div class="box-body">
+        <div class="box-item"><span class="box-bullet" aria-hidden="true">▶</span><span><strong>NEVER</strong> repair sidewall or shoulder damage — these areas flex under load and any repair will fail.</span></div>
+        <div class="box-item"><span class="box-bullet" aria-hidden="true">▶</span><span><strong>NEVER</strong> perform a plug-only repair — plugs alone do not seal the inner liner.</span></div>
+        <div class="box-item"><span class="box-bullet" aria-hidden="true">▶</span><span><strong>NEVER</strong> repair a tire driven while flat (run-flat condition).</span></div>
+        <div class="box-item"><span class="box-bullet" aria-hidden="true">▶</span><span>Inform the customer in writing if the tire is non-repairable.</span></div>
+      </div>
+    </div>
+
+    <hr class="divider" aria-hidden="true">
+
+    <!-- 1D Plug + Patch -->
+    <div class="subsec">
+      <h2 class="subsec-title">1D. Approved Repair: Plug + Patch Combination</h2>
+      <div class="box box-info">
+        <div class="box-header">ℹ Industry Standard</div>
+        <div class="box-body">
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">•</span><span>The only ANSI/RMA-approved method for permanent tire repair is the <strong>plug + patch (combination) repair</strong>.</span></div>
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">•</span><span>Plug-only or patch-only repairs are <strong>NOT</strong> permanent and should not be used.</span></div>
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">•</span><span>Always follow the repair kit manufacturer's instructions for cure time and chemical use.</span></div>
+        </div>
+      </div>
+      <ol class="steps" aria-label="Plug and patch combination repair steps">
+        <li class="step"><span class="step-num" aria-label="Step 1">1</span><div class="step-content"><div class="step-text">Remove tire from wheel (see Section 2).</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 2">2</span><div class="step-content"><div class="step-text">Buff the puncture area on the inner liner with the specified buffing tool.</div><div class="step-note">1-inch radius around puncture; 3/4 nap finish.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 3">3</span><div class="step-content"><div class="step-text">Apply vulcanizing cement to the buffed area. Allow to dry to tack (approx. 2–4 min).</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 4">4</span><div class="step-content"><div class="step-text">Insert plug stem from inside, pulling through puncture with plug-through tool.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 5">5</span><div class="step-content"><div class="step-text">Peel backing from patch and center over puncture on the inner liner.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 6">6</span><div class="step-content"><div class="step-text">Roll patch firmly with stitching roller from center outward to eliminate air pockets.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 7">7</span><div class="step-content"><div class="step-text">Trim plug stem flush with tread using a sharp knife.</div><div class="step-note">Do not use scissors; a clean cut prevents plug pull-out.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 8">8</span><div class="step-content"><div class="step-text">Remount the tire onto the wheel (see Section 2).</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 9">9</span><div class="step-content"><div class="step-text">Inflate to specified pressure; recheck for leaks using soapy water.</div></div></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- PANEL 2: MOUNTING -->
+  <div class="panel" id="panel-2" role="tabpanel" aria-labelledby="tab-2">
+    <div class="sec-head">
+      <div class="sec-icon" aria-hidden="true">⚙️</div>
+      <div>
+        <div class="sec-title">Section 2 — Tire Mounting Procedures</div>
+        <div class="sec-desc">Bead breaking · Wheel inspection · Valve stem replacement · Orientation · Shop safety</div>
+      </div>
+    </div>
+
+    <!-- 2A Bead Breaking -->
+    <div class="subsec">
+      <h2 class="subsec-title">2A. Bead Breaking</h2>
+      <p class="subsec-body">Safely separate the tire bead from the wheel rim before dismounting.</p>
+      <ol class="steps" aria-label="Bead breaking steps">
+        <li class="step"><span class="step-num" aria-label="Step 1">1</span><div class="step-content"><div class="step-text">Deflate the tire completely by removing the valve core.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 2">2</span><div class="step-content"><div class="step-text">Lay the wheel flat on the tire machine turntable or a rubber mat.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 3">3</span><div class="step-content"><div class="step-text">Position the bead breaker blade <strong>1 inch from the rim edge</strong> — never on the rim flange.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 4">4</span><div class="step-content"><div class="step-text">Apply even downward pressure to break the bead on both sides.</div><div class="step-note">Lubricate bead with mounting lubricant before dismounting.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 5">5</span><div class="step-content"><div class="step-text">Repeat on the opposite side of the tire.</div></div></li>
+      </ol>
+      <div class="box box-warning" role="alert" aria-label="Wheel damage prevention warning">
+        <div class="box-header">⚠ Wheel Damage Prevention</div>
+        <div class="box-body">
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">▶</span><span>Never place the bead breaker on or over the rim flange — causes permanent rim damage.</span></div>
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">▶</span><span>Do not use a pry bar or steel tools directly against an alloy wheel surface.</span></div>
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">▶</span><span>Use plastic or rubber-coated tools when working on alloy wheels.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider" aria-hidden="true">
+
+    <!-- 2B Wheel Inspection -->
+    <div class="subsec">
+      <h2 class="subsec-title">2B. Wheel Inspection</h2>
+      <p class="subsec-body">Inspect every wheel before mounting a new or repaired tire.</p>
+      <ol class="steps" aria-label="Wheel inspection steps">
+        <li class="step"><span class="step-num" aria-label="Step 1">1</span><div class="step-content"><div class="step-text">Clean bead seat area with wire brush; remove all rust, corrosion, and old rubber.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 2">2</span><div class="step-content"><div class="step-text">Inspect rim flanges for cracks, bends, or gouges.</div><div class="step-note">Cracked or severely bent rims must not be reused.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 3">3</span><div class="step-content"><div class="step-text">Check rim runout with a dial indicator if vibration concerns exist.</div><div class="step-note">Lateral runout limit: 0.030″ TIR; radial runout limit: 0.045″ TIR.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 4">4</span><div class="step-content"><div class="step-text">Inspect center bore and lug holes for cracks or elongation.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 5">5</span><div class="step-content"><div class="step-text">Document any damage on the repair order and inform the customer before proceeding.</div></div></li>
+      </ol>
+    </div>
+
+    <hr class="divider" aria-hidden="true">
+
+    <!-- 2C Valve Stem -->
+    <div class="subsec">
+      <h2 class="subsec-title">2C. Valve Stem Replacement</h2>
+      <p class="subsec-body">Replace the valve stem every time a tire is dismounted. Valve stems are a one-time-use component.</p>
+      <ol class="steps" aria-label="Valve stem replacement steps">
+        <li class="step"><span class="step-num" aria-label="Step 1">1</span><div class="step-content"><div class="step-text">Cut and remove the old valve stem completely.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 2">2</span><div class="step-content"><div class="step-text">Select the correct replacement stem: snap-in rubber or metal clamp-in per wheel type.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 3">3</span><div class="step-content"><div class="step-text">Snap-in stems: lubricate with rubber lubricant; pull through valve hole with valve stem tool.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 4">4</span><div class="step-content"><div class="step-text">Metal clamp-in stems: seat stem, install washer and nut; torque to manufacturer spec.</div><div class="step-note">Typical torque: 35–50 in-lb. Over-torquing can crack the valve hole.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 5">5</span><div class="step-content"><div class="step-text">Verify stem is fully seated and perpendicular to the wheel surface.</div></div></li>
+      </ol>
+    </div>
+
+    <hr class="divider" aria-hidden="true">
+
+    <!-- 2D Orientation -->
+    <div class="subsec">
+      <h2 class="subsec-title">2D. Proper Mounting Orientation</h2>
+      <p class="subsec-body">Always observe directional and rotation markings before mounting.</p>
+      <ol class="steps" aria-label="Mounting orientation steps">
+        <li class="step"><span class="step-num" aria-label="Step 1">1</span><div class="step-content"><div class="step-text">Identify the tire's rotation direction arrow on the sidewall if present.</div><div class="step-note">Directional tires MUST be mounted with the arrow pointing in the correct direction of travel.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 2">2</span><div class="step-content"><div class="step-text">Check for asymmetric tread pattern (OUTSIDE / INSIDE markings on sidewall).</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 3">3</span><div class="step-content"><div class="step-text">Align the tire's <strong>red dot</strong> (radial force variation) with the valve stem if no yellow dot is present.</div><div class="step-note">If yellow dot (light point) is present, align it with the valve stem.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 4">4</span><div class="step-content"><div class="step-text">Lubricate both tire beads with mounting lubricant. <strong>Never use petroleum-based grease.</strong></div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 5">5</span><div class="step-content"><div class="step-text">Mount the first bead by hand over the rim; use the tire machine to seat the second bead.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 6">6</span><div class="step-content"><div class="step-text">Verify bead is fully seated on both sides before inflating.</div></div></li>
+      </ol>
+    </div>
+
+    <hr class="divider" aria-hidden="true">
+
+    <!-- 2E Shop Safety -->
+    <div class="subsec">
+      <h2 class="subsec-title">2E. Shop Safety During Mounting</h2>
+      <div class="box box-info" role="note" aria-label="Tire machine operation safety information">
+        <div class="box-header">ℹ Tire Machine Operation</div>
+        <div class="box-body">
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">•</span><span>Read the machine manufacturer's operating manual before first use.</span></div>
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">•</span><span>Keep hands and fingers clear of the mounting/demounting tool and the rotating turntable.</span></div>
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">•</span><span>Never exceed <strong>40 psi</strong> during initial seating inflation — overinflation can cause the bead to explode off the rim.</span></div>
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">•</span><span>Do not stand beside or in front of the wheel while inflating.</span></div>
+        </div>
+      </div>
+
+      <div class="box box-warning" role="alert" aria-label="Inflation cage requirement warning">
+        <div class="box-header">⚠ Inflation Cage Required — When to Use</div>
+        <div class="box-body">
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">▶</span><span><strong>Always</strong> use an inflation cage (safety cage) for initial bead seating after mounting.</span></div>
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">▶</span><span>Any time a tire has been dismounted and remounted, use the cage.</span></div>
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">▶</span><span>Tires with damaged beads, aged rubber, or unknown service history must be inflated in a cage.</span></div>
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">▶</span><span>Failure to use an inflation cage risks severe injury from bead explosion.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 3: BALANCING -->
+  <div class="panel" id="panel-3" role="tabpanel" aria-labelledby="tab-3">
+    <div class="sec-head">
+      <div class="sec-icon" aria-hidden="true">⚖️</div>
+      <div>
+        <div class="sec-title">Section 3 — Wheel Balancing</div>
+        <div class="sec-desc">Static &amp; dynamic imbalance · Shimmy diagnosis · Dynamic balancing procedure</div>
+      </div>
+    </div>
+
+    <!-- Imbalance types -->
+    <div class="subsec">
+      <h2 class="subsec-title">3A. Types of Imbalance</h2>
+      <p class="subsec-body">Understanding imbalance types is critical for accurate diagnosis and correction.</p>
+      <table class="bal-table" aria-label="Types of wheel imbalance">
+        <thead>
+          <tr>
+            <th scope="col">Type</th>
+            <th scope="col">Cause</th>
+            <th scope="col">Symptom</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Static Imbalance</strong></td>
+            <td>Weight concentrated at one point on the circumference</td>
+            <td>Vertical bounce (hop) at low-to-mid speed</td>
+          </tr>
+          <tr>
+            <td><strong>Dynamic Imbalance</strong></td>
+            <td>Weight distributed unevenly across tire width</td>
+            <td>Side-to-side shimmy; often felt in the steering wheel</td>
+          </tr>
+          <tr>
+            <td><strong>Shimmy vs. Suspension Vibration</strong></td>
+            <td>Shimmy: tire/wheel out of balance; Vibration: worn or damaged suspension parts</td>
+            <td>Diagnosis required — always balance before replacing suspension parts</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="divider" aria-hidden="true">
+
+    <!-- Dynamic Balancing Procedure -->
+    <div class="subsec">
+      <h2 class="subsec-title">3B. Dynamic Wheel Balancing Procedure</h2>
+      <p class="subsec-body">Students will perform a complete dynamic balance on each wheel/tire assembly.</p>
+      <ol class="steps" aria-label="Dynamic wheel balancing steps">
+        <li class="step"><span class="step-num" aria-label="Step 1">1</span><div class="step-content"><div class="step-text">Clean all old wheel weights from the rim using a trim tool. Remove adhesive tape residue.</div><div class="step-note">Leftover weights will throw off the balancer reading.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 2">2</span><div class="step-content"><div class="step-text">Mount the wheel/tire assembly on the balancer shaft. Seat the cone correctly to center the wheel.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 3">3</span><div class="step-content"><div class="step-text">Enter wheel dimensions into the balancer: diameter, width, and offset.</div><div class="step-note">Verify with wheel spec chart or measure with the built-in gauge.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 4">4</span><div class="step-content"><div class="step-text">Lower the wheel guard and press START. Allow balancer to complete its spin cycle.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 5">5</span><div class="step-content"><div class="step-text">Read the display: note weight amount and position for both <strong>inner and outer planes</strong>.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 6">6</span><div class="step-content"><div class="step-text">Rotate the wheel to the 12 o'clock position as indicated by the balancer for each plane.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 7">7</span><div class="step-content"><div class="step-text">Clip-on weights: seat the weight on the rim flange with a weight hammer.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 8">8</span><div class="step-content"><div class="step-text">Adhesive weights (alloy wheels): clean surface with isopropyl alcohol; press firmly and hold 30 seconds.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 9">9</span><div class="step-content"><div class="step-text">Spin the wheel again to verify balance.</div><div class="step-note">Acceptable residual imbalance: ≤ 0.25 oz (7 g) per plane.</div></div></li>
+        <li class="step"><span class="step-num" aria-label="Step 10">10</span><div class="step-content"><div class="step-text">If out of tolerance, adjust weight placement and re-spin. Repeat until within spec.</div></div></li>
+      </ol>
+
+      <div class="box box-success" role="note" aria-label="Rebalance verification checklist">
+        <div class="box-header">✓ Rebalance Verification Checklist</div>
+        <div class="box-body">
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">•</span><span>Final reading shows ≤ 0.25 oz (7 g) residual imbalance on each plane.</span></div>
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">•</span><span>Adhesive weights are firmly bonded — no movement when pressed by hand.</span></div>
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">•</span><span>Clip-on weights are fully seated — no rocking or gaps under the clip.</span></div>
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">•</span><span>Wheel rotation direction verified if directional tire.</span></div>
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">•</span><span>Torque wheel to vehicle specification after installation.</span></div>
+        </div>
+      </div>
+
+      <div class="box box-gold" role="note" aria-label="Weight placement notes">
+        <div class="box-header">★ Weight Placement Notes</div>
+        <div class="box-body">
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">•</span><span><strong>Static imbalance:</strong> single weight on the heavy side at 180° from the imbalance point.</span></div>
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">•</span><span><strong>Dynamic imbalance:</strong> weights placed on inner and outer planes at opposing positions.</span></div>
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">•</span><span>Never stack more than two weights in the same location — stacking causes instability.</span></div>
+          <div class="box-item"><span class="box-bullet" aria-hidden="true">•</span><span>Match the weight material to the rim (steel clip-on for steel; adhesive for alloy).</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 4: QUICK REFERENCE -->
+  <div class="panel" id="panel-4" role="tabpanel" aria-labelledby="tab-4">
+    <div class="sec-head">
+      <div class="sec-icon" aria-hidden="true">📋</div>
+      <div>
+        <div class="sec-title">Quick Reference Summary</div>
+        <div class="sec-desc">Station checklist — use at each stage of the procedure</div>
+      </div>
+    </div>
+
+    <div class="sum-grid" role="table" aria-label="Quick reference checklist for all procedures">
+      <div class="sum-col">
+        <div class="sum-col-head" role="columnheader">🔧 Tire Repair</div>
+        <div class="sum-item" role="row"><span class="sum-check" aria-label="Checklist item">✓</span><span role="cell">Inspect before removing object</span></div>
+        <div class="sum-item" role="row"><span class="sum-check" aria-label="Checklist item">✓</span><span role="cell">Mark puncture location first</span></div>
+        <div class="sum-item" role="row"><span class="sum-check" aria-label="Checklist item">✓</span><span role="cell">Measure: max 1/4" puncture</span></div>
+        <div class="sum-item" role="row"><span class="sum-check" aria-label="Checklist item">✓</span><span role="cell">Remove tire from wheel</span></div>
+        <div class="sum-item" role="row"><span class="sum-check" aria-label="Checklist item">✓</span><span role="cell">Buff, cement, plug + patch</span></div>
+        <div class="sum-item" role="row"><span class="sum-check" aria-label="Checklist item">✓</span><span role="cell">Inflate &amp; check for leaks</span></div>
+      </div>
+      <div class="sum-col">
+        <div class="sum-col-head c2" role="columnheader">⚙️ Tire Mounting</div>
+        <div class="sum-item" role="row"><span class="sum-check" aria-label="Checklist item">✓</span><span role="cell">Deflate completely first</span></div>
+        <div class="sum-item" role="row"><span class="sum-check" aria-label="Checklist item">✓</span><span role="cell">Break bead — not on flange</span></div>
+        <div class="sum-item" role="row"><span class="sum-check" aria-label="Checklist item">✓</span><span role="cell">Inspect rim before mounting</span></div>
+        <div class="sum-item" role="row"><span class="sum-check" aria-label="Checklist item">✓</span><span role="cell">Replace valve stem always</span></div>
+        <div class="sum-item" role="row"><span class="sum-check" aria-label="Checklist item">✓</span><span role="cell">Orient tire correctly</span></div>
+        <div class="sum-item" role="row"><span class="sum-check" aria-label="Checklist item">✓</span><span role="cell">Use inflation cage for seating</span></div>
+      </div>
+      <div class="sum-col">
+        <div class="sum-col-head c3" role="columnheader">⚖️ Wheel Balancing</div>
+        <div class="sum-item" role="row"><span class="sum-check" aria-label="Checklist item">✓</span><span role="cell">Remove all old weights first</span></div>
+        <div class="sum-item" role="row"><span class="sum-check" aria-label="Checklist item">✓</span><span role="cell">Enter correct wheel dimensions</span></div>
+        <div class="sum-item" role="row"><span class="sum-check" aria-label="Checklist item">✓</span><span role="cell">Read inner + outer planes</span></div>
+        <div class="sum-item" role="row"><span class="sum-check" aria-label="Checklist item">✓</span><span role="cell">Place weights per balancer</span></div>
+        <div class="sum-item" role="row"><span class="sum-check" aria-label="Checklist item">✓</span><span role="cell">Verify: ≤ 0.25 oz per plane</span></div>
+        <div class="sum-item" role="row"><span class="sum-check" aria-label="Checklist item">✓</span><span role="cell">Torque wheel to vehicle spec</span></div>
+      </div>
+    </div>
+
+    <hr class="divider" aria-hidden="true">
+
+    <div class="box box-warning" role="alert" aria-label="Critical safety reminders">
+      <div class="box-header">⚠ Critical Safety Reminders — Always Apply</div>
+      <div class="box-body">
+        <div class="box-item"><span class="box-bullet" aria-hidden="true">▶</span><span><strong>No sidewall repairs</strong> — ever, under any circumstances.</span></div>
+        <div class="box-item"><span class="box-bullet" aria-hidden="true">▶</span><span><strong>Remove tire from wheel</strong> before performing any plug + patch repair.</span></div>
+        <div class="box-item"><span class="box-bullet" aria-hidden="true">▶</span><span><strong>No plug-only repairs</strong> — ANSI/RMA standard requires combination repair.</span></div>
+        <div class="box-item"><span class="box-bullet" aria-hidden="true">▶</span><span><strong>Use inflation cage</strong> every time a tire is remounted and initially seated.</span></div>
+        <div class="box-item"><span class="box-bullet" aria-hidden="true">▶</span><span><strong>Max 40 psi</strong> during bead seating — never exceed without confirmed bead seating.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="doc-footer" role="contentinfo">
+    <div class="doc-footer-text">Automotive Technology Program · Tire Repair, Mounting &amp; Balancing Reference · For educational use only</div>
+    <div class="doc-footer-badge">ADA-ACCESSIBLE · CANVAS EMBED</div>
+  </div>
+
+</div><!-- .canvas-shell -->
+
+<script>
+  function switchTab(n) {
+    document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+      btn.classList.toggle('active', i + 1 === n);
+      btn.setAttribute('aria-selected', i + 1 === n ? 'true' : 'false');
+    });
+    document.querySelectorAll('.panel').forEach((p, i) => {
+      p.classList.toggle('active', i + 1 === n);
+    });
+  }
+
+  // Keyboard navigation for tabs
+  document.querySelectorAll('.tab-btn').forEach((btn, idx, btns) => {
+    btn.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); const next = (idx + 1) % btns.length; btns[next].focus(); switchTab(next + 1); }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); const prev = (idx - 1 + btns.length) % btns.length; btns[prev].focus(); switchTab(prev + 1); }
+    });
+  });
+</script>
+</body>
+</html>
