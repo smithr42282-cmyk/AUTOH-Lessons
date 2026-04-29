@@ -3,471 +3,501 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Strut Replacement Job Sheet — Honda PACT</title>
+<title>Strut Replacement Job Sheet — Honda PACT AUTOH 173</title>
 <style>
-  :root {
-    --red: #CC0000;
-    --dark: #1a1a1a;
-    --blue: #144496;
-    --border: #e0e0e0;
-    --bg: #f5f5f5;
-  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f0f0; color: #1a1a1a; font-size: 15px; }
-  .page { max-width: 860px; margin: 30px auto; background: #fff; border-radius: 6px; box-shadow: 0 4px 20px rgba(0,0,0,0.12); overflow: hidden; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #ffffff;
+    color: #1a1a1a;
+    font-size: 14px;
+    line-height: 1.5;
+  }
 
-  /* ── HEADER ── */
-  .header { background: #1a1a1a; border-left: 6px solid #CC0000; padding: 22px 28px; }
-  .header .course-tag { color: #CC0000; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
-  .header h1 { color: #fff; font-size: 24px; font-weight: 700; margin-bottom: 4px; }
-  .header .subtitle { color: #aaa; font-size: 13px; }
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 36px 40px 48px;
+    background: #fff;
+  }
 
-  /* ── NAME ROW ── */
-  .name-row { background: #D3D3D3; padding: 12px 28px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
-  .name-row label { font-weight: 700; font-size: 13px; white-space: nowrap; }
-  .name-row input { border: none; border-bottom: 2px solid #1a1a1a; background: transparent; font-size: 15px; padding: 2px 6px; flex: 1; min-width: 200px; outline: none; }
-  .name-row input:focus { border-bottom-color: #CC0000; }
+  /* ── PAGE HEADER ── */
+  .page-header {
+    border-left: 6px solid #CC0000;
+    background: #1a1a1a;
+    padding: 18px 22px;
+    margin-bottom: 28px;
+    border-radius: 2px;
+  }
+  .page-header .course-tag {
+    color: #CC0000;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 5px;
+  }
+  .page-header h1 {
+    color: #ffffff;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .page-header .subtitle {
+    color: #bbbbbb;
+    font-size: 13px;
+  }
 
-  /* ── BODY ── */
-  .body { padding: 24px 28px; }
-
-  /* ── SECTION HEADER ── */
-  .section-head { background: #CC0000; color: #fff; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 8px 14px; border-radius: 4px; margin: 24px 0 14px; }
-
-  /* ── CALLOUT ── */
-  .callout { background: #fff5f5; border-left: 4px solid #CC0000; padding: 12px 16px; border-radius: 0 4px 4px 0; margin-bottom: 18px; }
-  .callout .callout-label { color: #CC0000; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
-  .callout p { font-size: 14px; line-height: 1.6; margin-bottom: 6px; }
-  .callout p:last-child { margin-bottom: 0; }
-
-  /* ── INFO BOX ── */
-  .info-box { background: #fdf0f0; border: 1px solid #f0c0c0; padding: 12px 16px; border-radius: 4px; margin-bottom: 18px; font-size: 14px; line-height: 1.6; }
-
-  /* ── QUESTION ROW ── */
-  .q-row { margin-bottom: 20px; }
-  .q-row label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 8px; }
-  .q-row .q-num { display: inline-block; background: #1a1a1a; color: #fff; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 3px; margin-right: 8px; }
-  .q-row textarea {
+  /* ── NAME / DATE / PERIOD ROW ── */
+  .identity-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 36px;
+    margin-bottom: 26px;
+    flex-wrap: wrap;
+  }
+  .id-field { display: flex; flex-direction: column; gap: 2px; }
+  .id-field label { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+  .id-field input {
+    border: none;
+    border-bottom: 1.5px solid #1a1a1a;
+    font-size: 14px;
+    padding: 3px 4px;
+    outline: none;
+    background: transparent;
     width: 100%;
-    min-height: 90px;
-    border: 2px solid #e0e0e0;
-    border-radius: 4px;
+  }
+  .id-field input:focus { border-bottom-color: #CC0000; }
+  .id-field.wide  { flex: 1; min-width: 200px; }
+  .id-field.med   { width: 160px; }
+  .id-field.short { width: 80px; }
+
+  /* ── DIRECTIONS BOX ── */
+  .directions {
+    border-left: 4px solid #CC0000;
+    background: #fdf0f0;
+    padding: 14px 18px;
+    margin-bottom: 26px;
+    border-radius: 0 4px 4px 0;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  /* ── FIG REFERENCE ── */
+  .fig-ref {
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-left: 4px solid #144496;
+    padding: 12px 16px;
+    border-radius: 0 4px 4px 0;
+    font-size: 13.5px;
+    margin-bottom: 28px;
+    color: #1a1a1a;
+  }
+
+  /* ── SECTION HEADER (red bar) ── */
+  .section-head {
+    background: #CC0000;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 14px;
+    margin: 30px 0 16px;
+    border-radius: 2px;
+  }
+
+  /* ── QUESTION CARD ── */
+  .q-card {
+    display: flex;
+    gap: 0;
+    margin-bottom: 28px;
+    border-left: 4px solid #CC0000;
+  }
+  .q-badge-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 12px 12px 10px;
+    min-width: 46px;
+  }
+  .q-letter { font-size: 16px; font-weight: 700; color: #CC0000; line-height: 1; margin-bottom: 2px; }
+  .q-number { font-size: 20px; font-weight: 700; color: #1a1a1a; line-height: 1; }
+  .q-body { flex: 1; padding: 10px 16px 10px 0; }
+
+  /* Dark step tag */
+  .step-tag {
+    display: inline-block;
+    background: #1a1a1a;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-bottom: 10px;
+  }
+
+  .q-text { font-weight: 700; font-size: 14px; margin-bottom: 12px; line-height: 1.5; }
+
+  /* Underline answer line */
+  .answer-line {
+    border: none;
+    border-bottom: 1px solid #888;
+    width: 100%;
+    display: block;
+    margin-bottom: 10px;
+    height: 24px;
+    font-size: 14px;
+    background: transparent;
+    outline: none;
+    padding: 0 4px;
+    color: #1a1a1a;
+  }
+  .answer-line:focus { border-bottom-color: #CC0000; }
+
+  /* Textarea for long answers */
+  .answer-box {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 3px;
     padding: 10px 12px;
     font-family: inherit;
     font-size: 14px;
     resize: vertical;
-    transition: border-color 0.2s;
-    line-height: 1.6;
+    min-height: 100px;
+    outline: none;
     color: #1a1a1a;
+    line-height: 1.6;
+    margin-bottom: 8px;
   }
-  .q-row textarea:focus { outline: none; border-color: #CC0000; }
-  .q-row .char-hint { font-size: 11px; color: #888; margin-top: 3px; text-align: right; }
+  .answer-box:focus { border-color: #CC0000; }
 
-  /* Short inline fields */
-  .inline-field { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-  .inline-field label { font-weight: 700; font-size: 14px; white-space: nowrap; }
-  .inline-field input { border: none; border-bottom: 2px solid #ccc; padding: 4px 6px; font-size: 15px; width: 100%; outline: none; transition: border-color 0.2s; }
-  .inline-field input:focus { border-bottom-color: #CC0000; }
+  /* Numbered list inputs */
+  .num-list { list-style: none; padding: 0; }
+  .num-list li { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-weight: 600; }
+  .num-list li span { min-width: 18px; }
+  .num-list li input { flex: 1; }
 
-  /* ── DIAGRAM AREA ── */
-  .diagram-wrap { background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 4px; padding: 16px; margin-bottom: 20px; text-align: center; }
-  .diagram-wrap img { max-width: 100%; height: auto; }
-  .diagram-wrap caption { font-size: 12px; color: #555; margin-top: 8px; display: block; }
+  /* Tip line */
+  .tip {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    color: #CC0000;
+    font-style: italic;
+    font-size: 12.5px;
+    margin-top: 8px;
+  }
+  .tip::before { content: "■"; font-style: normal; font-size: 10px; margin-top: 2px; flex-shrink: 0; }
 
-  /* ── PARTS TABLE ── */
-  .parts-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px; }
-  .parts-table th { background: #1a1a1a; color: #fff; padding: 10px 12px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .parts-table td { padding: 8px 12px; border-bottom: 1px solid #e0e0e0; vertical-align: top; }
+  /* Safety callout */
+  .safety-box {
+    background: #fff5f5;
+    border-left: 4px solid #CC0000;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    border-radius: 0 4px 4px 0;
+  }
+  .safety-box .safety-label { color: #CC0000; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
+  .safety-box p { font-size: 14px; margin-bottom: 6px; }
+  .safety-box p:last-child { margin-bottom: 0; }
+
+  /* Parts table */
+  .parts-table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-bottom: 10px; }
+  .parts-table th { background: #1a1a1a; color: #fff; padding: 8px 12px; text-align: left; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .parts-table td { padding: 6px 10px; border-bottom: 1px solid #e0e0e0; }
   .parts-table tr:nth-child(even) td { background: #fafafa; }
-  .parts-table td input { border: none; border-bottom: 1px solid #ccc; width: 100%; font-size: 14px; padding: 2px 4px; outline: none; background: transparent; }
+  .parts-table td input { border: none; border-bottom: 1px solid #bbb; width: 100%; font-size: 13.5px; padding: 2px 4px; outline: none; background: transparent; color: #1a1a1a; }
   .parts-table td input:focus { border-bottom-color: #CC0000; }
 
-  /* ── DOWNLOAD BUTTONS ── */
-  .dl-bar { display: flex; gap: 12px; margin: 28px 0 10px; flex-wrap: wrap; }
-  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; font-size: 14px; font-weight: 700; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; transition: opacity 0.2s; }
-  .btn:hover { opacity: 0.85; }
-  .btn-red { background: #CC0000; color: #fff; }
+  /* Sign-off row */
+  .signoff-row { display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 14px; }
+
+  /* ── DOWNLOAD BAR ── */
+  .dl-section { margin-top: 36px; }
+  .dl-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 10px; }
+  .dl-bar { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px; font-size: 13px; font-weight: 700; border: none; border-radius: 3px; cursor: pointer; transition: opacity 0.15s; font-family: inherit; }
+  .btn:hover { opacity: 0.82; }
+  .btn-red  { background: #CC0000; color: #fff; }
   .btn-dark { background: #1a1a1a; color: #fff; }
   .btn-blue { background: #144496; color: #fff; }
-  .btn svg { width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; }
+  .btn svg  { width: 16px; height: 16px; fill: currentColor; }
+  .dl-hint  { font-size: 11.5px; color: #888; margin-top: 8px; }
 
   /* ── FOOTER ── */
-  .footer { background: #1a1a1a; color: #888; font-size: 12px; padding: 14px 28px; text-align: center; margin-top: 30px; }
-  .footer strong { color: #CC0000; }
+  .page-footer { margin-top: 44px; border-top: 1px solid #e0e0e0; padding-top: 12px; font-size: 11.5px; color: #999; text-align: center; }
+  .page-footer strong { color: #CC0000; }
 
   @media print {
-    body { background: #fff; }
-    .page { box-shadow: none; margin: 0; border-radius: 0; }
-    .dl-bar { display: none; }
-    textarea { border: 1px solid #ccc !important; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+    body { background: #fff; margin: 0; }
+    .page { padding: 20px 28px; max-width: 100%; box-shadow: none; }
+    .dl-section { display: none !important; }
+    .answer-box { border: 1px solid #aaa !important; min-height: 80px; }
+    .answer-line { border-bottom: 1px solid #aaa !important; }
+    .page-header { border-left: 6px solid #CC0000 !important; background: #1a1a1a !important; }
+    .section-head { background: #CC0000 !important; color: #fff !important; }
+    .q-card { border-left: 4px solid #CC0000 !important; }
+    .q-letter { color: #CC0000 !important; }
+    .step-tag { background: #1a1a1a !important; color: #fff !important; }
+    .tip { color: #CC0000 !important; }
+    .safety-box { background: #fff5f5 !important; border-left: 4px solid #CC0000 !important; }
+    .safety-box .safety-label { color: #CC0000 !important; }
+    .directions { background: #fdf0f0 !important; border-left: 4px solid #CC0000 !important; }
+    .fig-ref { background: #f5f5f5 !important; border-left: 4px solid #144496 !important; }
+    .parts-table th { background: #1a1a1a !important; color: #fff !important; }
+    .page-footer { border-top: 1px solid #e0e0e0 !important; }
   }
 </style>
 </head>
 <body>
-
 <div class="page" id="jobsheet">
 
-  <!-- HEADER -->
-  <div class="header">
-    <div class="course-tag">AUTOH 173 · Honda Steering &amp; Suspension Systems</div>
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="course-tag">AUTOH 173 · Honda Steering and Suspension Systems</div>
     <h1>Strut Replacement Job Sheet</h1>
     <div class="subtitle">American Honda PACT Program — Shoreline Community College &nbsp;|&nbsp; 2016 Honda Pilot</div>
   </div>
 
-  <!-- NAME ROW -->
-  <div class="name-row">
-    <label for="student-name">Student Name:</label>
-    <input type="text" id="student-name" placeholder="Last, First" aria-label="Student Name"/>
-    <label for="student-date" style="margin-left:16px;">Date:</label>
-    <input type="text" id="student-date" placeholder="MM / DD / YYYY" style="max-width:160px;" aria-label="Date"/>
+  <!-- IDENTITY ROW -->
+  <div class="identity-row">
+    <div class="id-field wide">
+      <label for="s-name">Name:</label>
+      <input type="text" id="s-name" aria-label="Student name" placeholder="Last, First"/>
+    </div>
+    <div class="id-field med">
+      <label for="s-date">Date:</label>
+      <input type="text" id="s-date" aria-label="Date" placeholder="MM / DD / YYYY"/>
+    </div>
+    <div class="id-field short">
+      <label for="s-period">Period:</label>
+      <input type="text" id="s-period" aria-label="Period" placeholder="____"/>
+    </div>
   </div>
 
-  <!-- BODY -->
-  <div class="body">
+  <!-- DIRECTIONS -->
+  <div class="directions" role="note">
+    <strong>Directions:</strong> Follow the Honda Service Manual and instructor guidance to complete each step of this job sheet.
+    Reference Fig. 1 when identifying components during disassembly and reassembly.
+    Write answers in complete sentences where indicated. Do not guess — every answer comes from hands-on inspection or the service manual.
+  </div>
 
-    <!-- DIAGRAM REFERENCE -->
-    <div class="info-box" role="note" aria-label="Diagram reference note">
-      📐 <strong>Fig. 1 — Front Damper Assembly (2016 Honda Pilot)</strong> — Reference during disassembly &amp; reassembly located in your <strong>Honda Interactive Network (iN)</strong> or <strong>Service Express</strong>.
+  <!-- FIG REFERENCE -->
+  <div class="fig-ref" role="note">
+    📐 <strong>Fig. 1 — Front Damper Assembly (2016 Honda Pilot)</strong> — Reference during disassembly &amp; reassembly located in your <strong>Honda Interactive Network (iN)</strong> or <strong>Service Express</strong>.
+  </div>
+
+  <!-- ═══ SECTION 1 ═══ -->
+  <div class="section-head">Section 1 — Vehicle &amp; Suspension Identification</div>
+
+  <!-- Q1 -->
+  <div class="q-card">
+    <div class="q-badge-col"><span class="q-letter">Q</span><span class="q-number">1</span></div>
+    <div class="q-body">
+      <span class="step-tag">Step 1 — Vehicle Info</span>
+      <p class="q-text">Record the year, make, and model of the vehicle you are working on.</p>
+      <input class="answer-line" type="text" id="q1-ans" aria-label="Year make and model" placeholder="e.g. 2016 Honda Pilot EX-L"/>
+      <p class="tip">Record exactly as it appears on the vehicle label or service record.</p>
     </div>
+  </div>
 
-    <!-- VEHICLE INFO -->
-    <div class="section-head">Vehicle &amp; Suspension Identification</div>
-
-    <div class="inline-field">
-      <label for="q1-ymm">1. Year, Make, and Model:</label>
-      <input type="text" id="q1-ymm" placeholder="e.g. 2016 Honda Pilot EX-L" aria-label="Year make and model"/>
+  <!-- Q2 -->
+  <div class="q-card">
+    <div class="q-badge-col"><span class="q-letter">Q</span><span class="q-number">2</span></div>
+    <div class="q-body">
+      <span class="step-tag">Step 2 — Suspension Type</span>
+      <p class="q-text">Identify the type of front strut/spring suspension used on this vehicle. Describe how it works in your own words.</p>
+      <textarea class="answer-box" id="q2-ans" rows="4" aria-label="Suspension type and description" placeholder="Type (e.g. MacPherson Strut) and brief description of how it functions..."></textarea>
+      <p class="tip">Tip: The suspension type is listed in the Honda Service Manual under Front Suspension. MacPherson struts combine the shock absorber and spring in a single unit that also acts as the upper steering pivot.</p>
     </div>
+  </div>
 
-    <div class="q-row">
-      <label><span class="q-num">2</span> Type of Strut/Spring Suspension (e.g., Torsion Bar, MacPherson Strut):</label>
-      <textarea id="q2" rows="2" placeholder="Identify the suspension type. Describe how it differs from other types if you know." aria-label="Suspension type"></textarea>
-      <div class="char-hint">Unlimited characters — expand the box as needed ↕</div>
+  <!-- ═══ SECTION 2 ═══ -->
+  <div class="section-head">Section 2 — Safety</div>
+
+  <div class="safety-box" role="note" aria-label="Safety warning">
+    <div class="safety-label">⚠ Critical Safety Requirements — Read Before Proceeding</div>
+    <p><strong>A.</strong> Compressing the coil spring stores <strong>extreme amounts of energy</strong> and is very dangerous. Get <strong>instructor assistance</strong> before using the spring compressor if you are unsure of the procedure.</p>
+    <p><strong>B.</strong> Wear <strong>eye protection</strong> at all times during disassembly and reassembly.</p>
+    <p><strong>C.</strong> Always engage <strong>safety locks on the hoist</strong> before working under the vehicle.</p>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card">
+    <div class="q-badge-col"><span class="q-letter">Q</span><span class="q-number">3</span></div>
+    <div class="q-body">
+      <span class="step-tag">Step 3 — Safety Check</span>
+      <p class="q-text">In your own words, explain why spring compression is the most dangerous step of strut service. What can happen if the spring releases suddenly?</p>
+      <textarea class="answer-box" id="q3-ans" rows="4" aria-label="Safety explanation" placeholder="Explain the hazard and consequences of improper spring compression..."></textarea>
+      <p class="tip">Tip: Think about the amount of force stored in a compressed coil spring and what direction that energy would release if the compressor slipped or failed.</p>
     </div>
+  </div>
 
-    <!-- SAFETY -->
-    <div class="section-head">⚠ Safety Notes — Read Before Starting</div>
-    <div class="callout" role="note" aria-label="Safety Warning">
-      <div class="callout-label">⚠ Critical Safety Requirements</div>
-      <p><strong>A.</strong> Compressing the coil spring is <strong>extremely dangerous</strong>. The stored spring energy can cause severe injury if released suddenly. Get <strong>instructor assistance</strong> if you are in doubt about the operation of tools or procedure.</p>
-      <p><strong>B.</strong> Wear <strong>eye protection</strong> at all times during disassembly and reassembly.</p>
-      <p><strong>C.</strong> Use <strong>safety locks on the hoist</strong> whenever the vehicle is lifted.</p>
+  <!-- ═══ SECTION 3 ═══ -->
+  <div class="section-head">Section 3 — Pre-Service Inspection</div>
+
+  <!-- Q4 -->
+  <div class="q-card">
+    <div class="q-badge-col"><span class="q-letter">Q</span><span class="q-number">4</span></div>
+    <div class="q-body">
+      <span class="step-tag">Step 4 — Inspection</span>
+      <p class="q-text">Describe your complete inspection procedure and the condition of the struts. Include what you checked for and what you found.</p>
+      <textarea class="answer-box" id="q4-ans" rows="8" aria-label="Inspection procedure and findings" placeholder="Describe each check and the result. Example:&#10;• Oil leakage around the strut shaft seal — found: wet / dry&#10;• Compressed strut by hand — felt: smooth / notchy / binding&#10;• Coil spring inspected for cracks or settling — result:&#10;• Dust boot inspected for tears — result:&#10;• Upper mount checked for looseness or noise — result:"></textarea>
+      <p class="tip">Tip: A thorough inspection covers the damper shaft, strut body, coil spring, dust cover, bump stop, and upper mount bearing.</p>
     </div>
+  </div>
 
-    <!-- INSPECTION -->
-    <div class="section-head">Step 4 — Pre-Service Inspection</div>
-    <div class="info-box">Describe your complete inspection procedure and the condition of the struts. Include how you checked for leakage, damage, noise, and any abnormal wear observed.</div>
-    <div class="q-row">
-      <label for="q4"><span class="q-num">4</span> Inspection Procedure &amp; Findings:</label>
-      <textarea id="q4" rows="6" placeholder="Describe each step of your inspection. Example: Checked for oil leakage around the strut shaft seal — found wet/dry. Compressed strut by hand — felt smooth/notchy/binding. Inspected spring for cracks or settling. Checked dust boot for tears..." aria-label="Inspection procedure and findings"></textarea>
-      <div class="char-hint">Unlimited characters — expand the box as needed ↕</div>
+  <!-- ═══ SECTION 4 ═══ -->
+  <div class="section-head">Section 4 — Special Tools &amp; Required Parts</div>
+
+  <!-- Q5 -->
+  <div class="q-card">
+    <div class="q-badge-col"><span class="q-letter">Q</span><span class="q-number">5</span></div>
+    <div class="q-body">
+      <span class="step-tag">Step 5 — Special Tools</span>
+      <p class="q-text">List all special tools required to disassemble the strut assembly. Include any Honda-specific SSTs referenced in the service manual.</p>
+      <ul class="num-list" aria-label="Special tools list">
+        <li><span>1.</span><input class="answer-line" type="text" aria-label="Special tool 1" placeholder="Tool name / description"/></li>
+        <li><span>2.</span><input class="answer-line" type="text" aria-label="Special tool 2" placeholder="Tool name / description"/></li>
+        <li><span>3.</span><input class="answer-line" type="text" aria-label="Special tool 3" placeholder="Tool name / description"/></li>
+        <li><span>4.</span><input class="answer-line" type="text" aria-label="Special tool 4" placeholder="Tool name / description"/></li>
+        <li><span>5.</span><input class="answer-line" type="text" aria-label="Special tool 5" placeholder="Additional tool..."/></li>
+      </ul>
+      <p class="tip">Tip: The service manual will list required SSTs. Common tools include spring compressors, strut nut sockets, and torque wrenches.</p>
     </div>
+  </div>
 
-    <!-- NOTE BOX -->
-    <div class="info-box" role="note">
-      <strong>📌 NOTE:</strong> Follow manufacturer's instructions to disassemble the strut assembly. Steps 5–7 use a strut from a <strong>2016 Honda Pilot</strong>. Refer to the Honda Service Manual and the diagram above.
+  <!-- Q6 -->
+  <div class="q-card">
+    <div class="q-badge-col"><span class="q-letter">Q</span><span class="q-number">6</span></div>
+    <div class="q-body">
+      <span class="step-tag">Step 6 — Related Parts &amp; Hardware</span>
+      <p class="q-text">List all related parts or hardware that should be replaced when disassembling the strut. Note any single-use fasteners or seals identified in the service manual.</p>
+
+      <table class="parts-table" aria-label="Parts and hardware replacement list">
+        <thead>
+          <tr>
+            <th scope="col">Part / Component</th>
+            <th scope="col">Honda Part # (if known)</th>
+            <th scope="col">Condition / Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><input type="text" aria-label="Part 1" placeholder="e.g. Strut piston nut"/></td><td><input type="text" aria-label="Part 1 number"/></td><td><input type="text" aria-label="Part 1 notes" placeholder="Single-use — always replace"/></td></tr>
+          <tr><td><input type="text" aria-label="Part 2" placeholder="e.g. Upper spring seat"/></td><td><input type="text" aria-label="Part 2 number"/></td><td><input type="text" aria-label="Part 2 notes" placeholder="Inspect for cracks"/></td></tr>
+          <tr><td><input type="text" aria-label="Part 3" placeholder="e.g. Damper mounting bearing"/></td><td><input type="text" aria-label="Part 3 number"/></td><td><input type="text" aria-label="Part 3 notes"/></td></tr>
+          <tr><td><input type="text" aria-label="Part 4" placeholder="e.g. Bump stop"/></td><td><input type="text" aria-label="Part 4 number"/></td><td><input type="text" aria-label="Part 4 notes"/></td></tr>
+          <tr><td><input type="text" aria-label="Part 5" placeholder="e.g. Dust cover"/></td><td><input type="text" aria-label="Part 5 number"/></td><td><input type="text" aria-label="Part 5 notes"/></td></tr>
+          <tr><td><input type="text" aria-label="Part 6" placeholder="Additional part..."/></td><td><input type="text" aria-label="Part 6 number"/></td><td><input type="text" aria-label="Part 6 notes"/></td></tr>
+        </tbody>
+      </table>
+      <p class="tip">Tip: Check the Honda Service Manual parts section. Torque-to-yield fasteners must never be reused.</p>
     </div>
+  </div>
 
-    <!-- SPECIAL TOOLS -->
-    <div class="section-head">Step 5 — Special Tools Required</div>
-    <div class="q-row">
-      <label for="q5"><span class="q-num">5</span> List any special tools required to disassemble the strut assembly:</label>
-      <textarea id="q5" rows="5" placeholder="Example tools to consider:&#10;• Spring compressor (Honda tool # or equivalent)&#10;• Strut nut socket (hex or splined type)&#10;• Torque wrench&#10;• Ball joint separator&#10;• Any Honda-specific SSTs listed in the service manual" aria-label="Special tools list"></textarea>
-      <div class="char-hint">Unlimited characters — expand the box as needed ↕</div>
-    </div>
+  <!-- ═══ SECTION 5 ═══ -->
+  <div class="section-head">Section 5 — Instructor Sign-Off &amp; Reassembly Checkpoint</div>
 
-    <!-- RELATED PARTS -->
-    <div class="section-head">Step 6 — Related Parts &amp; Hardware to Replace</div>
-    <div class="info-box">List all parts and hardware that Honda recommends replacing during strut service — do not reuse fasteners or seals that are torque-to-yield or single-use.</div>
+  <!-- Q7 -->
+  <div class="q-card">
+    <div class="q-badge-col"><span class="q-letter">Q</span><span class="q-number">7</span></div>
+    <div class="q-body">
+      <span class="step-tag">Step 7 — Disassembly Complete</span>
+      <p class="q-text">Once you have disassembled the strut, inform your instructor so that you can discuss this job sheet and the service manual procedure for inspection and reassembly. <strong>Do not proceed until cleared.</strong></p>
 
-    <table class="parts-table" aria-label="Parts replacement checklist">
-      <thead>
-        <tr>
-          <th scope="col" style="width:40%;">Part / Hardware</th>
-          <th scope="col" style="width:30%;">Honda Part # (if known)</th>
-          <th scope="col" style="width:30%;">Notes / Condition</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><input type="text" aria-label="Part 1 name" placeholder="e.g. Strut mount nut"/></td>
-          <td><input type="text" aria-label="Part 1 number" placeholder=""/></td>
-          <td><input type="text" aria-label="Part 1 notes" placeholder="Single-use, always replace"/></td>
-        </tr>
-        <tr>
-          <td><input type="text" aria-label="Part 2 name" placeholder="e.g. Upper spring seat"/></td>
-          <td><input type="text" aria-label="Part 2 number"/></td>
-          <td><input type="text" aria-label="Part 2 notes" placeholder="Inspect for cracks"/></td>
-        </tr>
-        <tr>
-          <td><input type="text" aria-label="Part 3 name" placeholder="e.g. Damper mounting bearing"/></td>
-          <td><input type="text" aria-label="Part 3 number"/></td>
-          <td><input type="text" aria-label="Part 3 notes"/></td>
-        </tr>
-        <tr>
-          <td><input type="text" aria-label="Part 4 name" placeholder="e.g. Bump stop"/></td>
-          <td><input type="text" aria-label="Part 4 number"/></td>
-          <td><input type="text" aria-label="Part 4 notes"/></td>
-        </tr>
-        <tr>
-          <td><input type="text" aria-label="Part 5 name" placeholder="e.g. Dust cover"/></td>
-          <td><input type="text" aria-label="Part 5 number"/></td>
-          <td><input type="text" aria-label="Part 5 notes"/></td>
-        </tr>
-        <tr>
-          <td><input type="text" aria-label="Part 6 name" placeholder="Additional part..."/></td>
-          <td><input type="text" aria-label="Part 6 number"/></td>
-          <td><input type="text" aria-label="Part 6 notes"/></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- INSTRUCTOR SIGN-OFF -->
-    <div class="section-head">Step 7 — Instructor Sign-Off</div>
-    <div class="callout" role="note">
-      <div class="callout-label">📋 Checkpoint</div>
-      <p>Once you have disassembled the strut, <strong>inform the instructor</strong> so that you can discuss this job sheet and the service manual procedure for inspection and reassembly. Do not proceed to reassembly until cleared.</p>
-    </div>
-
-    <div style="display:flex; gap:32px; flex-wrap:wrap; margin-bottom:20px;">
-      <div class="inline-field" style="flex:1; min-width:220px;">
-        <label for="instr-sig">Instructor Initials:</label>
-        <input type="text" id="instr-sig" placeholder="________" style="max-width:100px;" aria-label="Instructor initials"/>
+      <div class="signoff-row">
+        <div class="id-field med">
+          <label for="instr-init">Instructor Initials:</label>
+          <input type="text" id="instr-init" aria-label="Instructor initials" placeholder="________"/>
+        </div>
+        <div class="id-field med">
+          <label for="instr-dt">Date / Time:</label>
+          <input type="text" id="instr-dt" aria-label="Date and time of sign-off" placeholder="MM/DD  ___:___ AM/PM"/>
+        </div>
       </div>
-      <div class="inline-field" style="flex:1; min-width:220px;">
-        <label for="instr-date">Date/Time:</label>
-        <input type="text" id="instr-date" placeholder="MM/DD/YYYY  ___:___ AM/PM" aria-label="Instructor sign-off date and time"/>
-      </div>
-    </div>
 
-    <!-- WEAR TYPES -->
-    <div class="section-head">Step 8 — Types of Strut Assembly Wear</div>
-    <div class="info-box">Describe every type of wear that can occur in a strut assembly. Be thorough — address the damper, spring, mounts, bearings, and related hardware. Use what you learned from inspection, the Honda service manual, and class instruction.</div>
-    <div class="q-row">
-      <label for="q8"><span class="q-num">8</span> Types of Wear in a Strut Assembly — Complete Description:</label>
-      <textarea id="q8" rows="14" placeholder="Consider and describe wear in each area:
+      <p style="font-weight:700; margin-bottom:8px;">After instructor review, describe any corrections or additional steps discussed:</p>
+      <textarea class="answer-box" id="q7-notes" rows="4" aria-label="Post-discussion notes" placeholder="Notes from instructor discussion — corrections, additional inspection steps, reassembly tips, torque specs discussed..."></textarea>
+      <p class="tip">Tip: Write in complete sentences. Include any torque specifications or reassembly sequences your instructor highlighted.</p>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 6 ═══ -->
+  <div class="section-head">Section 6 — Strut Wear Analysis</div>
+
+  <!-- Q8 -->
+  <div class="q-card">
+    <div class="q-badge-col"><span class="q-letter">Q</span><span class="q-number">8</span></div>
+    <div class="q-body">
+      <span class="step-tag">Step 8 — Types of Wear</span>
+      <p class="q-text">Describe the types of wear that can take place in a strut assembly. Be as complete as possible — address the damper unit, coil spring, upper mount and bearing, bump stop, and dust cover.</p>
+      <textarea class="answer-box" id="q8-ans" rows="14" aria-label="Types of strut wear — detailed description" placeholder="Organize your answer by component:
 
 DAMPER UNIT:
-• Hydraulic fluid leakage past the shaft seal — appears as wet/oily residue on the shaft or around the body. Once the seal is compromised, the damper loses resistance and bottoms out more easily.
-• Shaft pitting or corrosion — causes uneven damping and can accelerate seal failure.
-• Internal valve wear — reduces the damper's ability to control rebound and compression...
+•
 
 COIL SPRING:
-• Fatigue cracking — usually starts at the lower coil ends due to concentrated stress. Can lead to sudden fracture.
-• Spring set (compression set) — the spring permanently shortens over time, reducing ride height and suspension travel...
+•
 
-UPPER MOUNT / BEARING:
-• Bearing wear — causes steering noise (clunking or grinding on turns), especially on MacPherson struts where the bearing serves as the upper pivot...
+UPPER MOUNT &amp; BEARING:
+•
 
-BUMP STOP &amp; DUST COVER:
-...
+BUMP STOP:
+•
+
+DUST COVER:
+•
 
 HARDWARE / FASTENERS:
-..." aria-label="Strut wear description — unlimited length"></textarea>
-      <div class="char-hint">Unlimited characters — expand the box as needed ↕</div>
+•
+"></textarea>
+      <p class="tip">Tip: Consider leakage, fatigue, corrosion, noise, and how each type of wear affects vehicle handling, ride quality, and safety.</p>
     </div>
+  </div>
 
-    <!-- ADDITIONAL NOTES -->
-    <div class="section-head">Additional Notes / Observations</div>
-    <div class="q-row">
-      <label for="notes-extra">Any additional findings, questions, or observations from lab:</label>
-      <textarea id="notes-extra" rows="5" placeholder="Use this space for anything not covered above — torque specs you noted, problems encountered, parts condition, instructor comments, etc." aria-label="Additional notes"></textarea>
-      <div class="char-hint">Unlimited characters — expand the box as needed ↕</div>
+  <!-- ═══ SECTION 7 ═══ -->
+  <div class="section-head">Section 7 — Additional Notes &amp; Observations</div>
+
+  <!-- Q9 -->
+  <div class="q-card">
+    <div class="q-badge-col"><span class="q-letter">Q</span><span class="q-number">9</span></div>
+    <div class="q-body">
+      <span class="step-tag">Additional Observations</span>
+      <p class="q-text">Record any additional findings, torque specifications noted, problems encountered during the lab, or questions you still have.</p>
+      <textarea class="answer-box" id="q9-ans" rows="6" aria-label="Additional notes" placeholder="Use this space for anything not covered above — torque specs, parts condition noted, problems encountered, instructor comments, follow-up questions..."></textarea>
     </div>
+  </div>
 
-    <!-- DOWNLOAD BUTTONS -->
-    <div class="section-head">Download &amp; Print</div>
+  <!-- DOWNLOAD -->
+  <div class="dl-section">
+    <div class="dl-label">Save or Download This Job Sheet</div>
     <div class="dl-bar">
-      <button class="btn btn-red" onclick="window.print()" aria-label="Print job sheet">
+      <button class="btn btn-red" onclick="window.print()" aria-label="Print or save as PDF">
         <svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
         Print / Save as PDF
       </button>
-      <button class="btn btn-dark" onclick="downloadWord()" aria-label="Download as Word document">
+      <a class="btn btn-dark" href="Strut_Replacement_Jobsheet.docx" download="Strut_Replacement_Jobsheet.docx" aria-label="Download as Word DOCX">
         <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 9h-2v2h2v2h-2v2H9v-2H7v-2h2v-2H7v-2h2V7h2v2h2v2zm1-7.5L18.5 9H14V3.5z"/></svg>
         Download as Word (.docx)
-      </button>
-      <button class="btn btn-blue" onclick="downloadText()" aria-label="Download plain text version">
-        <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 9H7v-2h6v2zm4 4H7v-2h10v2zm0 4H7v-2h10v2zM13 9V3.5L18.5 9H13z"/></svg>
-        Download as Text (.txt)
-      </button>
+      </a>
     </div>
-    <p style="font-size:12px;color:#888;margin-top:4px;">💡 <strong>PDF tip:</strong> Use "Print" → "Save as PDF" in your browser. Enable "Background graphics" for full color. For Word, the download creates a rich-text file you can open in Microsoft Word.</p>
+    <p class="dl-hint">💡 <strong>PDF tip:</strong> Click Print → change destination to "Save as PDF" → enable <em>Background graphics</em> for full color output.</p>
+  </div>
 
-  </div><!-- /body -->
-
-  <div class="footer">
+  <!-- FOOTER -->
+  <div class="page-footer">
     <strong>Honda PACT</strong> · Shoreline Community College · AUTOH 173 Steering &amp; Suspension Systems · Instructor: R. Smith
   </div>
 
-</div><!-- /page -->
-
-<script>
-// ── WORD DOWNLOAD ──────────────────────────────────────────
-function downloadWord() {
-  const name = document.getElementById('student-name').value || '_______________';
-  const date = document.getElementById('student-date').value || '_______________';
-
-  function getVal(id) {
-    const el = document.getElementById(id);
-    if (!el) return '(no answer entered)';
-    return el.value.trim() || '(no answer entered)';
-  }
-
-  // Collect parts table
-  let partsRows = '';
-  const rows = document.querySelectorAll('.parts-table tbody tr');
-  rows.forEach((row, i) => {
-    const inputs = row.querySelectorAll('input');
-    const part = inputs[0]?.value || '';
-    const num = inputs[1]?.value || '';
-    const notes = inputs[2]?.value || '';
-    if (part) partsRows += `<tr><td>${i+1}. ${part}</td><td>${num}</td><td>${notes}</td></tr>`;
-  });
-
-  const html = `
-<html xmlns:o="urn:schemas-microsoft-com:office:office"
-      xmlns:w="urn:schemas-microsoft-com:office:word"
-      xmlns="http://www.w3.org/TR/REC-html40">
-<head><meta charset="UTF-8">
-<style>
-  body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1a1a1a; }
-  h1 { font-size: 16pt; color: #CC0000; border-bottom: 2px solid #CC0000; padding-bottom: 4pt; }
-  h2 { font-size: 12pt; background: #CC0000; color: white; padding: 4pt 8pt; margin-top: 14pt; }
-  .meta { background: #D3D3D3; padding: 6pt 10pt; margin-bottom: 10pt; }
-  .callout { border-left: 4pt solid #CC0000; padding: 8pt 10pt; background: #fff5f5; margin: 8pt 0; }
-  .answer { border: 1pt solid #ccc; padding: 8pt; min-height: 40pt; white-space: pre-wrap; margin-bottom: 10pt; font-size: 11pt; }
-  table { border-collapse: collapse; width: 100%; }
-  th { background: #1a1a1a; color: white; padding: 6pt; font-size: 10pt; text-align: left; }
-  td { border: 1pt solid #ccc; padding: 5pt 8pt; }
-  .footer { margin-top: 20pt; font-size: 9pt; color: #888; border-top: 1pt solid #ccc; padding-top: 6pt; }
-</style>
-</head>
-<body>
-<h1>Strut Replacement Job Sheet — Honda PACT</h1>
-<div class="meta"><b>AUTOH 173 · Steering &amp; Suspension Systems · Shoreline Community College</b><br/>
-Student: <b>${name}</b> &nbsp;&nbsp;&nbsp; Date: <b>${date}</b><br/>
-Vehicle: 2016 Honda Pilot</div>
-
-<h2>1 — Vehicle &amp; Suspension Identification</h2>
-<p><b>Q1. Year, Make, Model:</b></p>
-<div class="answer">${document.getElementById('q1-ymm')?.value || '(not entered)'}</div>
-<p><b>Q2. Suspension Type:</b></p>
-<div class="answer">${getVal('q2')}</div>
-
-<h2>Safety Notes</h2>
-<div class="callout">
-A. Compressing the coil spring is EXTREMELY DANGEROUS. Get instructor assistance if in doubt.<br/>
-B. Wear eye protection at all times.<br/>
-C. Use safety locks on the hoist whenever the vehicle is lifted.
 </div>
 
-<h2>Q4 — Pre-Service Inspection Procedure &amp; Findings</h2>
-<div class="answer">${getVal('q4')}</div>
-
-<h2>Q5 — Special Tools Required</h2>
-<div class="answer">${getVal('q5')}</div>
-
-<h2>Q6 — Related Parts &amp; Hardware to Replace</h2>
-<table>
-  <tr><th>Part / Hardware</th><th>Honda Part # (if known)</th><th>Notes / Condition</th></tr>
-  ${partsRows || '<tr><td colspan="3">(no parts entered)</td></tr>'}
-</table>
-
-<h2>Q7 — Instructor Sign-Off</h2>
-<p>Instructor Initials: <b>${document.getElementById('instr-sig')?.value || '______'}</b>
-&nbsp;&nbsp;&nbsp; Date/Time: <b>${document.getElementById('instr-date')?.value || '______'}</b></p>
-
-<h2>Q8 — Types of Wear in a Strut Assembly</h2>
-<div class="answer">${getVal('q8')}</div>
-
-<h2>Additional Notes / Observations</h2>
-<div class="answer">${getVal('notes-extra')}</div>
-
-<div class="footer">Honda PACT · Shoreline Community College · AUTOH 173 · Instructor: R. Smith</div>
-</body></html>`;
-
-  const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `Strut_Jobsheet_${name.replace(/[^a-z0-9]/gi,'_') || 'student'}.doc`;
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
-// ── TEXT DOWNLOAD ──────────────────────────────────────────
-function downloadText() {
-  const name = document.getElementById('student-name').value || '_______________';
-  const date = document.getElementById('student-date').value || '_______________';
-
-  function getVal(id) {
-    const el = document.getElementById(id);
-    return el ? (el.value.trim() || '(no answer entered)') : '(no answer entered)';
-  }
-
-  let parts = '';
-  document.querySelectorAll('.parts-table tbody tr').forEach((row, i) => {
-    const inputs = row.querySelectorAll('input');
-    const part = inputs[0]?.value || '';
-    if (part) parts += `  ${i+1}. ${part} | Part#: ${inputs[1]?.value||'—'} | Notes: ${inputs[2]?.value||'—'}\n`;
-  });
-
-  const txt = `STRUT REPLACEMENT JOB SHEET — HONDA PACT
-AUTOH 173 · Steering & Suspension Systems · Shoreline Community College
-${'='.repeat(62)}
-Student: ${name}    Date: ${date}
-Vehicle: 2016 Honda Pilot
-
-${'─'.repeat(62)}
-Q1. YEAR / MAKE / MODEL
-${document.getElementById('q1-ymm')?.value || '(not entered)'}
-
-${'─'.repeat(62)}
-Q2. SUSPENSION TYPE
-${getVal('q2')}
-
-${'─'.repeat(62)}
-SAFETY NOTES
-A. Compressing springs is EXTREMELY DANGEROUS — get instructor help if unsure.
-B. Wear eye protection at all times.
-C. Use safety locks on hoist when vehicle is lifted.
-
-${'─'.repeat(62)}
-Q4. INSPECTION PROCEDURE & FINDINGS
-${getVal('q4')}
-
-${'─'.repeat(62)}
-Q5. SPECIAL TOOLS REQUIRED
-${getVal('q5')}
-
-${'─'.repeat(62)}
-Q6. RELATED PARTS & HARDWARE TO REPLACE
-${parts || '  (no parts entered)'}
-
-${'─'.repeat(62)}
-Q7. INSTRUCTOR SIGN-OFF
-Instructor Initials: ${document.getElementById('instr-sig')?.value || '______'}    Date/Time: ${document.getElementById('instr-date')?.value || '______'}
-
-${'─'.repeat(62)}
-Q8. TYPES OF WEAR IN A STRUT ASSEMBLY
-${getVal('q8')}
-
-${'─'.repeat(62)}
-ADDITIONAL NOTES / OBSERVATIONS
-${getVal('notes-extra')}
-
-${'='.repeat(62)}
-Honda PACT · Shoreline Community College · AUTOH 173 · Instructor: R. Smith
-`;
-
-  const blob = new Blob([txt], { type: 'text/plain' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `Strut_Jobsheet_${name.replace(/[^a-z0-9]/gi,'_') || 'student'}.txt`;
-  a.click();
-  URL.revokeObjectURL(url);
-}
+<script>
+// No client-side download scripts needed — DOCX is a direct file download.
 </script>
-
 </body>
 </html>
