@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Suspension Component Service Lab Sheet — AUTOH 173</title>
+<style>
+  :root {
+    --red: #CC0000;
+    --dark: #1a1a1a;
+    --blue: #144496;
+    --border: #e0e0e0;
+    --bg: #f5f5f5;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f0f0; color: #1a1a1a; font-size: 15px; }
+  .page { max-width: 860px; margin: 30px auto; background: #fff; border-radius: 6px; box-shadow: 0 4px 20px rgba(0,0,0,0.12); overflow: hidden; }
+
+  /* ── HEADER ── */
+  .header { background: #1a1a1a; border-left: 6px solid #CC0000; padding: 22px 28px; }
+  .header .course-tag { color: #CC0000; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
+  .header h1 { color: #fff; font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+  .header .subtitle { color: #aaa; font-size: 13px; }
+
+  /* ── NAME ROW ── */
+  .name-row { background: #D3D3D3; padding: 12px 28px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .name-row label { font-weight: 700; font-size: 13px; white-space: nowrap; }
+  .name-row input {
+    border: none; border-bottom: 2px solid #1a1a1a; background: transparent;
+    font-size: 15px; padding: 2px 6px; flex: 1; min-width: 200px; outline: none;
+  }
+  .name-row input:focus { border-bottom-color: #CC0000; }
+
+  /* ── BODY ── */
+  .body { padding: 24px 28px; }
+
+  /* ── SECTION HEADER ── */
+  .section-head {
+    background: #CC0000; color: #fff; font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px; padding: 8px 14px;
+    border-radius: 4px; margin: 28px 0 16px;
+  }
+
+  /* ── CALLOUT ── */
+  .callout { background: #fff5f5; border-left: 4px solid #CC0000; padding: 12px 16px; border-radius: 0 4px 4px 0; margin-bottom: 18px; }
+  .callout .callout-label { color: #CC0000; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
+  .callout p { font-size: 14px; line-height: 1.6; margin-bottom: 6px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout ul { padding-left: 18px; font-size: 14px; margin: 4px 0 0; }
+  .callout li { margin-bottom: 4px; }
+
+  /* ── INFO BOX ── */
+  .info-box { background: #fdf0f0; border: 1px solid #f0c0c0; padding: 12px 16px; border-radius: 4px; margin-bottom: 18px; font-size: 14px; line-height: 1.6; }
+  .info-box strong { display: block; margin-bottom: 4px; color: #1a1a1a; }
+
+  /* ── STEP LIST ── */
+  .step-list { list-style: none; padding: 0; margin: 0 0 18px; counter-reset: steps; }
+  .step-list li {
+    counter-increment: steps; display: flex; align-items: flex-start;
+    gap: 12px; padding: 10px 12px; border-bottom: 1px solid #e0e0e0; font-size: 14px; color: #333;
+  }
+  .step-list li:last-child { border-bottom: none; }
+  .step-list li::before {
+    content: counter(steps); background: #CC0000; color: #fff;
+    font-size: 12px; font-weight: 700; min-width: 24px; height: 24px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+
+  /* ── QUESTION ROW ── */
+  .q-row { margin-bottom: 22px; }
+  .q-row label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 8px; }
+  .q-row .q-num {
+    display: inline-block; background: #1a1a1a; color: #fff;
+    font-size: 12px; font-weight: 700; padding: 2px 8px;
+    border-radius: 3px; margin-right: 8px;
+  }
+  .q-row textarea {
+    width: 100%; min-height: 80px; border: 2px solid #e0e0e0; border-radius: 4px;
+    padding: 10px 12px; font-family: inherit; font-size: 14px;
+    resize: vertical; line-height: 1.6; color: #1a1a1a; transition: border-color 0.2s;
+  }
+  .q-row textarea:focus { outline: none; border-color: #CC0000; }
+
+  /* ── INLINE FIELD ── */
+  .inline-field { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .inline-field label { font-weight: 700; font-size: 14px; white-space: nowrap; min-width: 180px; }
+  .inline-field input {
+    border: none; border-bottom: 2px solid #ccc; padding: 4px 6px;
+    font-size: 15px; flex: 1; outline: none; transition: border-color 0.2s;
+  }
+  .inline-field input:focus { border-bottom-color: #CC0000; }
+
+  /* ── MEASUREMENT TABLE ── */
+  .meas-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px; }
+  .meas-table th {
+    background: #1a1a1a; color: #fff; padding: 10px 12px;
+    text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .meas-table td { padding: 9px 12px; border-bottom: 1px solid #e0e0e0; vertical-align: middle; }
+  .meas-table tr:nth-child(even) td { background: #fafafa; }
+  .meas-table td input {
+    border: none; border-bottom: 1px solid #bbb; width: 100%;
+    font-size: 14px; padding: 2px 4px; outline: none; background: transparent;
+  }
+  .meas-table td input:focus { border-bottom-color: #CC0000; }
+
+  /* ── PASS/FAIL RADIO ── */
+  .pf-group { display: flex; gap: 18px; align-items: center; }
+  .pf-group label { font-size: 14px; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+  .pf-group input[type="radio"] { accent-color: #CC0000; width: 16px; height: 16px; }
+
+  /* ── DIAGRAM AREA ── */
+  .diagram-wrap {
+    background: #f9f9f9; border: 1px solid #e0e0e0;
+    border-radius: 4px; padding: 16px; margin-bottom: 20px; text-align: center;
+  }
+  .diagram-wrap .fig-caption { font-size: 12px; color: #666; margin-top: 8px; font-style: italic; }
+
+  /* ── DOWNLOAD BAR ── */
+  .dl-bar { display: flex; gap: 12px; margin: 32px 0 10px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px;
+    font-size: 14px; font-weight: 700; border: none; border-radius: 4px; cursor: pointer;
+    transition: background 0.2s; text-decoration: none;
+  }
+  .btn-primary { background: #CC0000; color: #fff; }
+  .btn-primary:hover { background: #990000; }
+  .btn-secondary { background: #1a1a1a; color: #fff; }
+  .btn-secondary:hover { background: #333; }
+
+  /* ── FOOTER ── */
+  .footer { background: #f5f5f5; border-top: 1px solid #e0e0e0; padding: 14px 28px; font-size: 12px; color: #888; }
+
+  /* ── SCORE SUMMARY ── */
+  .score-summary {
+    background: #1a1a1a; border-top: 4px solid #CC0000;
+    padding: 18px 20px; border-radius: 4px; margin: 28px 0 0; display: flex;
+    gap: 16px; align-items: center; flex-wrap: wrap;
+  }
+  .score-summary .score-label { color: #CC0000; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+  .score-summary .score-field {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .score-summary .score-field label { color: #ccc; font-size: 13px; white-space: nowrap; }
+  .score-summary .score-field input {
+    border: none; border-bottom: 2px solid #555; background: transparent;
+    color: #fff; font-size: 15px; font-weight: 700; width: 80px; padding: 2px 4px;
+    outline: none;
+  }
+  .score-summary .score-field input:focus { border-bottom-color: #CC0000; }
+
+  @media (max-width: 600px) {
+    .inline-field { flex-direction: column; align-items: flex-start; }
+    .inline-field label { min-width: unset; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header" role="banner">
+    <p class="course-tag">AUTOH 173 · Honda Steering &amp; Suspension Systems · Shoreline Community College</p>
+    <h1>Suspension Component Service Lab Sheet</h1>
+    <p class="subtitle">Dial Indicator Ball Joint Test · Bushing Inspection · Body Roll Diagnosis</p>
+  </header>
+
+  <!-- STUDENT INFO -->
+  <div class="name-row" role="group" aria-label="Student information">
+    <label for="stu-name">Student Name:</label>
+    <input type="text" id="stu-name" placeholder="First Last" aria-required="true"/>
+    <label for="stu-date">Date:</label>
+    <input type="text" id="stu-date" placeholder="MM/DD/YYYY" style="min-width:unset;width:130px;"/>
+    <label for="stu-vehicle">Vehicle:</label>
+    <input type="text" id="stu-vehicle" placeholder="Year Make Model"/>
+  </div>
+
+  <div class="body">
+
+    <!-- SAFETY CALLOUT -->
+    <div class="callout" role="note" aria-label="Safety reminder">
+      <p class="callout-label">⚠ Safety Requirements — Read Before Starting</p>
+      <ul>
+        <li>Vehicle must be secured on an approved hoist with all four safety locks engaged before going under the vehicle.</li>
+        <li>Wear safety glasses at all times. Remove jewelry and secure loose clothing.</li>
+        <li>Never load or unload a dial indicator with the vehicle weight on the tire unless instructed — follow Honda service procedure for loaded vs. unloaded joint testing.</li>
+        <li>Obtain instructor approval before lifting the vehicle and again before returning it to the ground.</li>
+      </ul>
+    </div>
+
+    <!-- OBJECTIVES -->
+    <div class="info-box">
+      <strong>Lab Objectives</strong>
+      Upon completing this lab, you will be able to: (1) perform a dial indicator ball joint test and interpret results against Honda service specifications; (2) inspect control arm and stabilizer bar bushings for wear or deterioration; (3) identify vehicle conditions and component failures that contribute to excessive body roll.
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         PART A — VEHICLE & SUSPENSION ID
+    ════════════════════════════════════════ -->
+    <h2 class="section-head" id="partA">Part A — Vehicle &amp; Suspension Identification</h2>
+
+    <div class="inline-field">
+      <label for="a-ymm">Year / Make / Model:</label>
+      <input type="text" id="a-ymm" placeholder="e.g. 2019 Honda CR-V EX"/>
+    </div>
+    <div class="inline-field">
+      <label for="a-vin">VIN (last 6 digits):</label>
+      <input type="text" id="a-vin" placeholder="e.g. 123456" maxlength="10"/>
+    </div>
+    <div class="inline-field">
+      <label for="a-mileage">Current Mileage:</label>
+      <input type="text" id="a-mileage" placeholder="e.g. 68,450 mi"/>
+    </div>
+    <div class="inline-field">
+      <label for="a-front-susp">Front Suspension Type:</label>
+      <input type="text" id="a-front-susp" placeholder="e.g. MacPherson Strut Independent"/>
+    </div>
+    <div class="inline-field">
+      <label for="a-rear-susp">Rear Suspension Type:</label>
+      <input type="text" id="a-rear-susp" placeholder="e.g. Multi-Link Independent"/>
+    </div>
+
+    <div class="q-row">
+      <label for="a-q1"><span class="q-num">A1</span>Before starting any suspension inspection, what information should you retrieve from the Honda Service Information System (SIS), and why is it critical to have the current service data?</label>
+      <textarea id="a-q1" rows="3" placeholder="Explain what data you look up and why it matters for this specific inspection..."></textarea>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         PART B — DIAL INDICATOR BALL JOINT TEST
+    ════════════════════════════════════════ -->
+    <h2 class="section-head" id="partB">Part B — Dial Indicator Ball Joint Test</h2>
+
+    <div class="info-box">
+      <strong>Purpose of this Test</strong>
+      A dial indicator provides a precise, quantified measurement of ball joint movement. Honda specifies maximum allowable play in millimeters. Visual inspection alone cannot confirm whether play is within tolerance — the dial indicator gives you a number to compare against the service limit.
+    </div>
+
+    <p style="font-size:14px;color:#333;margin-bottom:14px;"><strong>Equipment Required:</strong> Dial indicator with magnetic base, floor jack, jack stands, pry bar (smooth end), safety glasses.</p>
+
+    <!-- iN / Service Express Reference — Dial Indicator Setup -->
+    <div class="diagram-wrap" role="note" aria-label="Honda iN Service Express reference for dial indicator ball joint test setup">
+      <div style="display:flex;align-items:flex-start;gap:14px;text-align:left;">
+        <div style="font-size:28px;line-height:1;flex-shrink:0;">📐</div>
+        <div>
+          <p style="margin:0 0 4px 0;font-size:12px;font-weight:700;color:#CC0000;text-transform:uppercase;letter-spacing:1px;">Honda iN — Interactive Network / Service Express</p>
+          <p style="margin:0 0 8px 0;font-size:14px;font-weight:700;color:#1a1a1a;">Figure 1 — Dial Indicator Ball Joint Test Setup</p>
+          <p style="margin:0 0 6px 0;font-size:13px;color:#333;">Before beginning this test, locate the ball joint inspection procedure for your vehicle in <strong>Honda Service Express (iN)</strong>. The service manual illustrates the correct dial indicator mounting location, pry bar placement, and the exact measurement point on the knuckle or hub assembly. Always verify the Honda specification for maximum allowable axial play.</p>
+          <div style="background:#1a1a1a;border-radius:4px;padding:10px 14px;margin-top:8px;">
+            <p style="margin:0 0 4px 0;font-size:11px;color:#CC0000;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;">iN Search Path</p>
+            <p style="margin:0;font-size:13px;color:#fff;">Service Information → <strong>[Year / Model]</strong> → Steering &amp; Suspension → Front Suspension → Lower Ball Joint → Inspection Procedure</p>
+          </div>
+          <p style="margin:8px 0 0 0;font-size:12px;color:#666;font-style:italic;">Record the Honda specification for ball joint axial play from iN before starting the test. Enter it in the Spec column of Table 1 below.</p>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:10px;">Test Procedure — Follow in Order:</p>
+    <ol class="step-list" aria-label="Ball joint dial indicator test steps">
+      <li>Raise and support the vehicle. Allow the front suspension to hang freely (unloaded). Chock the rear wheels.</li>
+      <li>Mount the dial indicator magnetic base on a solid, fixed point (rotor hat, subframe, or brake caliper bracket). Never mount on a moving component.</li>
+      <li>Position the indicator probe against the steering knuckle or hub face, perpendicular to the direction of measurement (axial = vertical play).</li>
+      <li>Zero the dial indicator. Record the zero reading before applying force.</li>
+      <li>Place a pry bar under the tire (not the control arm). Apply firm upward force while a partner reads the dial indicator.</li>
+      <li>Record the maximum deflection displayed. Release and verify the indicator returns to zero.</li>
+      <li>Compare your measurement to the Honda service specification for this vehicle. Record pass or fail.</li>
+      <li>Repeat for the opposite side if time permits. Document both sides.</li>
+    </ol>
+
+    <!-- Measurement Table -->
+    <table class="meas-table" aria-label="Ball joint measurement data table">
+      <caption style="text-align:left;font-size:12px;color:#666;padding-bottom:6px;">Table 1 — Ball Joint Axial Play Measurements</caption>
+      <thead>
+        <tr>
+          <th scope="col">Location</th>
+          <th scope="col">Zero Reading</th>
+          <th scope="col">Measured Play (mm)</th>
+          <th scope="col">Honda Spec (mm)</th>
+          <th scope="col">Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Left Front Ball Joint</td>
+          <td><input type="text" aria-label="Left front ball joint zero reading" placeholder="0.00 mm"/></td>
+          <td><input type="text" aria-label="Left front ball joint measured play" placeholder="mm"/></td>
+          <td><input type="text" aria-label="Left front Honda spec" placeholder="Honda spec"/></td>
+          <td>
+            <div class="pf-group">
+              <label><input type="radio" name="lf-pf" value="pass" aria-label="Left front pass"/> Pass</label>
+              <label><input type="radio" name="lf-pf" value="fail" aria-label="Left front fail"/> Fail</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Right Front Ball Joint</td>
+          <td><input type="text" aria-label="Right front ball joint zero reading" placeholder="0.00 mm"/></td>
+          <td><input type="text" aria-label="Right front ball joint measured play" placeholder="mm"/></td>
+          <td><input type="text" aria-label="Right front Honda spec" placeholder="Honda spec"/></td>
+          <td>
+            <div class="pf-group">
+              <label><input type="radio" name="rf-pf" value="pass" aria-label="Right front pass"/> Pass</label>
+              <label><input type="radio" name="rf-pf" value="fail" aria-label="Right front fail"/> Fail</label>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="q-row">
+      <label for="b-q1"><span class="q-num">B1</span>Why must the dial indicator base be mounted on a fixed, non-moving component? What would happen to your measurement if the base was mounted on a part that also moves?</label>
+      <textarea id="b-q1" rows="3" placeholder="Explain the measurement error that would occur..."></textarea>
+    </div>
+
+    <div class="q-row">
+      <label for="b-q2"><span class="q-num">B2</span>Your dial indicator shows 0.8 mm of axial play, and the Honda service specification is 0.5 mm maximum. What is your recommended course of action, and what consequences could occur if this vehicle were returned to the customer without repair?</label>
+      <textarea id="b-q2" rows="4" placeholder="State your recommendation and explain the safety consequence..."></textarea>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         PART C — BUSHING INSPECTION
+    ════════════════════════════════════════ -->
+    <h2 class="section-head" id="partC">Part C — Control Arm &amp; Stabilizer Bar Bushing Inspection</h2>
+
+    <div class="info-box">
+      <strong>About Suspension Bushings</strong>
+      Rubber bushings isolate vibration and allow controlled movement at pivot points. They are pressed or bonded into the control arm or stabilizer bar brackets. Over time, rubber oxidizes, cracks, or tears — allowing the metal sleeve to shift. Deteriorated bushings affect wheel alignment, increase noise, and reduce handling precision.
+    </div>
+
+    <p style="font-size:14px;color:#333;margin-bottom:14px;">Inspect <strong>all four</strong> bushing locations listed below. Use a flashlight and pick tool for visual access. Pry lightly with a blunt tool to check for movement — do not damage the boot or rubber.</p>
+
+    <!-- Bushing Inspection Table -->
+    <table class="meas-table" aria-label="Bushing inspection findings">
+      <caption style="text-align:left;font-size:12px;color:#666;padding-bottom:6px;">Table 2 — Bushing Inspection Findings</caption>
+      <thead>
+        <tr>
+          <th scope="col">Location</th>
+          <th scope="col">Visual Condition (describe)</th>
+          <th scope="col">Movement Detected?</th>
+          <th scope="col">Recommendation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>LF Control Arm — Front Bush</td>
+          <td><input type="text" aria-label="LF front bushing visual condition" placeholder="Describe condition"/></td>
+          <td>
+            <div class="pf-group">
+              <label><input type="radio" name="lfb1" value="yes"/> Yes</label>
+              <label><input type="radio" name="lfb1" value="no"/> No</label>
+            </div>
+          </td>
+          <td><input type="text" aria-label="LF front bushing recommendation" placeholder="OK / Replace / Monitor"/></td>
+        </tr>
+        <tr>
+          <td>LF Control Arm — Rear Bush</td>
+          <td><input type="text" aria-label="LF rear bushing visual condition" placeholder="Describe condition"/></td>
+          <td>
+            <div class="pf-group">
+              <label><input type="radio" name="lfb2" value="yes"/> Yes</label>
+              <label><input type="radio" name="lfb2" value="no"/> No</label>
+            </div>
+          </td>
+          <td><input type="text" aria-label="LF rear bushing recommendation" placeholder="OK / Replace / Monitor"/></td>
+        </tr>
+        <tr>
+          <td>LF Stabilizer Bar Bushing</td>
+          <td><input type="text" aria-label="LF sway bar bushing condition" placeholder="Describe condition"/></td>
+          <td>
+            <div class="pf-group">
+              <label><input type="radio" name="lfb3" value="yes"/> Yes</label>
+              <label><input type="radio" name="lfb3" value="no"/> No</label>
+            </div>
+          </td>
+          <td><input type="text" aria-label="LF sway bar bushing recommendation" placeholder="OK / Replace / Monitor"/></td>
+        </tr>
+        <tr>
+          <td>RF Stabilizer Bar Bushing</td>
+          <td><input type="text" aria-label="RF sway bar bushing condition" placeholder="Describe condition"/></td>
+          <td>
+            <div class="pf-group">
+              <label><input type="radio" name="rfb3" value="yes"/> Yes</label>
+              <label><input type="radio" name="rfb3" value="no"/> No</label>
+            </div>
+          </td>
+          <td><input type="text" aria-label="RF sway bar bushing recommendation" placeholder="OK / Replace / Monitor"/></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="q-row">
+      <label for="c-q1"><span class="q-num">C1</span>Describe what a worn control arm bushing looks like and feels like when you apply lateral pressure. What specific visual signs indicate the bushing needs replacement?</label>
+      <textarea id="c-q1" rows="3" placeholder="Describe the visual and physical signs of a worn bushing..."></textarea>
+    </div>
+
+    <div class="q-row">
+      <label for="c-q2"><span class="q-num">C2</span>A control arm with a torn rear bushing will cause the rear of the control arm to shift under braking. How would this affect wheel toe angle, and what handling symptom would the driver notice?</label>
+      <textarea id="c-q2" rows="3" placeholder="Connect the bushing failure to the alignment change and driver symptom..."></textarea>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         PART D — BODY ROLL DIAGNOSIS
+    ════════════════════════════════════════ -->
+    <h2 class="section-head" id="partD">Part D — Excessive Body Roll — Root Cause Identification</h2>
+
+    <div class="info-box">
+      <strong>What Is Body Roll?</strong>
+      Body roll is the side-to-side lean of the vehicle body during cornering. A controlled amount is normal — the suspension is designed to flex. <em>Excessive</em> body roll indicates that the suspension's anti-roll capacity has been reduced. This reduces driver confidence, increases load transfer to the outside tires, and worsens cornering grip.
+    </div>
+
+    <!-- iN / Service Express Reference — Body Roll / Suspension Geometry -->
+    <div class="diagram-wrap" role="note" aria-label="Honda iN Service Express reference for suspension geometry and body roll">
+      <div style="display:flex;align-items:flex-start;gap:14px;text-align:left;">
+        <div style="font-size:28px;line-height:1;flex-shrink:0;">📐</div>
+        <div>
+          <p style="margin:0 0 4px 0;font-size:12px;font-weight:700;color:#CC0000;text-transform:uppercase;letter-spacing:1px;">Honda iN — Interactive Network / Service Express</p>
+          <p style="margin:0 0 8px 0;font-size:14px;font-weight:700;color:#1a1a1a;">Figure 2 — Suspension Geometry, Anti-Roll System, &amp; Component Locations</p>
+          <p style="margin:0 0 6px 0;font-size:13px;color:#333;">In <strong>Honda Service Express (iN)</strong>, locate the front and rear suspension component location diagram for your vehicle. Review the anti-roll bar (stabilizer bar) routing, strut assembly position, and control arm geometry. Understanding the system layout is required to accurately diagnose the root cause of excessive body roll.</p>
+          <div style="background:#1a1a1a;border-radius:4px;padding:10px 14px;margin-top:8px;">
+            <p style="margin:0 0 4px 0;font-size:11px;color:#CC0000;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;">iN Search Path</p>
+            <p style="margin:0;font-size:13px;color:#fff;">Service Information → <strong>[Year / Model]</strong> → Steering &amp; Suspension → Front Suspension → Component Location<br/>
+            Also refer to: Stabilizer Bar → Inspection &amp; Replacement for component specifications</p>
+          </div>
+          <p style="margin:8px 0 0 0;font-size:12px;color:#666;font-style:italic;">Look for: stabilizer bar diameter spec, strut damper force rating, and bushing replacement torque values. Note which components connect to form the anti-roll system.</p>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:10px;">Using the table below, identify which components — when worn or failed — contribute to excessive body roll. Check all that apply and explain how each contributes.</p>
+
+    <!-- Body Roll Cause Table -->
+    <table class="meas-table" aria-label="Body roll cause identification table">
+      <caption style="text-align:left;font-size:12px;color:#666;padding-bottom:6px;">Table 3 — Excessive Body Roll — Root Cause Identification</caption>
+      <thead>
+        <tr>
+          <th scope="col">Component</th>
+          <th scope="col">Contributes to Body Roll?</th>
+          <th scope="col">How It Contributes (explain)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Weak / Blown Strut Cartridge</td>
+          <td>
+            <div class="pf-group">
+              <label><input type="radio" name="br1" value="yes"/> Yes</label>
+              <label><input type="radio" name="br1" value="no"/> No</label>
+            </div>
+          </td>
+          <td><input type="text" aria-label="How strut contributes to body roll" placeholder="Explain..."/></td>
+        </tr>
+        <tr>
+          <td>Worn / Broken Stabilizer Bar</td>
+          <td>
+            <div class="pf-group">
+              <label><input type="radio" name="br2" value="yes"/> Yes</label>
+              <label><input type="radio" name="br2" value="no"/> No</label>
+            </div>
+          </td>
+          <td><input type="text" aria-label="How stabilizer bar contributes" placeholder="Explain..."/></td>
+        </tr>
+        <tr>
+          <td>Worn Stabilizer Bar Bushings</td>
+          <td>
+            <div class="pf-group">
+              <label><input type="radio" name="br3" value="yes"/> Yes</label>
+              <label><input type="radio" name="br3" value="no"/> No</label>
+            </div>
+          </td>
+          <td><input type="text" aria-label="How sway bar bushings contribute" placeholder="Explain..."/></td>
+        </tr>
+        <tr>
+          <td>Worn End Link Ball Sockets</td>
+          <td>
+            <div class="pf-group">
+              <label><input type="radio" name="br4" value="yes"/> Yes</label>
+              <label><input type="radio" name="br4" value="no"/> No</label>
+            </div>
+          </td>
+          <td><input type="text" aria-label="How end links contribute" placeholder="Explain..."/></td>
+        </tr>
+        <tr>
+          <td>Deteriorated Control Arm Bushings</td>
+          <td>
+            <div class="pf-group">
+              <label><input type="radio" name="br5" value="yes"/> Yes</label>
+              <label><input type="radio" name="br5" value="no"/> No</label>
+            </div>
+          </td>
+          <td><input type="text" aria-label="How control arm bushings contribute" placeholder="Explain..."/></td>
+        </tr>
+        <tr>
+          <td>Correct Tire Inflation (all four)</td>
+          <td>
+            <div class="pf-group">
+              <label><input type="radio" name="br6" value="yes"/> Yes</label>
+              <label><input type="radio" name="br6" value="no"/> No</label>
+            </div>
+          </td>
+          <td><input type="text" aria-label="How tire inflation relates" placeholder="Explain..."/></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="q-row">
+      <label for="d-q1"><span class="q-num">D1</span>A customer complains that their Honda CR-V "leans a lot in corners" and they can feel the car rocking after bumps. Both front struts show more than one rebound on the bounce test. Which two components are most likely causing the excessive body roll in this case, and what test would you perform to confirm each?</label>
+      <textarea id="d-q1" rows="4" placeholder="Name the two components and describe the confirmation test for each..."></textarea>
+    </div>
+
+    <div class="q-row">
+      <label for="d-q2"><span class="q-num">D2</span>After replacing both front strut assemblies on the CR-V above, the customer returns saying the lean is improved but a clunking noise now appears when turning. What component would you inspect first, and why is it common for this issue to appear after strut service?</label>
+      <textarea id="d-q2" rows="3" placeholder="Identify the component and explain why it becomes apparent after strut replacement..."></textarea>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         PART E — REPAIR RECOMMENDATION
+    ════════════════════════════════════════ -->
+    <h2 class="section-head" id="partE">Part E — Service Write-Up &amp; Technician Recommendation</h2>
+
+    <div class="callout" role="note">
+      <p class="callout-label">📋 Professional Standard</p>
+      <p>A complete technician recommendation includes: what was found, what the consequence of not repairing is, and what the recommended repair is — in clear language the service advisor can communicate to the customer.</p>
+    </div>
+
+    <div class="q-row">
+      <label for="e-final"><span class="q-num">E1</span>Based on all findings from Parts B, C, and D, write a complete service recommendation for this vehicle. Include all items that require attention, the priority level of each (Safety-Critical / Recommended Soon / Monitor), and a brief customer-facing explanation for the most important finding.</label>
+      <textarea id="e-final" rows="7" placeholder="Example format: 1. Left front ball joint — SAFETY CRITICAL — Wear indicator not visible; play exceeds Honda spec. Recommend immediate replacement before vehicle is driven. Customer explanation: The ball joint connects your wheel to the car. If it fails while driving, the wheel can collapse inward without warning..."></textarea>
+    </div>
+
+    <!-- INSTRUCTOR SIGN-OFF -->
+    <h2 class="section-head">Instructor Sign-Off</h2>
+
+    <div style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:18px;">
+      <div class="inline-field" style="flex:1;">
+        <label for="instr-init">Instructor Initials:</label>
+        <input type="text" id="instr-init" placeholder="__________" style="max-width:120px;"/>
+      </div>
+      <div class="inline-field" style="flex:1;">
+        <label for="instr-date">Date Reviewed:</label>
+        <input type="text" id="instr-date" placeholder="MM/DD/YYYY" style="max-width:150px;"/>
+      </div>
+    </div>
+
+    <div class="inline-field">
+      <label for="instr-comments">Instructor Comments:</label>
+      <input type="text" id="instr-comments" placeholder="Optional notes from instructor..."/>
+    </div>
+
+    <!-- SCORE SUMMARY -->
+    <div class="score-summary" role="group" aria-label="Grade summary">
+      <div>
+        <p class="score-label">Grade Summary</p>
+      </div>
+      <div class="score-field">
+        <label for="pts-earned">Points Earned:</label>
+        <input type="text" id="pts-earned" placeholder="__"/>
+      </div>
+      <div class="score-field">
+        <label for="pts-possible">/ Points Possible:</label>
+        <input type="text" id="pts-possible" value="50" style="width:50px;"/>
+      </div>
+      <div class="score-field">
+        <label for="grade-pct">Grade %:</label>
+        <input type="text" id="grade-pct" placeholder="__%"/>
+      </div>
+    </div>
+
+    <!-- DOWNLOAD BAR -->
+    <div class="dl-bar">
+      <button class="btn btn-primary" onclick="window.print()">🖨 Print Lab Sheet</button>
+      <button class="btn btn-secondary" onclick="saveData()">💾 Save My Entries</button>
+    </div>
+
+  </div><!-- end .body -->
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    AUTOH 173 · Honda Steering &amp; Suspension Systems · Shoreline Community College · Honda PACT Program<br/>
+    Instructor: Rashawn Smith · rsmith@shoreline.edu
+  </footer>
+
+</div><!-- end .page -->
+
+<script>
+  // ── SAVE / RESTORE using localStorage key per-page ──
+  var STORE_KEY = 'autoh173_suspension_lab_v1';
+
+  function collectData() {
+    var data = {};
+    document.querySelectorAll('input[type="text"], textarea').forEach(function(el) {
+      if (el.id) data[el.id] = el.value;
+    });
+    document.querySelectorAll('input[type="radio"]:checked').forEach(function(el) {
+      data['radio_' + el.name] = el.value;
+    });
+    return data;
+  }
+
+  function restoreData(data) {
+    Object.keys(data).forEach(function(key) {
+      if (key.startsWith('radio_')) {
+        var name = key.replace('radio_', '');
+        var el = document.querySelector('input[type="radio"][name="' + name + '"][value="' + data[key] + '"]');
+        if (el) el.checked = true;
+      } else {
+        var el = document.getElementById(key);
+        if (el) el.value = data[key];
+      }
+    });
+  }
+
+  function saveData() {
+    try {
+      localStorage.setItem(STORE_KEY, JSON.stringify(collectData()));
+      alert('Your entries have been saved to this browser. They will reload next time you open this page.');
+    } catch(e) {
+      alert('Save not available in this environment. Use Print to preserve your work.');
+    }
+  }
+
+  window.addEventListener('load', function() {
+    try {
+      var saved = localStorage.getItem(STORE_KEY);
+      if (saved) restoreData(JSON.parse(saved));
+    } catch(e) {}
+    // Auto-fill date if empty
+    if (!document.getElementById('stu-date').value) {
+      var d = new Date();
+      document.getElementById('stu-date').value =
+        (d.getMonth()+1).toString().padStart(2,'0') + '/' +
+        d.getDate().toString().padStart(2,'0') + '/' + d.getFullYear();
+    }
+  });
+</script>
+</body>
+</html>
