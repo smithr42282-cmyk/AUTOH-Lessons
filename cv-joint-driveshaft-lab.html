@@ -333,12 +333,72 @@
     margin: 16px 0;
   }
 
-  /* ── PRINT BUTTON BAR ── */
-  .print-bar {
-    display: flex;
-    justify-content: flex-end;
+  /* ── DOWNLOADS & RESOURCES BAR ── */
+  .resources-bar {
+    background: #fff;
+    border-top: 4px solid #CC0000;
+    border-radius: 4px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  }
+  .resources-bar-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #CC0000;
+    margin-bottom: 14px;
+  }
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 10px;
-    margin-bottom: 18px;
+  }
+  .res-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 14px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    transition: opacity 0.15s, transform 0.1s;
+    text-align: left;
+    line-height: 1.3;
+  }
+  .res-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .res-btn:active { transform: translateY(0); }
+  .res-btn .btn-icon { font-size: 18px; flex-shrink: 0; }
+  .res-btn .btn-label { display: flex; flex-direction: column; }
+  .res-btn .btn-label span { font-size: 10px; font-weight: 400; opacity: 0.85; margin-top: 1px; }
+  .res-btn-red   { background: #CC0000; color: #fff; }
+  .res-btn-navy  { background: #1a3a5c; color: #fff; }
+  .res-btn-dark  { background: #1a1a1a; color: #fff; }
+  .res-btn-teal  { background: #0d6e6e; color: #fff; }
+  .res-btn-olive { background: #4a5e1a; color: #fff; }
+  .res-btn-purple{ background: #4a1a6e; color: #fff; }
+  .resources-divider {
+    border: none;
+    border-top: 1px solid #e8e8e8;
+    margin: 14px 0 12px;
+  }
+  .resources-sub-title {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #888;
+    margin-bottom: 10px;
+  }
+
+  /* ── PRINT BUTTON BAR (hidden — replaced by resources-bar) ── */
+  .print-bar {
+    display: none;
   }
 
   /* ══════════════════════════════
@@ -363,6 +423,7 @@
 
     /* Hide interactive-only elements */
     .print-bar,
+    .resources-bar,
     .submit-row,
     .score-card,
     .field-hint { display: none !important; }
@@ -591,11 +652,45 @@
 
 <div class="wrapper">
 
-  <!-- ══ PRINT BAR ══ -->
+  <!-- ══ DOWNLOADS & RESOURCES ══ -->
+  <nav class="resources-bar" aria-label="Downloads and course resources">
+    <p class="resources-bar-title">📂 Downloads &amp; Course Resources</p>
+
+    <!-- Row 1: This Lab's Files -->
+    <p class="resources-sub-title">This Lab — Driveshaft &amp; C.V. Joint Service</p>
+    <div class="resources-grid">
+
+      <a href="CV-Joint-Driveshaft-Jobsheet-AUTOH174.docx"
+         download="CV-Joint-Driveshaft-Jobsheet-AUTOH174.docx"
+         class="res-btn res-btn-navy"
+         aria-label="Download Word document jobsheet">
+        <span class="btn-icon">📄</span>
+        <span class="btn-label">Word Jobsheet<span>Download .docx</span></span>
+      </a>
+
+      <a href="cv-joint-driveshaft-lab.pdf"
+         download="CV-Joint-Driveshaft-Lab-AUTOH174.pdf"
+         class="res-btn res-btn-red"
+         aria-label="Download PDF version">
+        <span class="btn-icon">⬇</span>
+        <span class="btn-label">PDF Version<span>Download .pdf</span></span>
+      </a>
+
+      <button class="res-btn res-btn-dark"
+              onclick="window.print()"
+              aria-label="Print or save as PDF">
+        <span class="btn-icon">🖨</span>
+        <span class="btn-label">Print / Save as PDF<span>Opens print dialog</span></span>
+      </button>
+
+    </div>
+
+
+  </nav>
+
+  <!-- ══ PRINT BAR (legacy — hidden by CSS, kept for fallback) ══ -->
   <div class="print-bar" aria-hidden="true">
-    <a href="cv-joint-driveshaft-jobsheet.docx" download="CV-Joint-Driveshaft-Jobsheet-AUTOH174.docx" style="display:inline-block;background:#1a5276;color:#fff;padding:9px 20px;border-radius:4px;font-size:13px;font-weight:700;text-decoration:none;">📄&nbsp; Download Word (.docx)</a>
-    <a href="cv-joint-driveshaft-lab.pdf" download="CV-Joint-Driveshaft-Lab-AUTOH174.pdf" style="display:inline-block;background:#CC0000;color:#fff;padding:9px 20px;border-radius:4px;font-size:13px;font-weight:700;text-decoration:none;">⬇&nbsp; Download PDF</a>
-    <button class="btn btn-secondary" onclick="window.print()" style="background:#1a1a1a;color:#fff;padding:9px 20px;border-radius:4px;font-size:13px;font-weight:700;border:none;cursor:pointer;">🖨&nbsp; Print / Save as PDF</button>
+    <button class="btn btn-secondary" onclick="window.print()">🖨 Print</button>
   </div>
 
   <!-- ══ PAGE HEADER ══ -->
