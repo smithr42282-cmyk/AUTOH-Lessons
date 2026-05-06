@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suspension Component Service — AUTOH 173</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f2f2f2;
+    color: #1a1a1a;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .lesson-wrapper { max-width: 860px; margin: 0 auto; padding: 24px 16px 48px; }
+
+  /* HEADER */
+  .lesson-header {
+    background: #1a1a1a; border-left: 6px solid #CC0000;
+    border-radius: 4px; padding: 20px 24px; margin-bottom: 24px;
+  }
+  .lesson-header .course-label {
+    color: #CC0000; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 6px;
+  }
+  .lesson-header h1 { color: #fff; font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .lesson-header .sub { color: #ccc; font-size: 13px; }
+
+  /* PROGRESS */
+  .progress-bar { display: flex; gap: 6px; margin-bottom: 20px; align-items: center; flex-wrap: wrap; }
+  .progress-bar .dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: #ccc; transition: background 0.3s; flex-shrink: 0;
+  }
+  .progress-bar .dot.active { background: #CC0000; }
+  .progress-bar .dot.done { background: #888; }
+  .progress-label { font-size: 12px; color: #666; margin-left: 8px; }
+
+  /* SLIDE */
+  .slide {
+    display: none; background: #fff; border-top: 4px solid #CC0000;
+    border-radius: 4px; padding: 28px 28px 24px; margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .slide.active { display: block; }
+  .slide-tag {
+    background: #CC0000; color: #fff; font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px; padding: 3px 10px;
+    border-radius: 2px; display: inline-block; margin-bottom: 12px;
+  }
+  .slide h2 { font-size: 19px; font-weight: 700; color: #1a1a1a; margin-bottom: 14px; }
+  .slide p { color: #333; font-size: 14px; margin-bottom: 12px; }
+  .slide ul, .slide ol { padding-left: 20px; color: #333; font-size: 14px; margin-bottom: 14px; }
+  .slide li { margin-bottom: 6px; }
+
+  /* CALLOUT */
+  .callout {
+    background: #fff5f5; border-left: 4px solid #CC0000;
+    border-radius: 0 4px 4px 0; padding: 12px 16px; margin: 14px 0;
+  }
+  .callout .callout-label { color: #CC0000; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; }
+  .callout p { margin: 0 0 4px 0; font-size: 14px; }
+  .callout ul { padding-left: 18px; font-size: 14px; margin: 4px 0 0 0; }
+  .callout li { margin-bottom: 4px; }
+
+  /* INFO BOX */
+  .info-box { background: #f5f5f5; border-radius: 4px; padding: 12px 16px; margin: 14px 0; font-size: 14px; color: #333; }
+  .info-box strong { color: #1a1a1a; display: block; margin-bottom: 4px; }
+
+  /* TWO COLUMN */
+  .two-col { display: flex; gap: 12px; margin: 14px 0; }
+  .two-col .col {
+    flex: 1; background: #f5f5f5; border-top: 3px solid #CC0000;
+    border-radius: 4px; padding: 14px; font-size: 14px; color: #333;
+  }
+  .two-col .col strong {
+    display: block; font-size: 13px; text-transform: uppercase;
+    letter-spacing: 0.5px; color: #1a1a1a; margin-bottom: 8px;
+  }
+  .two-col .col ul { padding-left: 16px; margin: 0; }
+  .two-col .col li { margin-bottom: 4px; }
+  @media (max-width: 520px) { .two-col { flex-direction: column; } }
+
+  /* DATA TABLE */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 14px 0; }
+  .data-table th {
+    background: #1a1a1a; color: #fff; padding: 9px 12px;
+    text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .data-table td { padding: 8px 12px; border-bottom: 1px solid #e0e0e0; color: #333; vertical-align: top; }
+  .data-table tr:nth-child(even) td { background: #f9f9f9; }
+
+  /* BADGE */
+  .badge {
+    display: inline-block; color: #fff;
+    font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 2px;
+  }
+  .badge-red { background: #CC0000; }
+  .badge-blue { background: #478be7; }
+  .badge-grey { background: #888; }
+
+  /* STEP LIST */
+  .step-list { list-style: none; padding: 0; margin: 14px 0; counter-reset: steps; }
+  .step-list li {
+    counter-increment: steps; display: flex; align-items: flex-start;
+    gap: 12px; padding: 10px 12px; border-bottom: 1px solid #e0e0e0; font-size: 14px; color: #333;
+  }
+  .step-list li:last-child { border-bottom: none; }
+  .step-list li::before {
+    content: counter(steps); background: #CC0000; color: #fff;
+    font-size: 12px; font-weight: 700; min-width: 24px; height: 24px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+
+  /* SVG DIAGRAM WRAP */
+  .diagram-wrap {
+    background: #f9f9f9; border: 1px solid #e0e0e0;
+    border-radius: 4px; padding: 16px; margin: 16px 0; text-align: center;
+  }
+  .diagram-wrap .fig-caption { font-size: 12px; color: #666; margin-top: 8px; font-style: italic; }
+
+  /* KNOWLEDGE CHECK */
+  .kc-section {
+    display: none; background: #fff; border-top: 4px solid #1a1a1a;
+    border-radius: 4px; padding: 28px; margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .kc-section.active { display: block; }
+  .kc-section h2 { font-size: 18px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; }
+  .kc-section .kc-sub { font-size: 13px; color: #666; margin-bottom: 20px; }
+  .q-block { margin-bottom: 24px; border-bottom: 1px solid #e0e0e0; padding-bottom: 20px; }
+  .q-block:last-of-type { border-bottom: none; }
+  .q-text { font-size: 14px; font-weight: 700; color: #1a1a1a; margin-bottom: 12px; }
+  .q-num {
+    display: inline-block; background: #1a1a1a; color: #fff;
+    font-size: 11px; font-weight: 700; padding: 2px 8px;
+    border-radius: 3px; margin-right: 8px;
+  }
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .option-btn {
+    background: #f5f5f5; border: 2px solid #e0e0e0; border-radius: 4px;
+    padding: 10px 14px; font-size: 14px; text-align: left; cursor: pointer;
+    transition: border-color 0.2s, background 0.2s; color: #1a1a1a;
+  }
+  .option-btn:hover:not(:disabled) { border-color: #CC0000; background: #fff5f5; }
+  .option-btn.correct { border-color: #2a7a2a; background: #f0fff0; color: #1a1a1a; }
+  .option-btn.incorrect { border-color: #CC0000; background: #fff5f5; color: #1a1a1a; }
+  .option-btn:disabled { cursor: default; }
+  .feedback {
+    display: none; margin-top: 10px; padding: 10px 14px;
+    border-radius: 4px; font-size: 13px; line-height: 1.5;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: #f0fff0; border-left: 4px solid #2a7a2a; color: #1a4a1a; }
+  .feedback.incorrect-fb { background: #fff5f5; border-left: 4px solid #CC0000; color: #5a1a1a; }
+
+  /* NAV */
+  .nav-row { display: flex; justify-content: space-between; margin-top: 20px; gap: 12px; }
+  .nav-btn {
+    background: #1a1a1a; color: #fff; border: none; padding: 10px 22px;
+    border-radius: 4px; font-size: 14px; font-weight: 700; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 0.5px; transition: background 0.2s;
+  }
+  .nav-btn:hover { background: #CC0000; }
+  .nav-btn:disabled { background: #ccc; cursor: default; }
+  .nav-btn.primary { background: #CC0000; }
+  .nav-btn.primary:hover { background: #990000; }
+
+  /* COMPLETE CARD */
+  .complete-card {
+    display: none; background: #1a1a1a; border-top: 4px solid #CC0000;
+    border-radius: 4px; padding: 40px 28px; margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08); text-align: center; color: #fff;
+  }
+  .complete-card.show { display: block; }
+  .complete-card h2 { font-size: 20px; margin-bottom: 10px; color: #fff; }
+  .complete-card p { color: #ccc; font-size: 14px; }
+  .score-badge {
+    display: inline-block; background: #CC0000; color: #fff;
+    font-size: 28px; font-weight: 700; padding: 14px 28px;
+    border-radius: 4px; margin: 16px 0;
+  }
+</style>
+</head>
+<body>
+<div class="lesson-wrapper">
+
+  <!-- HEADER -->
+  <header class="lesson-header" role="banner">
+    <p class="course-label">AUTOH 173 · Honda Steering and Suspension Systems</p>
+    <h1>Suspension Component Service</h1>
+    <p class="sub">Micro Lesson · 3 Slides + 3 Knowledge Check Questions</p>
+  </header>
+
+  <!-- PROGRESS -->
+  <nav aria-label="Lesson progress">
+    <div class="progress-bar" id="progressDots">
+      <span class="dot active" id="dot0" aria-label="Slide 1 of 3 — Ball Joint and Strut Mount"></span>
+      <span class="dot" id="dot1" aria-label="Slide 2 of 3 — Stabilizer Bar Links"></span>
+      <span class="dot" id="dot2" aria-label="Slide 3 of 3 — Common Suspension Noises"></span>
+      <span class="dot" id="dot3" aria-label="Knowledge Check"></span>
+      <span class="progress-label" id="progressLabel" aria-live="polite">Slide 1 of 3</span>
+    </div>
+  </nav>
+
+  <!-- ════════════════════════════════
+       SLIDE 1 — BALL JOINT & STRUT MOUNT
+  ═════════════════════════════════ -->
+  <section class="slide active" id="slide0" aria-labelledby="s0-title">
+    <span class="slide-tag">Slide 1 of 3 — Wear Inspection</span>
+    <h2 id="s0-title">Ball Joint &amp; Strut Mount Inspection</h2>
+
+    <p>Two of the most safety-critical wear items in the front suspension are the <strong>ball joint</strong> and the <strong>strut mount</strong>. Both must be inspected during every alignment check and suspension diagnostic.</p>
+
+    <!-- Ball Joint -->
+    <div class="info-box">
+      <strong>Ball Joint — What It Does</strong>
+      The lower ball joint connects the steering knuckle to the lower control arm. It allows the wheel to pivot for steering while also moving up and down with suspension travel. Worn ball joints allow the knuckle to shift position, directly affecting camber, toe, and vehicle safety.
+    </div>
+
+    <!-- iN / Service Express Reference — Ball Joint Diagram -->
+    <div class="diagram-wrap" role="note" aria-label="Honda iN Service Express diagram reference for ball joint wear indicator">
+      <div style="display:flex;align-items:flex-start;gap:14px;text-align:left;">
+        <div style="font-size:28px;line-height:1;flex-shrink:0;">📐</div>
+        <div>
+          <p style="margin:0 0 4px 0;font-size:12px;font-weight:700;color:#CC0000;text-transform:uppercase;letter-spacing:1px;">Honda iN — Interactive Network / Service Express</p>
+          <p style="margin:0 0 8px 0;font-size:14px;font-weight:700;color:#1a1a1a;">Figure 1 — Ball Joint Assembly: Wear Indicator &amp; Movement Directions</p>
+          <p style="margin:0 0 6px 0;font-size:13px;color:#333;">Locate the ball joint exploded view and wear indicator diagram for your vehicle in <strong>Honda Service Express (iN)</strong>. The diagram shows axial (vertical) and radial (side-to-side) movement directions, wear indicator groove location, and the dust boot assembly.</p>
+          <div style="background:#1a1a1a;border-radius:4px;padding:10px 14px;margin-top:8px;">
+            <p style="margin:0 0 4px 0;font-size:11px;color:#CC0000;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;">iN Search Path</p>
+            <p style="margin:0;font-size:13px;color:#fff;">Service Information → <strong>[Year / Model]</strong> → Steering &amp; Suspension → Front Suspension → Lower Control Arm → Ball Joint Inspection</p>
+          </div>
+          <p style="margin:8px 0 0 0;font-size:12px;color:#666;font-style:italic;">Key items to identify: wear indicator groove, axial play measurement point, ball stud taper, and dust boot condition.</p>
+        </div>
+      </div>
+    </div>
+
+    <p><strong>Honda Ball Joint Inspection Steps:</strong></p>
+    <ol class="step-list">
+      <li>Raise the vehicle on a hoist. Leave the suspension hanging freely.</li>
+      <li>Grasp the tire at 12 and 6 o'clock positions. Rock it firmly — check for any vertical looseness.</li>
+      <li>Visually inspect the ball joint wear indicator. If the flat or groove is no longer visible, the joint is at or past its wear limit.</li>
+      <li>Check the dust boot for cracks, tears, or grease leakage — a damaged boot leads to rapid joint failure.</li>
+    </ol>
+
+    <div class="callout" role="note">
+      <p class="callout-label">⚠ Safety Note</p>
+      <p>A failed ball joint can cause sudden loss of steering control. Honda specifies replacement if <strong>any</strong> play is detected on loaded joints, or if the wear indicator is not visible.</p>
+    </div>
+
+    <!-- Strut Mount -->
+    <div class="info-box" style="margin-top:18px;">
+      <strong>Strut Mount — What It Does</strong>
+      The strut mount sits at the top of the strut assembly, connecting it to the vehicle body. It includes a <strong>bearing plate</strong> (allows rotation when steering) and a <strong>rubber isolator</strong> (absorbs road noise and vibration). When the bearing seizes or the rubber cracks, steering effort increases and clunking noises appear.
+    </div>
+
+    <table class="data-table" aria-label="Strut mount inspection findings">
+      <caption style="text-align:left;font-size:12px;color:#666;margin-bottom:6px;">Table 1 — Strut Mount Wear Signs and Consequences</caption>
+      <thead>
+        <tr>
+          <th scope="col">Symptom</th>
+          <th scope="col">Likely Cause</th>
+          <th scope="col">Severity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Clunk when turning at low speed</td>
+          <td>Seized or worn bearing plate</td>
+          <td><span class="badge badge-red">High</span></td>
+        </tr>
+        <tr>
+          <td>Steering wheel returns slowly</td>
+          <td>Binding upper bearing</td>
+          <td><span class="badge badge-red">High</span></td>
+        </tr>
+        <tr>
+          <td>Vibration through steering column</td>
+          <td>Cracked rubber isolator</td>
+          <td><span class="badge badge-blue">Medium</span></td>
+        </tr>
+        <tr>
+          <td>Alignment shifts after strut service</td>
+          <td>Strut mount not centered on tower</td>
+          <td><span class="badge badge-blue">Medium</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="nav-row">
+      <button class="nav-btn" disabled aria-disabled="true">← Previous</button>
+      <button class="nav-btn primary" onclick="goToSlide(1)">Next: Stabilizer Bar Links →</button>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       SLIDE 2 — STABILIZER BAR LINKS
+  ═════════════════════════════════ -->
+  <section class="slide" id="slide1" aria-labelledby="s1-title">
+    <span class="slide-tag">Slide 2 of 3 — Stabilizer System</span>
+    <h2 id="s1-title">Stabilizer Bar &amp; End Links</h2>
+
+    <p>The <strong>stabilizer bar</strong> (also called a sway bar or anti-roll bar) connects the left and right suspension through a torsion bar, limiting the amount of body roll during cornering. The bar connects to the lower strut or control arm via <strong>stabilizer link pins</strong> (end links).</p>
+
+    <!-- iN / Service Express Reference — Stabilizer Bar Diagram -->
+    <div class="diagram-wrap" role="note" aria-label="Honda iN Service Express reference for stabilizer bar assembly diagram">
+      <div style="display:flex;align-items:flex-start;gap:14px;text-align:left;">
+        <div style="font-size:28px;line-height:1;flex-shrink:0;">📐</div>
+        <div>
+          <p style="margin:0 0 4px 0;font-size:12px;font-weight:700;color:#CC0000;text-transform:uppercase;letter-spacing:1px;">Honda iN — Interactive Network / Service Express</p>
+          <p style="margin:0 0 8px 0;font-size:14px;font-weight:700;color:#1a1a1a;">Figure 2 — Stabilizer Bar Assembly: Bar, Bushings, and End Links</p>
+          <p style="margin:0 0 6px 0;font-size:13px;color:#333;">Locate the stabilizer bar exploded assembly view in <strong>Honda Service Express (iN)</strong> for your vehicle. The diagram shows the complete sway bar assembly — bar body, frame bushings with clamp brackets, left and right end links, and connection points at the strut or lower control arm.</p>
+          <div style="background:#1a1a1a;border-radius:4px;padding:10px 14px;margin-top:8px;">
+            <p style="margin:0 0 4px 0;font-size:11px;color:#CC0000;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;">iN Search Path</p>
+            <p style="margin:0;font-size:13px;color:#fff;">Service Information → <strong>[Year / Model]</strong> → Steering &amp; Suspension → Front Suspension → Stabilizer Bar → Component Location &amp; Exploded View</p>
+          </div>
+          <p style="margin:8px 0 0 0;font-size:12px;color:#666;font-style:italic;">Key items to identify: bushing clamp bracket orientation, end link upper and lower ball socket locations, bar-to-frame attachment points.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="col">
+        <strong>End Link Inspection</strong>
+        <ul>
+          <li>Grasp the link and attempt to move it — any clunk or looseness = worn ball sockets</li>
+          <li>Check for torn or missing rubber boots at each end</li>
+          <li>Inspect the link rod for bending or corrosion</li>
+          <li>Honda spec: zero play at the socket; replace if any movement detected</li>
+        </ul>
+      </div>
+      <div class="col">
+        <strong>Bushing Inspection</strong>
+        <ul>
+          <li>Bushings locate the bar to the frame/subframe via clamp brackets</li>
+          <li>Worn bushings cause the bar to shift laterally under load</li>
+          <li>Inspect for cracking, splitting, or distortion</li>
+          <li>Honda uses polyurethane-lined rubber — check for collapse or extrusion past the bracket</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout" role="note">
+      <p class="callout-label">🔧 Honda Technician Tip</p>
+      <p>On many Honda models, worn stabilizer end links produce a <strong>rattling or clunking noise over small bumps</strong> at low speed — often misdiagnosed as a bad strut. Isolate by disconnecting the end link temporarily and road-testing to confirm.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goToSlide(0)">← Previous</button>
+      <button class="nav-btn primary" onclick="goToSlide(2)">Next: Suspension Noises →</button>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       SLIDE 3 — COMMON SUSPENSION NOISES
+  ═════════════════════════════════ -->
+  <section class="slide" id="slide2" aria-labelledby="s2-title">
+    <span class="slide-tag">Slide 3 of 3 — Diagnostic</span>
+    <h2 id="s2-title">Common Suspension Noises — Diagnosis Guide</h2>
+
+    <p>Suspension noise diagnosis requires you to match the <strong>noise type</strong>, <strong>when it occurs</strong>, and <strong>location</strong> to the most likely failed component. Using a systematic approach prevents misdiagnosis and unnecessary parts replacement.</p>
+
+    <table class="data-table" aria-label="Suspension noise diagnosis table linking noise type, condition, and component">
+      <caption style="text-align:left;font-size:12px;color:#666;margin-bottom:6px;">Table 2 — Suspension Noise Quick Reference Chart</caption>
+      <thead>
+        <tr>
+          <th scope="col">Noise Type</th>
+          <th scope="col">When It Occurs</th>
+          <th scope="col">Most Likely Component</th>
+          <th scope="col">Confirm By</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Clunk</strong> (single thud)</td>
+          <td>Over bumps, dips</td>
+          <td>Strut mount, ball joint, end link</td>
+          <td>Bounce test, visual inspection</td>
+        </tr>
+        <tr>
+          <td><strong>Rattle</strong> (rapid, metallic)</td>
+          <td>Small bumps, low speed</td>
+          <td>Worn end link sockets</td>
+          <td>Disconnect link, road test</td>
+        </tr>
+        <tr>
+          <td><strong>Squeak</strong> (rhythmic)</td>
+          <td>Turning, full lock</td>
+          <td>Dry ball joint boot, strut bearing</td>
+          <td>Lubricate &amp; retest</td>
+        </tr>
+        <tr>
+          <td><strong>Groan</strong> (low, sustained)</td>
+          <td>Slow speed turns</td>
+          <td>Seized strut mount bearing</td>
+          <td>Grasp strut, feel rotation</td>
+        </tr>
+        <tr>
+          <td><strong>Knock</strong> (hollow)</td>
+          <td>Acceleration or braking</td>
+          <td>Loose strut nut, worn control arm bushing</td>
+          <td>Torque check, visual</td>
+        </tr>
+        <tr>
+          <td><strong>Vibration</strong> through wheel</td>
+          <td>Constant / speed-related</td>
+          <td>Worn hub bearing (not suspension)</td>
+          <td>Rotate tire by hand, check play</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info-box">
+      <strong>Noise Isolation Procedure</strong>
+      Always recreate the noise with the vehicle on a lift if possible. Use a mechanic's stethoscope or a long-handled screwdriver to isolate the exact source. Never replace parts based on noise alone without confirming the cause.
+    </div>
+
+    <div class="two-col">
+      <div class="col">
+        <strong>Bounce Test Method</strong>
+        <ul>
+          <li>Push down firmly on one corner of the vehicle</li>
+          <li>Release — the vehicle should rebound once and settle</li>
+          <li>More than one rebound = weak strut/shock</li>
+          <li>Clunk on release = strut mount or spring isolator</li>
+        </ul>
+      </div>
+      <div class="col">
+        <strong>Static Shake Test</strong>
+        <ul>
+          <li>Wheel at 9 and 3 o'clock: checks tie rod ends</li>
+          <li>Wheel at 12 and 6 o'clock: checks ball joint (axial)</li>
+          <li>Grab strut body and wiggle: checks strut mount</li>
+          <li>All tests done with wheel on ground for loaded joints</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout" role="note">
+      <p class="callout-label">📋 Industry Standard</p>
+      <p>Honda and ASE both require technicians to <strong>verify the repair</strong> after any suspension work — road test the vehicle on the same surface type where the customer reported the noise, and confirm it is eliminated before releasing the vehicle.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goToSlide(1)">← Previous</button>
+      <button class="nav-btn primary" onclick="goToSlide(3)">Knowledge Check →</button>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       KNOWLEDGE CHECK
+  ═════════════════════════════════ -->
+  <section class="kc-section" id="slide3" aria-labelledby="kc-title">
+    <span class="slide-tag" style="background:#1a1a1a;">Knowledge Check</span>
+    <h2 id="kc-title">Check Your Understanding</h2>
+    <p class="kc-sub">Select the best answer for each question. Feedback appears immediately after your choice.</p>
+
+    <!-- Q1 -->
+    <div class="q-block">
+      <p class="q-text"><span class="q-num">Q1</span>During a ball joint inspection, the wear indicator groove is no longer visible. What does this mean?</p>
+      <div class="options" role="group" aria-labelledby="q1-label">
+        <button class="option-btn" onclick="checkAnswer('q1',this,false,'q1-fb','The wear indicator disappearing indicates the joint has reached its wear limit — not that it is okay. The ball joint must be replaced.')">The joint is within acceptable limits and needs no service</button>
+        <button class="option-btn" onclick="checkAnswer('q1',this,true,'q1-fb','Correct. Honda specifies that once the wear indicator groove is no longer visible, the ball joint has reached or exceeded its wear limit and must be replaced. This is a safety-critical finding.')">The ball joint has reached its wear limit and must be replaced</button>
+        <button class="option-btn" onclick="checkAnswer('q1',this,false,'q1-fb','The wear indicator groove is specific to the ball joint, not the wheel bearing. Each component has its own inspection method.')">The wheel bearing is worn and needs repacking</button>
+        <button class="option-btn" onclick="checkAnswer('q1',this,false,'q1-fb','Alignment should be performed after replacing the ball joint, not as an alternative to replacement.')">The vehicle only needs a four-wheel alignment</button>
+      </div>
+      <div class="feedback" id="q1-fb" role="alert" aria-live="polite"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-block">
+      <p class="q-text"><span class="q-num">Q2</span>A customer reports a rattling noise at low speed over small bumps. Which component should the technician check first?</p>
+      <div class="options" role="group">
+        <button class="option-btn" onclick="checkAnswer('q2',this,false,'q2-fb','A weak strut typically causes multiple rebounds on a bounce test, not a rattle. End links are the more likely source for a rattle noise at low speed.')">Worn shock absorber / strut cartridge</button>
+        <button class="option-btn" onclick="checkAnswer('q2',this,true,'q2-fb','Correct. Worn stabilizer end link sockets produce a distinctive rattle at low speed over small bumps. Disconnecting the link and road testing is a quick way to confirm the diagnosis.')">Stabilizer end link with worn ball sockets</button>
+        <button class="option-btn" onclick="checkAnswer('q2',this,false,'q2-fb','Wheel bearing noise is typically a sustained hum or growl that changes with vehicle speed, not a rattle over specific bumps.')">Failing front wheel bearing</button>
+        <button class="option-btn" onclick="checkAnswer('q2',this,false,'q2-fb','Loose lug nuts produce a very specific click or knock under load. A rattle at low speed over bumps points more specifically to the stabilizer end link.')">Loose wheel lug nuts</button>
+      </div>
+      <div class="feedback" id="q2-fb" role="alert" aria-live="polite"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-block">
+      <p class="q-text"><span class="q-num">Q3</span>What is the primary function of the strut mount bearing plate?</p>
+      <div class="options" role="group">
+        <button class="option-btn" onclick="checkAnswer('q3',this,false,'q3-fb','Camber is set by the strut position and any alignment adjustments, not by the strut mount bearing plate specifically.')">To set the camber angle of the front wheel</button>
+        <button class="option-btn" onclick="checkAnswer('q3',this,false,'q3-fb','Caster is a chassis geometry angle determined by suspension geometry, not the strut mount bearing.')">To adjust front caster during alignment</button>
+        <button class="option-btn" onclick="checkAnswer('q3',this,true,'q3-fb','Correct. The strut mount bearing plate allows the entire strut and steering knuckle assembly to rotate smoothly when the steering wheel is turned. A seized bearing increases steering effort and can cause groaning or clunking noises.')">To allow the strut assembly to rotate freely when steering</button>
+        <button class="option-btn" onclick="checkAnswer('q3',this,false,'q3-fb','The strut cartridge (shock absorber) controls dampening force. The mount bearing has a different function — it allows rotation of the strut assembly during steering.')">To control the damping force of the strut cartridge</button>
+      </div>
+      <div class="feedback" id="q3-fb" role="alert" aria-live="polite"></div>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goToSlide(2)">← Back to Slides</button>
+      <button class="nav-btn primary" onclick="finishLesson()">Finish Lesson ✓</button>
+    </div>
+  </section>
+
+  <!-- COMPLETE CARD -->
+  <div class="complete-card" id="completeCard" role="status" aria-live="polite">
+    <h2>🎉 Lesson Complete!</h2>
+    <div class="score-badge" id="scoreDisplay">–/3</div>
+    <p>You've completed the Suspension Component Service micro lesson.</p>
+    <p style="margin-top:12px;">Review any slides using the button below, or close this window to return to Canvas.</p>
+    <div style="margin-top:24px;">
+      <button class="nav-btn" onclick="goToSlide(0)" style="background:#fff;color:#1a1a1a;">↺ Review Slides</button>
+    </div>
+  </div>
+
+  <!-- iN REMINDER FOOTER -->
+  <div style="background:#D3D3D3;border-radius:4px;padding:12px 18px;margin-bottom:20px;font-size:13px;color:#1a1a1a;" role="note" aria-label="Service information reminder">
+    📋 <strong>Always verify specifications and procedures in Honda Service Express (iN — Interactive Network)</strong> for the specific model year before performing any suspension service or inspection. Specifications vary by model and model year.
+  </div>
+
+</div><!-- end .lesson-wrapper -->
+
+<script>
+  const TOTAL_DOTS = 4;
+  let correctCount = 0;
+  let answeredQuestions = new Set();
+
+  function goToSlide(index) {
+    document.querySelectorAll('.slide, .kc-section').forEach(function(el) {
+      el.classList.remove('active');
+    });
+    document.getElementById('completeCard').classList.remove('show');
+
+    var target = document.getElementById('slide' + index);
+    if (target) target.classList.add('active');
+
+    for (var i = 0; i < TOTAL_DOTS; i++) {
+      var dot = document.getElementById('dot' + i);
+      if (!dot) continue;
+      dot.classList.remove('active', 'done');
+      if (i < index) dot.classList.add('done');
+      else if (i === index) dot.classList.add('active');
+    }
+
+    var label = document.getElementById('progressLabel');
+    if (index < 3) {
+      label.textContent = 'Slide ' + (index + 1) + ' of 3';
+    } else {
+      label.textContent = 'Knowledge Check';
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function checkAnswer(qId, btn, isCorrect, fbId, explanation) {
+    if (answeredQuestions.has(qId)) return;
+    answeredQuestions.add(qId);
+
+    var options = btn.closest('.options').querySelectorAll('.option-btn');
+    options.forEach(function(b) { b.disabled = true; });
+    btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+
+    if (isCorrect) correctCount++;
+
+    var fb = document.getElementById(fbId);
+    fb.textContent = (isCorrect ? '✓ ' : '✗ ') + explanation;
+    fb.classList.add('show', isCorrect ? 'correct-fb' : 'incorrect-fb');
+  }
+
+  function finishLesson() {
+    document.querySelectorAll('.slide, .kc-section').forEach(function(el) {
+      el.classList.remove('active');
+    });
+    var card = document.getElementById('completeCard');
+    card.classList.add('show');
+    document.getElementById('scoreDisplay').textContent = correctCount + '/3';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
