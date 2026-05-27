@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wheel Bearing Service & Inspection — AUTOH 173</title>
+<style>
+  /* ── RESET & BASE ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+    background: #f2f2f2;
+    color: #1a1a1a;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── SHELL ── */
+  .lesson-shell {
+    max-width: 820px;
+    margin: 0 auto;
+    background: #fff;
+    min-height: 100vh;
+  }
+
+  /* ── COURSE HEADER ── */
+  .course-header {
+    background: #1a1a1a;
+    border-left: 6px solid #CC0000;
+    padding: 22px 28px;
+  }
+  .course-header .label {
+    color: #CC0000;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+  .course-header h1 {
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .course-header .sub {
+    color: #ccc;
+    font-size: 13px;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar-wrap {
+    background: #1a1a1a;
+    padding: 10px 28px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .progress-track {
+    flex: 1;
+    height: 6px;
+    background: #444;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #CC0000;
+    border-radius: 3px;
+    transition: width 0.4s ease;
+    width: 16.6%;
+  }
+  .progress-text {
+    color: #ccc;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  /* ── SLIDES ── */
+  .slide { display: none; padding: 28px; }
+  .slide.active { display: block; }
+
+  .slide-tag {
+    display: inline-block;
+    background: #CC0000;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-bottom: 14px;
+  }
+
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 14px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 8px;
+  }
+  h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 16px 0 8px;
+  }
+  p { font-size: 14px; color: #333; margin-bottom: 12px; line-height: 1.6; }
+
+  /* ── CALLOUTS ── */
+  .callout {
+    background: #fff5f5;
+    border-left: 4px solid #CC0000;
+    padding: 12px 16px;
+    border-radius: 0 4px 4px 0;
+    margin-bottom: 18px;
+  }
+  .callout-label {
+    color: #CC0000;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .callout p { margin: 0; font-size: 13px; }
+
+  .info-banner {
+    background: #f0f4ff;
+    border-left: 4px solid #478be7;
+    padding: 12px 16px;
+    border-radius: 0 4px 4px 0;
+    margin-bottom: 18px;
+  }
+  .info-banner p { margin: 0; font-size: 13px; color: #1a1a1a; }
+
+  /* ── TWO-COL TABLE ── */
+  .two-col-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 12px 0;
+    margin-bottom: 18px;
+  }
+  .two-col-table td {
+    width: 50%;
+    vertical-align: top;
+    background: #f5f5f5;
+    padding: 14px 16px;
+    border-radius: 4px;
+    border-top: 3px solid #CC0000;
+    font-size: 14px;
+    color: #333;
+  }
+  .two-col-table td strong { display: block; color: #1a1a1a; margin-bottom: 6px; }
+
+  /* ── STEP LIST ── */
+  .step-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 18px;
+  }
+  .step-list li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: #333;
+  }
+  .step-list li:last-child { border-bottom: none; }
+  .step-num {
+    background: #CC0000;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 24px;
+    height: 24px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── SPECIAL TOOLS TABLE ── */
+  .tools-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 18px;
+    font-size: 13px;
+  }
+  .tools-table th {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 8px 12px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .tools-table th:first-child { border-radius: 4px 0 0 0; }
+  .tools-table th:last-child { border-radius: 0 4px 0 0; }
+  .tools-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid #e0e0e0;
+    color: #333;
+    vertical-align: top;
+  }
+  .tools-table tr:nth-child(even) td { background: #f9f9f9; }
+  .tools-table tr:last-child td { border-bottom: none; }
+  .tool-num {
+    display: inline-block;
+    background: #CC0000;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 2px;
+    margin-right: 6px;
+  }
+  .part-num {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #CC0000;
+    font-weight: 700;
+  }
+
+  /* ── SVG DIAGRAM WRAP ── */
+  .diagram-wrap {
+    background: #1a1a1a;
+    border-radius: 4px;
+    padding: 18px;
+    margin-bottom: 18px;
+    text-align: center;
+  }
+  .diagram-caption {
+    color: #aaa;
+    font-size: 12px;
+    margin-top: 10px;
+    margin-bottom: 0;
+    text-align: center;
+  }
+
+  /* ── MAGNETIC CARD VISUAL ── */
+  .mag-card-wrap {
+    background: #1a1a1a;
+    border: 2px solid #333;
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 18px;
+    display: flex;
+    gap: 18px;
+    align-items: center;
+  }
+  .mag-card-icon {
+    background: linear-gradient(135deg, #2a2a2a 0%, #444 100%);
+    border: 2px solid #CC0000;
+    border-radius: 6px;
+    width: 80px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 24px;
+  }
+  .mag-card-text { flex: 1; }
+  .mag-card-text h4 { color: #CC0000; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .mag-card-text p { color: #ccc; font-size: 13px; margin: 0; }
+
+  /* ── PASS/FAIL INDICATOR ── */
+  .result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .result-pass {
+    background: #e6f4ea;
+    border: 2px solid #2d7a3a;
+    border-radius: 4px;
+    padding: 12px 14px;
+    text-align: center;
+  }
+  .result-pass .label { color: #2d7a3a; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+  .result-pass .desc { color: #1a4d22; font-size: 13px; margin-top: 4px; }
+  .result-fail {
+    background: #fff5f5;
+    border: 2px solid #CC0000;
+    border-radius: 4px;
+    padding: 12px 14px;
+    text-align: center;
+  }
+  .result-fail .label { color: #CC0000; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+  .result-fail .desc { color: #7a1a1a; font-size: 13px; margin-top: 4px; }
+
+  /* ── SECTION HEADER BANNER ── */
+  .section-banner {
+    background: #CC0000;
+    padding: 8px 14px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+  }
+  .section-banner p {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+  }
+
+  /* ── IN SERVICE NOTE ── */
+  .in-note {
+    background: #1a1a1a;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin-bottom: 18px;
+  }
+  .in-note .in-label { color: #CC0000; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .in-note p { color: #ccc; font-size: 13px; margin: 0; }
+  .in-note .path { color: #fff; font-size: 12px; margin-top: 6px; font-family: 'Courier New', monospace; }
+
+  /* ── NAV ROW ── */
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    gap: 12px;
+  }
+  .btn {
+    padding: 10px 22px;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: background 0.2s;
+  }
+  .btn-primary { background: #CC0000; color: #fff; }
+  .btn-primary:hover { background: #990000; }
+  .btn-secondary { background: #1a1a1a; color: #fff; }
+  .btn-secondary:hover { background: #333; }
+  .btn:disabled { background: #ccc; cursor: default; }
+
+  /* ── KNOWLEDGE CHECK ── */
+  .kc-section { display: none; padding: 28px; }
+  .kc-section.active { display: block; }
+  .question-block {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-top: 4px solid #1a1a1a;
+    border-radius: 4px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+  }
+  .q-number {
+    display: inline-block;
+    background: #CC0000;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 2px 10px;
+    border-radius: 2px;
+    margin-bottom: 10px;
+  }
+  .q-text { font-size: 15px; font-weight: 700; color: #1a1a1a; margin-bottom: 12px; }
+  .choice-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .choice-btn {
+    width: 100%;
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: #1a1a1a;
+    text-align: left;
+    cursor: pointer;
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .choice-btn:hover:not(:disabled) { background: #ffe8e8; border-color: #CC0000; }
+  .choice-btn.correct { background: #e6f4ea; border-color: #2d7a3a; color: #1a4d22; font-weight: 700; }
+  .choice-btn.wrong { background: #fdecea; border-color: #CC0000; color: #7a1a1a; }
+  .choice-btn:disabled { cursor: default; }
+  .feedback { display: none; font-size: 13px; padding: 10px 14px; border-radius: 4px; margin-top: 10px; line-height: 1.5; }
+  .feedback.show { display: block; }
+  .correct-fb { background: #e6f4ea; color: #1a4d22; border: 1px solid #2d7a3a; }
+  .wrong-fb { background: #fdecea; color: #7a1a1a; border: 1px solid #CC0000; }
+
+  /* ── SCORE CARD ── */
+  .score-card {
+    display: none;
+    background: #1a1a1a;
+    border-top: 4px solid #CC0000;
+    border-radius: 4px;
+    padding: 32px 24px;
+    text-align: center;
+    margin-top: 16px;
+  }
+  .score-card.show { display: block; }
+  .score-card h3 { color: #fff; font-size: 18px; margin-bottom: 8px; }
+  .score-card p { color: #ccc; font-size: 14px; }
+  .score-badge {
+    display: inline-block;
+    background: #CC0000;
+    color: #fff;
+    font-size: 32px;
+    font-weight: 700;
+    padding: 14px 32px;
+    border-radius: 4px;
+    margin: 16px 0;
+  }
+
+  /* ── FOOTER ── */
+  .lesson-footer {
+    background: #D3D3D3;
+    padding: 12px 28px;
+    font-size: 12px;
+    color: #555;
+    border-top: 1px solid #ccc;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 560px) {
+    .result-grid { grid-template-columns: 1fr; }
+    .mag-card-wrap { flex-direction: column; }
+    .two-col-table, .two-col-table tr, .two-col-table td { display: block; width: 100%; }
+    .two-col-table td { margin-bottom: 10px; }
+  }
+</style>
+</head>
+<body>
+<main class="lesson-shell" role="main">
+
+  <!-- ── COURSE HEADER ── -->
+  <header class="course-header" role="banner">
+    <p class="label">AUTOH 173 · Honda Steering &amp; Suspension Systems</p>
+    <h1>Wheel Bearing Service &amp; Inspection</h1>
+    <p class="sub">With Magnetic Sensor Test Card Pre-Install Verification · Honda PACT Program</p>
+  </header>
+
+  <!-- ── PROGRESS BAR ── -->
+  <div class="progress-bar-wrap" role="navigation" aria-label="Lesson progress">
+    <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="16">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <span class="progress-text" id="progressText">Slide 1 of 6</span>
+  </div>
+
+  <!-- ════════════════════════════════
+       SLIDE 0 — Special Tools Required
+  ════════════════════════════════ -->
+  <section class="slide active" id="slide0" aria-labelledby="s0-title">
+    <span class="slide-tag" aria-hidden="true">Slide 1 of 6 — Special Tools</span>
+
+    <h2 id="s0-title">Special Tools Required</h2>
+
+    <div class="callout" role="note">
+      <p class="callout-label">⚠ Before You Begin</p>
+      <p>All special tools listed below must be verified available and in good condition before beginning hub disassembly. Using incorrect tools risks damage to the knuckle, bearing bore, or new bearing encoder ring. Verify tool numbers in Honda iN / Service Express for your vehicle year and model.</p>
+    </div>
+
+    <table class="tools-table" role="table" aria-label="Special tools required for wheel bearing service">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Tool Name</th>
+          <th scope="col">Part Number</th>
+          <th scope="col">Function</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tool-num" aria-hidden="true">1</span></td>
+          <td><strong>Hub Dis/Assembly Tool, 40 mm</strong></td>
+          <td><span class="part-num">07GAF-SE00100</span></td>
+          <td>Drives hub in/out of wheel bearing without damaging bearing or knuckle bore</td>
+        </tr>
+        <tr>
+          <td><span class="tool-num" aria-hidden="true">2</span></td>
+          <td><strong>Ball Joint Remover, 28 mm</strong></td>
+          <td><span class="part-num">07MAC-SL00200</span></td>
+          <td>Separates ball joint taper from steering knuckle without impact damage</td>
+        </tr>
+        <tr>
+          <td><span class="tool-num" aria-hidden="true">3</span></td>
+          <td><strong>Attachment, 62 × 68 mm</strong></td>
+          <td><span class="part-num">07746-0010500</span></td>
+          <td>Press adapter for bearing outer race installation into knuckle bore</td>
+        </tr>
+        <tr>
+          <td><span class="tool-num" aria-hidden="true">4</span></td>
+          <td><strong>Driver</strong></td>
+          <td><span class="part-num">07749-0010000</span></td>
+          <td>Universal driver handle for bearing press attachments</td>
+        </tr>
+        <tr>
+          <td><span class="tool-num" aria-hidden="true">5</span></td>
+          <td><strong>Support Base</strong></td>
+          <td><span class="part-num">07965-SD90100</span></td>
+          <td>Supports knuckle on shop press during bearing press-in/press-out operations</td>
+        </tr>
+        <tr>
+          <td><span class="tool-num" aria-hidden="true">6</span></td>
+          <td><strong>Ball Joint Thread Protector, 12 mm</strong></td>
+          <td><span class="part-num">07AAF-SDAA100</span></td>
+          <td>Protects ball joint threads when driving joint from knuckle taper</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="in-note" role="note" aria-label="Honda iN tool verification note">
+      <p class="in-label">🔧 Honda iN — Verify Tool Set Before Starting</p>
+      <p>Confirm all tool numbers against the current Honda service manual for your specific model year. Special tool numbers can vary.</p>
+      <p class="path">Service Information → [Year/Model] → Steering &amp; Suspension → Front Knuckle / Hub → Removal Procedure → Required Special Tools</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-secondary" disabled aria-disabled="true">← Previous</button>
+      <button class="btn btn-primary" onclick="goToSlide(1)">Next: Bearing Fundamentals →</button>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       SLIDE 1 — Bearing Fundamentals
+  ════════════════════════════════ -->
+  <section class="slide" id="slide1" aria-labelledby="s1-title">
+    <span class="slide-tag" aria-hidden="true">Slide 2 of 6 — Bearing Fundamentals</span>
+
+    <h2 id="s1-title">Wheel Bearing Fundamentals</h2>
+
+    <p>Modern Honda front wheel bearings are <strong>sealed, non-adjustable, press-fit hub unit assemblies</strong>. They support the vehicle's weight, allow smooth wheel rotation, and — critically — house the <strong>magnetic encoder ring (tone ring)</strong> that feeds wheel speed data to the ABS control unit.</p>
+
+    <!-- SVG Diagram — Hub & Bearing Cross Section -->
+    <div class="diagram-wrap" role="img" aria-label="Cross-section diagram of Honda front hub and wheel bearing assembly showing outer race, inner race, encoder ring, and hub flange">
+      <svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" width="100%" aria-hidden="true">
+        <!-- Knuckle bore outline -->
+        <rect x="60" y="40" width="560" height="180" rx="4" fill="#2a2a2a" stroke="#444" stroke-width="1.5"/>
+
+        <!-- Bearing outer race -->
+        <rect x="100" y="60" width="480" height="140" rx="4" fill="#333" stroke="#666" stroke-width="1.5"/>
+
+        <!-- Bearing rolling elements (stylized) -->
+        <g fill="#555" stroke="#777" stroke-width="1">
+          <circle cx="160" cy="100" r="10"/>
+          <circle cx="160" cy="160" r="10"/>
+          <circle cx="520" cy="100" r="10"/>
+          <circle cx="520" cy="160" r="10"/>
+          <circle cx="200" cy="80" r="10"/>
+          <circle cx="200" cy="180" r="10"/>
+          <circle cx="480" cy="80" r="10"/>
+          <circle cx="480" cy="180" r="10"/>
+        </g>
+
+        <!-- Bearing inner race -->
+        <rect x="220" y="75" width="240" height="110" rx="3" fill="#444" stroke="#888" stroke-width="1.5"/>
+
+        <!-- Hub bore -->
+        <rect x="240" y="88" width="200" height="84" rx="2" fill="#1a1a1a" stroke="#555" stroke-width="1"/>
+
+        <!-- Hub flange (left) -->
+        <rect x="60" y="90" width="80" height="80" rx="2" fill="#3a3a3a" stroke="#666" stroke-width="1.5"/>
+        <text x="100" y="135" text-anchor="middle" fill="#aaa" font-size="10" font-family="Arial">HUB</text>
+        <text x="100" y="148" text-anchor="middle" fill="#aaa" font-size="10" font-family="Arial">FLANGE</text>
+
+        <!-- Encoder ring highlight -->
+        <rect x="490" y="78" width="28" height="104" rx="2" fill="#CC0000" opacity="0.85"/>
+        <text x="504" y="127" text-anchor="middle" fill="#fff" font-size="9" font-family="Arial" font-weight="700">ENC</text>
+        <text x="504" y="140" text-anchor="middle" fill="#fff" font-size="9" font-family="Arial" font-weight="700">RING</text>
+
+        <!-- ABS sensor indicator -->
+        <rect x="540" y="108" width="80" height="44" rx="3" fill="#478be7" opacity="0.85"/>
+        <text x="580" y="128" text-anchor="middle" fill="#fff" font-size="9" font-family="Arial" font-weight="700">ABS WHEEL</text>
+        <text x="580" y="141" text-anchor="middle" fill="#fff" font-size="9" font-family="Arial" font-weight="700">SPEED SENSOR</text>
+
+        <!-- Connector line from encoder to sensor -->
+        <line x1="521" y1="130" x2="540" y2="130" stroke="#478be7" stroke-width="2" stroke-dasharray="4,2"/>
+
+        <!-- Labels -->
+        <text x="340" y="130" text-anchor="middle" fill="#ccc" font-size="11" font-family="Arial" font-weight="700">INNER RACE</text>
+        <text x="160" y="240" text-anchor="middle" fill="#888" font-size="11" font-family="Arial">Outer Race / Knuckle Press-Fit</text>
+        <text x="340" y="240" text-anchor="middle" fill="#888" font-size="11" font-family="Arial">Sealed Bearing Unit</text>
+        <text x="504" y="240" text-anchor="middle" fill="#CC0000" font-size="11" font-family="Arial" font-weight="700">Encoder Ring</text>
+      </svg>
+      <p class="diagram-caption">Figure 1 — Honda sealed hub bearing unit. Encoder ring (red) is integral to the bearing — it cannot be serviced separately.</p>
+    </div>
+
+    <table class="two-col-table" role="presentation">
+      <tr>
+        <td>
+          <strong>Functions of the Wheel Bearing</strong>
+          Supports radial and axial loads · Allows smooth, low-friction wheel rotation · Houses the ABS encoder ring · Seals out water, road grit, and contaminants
+        </td>
+        <td>
+          <strong>Failure Symptoms</strong>
+          Rumbling/growling that changes with vehicle speed (not RPM) · Humming on curves (load-dependent) · Loose or rough feel on dial indicator check · Grinding or clicking at low speed
+        </td>
+      </tr>
+    </table>
+
+    <div class="callout" role="note">
+      <p class="callout-label">📋 NATEF / ASE Task Reference</p>
+      <p><strong>IV.D.2</strong> — Inspect, service, and/or replace front and rear wheel bearings. (P-1) &nbsp;|&nbsp; <strong>IV.D.6</strong> — Remove, reinstall, and/or replace sealed wheel bearing assembly. (P-1)</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goToSlide(0)">← Tools</button>
+      <button class="btn btn-primary" onclick="goToSlide(2)">Next: Bearing Inspection →</button>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       SLIDE 2 — Inspection Procedure
+  ════════════════════════════════ -->
+  <section class="slide" id="slide2" aria-labelledby="s2-title">
+    <span class="slide-tag" aria-hidden="true">Slide 3 of 6 — Bearing Inspection</span>
+
+    <h2 id="s2-title">Bearing Inspection — Dial Indicator &amp; Visual</h2>
+
+    <div class="in-note" role="note" aria-label="Honda iN search path">
+      <p class="in-label">📖 Honda iN / Service Express — Look Up First</p>
+      <p>Before measuring, retrieve the maximum allowable bearing play specification for your vehicle.</p>
+      <p class="path">Service Information → [Year/Model] → Steering &amp; Suspension → Hub/Bearing → Inspection → Bearing End Play Spec (mm)</p>
+    </div>
+
+    <h3>Dial Indicator End-Play Test</h3>
+    <ol class="step-list" aria-label="Dial indicator bearing end-play test steps">
+      <li><span class="step-num" aria-hidden="true">1</span>Raise and support vehicle. Allow front suspension to hang freely (unloaded). Chock rear wheels.</li>
+      <li><span class="step-num" aria-hidden="true">2</span>Mount dial indicator magnetic base on a fixed point — brake caliper bracket or subframe. Never mount on a moving part.</li>
+      <li><span class="step-num" aria-hidden="true">3</span>Place indicator probe on the hub face, <strong>perpendicular to the axle centerline</strong> for axial play measurement.</li>
+      <li><span class="step-num" aria-hidden="true">4</span>Zero the dial indicator.</li>
+      <li><span class="step-num" aria-hidden="true">5</span>Grasp the tire at 12 and 6 o'clock. Push/pull firmly. Record total indicator movement.</li>
+      <li><span class="step-num" aria-hidden="true">6</span>Compare reading to Honda specification. <strong>Any play beyond spec = bearing replacement required.</strong></li>
+    </ol>
+
+    <h3>Visual Inspection — When Disassembled</h3>
+    <ol class="step-list" aria-label="Visual bearing inspection steps after disassembly">
+      <li><span class="step-num" aria-hidden="true">1</span>Inspect knuckle bearing bore for scoring, corrosion, or oval wear that would prevent proper press-fit.</li>
+      <li><span class="step-num" aria-hidden="true">2</span>Inspect hub splines and flange for cracks, corrosion, or damage.</li>
+      <li><span class="step-num" aria-hidden="true">3</span>Inspect ABS wheel speed sensor and sensor mounting hole for damage before reinstall.</li>
+      <li><span class="step-num" aria-hidden="true">4</span>Inspect the encoder ring on the NEW bearing for chips, cracks, or contamination before pressing in.</li>
+    </ol>
+
+    <div class="callout" role="note">
+      <p class="callout-label">⚠ Critical — Sealed Bearing Units</p>
+      <p>Honda front wheel bearings are non-serviceable sealed units. If inspection reveals play beyond spec, or if the bearing is rough or noisy on spin check — replace the complete bearing unit. Do not pack or adjust sealed bearings.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goToSlide(1)">← Fundamentals</button>
+      <button class="btn btn-primary" onclick="goToSlide(3)">Next: Magnetic Sensor Card →</button>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       SLIDE 3 — Magnetic Sensor Card Test
+  ════════════════════════════════ -->
+  <section class="slide" id="slide3" aria-labelledby="s3-title">
+    <span class="slide-tag" aria-hidden="true">Slide 4 of 6 — Magnetic Sensor Card</span>
+
+    <h2 id="s3-title">Magnetic Sensor Test Card — Pre-Install Verification</h2>
+
+    <p>Before pressing a new sealed wheel bearing into the knuckle, <strong>the magnetic encoder ring must be verified with a magnetic sensor test card</strong>. The encoder ring is a multipole magnetic ring bonded to the bearing seal that the ABS wheel speed sensor reads. Installing a bearing with a damaged, reversed, or demagnetized encoder ring will cause an ABS fault immediately after install.</p>
+
+    <!-- Magnetic Card Visual -->
+    <div class="mag-card-wrap" role="img" aria-label="Magnetic sensor test card used to verify encoder ring polarity and integrity">
+      <div class="mag-card-icon" aria-hidden="true">🧲</div>
+      <div class="mag-card-text">
+        <h4>Magnetic Sensor Test Card</h4>
+        <p>A thin, plastic-encased card containing a magnetized liquid crystal film. When held near the encoder ring, alternating north/south pole segments appear as a visible striped pattern. The card reveals polarity, consistency, and orientation of the magnetic encoder ring without any tools or power.</p>
+      </div>
+    </div>
+
+    <div class="section-banner" role="heading" aria-level="3">
+      <p>How to Use the Magnetic Sensor Test Card — Step by Step</p>
+    </div>
+
+    <ol class="step-list" aria-label="Magnetic sensor test card procedure steps">
+      <li><span class="step-num" aria-hidden="true">1</span><strong>Obtain the new bearing before pressing.</strong> Handle only by outer race edges — avoid touching the encoder ring seal surface.</li>
+      <li><span class="step-num" aria-hidden="true">2</span><strong>Locate the encoder ring.</strong> It is the dark-colored magnetic seal ring on one face of the bearing (inboard side on most Honda applications). Confirm orientation against Honda service manual figure.</li>
+      <li><span class="step-num" aria-hidden="true">3</span><strong>Hold the test card flat against the encoder ring surface.</strong> The card face should make full, flush contact with the ring. Do not tilt at an angle — this produces inconsistent readings.</li>
+      <li><span class="step-num" aria-hidden="true">4</span><strong>Observe the striped pattern.</strong> A good encoder ring shows clear, evenly-spaced alternating dark and light stripes around the full circumference.</li>
+      <li><span class="step-num" aria-hidden="true">5</span><strong>Rotate the bearing slowly</strong> while maintaining card contact and confirm the stripe pattern is consistent with no missing, faded, or irregular segments.</li>
+      <li><span class="step-num" aria-hidden="true">6</span><strong>Check orientation.</strong> Some Honda applications specify which face of the bearing installs inboard. The encoder ring faces the ABS sensor — confirm the ring will face the sensor after installation.</li>
+      <li><span class="step-num" aria-hidden="true">7</span><strong>Document result</strong> on the job sheet before pressing bearing into knuckle.</li>
+    </ol>
+
+    <!-- Pass / Fail -->
+    <div class="result-grid" role="list" aria-label="Pass and fail criteria for magnetic sensor card test">
+      <div class="result-pass" role="listitem">
+        <p class="label">✅ PASS — Proceed to Install</p>
+        <p class="desc">Clear, even, alternating stripes visible across full encoder ring circumference. Pattern consistent through full rotation.</p>
+      </div>
+      <div class="result-fail" role="listitem">
+        <p class="label">❌ FAIL — Do Not Install</p>
+        <p class="desc">Missing segments, faded areas, no pattern visible, or irregular/uneven spacing. Return bearing — do not install a bearing that fails this check.</p>
+      </div>
+    </div>
+
+    <div class="callout" role="note">
+      <p class="callout-label">⚠ Why This Matters</p>
+      <p>A bearing with a damaged encoder ring will cause an ABS wheel speed sensor signal fault (DTC) the first time the vehicle moves. The test card check takes 30 seconds and prevents a return visit, repeat disassembly, and customer comebacks. It is not optional on Honda PACT work.</p>
+    </div>
+
+    <div class="info-banner" role="note">
+      <p>🧲 <strong>Keep the test card away from strong magnets, scan tools, and electronic components.</strong> Store flat in a protective sleeve. A demagnetized or bent test card gives false readings — inspect the card itself before using.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goToSlide(2)">← Inspection</button>
+      <button class="btn btn-primary" onclick="goToSlide(4)">Next: Installation Procedure →</button>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       SLIDE 4 — Installation Procedure
+  ════════════════════════════════ -->
+  <section class="slide" id="slide4" aria-labelledby="s4-title">
+    <span class="slide-tag" aria-hidden="true">Slide 5 of 6 — Installation</span>
+
+    <h2 id="s4-title">Bearing Installation — After Sensor Card Verification</h2>
+
+    <div class="callout" role="note">
+      <p class="callout-label">⚠ Do Not Proceed Without Completing Sensor Card Test</p>
+      <p>The magnetic sensor test card check (Slide 4) must be completed and passed before beginning any pressing operation. Record pass/fail on your job sheet.</p>
+    </div>
+
+    <div class="section-banner" role="heading" aria-level="3">
+      <p>Bearing Press-In Procedure — Honda Front Knuckle</p>
+    </div>
+
+    <ol class="step-list" aria-label="Honda bearing installation press procedure">
+      <li><span class="step-num" aria-hidden="true">1</span><strong>Clean the knuckle bore thoroughly.</strong> Remove all corrosion, old bearing material, and burrs. The bore must be clean and smooth. A rough bore prevents proper bearing seating and shortens bearing life.</li>
+      <li><span class="step-num" aria-hidden="true">2</span><strong>Apply a thin coat of clean brake fluid or assembly lubricant</strong> to the outside diameter of the new bearing and the inside of the knuckle bore. This aids press-in without damaging the bearing race.</li>
+      <li><span class="step-num" aria-hidden="true">3</span><strong>Start the bearing square</strong> in the knuckle bore by hand. Confirm encoder ring orientation — encoder ring faces inboard, toward ABS sensor location.</li>
+      <li><span class="step-num" aria-hidden="true">4</span><strong>Using the 62 × 68 mm attachment (07746-0010500) and driver (07749-0010000)</strong>, press on the bearing outer race only. Never press on the inner race — this destroys the bearing.</li>
+      <li><span class="step-num" aria-hidden="true">5</span><strong>Press until bearing outer race is fully seated</strong> and flush with (or at specified depth below) the knuckle bore face. Confirm against Honda service spec.</li>
+      <li><span class="step-num" aria-hidden="true">6</span><strong>Install snap ring if applicable</strong> per Honda service manual for the model/year.</li>
+      <li><span class="step-num" aria-hidden="true">7</span><strong>Press hub into bearing inner race</strong> using hub dis/assembly tool 07GAF-SE00100. Hub flange face must be flush with inner race when fully seated.</li>
+      <li><span class="step-num" aria-hidden="true">8</span><strong>Torque spindle nut</strong> to Honda specification. Use a new spindle nut — Honda spindle nuts are single-use and must not be reused.</li>
+    </ol>
+
+    <table class="two-col-table" role="presentation">
+      <tr>
+        <td>
+          <strong>After Installation — Verify</strong>
+          Hub rotates smoothly by hand with no roughness · Wheel speed sensor seated and torqued · No play on dial indicator check · Torque values recorded on job sheet
+        </td>
+        <td>
+          <strong>Common Installation Mistakes</strong>
+          Pressing on inner race instead of outer · Installing bearing backwards (encoder ring outboard) · Reusing spindle nut · Failing to clean bore before press-in
+        </td>
+      </tr>
+    </table>
+
+    <div class="in-note" role="note">
+      <p class="in-label">🔧 Always Verify Torque Specs in Honda iN</p>
+      <p>Spindle nut torque and bearing press-depth specs vary significantly by model year. Never use a generic spec.</p>
+      <p class="path">Service Information → [Year/Model] → Steering &amp; Suspension → Hub/Bearing → Installation → Tightening Torque Table</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goToSlide(3)">← Sensor Card</button>
+      <button class="btn btn-primary" onclick="goToSlide(5)">Next: ABS Sensor &amp; Verification →</button>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       SLIDE 5 — ABS Sensor & Post-Install
+  ════════════════════════════════ -->
+  <section class="slide" id="slide5" aria-labelledby="s5-title">
+    <span class="slide-tag" aria-hidden="true">Slide 6 of 6 — ABS Sensor &amp; Post-Install</span>
+
+    <h2 id="s5-title">ABS Wheel Speed Sensor &amp; Post-Install Verification</h2>
+
+    <p>The ABS wheel speed sensor reads the magnetic encoder ring on the bearing. After bearing installation, the sensor must be properly installed and the system verified before returning the vehicle to service.</p>
+
+    <h3>Wheel Speed Sensor Service</h3>
+    <ol class="step-list" aria-label="ABS wheel speed sensor service steps">
+      <li><span class="step-num" aria-hidden="true">1</span><strong>Inspect sensor tip and mounting bore.</strong> Remove corrosion from the mounting hole with a wire brush. A corroded bore causes incorrect air gap and poor signal.</li>
+      <li><span class="step-num" aria-hidden="true">2</span><strong>Apply anti-seize to sensor threads and mounting bolts</strong> per Honda service manual direction.</li>
+      <li><span class="step-num" aria-hidden="true">3</span><strong>Seat sensor fully</strong> until it contacts the bearing outer race or sensor stop. Honda sensors are typically self-setting — no air gap adjustment required when the sensor seats fully.</li>
+      <li><span class="step-num" aria-hidden="true">4</span><strong>Torque sensor bolt</strong> to Honda specification. Overtorquing cracks the sensor body.</li>
+      <li><span class="step-num" aria-hidden="true">5</span><strong>Route and secure sensor harness</strong> in all factory clips. A misrouted harness can be damaged by suspension travel.</li>
+    </ol>
+
+    <h3>Post-Install Verification</h3>
+    <ol class="step-list" aria-label="Post-installation verification steps">
+      <li><span class="step-num" aria-hidden="true">1</span><strong>Check for DTCs</strong> with Honda diagnostic equipment before road test. Clear any installation-related codes.</li>
+      <li><span class="step-num" aria-hidden="true">2</span><strong>Perform a road test</strong> of at least 10 mph. Confirm ABS warning light extinguishes and no new DTCs set.</li>
+      <li><span class="step-num" aria-hidden="true">3</span><strong>Verify wheel speed data</strong> with scan tool data list — all four wheel speed sensor readings should be consistent and match vehicle speed.</li>
+      <li><span class="step-num" aria-hidden="true">4</span><strong>Confirm no bearing noise</strong> during road test — rumbling, growling, or humming after install indicates improper bearing seating.</li>
+    </ol>
+
+    <div class="callout" role="note">
+      <p class="callout-label">⚠ If ABS Light Remains On After Install</p>
+      <p>First check: Was the magnetic sensor card test performed? Was the encoder ring facing the correct direction? Retrieve DTCs — a wheel speed sensor signal fault after bearing replacement almost always indicates an inverted or damaged encoder ring. Disassembly and bearing replacement will be required.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goToSlide(4)">← Installation</button>
+      <button class="btn btn-primary" onclick="goToKC()">Knowledge Check →</button>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       KNOWLEDGE CHECK
+  ════════════════════════════════ -->
+  <section class="kc-section" id="kcSection" aria-labelledby="kc-title">
+    <h2 id="kc-title">Knowledge Check — 5 Questions</h2>
+    <p style="font-size:13px; color:#555; margin-bottom:20px;">Select an answer to reveal instant feedback. All questions must be answered to see your score.</p>
+
+    <!-- Q1 -->
+    <div class="question-block">
+      <span class="q-number">Question 1 of 5</span>
+      <p class="q-text">What is the primary purpose of performing the magnetic sensor test card check on a new wheel bearing before installation?</p>
+      <ul class="choice-list" role="list">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q1',false)">A. To verify the bearing outer race is the correct diameter for the knuckle bore</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q1',true)">B. To verify the encoder ring is intact, correctly magnetized, and oriented before pressing into the knuckle</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q1',false)">C. To check bearing internal clearance before pressing the hub in</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q1',false)">D. To confirm the wheel speed sensor is functioning before reassembly</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q1-correct">✅ <strong>Correct!</strong> The magnetic sensor test card verifies encoder ring integrity, polarity, and orientation. An inverted or damaged encoder ring causes an ABS fault immediately after install. The 30-second check prevents a repeat disassembly.</div>
+      <div class="feedback wrong-fb" id="q1-wrong">❌ <strong>Not quite.</strong> The magnetic test card checks the encoder ring — the multipole magnetic ring on the bearing seal that the ABS wheel speed sensor reads. It confirms polarity, integrity, and proper orientation before the bearing is pressed in.</div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question-block">
+      <span class="q-number">Question 2 of 5</span>
+      <p class="q-text">When pressing a new wheel bearing into the Honda front knuckle, which surface must the press tool contact?</p>
+      <ul class="choice-list" role="list">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q2',false)">A. The bearing inner race only</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q2',false)">B. The hub flange face</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q2',true)">C. The bearing outer race only</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q2',false)">D. Both inner and outer races simultaneously</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q2-correct">✅ <strong>Correct!</strong> Always press on the outer race when pressing a bearing into the knuckle. Pressing on the inner race loads the bearing balls and will immediately destroy the new bearing. Tool 07746-0010500 (62 × 68 mm attachment) is sized to contact the outer race.</div>
+      <div class="feedback wrong-fb" id="q2-wrong">❌ <strong>Not quite.</strong> Press on the <strong>outer race only</strong> when pressing the bearing into the knuckle. Pressing on the inner race transmits force through the rolling elements, which destroys the bearing. The 62 × 68 mm attachment (07746-0010500) is designed for this purpose.</div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question-block">
+      <span class="q-number">Question 3 of 5</span>
+      <p class="q-text">A new wheel bearing fails the magnetic sensor test card check — the card shows no visible stripe pattern on the encoder ring. What is the correct action?</p>
+      <ul class="choice-list" role="list">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q3',false)">A. Install the bearing anyway — the ABS system will relearn the sensor signal during the road test</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q3',false)">B. Use a magnet to re-magnetize the encoder ring before install</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q3',true)">C. Return the bearing — do not install a bearing with a failed encoder ring</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q3',false)">D. Install the bearing and clear DTCs after the road test</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q3-correct">✅ <strong>Correct!</strong> A bearing that fails the sensor card test must not be installed. There is no field repair for a damaged or demagnetized encoder ring. Return the part and obtain a replacement. Installing a failed bearing guarantees an ABS fault and a repeat job.</div>
+      <div class="feedback wrong-fb" id="q3-wrong">❌ <strong>Not quite.</strong> Return the bearing — do not install it. The encoder ring cannot be repaired in the field. An installed bearing with a failed encoder ring will set ABS wheel speed sensor DTCs and require complete disassembly again. The test card check exists precisely to prevent this.</div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question-block">
+      <span class="q-number">Question 4 of 5</span>
+      <p class="q-text">Which special tool is used to drive the hub in and out of the wheel bearing inner race without damaging the assembly?</p>
+      <ul class="choice-list" role="list">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q4',false)">A. Ball joint remover 07MAC-SL00200</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q4',true)">B. Hub dis/assembly tool 07GAF-SE00100, 40 mm</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q4',false)">C. Attachment 07746-0010500, 62 × 68 mm</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q4',false)">D. Support base 07965-SD90100</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q4-correct">✅ <strong>Correct!</strong> The hub dis/assembly tool 07GAF-SE00100 (40 mm) is the Honda-specific tool for pressing the hub in and out of the bearing inner race. Using generic tools or hammering the hub risks damage to the new bearing.</div>
+      <div class="feedback wrong-fb" id="q4-wrong">❌ <strong>Not quite.</strong> Tool <strong>07GAF-SE00100</strong> (Hub Dis/Assembly Tool, 40 mm) is the correct answer. The 62 × 68 mm attachment (07746-0010500) is for pressing the bearing outer race into the knuckle bore — a different operation.</div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question-block">
+      <span class="q-number">Question 5 of 5</span>
+      <p class="q-text">After completing wheel bearing replacement, the ABS warning light remains on during the road test. What is the most likely cause related to bearing installation?</p>
+      <ul class="choice-list" role="list">
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q5',false)">A. The spindle nut was not torqued correctly</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q5',false)">B. The knuckle bore was not cleaned before press-in</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q5',true)">C. The encoder ring faces the wrong direction, or the encoder ring was damaged</button></li>
+        <li><button class="choice-btn" onclick="checkAnswer(this,'q5',false)">D. The bearing outer race was not fully seated</button></li>
+      </ul>
+      <div class="feedback correct-fb" id="q5-correct">✅ <strong>Correct!</strong> An ABS warning light after bearing replacement is nearly always caused by an inverted encoder ring or a damaged encoder ring that was installed without the magnetic test card check. The wheel speed sensor cannot read the encoder ring if it faces away from the sensor or is demagnetized.</div>
+      <div class="feedback wrong-fb" id="q5-wrong">❌ <strong>Not quite.</strong> An ABS light immediately after bearing replacement almost always points to an encoder ring issue — either installed backwards (encoder ring facing outboard instead of toward the sensor) or a damaged encoder ring that should have been caught by the magnetic test card check before install.</div>
+    </div>
+
+    <!-- Score Card -->
+    <div class="score-card" id="scoreCard" role="status" aria-live="polite">
+      <h3>🎉 Knowledge Check Complete!</h3>
+      <div class="score-badge" id="scoreDisplay">–/5</div>
+      <p>You've completed the Wheel Bearing Service &amp; Inspection micro lesson.</p>
+      <p style="margin-top:10px; font-size:13px;">Review slides using the button below, or close to return to Canvas.</p>
+      <div style="margin-top:20px;">
+        <button class="btn btn-secondary" onclick="goToSlide(0)" style="background:#fff;color:#1a1a1a;border:2px solid #1a1a1a;">↺ Review Slides</button>
+      </div>
+    </div>
+
+    <div class="nav-row" style="margin-top:8px;">
+      <button class="btn btn-secondary" onclick="goToSlide(5)">← Slide 6</button>
+      <span></span>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="lesson-footer" role="contentinfo">
+    📋 <strong>Always verify specifications and procedures in Honda Service Express (iN)</strong> for the specific model and year before performing any wheel bearing service. Specifications, torque values, and tool requirements vary by model year.
+  </footer>
+
+</main>
+
+<script>
+  const TOTAL_SLIDES = 6;
+  let currentSlide = 0;
+  const answered = {};
+  let correctCount = 0;
+
+  function goToSlide(n) {
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    document.getElementById('kcSection').classList.remove('active');
+    if (n < TOTAL_SLIDES) {
+      document.getElementById('slide' + n).classList.add('active');
+      currentSlide = n;
+    }
+    updateProgress(n + 1, TOTAL_SLIDES + 1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goToKC() {
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    document.getElementById('kcSection').classList.add('active');
+    updateProgress(TOTAL_SLIDES + 1, TOTAL_SLIDES + 1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function updateProgress(current, total) {
+    const pct = Math.round((current / total) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressFill').parentElement.setAttribute('aria-valuenow', pct);
+    if (current <= TOTAL_SLIDES) {
+      document.getElementById('progressText').textContent = 'Slide ' + current + ' of ' + TOTAL_SLIDES;
+    } else {
+      document.getElementById('progressText').textContent = 'Knowledge Check';
+    }
+  }
+
+  function checkAnswer(btn, qid, isCorrect) {
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const block = btn.closest('.question-block');
+    block.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      const fb = document.getElementById(qid + '-correct');
+      if (fb) { fb.classList.add('show'); }
+      correctCount++;
+    } else {
+      btn.classList.add('wrong');
+      const fb = document.getElementById(qid + '-wrong');
+      if (fb) { fb.classList.add('show'); }
+      // highlight correct
+      block.querySelectorAll('.choice-btn').forEach(b => {
+        if (b.onclick.toString().includes('true')) b.classList.add('correct');
+      });
+    }
+
+    if (Object.keys(answered).length === 5) {
+      setTimeout(() => {
+        const sc = document.getElementById('scoreCard');
+        sc.classList.add('show');
+        document.getElementById('scoreDisplay').textContent = correctCount + '/5';
+        sc.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 600);
+    }
+  }
+</script>
+</body>
+</html>
