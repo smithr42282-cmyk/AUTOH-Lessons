@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wheel Bearing Service Worksheet — AUTOH 173</title>
+<style>
+  /* ── RESET ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+    background: #f2f2f2;
+    color: #1a1a1a;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .page-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 0 0 40px;
+    min-height: 100vh;
+  }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    background: #1a1a1a;
+    border-left: 6px solid #CC0000;
+    padding: 20px 28px;
+    margin-bottom: 24px;
+  }
+  .page-header .course-label {
+    color: #CC0000;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+  .page-header h1 {
+    color: #fff;
+    font-size: 21px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .page-header .sub {
+    color: #ccc;
+    font-size: 13px;
+  }
+
+  /* ── STUDENT INFO TABLE ── */
+  .student-info-table {
+    width: calc(100% - 56px);
+    margin: 0 28px 24px;
+    border-collapse: collapse;
+  }
+  .student-info-table td {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    font-size: 13px;
+    color: #333;
+  }
+  .student-info-table td:first-child {
+    background: #f5f5f5;
+    font-weight: 700;
+    color: #1a1a1a;
+    width: 130px;
+  }
+  .info-input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-size: 13px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #1a1a1a;
+    outline: none;
+    padding: 2px 4px;
+  }
+
+  /* ── CONTENT PADDING ── */
+  .content { padding: 0 28px; }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    background: #CC0000;
+    padding: 8px 14px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+    margin-top: 24px;
+  }
+  .section-header h2 {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: #fff5f5;
+    border-left: 4px solid #CC0000;
+    padding: 10px 14px;
+    border-radius: 0 4px 4px 0;
+    margin-bottom: 16px;
+  }
+  .callout .callout-label {
+    color: #CC0000;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+  }
+  .callout p { font-size: 13px; color: #333; margin: 0; }
+
+  .in-box {
+    background: #1a1a1a;
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+  }
+  .in-box .in-label { color: #CC0000; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
+  .in-box p { color: #ccc; font-size: 13px; margin: 0; }
+  .in-box .path { color: #fff; font-size: 12px; margin-top: 5px; font-family: 'Courier New', monospace; }
+
+  /* ── TOOLS TABLE ── */
+  .tools-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+  .tools-table th {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 8px 10px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .tools-table th:first-child { border-radius: 4px 0 0 0; }
+  .tools-table th:last-child { border-radius: 0 4px 0 0; }
+  .tools-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #e0e0e0;
+    vertical-align: top;
+  }
+  .tools-table tr:nth-child(even) td { background: #f9f9f9; }
+  .tools-table tr:last-child td { border-bottom: none; }
+  .part-num { font-family: 'Courier New', monospace; font-size: 12px; color: #CC0000; font-weight: 700; }
+  .check-cell { text-align: center; }
+
+  /* ── CHECKLIST ── */
+  .check-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 13px;
+    color: #333;
+    cursor: pointer;
+  }
+  .check-label:last-child { border-bottom: none; }
+  .check-label input[type="checkbox"] {
+    margin-top: 2px;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    accent-color: #CC0000;
+  }
+
+  /* ── MEASUREMENT TABLE ── */
+  .meas-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+  .meas-table th {
+    background: #333;
+    color: #fff;
+    padding: 7px 10px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .meas-table th:first-child { border-radius: 4px 0 0 0; }
+  .meas-table th:last-child { border-radius: 0 4px 0 0; }
+  .meas-table td {
+    padding: 8px 10px;
+    border: 1px solid #e0e0e0;
+    vertical-align: top;
+  }
+  .meas-table tr:nth-child(even) td { background: #fafafa; }
+  .meas-input {
+    width: 100%;
+    border: none;
+    border-bottom: 1.5px solid #CC0000;
+    background: transparent;
+    font-size: 13px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #1a1a1a;
+    outline: none;
+    padding: 2px 4px;
+  }
+  .pass-fail-select {
+    width: 100%;
+    border: none;
+    border-bottom: 1.5px solid #CC0000;
+    background: transparent;
+    font-size: 13px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #1a1a1a;
+    outline: none;
+    padding: 2px 4px;
+    cursor: pointer;
+  }
+
+  /* ── TEXT INPUT FIELDS ── */
+  .field-wrap { margin-bottom: 14px; }
+  .field-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+    display: block;
+  }
+  .text-input {
+    width: 100%;
+    border: none;
+    border-bottom: 1.5px solid #ccc;
+    background: #fafafa;
+    font-size: 13px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #1a1a1a;
+    outline: none;
+    padding: 6px 8px;
+    transition: border-color 0.2s;
+    border-radius: 0;
+  }
+  .text-input:focus { border-bottom-color: #CC0000; background: #fff; }
+  textarea.text-input {
+    resize: vertical;
+    min-height: 64px;
+    border: 1px solid #ccc;
+    border-bottom: 2px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+  }
+  textarea.text-input:focus { border-color: #CC0000; }
+
+  /* ── SENSOR CARD CHECKLIST ── */
+  .card-check-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+  .card-check-table th {
+    background: #CC0000;
+    color: #fff;
+    padding: 7px 10px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .card-check-table th:first-child { border-radius: 4px 0 0 0; }
+  .card-check-table th:last-child { border-radius: 0 4px 0 0; }
+  .card-check-table td {
+    padding: 8px 10px;
+    border: 1px solid #e0e0e0;
+    vertical-align: middle;
+  }
+  .card-check-table tr:nth-child(even) td { background: #fafafa; }
+
+  /* ── PASS/FAIL BADGE ── */
+  .pf-badge {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge-pass { background: #e6f4ea; color: #2d7a3a; border: 1px solid #2d7a3a; }
+  .badge-fail { background: #fdecea; color: #CC0000; border: 1px solid #CC0000; }
+
+  /* ── GRADING ── */
+  .grading-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+  .grading-table th {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 8px 10px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .grading-table th:first-child { border-radius: 4px 0 0 0; }
+  .grading-table th:last-child { border-radius: 0 4px 0 0; }
+  .grading-table td {
+    padding: 8px 10px;
+    border: 1px solid #e0e0e0;
+    vertical-align: top;
+  }
+  .grading-table tr:nth-child(even) td { background: #f9f9f9; }
+  .grading-table .total-row td { background: #1a1a1a; color: #fff; font-weight: 700; }
+
+  /* ── TWO-COL ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+  .col-card {
+    background: #f5f5f5;
+    border-top: 3px solid #CC0000;
+    border-radius: 4px;
+    padding: 12px 14px;
+  }
+  .col-card h3 { font-size: 13px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px; }
+
+  /* ── PRINT ── */
+  .print-bar {
+    background: #f5f5f5;
+    border-top: 2px solid #e0e0e0;
+    padding: 12px 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .btn-print {
+    background: #1a1a1a;
+    color: #fff;
+    border: none;
+    padding: 9px 20px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .btn-print:hover { background: #CC0000; }
+  .print-note { font-size: 12px; color: #777; }
+
+  @media print {
+    .print-bar { display: none; }
+    body { background: #fff; }
+    .page-wrap { max-width: 100%; padding: 0; }
+    .page-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .section-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .tools-table th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .meas-table th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .card-check-table th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .grading-table th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .in-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+
+  @media (max-width: 560px) {
+    .two-col { grid-template-columns: 1fr; }
+    .content, .student-info-table { padding: 0 16px; }
+    .student-info-table { width: calc(100% - 32px); margin: 0 16px 20px; }
+    .print-bar { padding: 12px 16px; }
+  }
+</style>
+</head>
+<body>
+<main class="page-wrap" role="main">
+
+  <!-- PRINT BAR -->
+  <div class="print-bar" role="navigation" aria-label="Print controls">
+    <button class="btn-print" onclick="window.print()" aria-label="Print this worksheet">🖨 Print Worksheet</button>
+    <span class="print-note">Print or complete digitally — submit to Canvas as directed by your instructor.</span>
+  </div>
+
+  <!-- PAGE HEADER -->
+  <header class="page-header" role="banner">
+    <p class="course-label">AUTOH 173 · Honda Steering &amp; Suspension Systems</p>
+    <h1>Wheel Bearing Service &amp; Inspection Worksheet</h1>
+    <p class="sub">With Magnetic Sensor Test Card Pre-Install Verification · Honda PACT Program — Shoreline Community College</p>
+  </header>
+
+  <!-- STUDENT INFO -->
+  <table class="student-info-table" role="table" aria-label="Student information fields">
+    <caption style="display:none">Student Information</caption>
+    <tbody>
+      <tr>
+        <td>Student Name</td>
+        <td><input class="info-input" type="text" aria-label="Student name" placeholder="Last, First"/></td>
+        <td style="background:#f5f5f5; font-weight:700; color:#1a1a1a; width:100px;">Date</td>
+        <td><input class="info-input" type="date" aria-label="Date"/></td>
+      </tr>
+      <tr>
+        <td>Instructor</td>
+        <td><input class="info-input" type="text" aria-label="Instructor name" value="R. Smith"/></td>
+        <td style="background:#f5f5f5; font-weight:700; color:#1a1a1a;">Period</td>
+        <td><input class="info-input" type="text" aria-label="Period or section"/></td>
+      </tr>
+      <tr>
+        <td>Vehicle Year</td>
+        <td><input class="info-input" type="text" aria-label="Vehicle year" placeholder="e.g. 2018"/></td>
+        <td style="background:#f5f5f5; font-weight:700; color:#1a1a1a;">Model</td>
+        <td><input class="info-input" type="text" aria-label="Vehicle model" placeholder="e.g. Honda Accord Sport"/></td>
+      </tr>
+      <tr>
+        <td>VIN</td>
+        <td colspan="3"><input class="info-input" type="text" aria-label="Vehicle VIN" placeholder="17-digit VIN"/></td>
+      </tr>
+      <tr>
+        <td>Mileage</td>
+        <td><input class="info-input" type="text" aria-label="Vehicle mileage"/></td>
+        <td style="background:#f5f5f5; font-weight:700; color:#1a1a1a;">Side Serviced</td>
+        <td><input class="info-input" type="text" aria-label="Side serviced — left, right, or both" placeholder="Left / Right / Both"/></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="content">
+
+    <!-- NATEF REFERENCE -->
+    <div class="callout" role="note">
+      <p class="callout-label">📋 NATEF / ASE Task Reference</p>
+      <p><strong>IV.D.2</strong> — Inspect, service, and/or replace front and rear wheel bearings. (P-1) &nbsp;|&nbsp; <strong>IV.D.6</strong> — Remove, reinstall, and/or replace sealed wheel bearing assembly. (P-1) &nbsp;|&nbsp; <strong>V.G.7</strong> — Test and diagnose ABS speed sensors and toothed ring (tone wheel). (P-2)</p>
+    </div>
+
+    <!-- ══════════════════════════════
+         SECTION 1 — Special Tools
+    ══════════════════════════════ -->
+    <div class="section-header" role="heading" aria-level="2">
+      <h2>Section 1 — Special Tools Verification</h2>
+    </div>
+
+    <p style="font-size:13px; color:#555; margin-bottom:12px;">Locate each special tool before beginning. Check each box to confirm the tool is present and in serviceable condition. Record any tool condition notes in the Notes column.</p>
+
+    <table class="tools-table" role="table" aria-label="Special tools verification checklist">
+      <thead>
+        <tr>
+          <th scope="col">✓</th>
+          <th scope="col">Tool Name</th>
+          <th scope="col">Part Number</th>
+          <th scope="col">Function</th>
+          <th scope="col">Condition Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="check-cell"><input type="checkbox" aria-label="Hub dis/assembly tool verified"/></td>
+          <td><strong>Hub Dis/Assembly Tool, 40 mm</strong></td>
+          <td><span class="part-num">07GAF-SE00100</span></td>
+          <td>Drives hub in/out of bearing inner race</td>
+          <td><input class="meas-input" type="text" aria-label="Condition notes for hub tool"/></td>
+        </tr>
+        <tr>
+          <td class="check-cell"><input type="checkbox" aria-label="Ball joint remover verified"/></td>
+          <td><strong>Ball Joint Remover, 28 mm</strong></td>
+          <td><span class="part-num">07MAC-SL00200</span></td>
+          <td>Separates ball joint taper from knuckle</td>
+          <td><input class="meas-input" type="text" aria-label="Condition notes for ball joint remover"/></td>
+        </tr>
+        <tr>
+          <td class="check-cell"><input type="checkbox" aria-label="Attachment 62x68mm verified"/></td>
+          <td><strong>Attachment, 62 × 68 mm</strong></td>
+          <td><span class="part-num">07746-0010500</span></td>
+          <td>Press adapter — bearing outer race into knuckle bore</td>
+          <td><input class="meas-input" type="text" aria-label="Condition notes for attachment"/></td>
+        </tr>
+        <tr>
+          <td class="check-cell"><input type="checkbox" aria-label="Driver verified"/></td>
+          <td><strong>Driver</strong></td>
+          <td><span class="part-num">07749-0010000</span></td>
+          <td>Universal driver handle for press attachments</td>
+          <td><input class="meas-input" type="text" aria-label="Condition notes for driver"/></td>
+        </tr>
+        <tr>
+          <td class="check-cell"><input type="checkbox" aria-label="Support base verified"/></td>
+          <td><strong>Support Base</strong></td>
+          <td><span class="part-num">07965-SD90100</span></td>
+          <td>Supports knuckle on press during bearing removal/install</td>
+          <td><input class="meas-input" type="text" aria-label="Condition notes for support base"/></td>
+        </tr>
+        <tr>
+          <td class="check-cell"><input type="checkbox" aria-label="Thread protector verified"/></td>
+          <td><strong>Ball Joint Thread Protector, 12 mm</strong></td>
+          <td><span class="part-num">07AAF-SDAA100</span></td>
+          <td>Protects ball joint threads during separation</td>
+          <td><input class="meas-input" type="text" aria-label="Condition notes for thread protector"/></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="field-wrap">
+      <label class="field-label" for="tools-note">Were all tools present and serviceable? If NO, explain what was missing or substituted:</label>
+      <textarea class="text-input" id="tools-note" aria-label="Tool availability notes" rows="2"></textarea>
+    </div>
+
+    <!-- ══════════════════════════════
+         SECTION 2 — Honda iN Specs
+    ══════════════════════════════ -->
+    <div class="section-header" role="heading" aria-level="2">
+      <h2>Section 2 — Honda iN Specification Lookup</h2>
+    </div>
+
+    <div class="in-box" role="note" aria-label="Honda iN search path">
+      <p class="in-label">📖 Honda Service Express (iN) — Look Up Before Measuring</p>
+      <p>Before any measurement, retrieve Honda specifications for your vehicle year/model from iN. Record all specs below. Do not proceed with measurement until specs are recorded.</p>
+      <p class="path">Service Information → [Year/Model] → Steering &amp; Suspension → Hub / Front Knuckle → Inspection / Specification Table</p>
+    </div>
+
+    <table class="meas-table" role="table" aria-label="Honda specifications from Service Express">
+      <thead>
+        <tr>
+          <th scope="col">Specification</th>
+          <th scope="col">Honda Service Spec (from iN)</th>
+          <th scope="col">Units</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Max. bearing end play (axial)</td>
+          <td><input class="meas-input" type="text" aria-label="Max bearing end play spec from iN"/></td>
+          <td>mm</td>
+        </tr>
+        <tr>
+          <td>Spindle nut torque</td>
+          <td><input class="meas-input" type="text" aria-label="Spindle nut torque spec from iN"/></td>
+          <td>N·m (lb·ft)</td>
+        </tr>
+        <tr>
+          <td>ABS wheel speed sensor bolt torque</td>
+          <td><input class="meas-input" type="text" aria-label="ABS sensor bolt torque from iN"/></td>
+          <td>N·m (lb·in)</td>
+        </tr>
+        <tr>
+          <td>Lower ball joint nut torque</td>
+          <td><input class="meas-input" type="text" aria-label="Ball joint nut torque from iN"/></td>
+          <td>N·m (lb·ft)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ══════════════════════════════
+         SECTION 3 — Pre-Removal Inspection
+    ══════════════════════════════ -->
+    <div class="section-header" role="heading" aria-level="2">
+      <h2>Section 3 — Pre-Removal Inspection &amp; Diagnosis</h2>
+    </div>
+
+    <div class="field-wrap">
+      <label class="field-label" for="complaint">Customer complaint / reason for bearing inspection:</label>
+      <textarea class="text-input" id="complaint" aria-label="Customer complaint or reason for bearing inspection" rows="2"></textarea>
+    </div>
+
+    <h3 style="font-size:14px; font-weight:700; color:#1a1a1a; margin-bottom:10px;">Dial Indicator End-Play Test — Record Before Removal</h3>
+
+    <table class="meas-table" role="table" aria-label="Bearing end play measurement results">
+      <thead>
+        <tr>
+          <th scope="col">Measurement</th>
+          <th scope="col">Left Front (mm)</th>
+          <th scope="col">Right Front (mm)</th>
+          <th scope="col">Honda Spec (mm)</th>
+          <th scope="col">Pass / Fail</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Bearing axial end play</td>
+          <td><input class="meas-input" type="text" aria-label="Left front bearing end play measurement"/></td>
+          <td><input class="meas-input" type="text" aria-label="Right front bearing end play measurement"/></td>
+          <td><input class="meas-input" type="text" aria-label="Honda spec for end play"/></td>
+          <td>
+            <select class="pass-fail-select" aria-label="Left front pass or fail">
+              <option value="">-- Select --</option>
+              <option value="pass">PASS</option>
+              <option value="fail">FAIL</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Hub rotation feel</td>
+          <td colspan="2">
+            <select class="pass-fail-select" aria-label="Hub rotation feel — smooth, rough, or binding">
+              <option value="">-- Select --</option>
+              <option value="smooth">Smooth</option>
+              <option value="rough">Rough / Notchy</option>
+              <option value="binding">Binding</option>
+            </select>
+          </td>
+          <td>Smooth</td>
+          <td>
+            <select class="pass-fail-select" aria-label="Hub rotation pass or fail">
+              <option value="">-- Select --</option>
+              <option value="pass">PASS</option>
+              <option value="fail">FAIL</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>ABS sensor DTC(s) present?</td>
+          <td colspan="2"><input class="meas-input" type="text" aria-label="ABS DTCs present before service" placeholder="List DTC(s) or None"/></td>
+          <td>No DTCs</td>
+          <td>
+            <select class="pass-fail-select" aria-label="ABS DTC pass or fail">
+              <option value="">-- Select --</option>
+              <option value="pass">PASS — None</option>
+              <option value="fail">FAIL — DTCs Present</option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="field-wrap">
+      <label class="field-label" for="pre-notes">Pre-removal inspection notes (noise description, conditions, relevant observations):</label>
+      <textarea class="text-input" id="pre-notes" aria-label="Pre-removal inspection notes" rows="3"></textarea>
+    </div>
+
+    <!-- ══════════════════════════════
+         SECTION 4 — Magnetic Sensor Card Test
+    ══════════════════════════════ -->
+    <div class="section-header" role="heading" aria-level="2">
+      <h2>Section 4 — Magnetic Sensor Test Card — New Bearing Pre-Install Check</h2>
+    </div>
+
+    <div class="callout" role="alert">
+      <p class="callout-label">⚠ MANDATORY — Do Not Skip</p>
+      <p>This section must be completed BEFORE pressing the new bearing into the knuckle. A bearing that fails this check must be returned. Do not install a bearing that fails the magnetic sensor card test.</p>
+    </div>
+
+    <div class="field-wrap">
+      <label class="field-label" for="bearing-part">New bearing part number:</label>
+      <input class="text-input" type="text" id="bearing-part" aria-label="New bearing part number"/>
+    </div>
+
+    <table class="card-check-table" role="table" aria-label="Magnetic sensor test card checklist">
+      <thead>
+        <tr>
+          <th scope="col">Step</th>
+          <th scope="col">Verification Task</th>
+          <th scope="col">Result / Observation</th>
+          <th scope="col">Pass / Fail</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align:center; font-weight:700;">1</td>
+          <td>Inspect test card — flat, undamaged, not demagnetized</td>
+          <td>
+            <select class="pass-fail-select" aria-label="Test card condition result">
+              <option value="">-- Select --</option>
+              <option value="ok">Card OK — Proceed</option>
+              <option value="damaged">Card Damaged — Replace Card Before Use</option>
+            </select>
+          </td>
+          <td style="text-align:center;">
+            <select class="pass-fail-select" aria-label="Test card condition pass fail">
+              <option value="">--</option>
+              <option value="pass">✅ PASS</option>
+              <option value="fail">❌ FAIL</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; font-weight:700;">2</td>
+          <td>Locate encoder ring on new bearing — confirm side of bearing it is on</td>
+          <td>
+            <select class="pass-fail-select" aria-label="Encoder ring location">
+              <option value="">-- Select --</option>
+              <option value="inboard">Inboard Side</option>
+              <option value="outboard">Outboard Side</option>
+              <option value="unsure">Unable to Determine</option>
+            </select>
+          </td>
+          <td style="text-align:center;">
+            <select class="pass-fail-select" aria-label="Encoder ring location pass fail">
+              <option value="">--</option>
+              <option value="pass">✅ PASS</option>
+              <option value="fail">❌ FAIL</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; font-weight:700;">3</td>
+          <td>Hold card flush against encoder ring — observe stripe pattern visibility</td>
+          <td>
+            <select class="pass-fail-select" aria-label="Stripe pattern result">
+              <option value="">-- Select --</option>
+              <option value="clear">Clear, even stripes visible</option>
+              <option value="faint">Faint / Inconsistent stripes</option>
+              <option value="none">No pattern visible</option>
+            </select>
+          </td>
+          <td style="text-align:center;">
+            <select class="pass-fail-select" aria-label="Stripe pattern pass fail">
+              <option value="">--</option>
+              <option value="pass">✅ PASS</option>
+              <option value="fail">❌ FAIL</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; font-weight:700;">4</td>
+          <td>Rotate bearing slowly — confirm stripe pattern is consistent through full rotation</td>
+          <td>
+            <select class="pass-fail-select" aria-label="Full rotation check result">
+              <option value="">-- Select --</option>
+              <option value="consistent">Pattern consistent through full rotation</option>
+              <option value="missing">Missing or faded segments found</option>
+              <option value="irregular">Irregular spacing observed</option>
+            </select>
+          </td>
+          <td style="text-align:center;">
+            <select class="pass-fail-select" aria-label="Full rotation pass fail">
+              <option value="">--</option>
+              <option value="pass">✅ PASS</option>
+              <option value="fail">❌ FAIL</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; font-weight:700;">5</td>
+          <td>Confirm encoder ring orientation for install — ring will face ABS sensor after installation</td>
+          <td>
+            <select class="pass-fail-select" aria-label="Encoder ring orientation check">
+              <option value="">-- Select --</option>
+              <option value="confirmed">Confirmed — ring will face ABS sensor</option>
+              <option value="incorrect">Orientation incorrect — must flip bearing</option>
+            </select>
+          </td>
+          <td style="text-align:center;">
+            <select class="pass-fail-select" aria-label="Orientation check pass fail">
+              <option value="">--</option>
+              <option value="pass">✅ PASS</option>
+              <option value="fail">❌ FAIL</option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Overall Result -->
+    <div style="background:#1a1a1a; border-radius:4px; padding:14px 16px; margin-bottom:16px; display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+      <p style="color:#ccc; font-size:13px; font-weight:700; margin:0; flex-shrink:0;">OVERALL MAGNETIC SENSOR CARD RESULT:</p>
+      <select class="pass-fail-select" style="width:220px; background:#fff; border:2px solid #CC0000; border-radius:4px; padding:6px 10px;" aria-label="Overall magnetic sensor card test result">
+        <option value="">-- Select Pass or Fail --</option>
+        <option value="pass">✅ PASS — Approved to Install</option>
+        <option value="fail">❌ FAIL — Return Bearing, Do Not Install</option>
+      </select>
+    </div>
+
+    <div class="field-wrap">
+      <label class="field-label" for="card-notes">Magnetic sensor card test notes / observations:</label>
+      <textarea class="text-input" id="card-notes" aria-label="Magnetic sensor card test notes" rows="2"></textarea>
+    </div>
+
+    <!-- ══════════════════════════════
+         SECTION 5 — Installation Record
+    ══════════════════════════════ -->
+    <div class="section-header" role="heading" aria-level="2">
+      <h2>Section 5 — Bearing Installation Record</h2>
+    </div>
+
+    <p style="font-size:13px; color:#555; margin-bottom:12px;">Record each step as completed. Do not proceed to the next step until the previous step is verified.</p>
+
+    <div role="list" aria-label="Installation procedure checklist">
+      <label class="check-label" role="listitem">
+        <input type="checkbox" aria-label="Knuckle bore cleaned and inspected"/>
+        <span>Knuckle bearing bore cleaned, inspected for scoring or damage. Bore condition: <input class="text-input" type="text" style="width:180px; display:inline-block;" aria-label="Bore condition description"/></span>
+      </label>
+      <label class="check-label" role="listitem">
+        <input type="checkbox" aria-label="Bore lubricated"/>
+        <span>Thin coat of clean brake fluid or Honda-specified assembly lube applied to bore and bearing outer race OD.</span>
+      </label>
+      <label class="check-label" role="listitem">
+        <input type="checkbox" aria-label="Bearing started square"/>
+        <span>New bearing started square in bore by hand. Encoder ring oriented inboard (toward ABS sensor).</span>
+      </label>
+      <label class="check-label" role="listitem">
+        <input type="checkbox" aria-label="Bearing pressed on outer race only"/>
+        <span>Bearing pressed into knuckle using attachment 07746-0010500 and driver 07749-0010000. Pressed on <strong>outer race only</strong>.</span>
+      </label>
+      <label class="check-label" role="listitem">
+        <input type="checkbox" aria-label="Bearing fully seated"/>
+        <span>Bearing outer race fully seated — verified flush with bore face (or at Honda-specified depth).</span>
+      </label>
+      <label class="check-label" role="listitem">
+        <input type="checkbox" aria-label="Snap ring installed if applicable"/>
+        <span>Snap ring installed (if applicable per Honda service manual for this model/year).</span>
+      </label>
+      <label class="check-label" role="listitem">
+        <input type="checkbox" aria-label="Hub pressed in using hub tool"/>
+        <span>Hub pressed into bearing inner race using hub dis/assembly tool 07GAF-SE00100. Hub flange seated fully.</span>
+      </label>
+      <label class="check-label" role="listitem">
+        <input type="checkbox" aria-label="Spindle nut torqued"/>
+        <span>New spindle nut installed and torqued to Honda spec:
+          <input class="text-input" type="text" style="width:80px; display:inline-block;" aria-label="Spindle nut torque applied"/> N·m.
+          <strong>New spindle nut used</strong> — old nut discarded: <input type="checkbox" aria-label="Confirmed new spindle nut used"/> ✓</span>
+      </label>
+      <label class="check-label" role="listitem">
+        <input type="checkbox" aria-label="ABS sensor installed and torqued"/>
+        <span>ABS wheel speed sensor installed, seated fully, torqued to Honda spec:
+          <input class="text-input" type="text" style="width:80px; display:inline-block;" aria-label="ABS sensor bolt torque applied"/> N·m.</span>
+      </label>
+      <label class="check-label" role="listitem">
+        <input type="checkbox" aria-label="ABS sensor harness routed and clipped"/>
+        <span>ABS sensor harness routed in all factory clips. Harness free from pinch points and clearances verified through full suspension travel.</span>
+      </label>
+    </div>
+
+    <!-- ══════════════════════════════
+         SECTION 6 — Post-Install Verification
+    ══════════════════════════════ -->
+    <div class="section-header" role="heading" aria-level="2">
+      <h2>Section 6 — Post-Install Verification</h2>
+    </div>
+
+    <table class="meas-table" role="table" aria-label="Post-installation verification results">
+      <thead>
+        <tr>
+          <th scope="col">Check</th>
+          <th scope="col">Result / Reading</th>
+          <th scope="col">Spec / Expected</th>
+          <th scope="col">Pass / Fail</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Hub rotates smoothly by hand (no roughness)</td>
+          <td>
+            <select class="pass-fail-select" aria-label="Hub rotation feel post install">
+              <option value="">-- Select --</option>
+              <option value="smooth">Smooth</option>
+              <option value="rough">Rough / Notchy</option>
+              <option value="binding">Binding</option>
+            </select>
+          </td>
+          <td>Smooth</td>
+          <td>
+            <select class="pass-fail-select" aria-label="Hub rotation post install pass fail">
+              <option value="">--</option>
+              <option value="pass">✅ PASS</option>
+              <option value="fail">❌ FAIL</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>DTCs present after install (before road test)</td>
+          <td><input class="meas-input" type="text" aria-label="DTCs after install" placeholder="List DTCs or None"/></td>
+          <td>No DTCs</td>
+          <td>
+            <select class="pass-fail-select" aria-label="DTCs post install pass fail">
+              <option value="">--</option>
+              <option value="pass">✅ PASS — None</option>
+              <option value="fail">❌ FAIL — DTCs Present</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>ABS warning light extinguished after road test</td>
+          <td>
+            <select class="pass-fail-select" aria-label="ABS light status after road test">
+              <option value="">-- Select --</option>
+              <option value="off">Light Off — OK</option>
+              <option value="on">Light ON — Fault</option>
+            </select>
+          </td>
+          <td>Light Off</td>
+          <td>
+            <select class="pass-fail-select" aria-label="ABS light road test pass fail">
+              <option value="">--</option>
+              <option value="pass">✅ PASS</option>
+              <option value="fail">❌ FAIL</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Wheel speed sensor data — all 4 channels match vehicle speed</td>
+          <td>
+            <select class="pass-fail-select" aria-label="Wheel speed sensor data check">
+              <option value="">-- Select --</option>
+              <option value="consistent">All consistent with vehicle speed</option>
+              <option value="mismatch">One or more channels mismatched</option>
+              <option value="missing">Signal absent on serviced wheel</option>
+            </select>
+          </td>
+          <td>All consistent</td>
+          <td>
+            <select class="pass-fail-select" aria-label="Wheel speed data pass fail">
+              <option value="">--</option>
+              <option value="pass">✅ PASS</option>
+              <option value="fail">❌ FAIL</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>No bearing noise during road test</td>
+          <td>
+            <select class="pass-fail-select" aria-label="Bearing noise road test check">
+              <option value="">-- Select --</option>
+              <option value="none">No noise</option>
+              <option value="noise">Rumbling / grinding present</option>
+            </select>
+          </td>
+          <td>No noise</td>
+          <td>
+            <select class="pass-fail-select" aria-label="Bearing noise road test pass fail">
+              <option value="">--</option>
+              <option value="pass">✅ PASS</option>
+              <option value="fail">❌ FAIL</option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ══════════════════════════════
+         SECTION 7 — Analysis Questions
+    ══════════════════════════════ -->
+    <div class="section-header" role="heading" aria-level="2">
+      <h2>Section 7 — Analysis &amp; Reflection Questions</h2>
+    </div>
+
+    <div class="field-wrap">
+      <label class="field-label" for="q1">1. In your own words, explain why the magnetic sensor test card check must be performed BEFORE pressing the bearing into the knuckle — not after.</label>
+      <textarea class="text-input" id="q1" aria-label="Analysis question 1 answer" rows="4"></textarea>
+    </div>
+
+    <div class="field-wrap">
+      <label class="field-label" for="q2">2. What would happen to ABS system operation if the wheel bearing were installed with the encoder ring facing outboard (away from the ABS sensor)?</label>
+      <textarea class="text-input" id="q2" aria-label="Analysis question 2 answer" rows="4"></textarea>
+    </div>
+
+    <div class="field-wrap">
+      <label class="field-label" for="q3">3. Why is it critical to press only on the bearing OUTER race when installing the bearing into the knuckle bore? What happens if you press on the inner race instead?</label>
+      <textarea class="text-input" id="q3" aria-label="Analysis question 3 answer" rows="4"></textarea>
+    </div>
+
+    <div class="field-wrap">
+      <label class="field-label" for="q4">4. A customer returns after a wheel bearing replacement with an ABS warning light. Describe your diagnostic approach — what would you check first, and why?</label>
+      <textarea class="text-input" id="q4" aria-label="Analysis question 4 answer" rows="4"></textarea>
+    </div>
+
+    <!-- ══════════════════════════════
+         SECTION 8 — Grading
+    ══════════════════════════════ -->
+    <div class="section-header" role="heading" aria-level="2">
+      <h2>Section 8 — Grading Breakdown</h2>
+    </div>
+
+    <table class="grading-table" role="table" aria-label="Grading criteria breakdown">
+      <thead>
+        <tr>
+          <th scope="col">Section</th>
+          <th scope="col">Criteria</th>
+          <th scope="col">Points Possible</th>
+          <th scope="col">Points Earned</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1 — Special Tools</td>
+          <td>All 6 tools located, checked, and condition noted</td>
+          <td style="text-align:center;">10</td>
+          <td><input class="meas-input" type="text" aria-label="Points earned section 1"/></td>
+        </tr>
+        <tr>
+          <td>2 — iN Specs</td>
+          <td>All 4 specifications retrieved from Honda iN and recorded correctly</td>
+          <td style="text-align:center;">10</td>
+          <td><input class="meas-input" type="text" aria-label="Points earned section 2"/></td>
+        </tr>
+        <tr>
+          <td>3 — Pre-Removal</td>
+          <td>Measurements taken, DTCs documented, condition notes complete</td>
+          <td style="text-align:center;">10</td>
+          <td><input class="meas-input" type="text" aria-label="Points earned section 3"/></td>
+        </tr>
+        <tr>
+          <td>4 — Magnetic Card Test</td>
+          <td>All 5 steps completed with recorded results and overall pass/fail determination</td>
+          <td style="text-align:center;">20</td>
+          <td><input class="meas-input" type="text" aria-label="Points earned section 4"/></td>
+        </tr>
+        <tr>
+          <td>5 — Installation Record</td>
+          <td>All steps verified, torque values recorded, new spindle nut confirmed</td>
+          <td style="text-align:center;">20</td>
+          <td><input class="meas-input" type="text" aria-label="Points earned section 5"/></td>
+        </tr>
+        <tr>
+          <td>6 — Post-Install</td>
+          <td>All verification checks completed, road test results documented</td>
+          <td style="text-align:center;">10</td>
+          <td><input class="meas-input" type="text" aria-label="Points earned section 6"/></td>
+        </tr>
+        <tr>
+          <td>7 — Analysis Questions</td>
+          <td>4 questions answered in complete sentences, demonstrating understanding of procedures and reasoning</td>
+          <td style="text-align:center;">20</td>
+          <td><input class="meas-input" type="text" aria-label="Points earned section 7"/></td>
+        </tr>
+        <tr class="total-row">
+          <td colspan="2"><strong>TOTAL</strong></td>
+          <td style="text-align:center;"><strong>100</strong></td>
+          <td><input class="meas-input" type="text" style="color:#fff; border-bottom-color:#CC0000;" aria-label="Total points earned"/></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Instructor Feedback -->
+    <div class="field-wrap">
+      <label class="field-label" for="instructor-feedback">Instructor Comments:</label>
+      <textarea class="text-input" id="instructor-feedback" aria-label="Instructor comments" rows="4"></textarea>
+    </div>
+
+    <div style="margin-top: 8px; padding: 10px 14px; background: #D3D3D3; border-radius: 4px; font-size: 12px; color: #555;" role="note">
+      📋 <strong>Always verify specifications and torque values in Honda Service Express (iN)</strong> for the specific model and year. Specifications vary by model year. All torque values must be confirmed in iN before performing service.
+    </div>
+
+  </div><!-- /content -->
+</main>
+</body>
+</html>
