@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alignment Angle Calculator — Honda/Acura iN Job Aid</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #CC0000;
+    --red-dark: #aa0000;
+    --black: #1a1a1a;
+    --white: #ffffff;
+    --gray-light: #f5f5f5;
+    --gray-mid: #e0e0e0;
+    --gray-dark: #555555;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --red-bg: #fee2e2;
+    --yellow-bg: #fefce8;
+    --yellow: #ca8a04;
+    --blue: #1d4ed8;
+    --blue-bg: #dbeafe;
+  }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #ebebeb;
+    color: var(--black);
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  .page { max-width: 960px; margin: 0 auto; padding: 20px 14px 60px; }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--black);
+    border-left: 6px solid var(--red);
+    border-radius: 4px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .header-logo {
+    width: 52px; height: 52px; flex-shrink: 0;
+    background: var(--white);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 900; color: var(--black);
+    letter-spacing: -1px;
+  }
+  .header-text .label {
+    color: var(--red); font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 4px;
+  }
+  .header-text h1 { color: var(--white); font-size: 20px; font-weight: 700; margin-bottom: 2px; }
+  .header-text .sub { color: #aaa; font-size: 12px; }
+
+  /* ── TIRE SIZE BAR ── */
+  .tire-bar {
+    background: var(--white);
+    border: 1px solid var(--gray-mid);
+    border-radius: 4px;
+    padding: 12px 18px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .tire-bar label { font-weight: 700; font-size: 14px; color: var(--black); white-space: nowrap; }
+  .tire-input {
+    border: 2px solid var(--gray-mid); border-radius: 3px;
+    padding: 6px 10px; font-size: 14px; color: var(--black);
+    width: 72px; text-align: center; background: var(--gray-light);
+    transition: border-color .15s;
+  }
+  .tire-input:focus { outline: none; border-color: var(--red); background: var(--white); }
+  .tire-slash { font-size: 18px; font-weight: 700; color: var(--gray-dark); }
+  .tire-r { font-size: 14px; font-weight: 700; color: var(--black); }
+
+  /* ── SECTION HEADER ── */
+  .sec-hdr {
+    background: var(--red); color: var(--white);
+    padding: 8px 14px; border-radius: 4px 4px 0 0;
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .8px; margin-top: 16px;
+  }
+  .sec-body {
+    background: var(--white);
+    border: 1px solid var(--gray-mid);
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    overflow: hidden;
+  }
+
+  /* ── CALC TABLE ── */
+  .calc-table { width: 100%; border-collapse: collapse; }
+  .calc-table th {
+    background: var(--black); color: var(--white);
+    padding: 8px 10px; font-size: 11px; text-transform: uppercase;
+    letter-spacing: .4px; text-align: center; font-weight: 700;
+  }
+  .calc-table th.left-col { text-align: left; width: 110px; }
+  .calc-table th.side-col { width: 46px; }
+
+  .calc-table td {
+    padding: 7px 8px;
+    border-bottom: 1px solid var(--gray-mid);
+    vertical-align: middle;
+    text-align: center;
+  }
+  .calc-table td.row-label {
+    background: var(--gray-light);
+    font-size: 12px; font-weight: 700; color: var(--black);
+    text-align: left; padding-left: 12px;
+    white-space: nowrap;
+  }
+  .calc-table td.side-label {
+    background: #f0f0f0;
+    font-size: 11px; font-weight: 700; color: var(--gray-dark);
+    text-align: center; white-space: nowrap;
+  }
+  .calc-table tr:last-child td { border-bottom: none; }
+  .calc-table tr.sub-row td { background: #fafafa; }
+
+  /* ── INPUTS ── */
+  .sign-sel {
+    border: 2px solid var(--gray-mid); border-radius: 3px;
+    padding: 5px 4px; font-size: 13px; font-weight: 700;
+    color: var(--black); background: var(--gray-light);
+    width: 52px; cursor: pointer;
+    transition: border-color .15s;
+  }
+  .sign-sel:focus { outline: none; border-color: var(--red); background: var(--white); }
+
+  .deg-input, .min-input, .mm-input {
+    border: 2px solid var(--gray-mid); border-radius: 3px;
+    padding: 5px 6px; font-size: 13px; color: var(--black);
+    background: var(--gray-light); text-align: center;
+    transition: border-color .15s;
+  }
+  .deg-input:focus, .min-input:focus, .mm-input:focus {
+    outline: none; border-color: var(--red); background: var(--white);
+  }
+  .deg-input { width: 54px; }
+  .min-input { width: 44px; }
+  .mm-input  { width: 66px; }
+
+  .spec-grp { display: flex; align-items: center; gap: 4px; justify-content: center; flex-wrap: wrap; }
+  .spec-label { font-size: 11px; color: var(--gray-dark); }
+
+  /* ── RESULT CELL ── */
+  .result-cell {
+    font-size: 14px; font-weight: 700; color: var(--black);
+    min-width: 80px; padding: 6px 8px;
+    border-radius: 3px;
+    transition: background .2s;
+  }
+  .result-cell.in-spec    { background: var(--green-bg); color: var(--green); }
+  .result-cell.out-spec   { background: var(--red-bg);   color: #991b1b;  }
+  .result-cell.near-spec  { background: var(--yellow-bg); color: var(--yellow); }
+  .result-cell.no-spec    { background: var(--gray-light); color: #888; }
+
+  /* ── TOLERANCE GRID ── */
+  .tol-section { margin-top: 16px; }
+  .tol-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 12px;
+  }
+  .tol-card {
+    border: 1px solid var(--gray-mid); border-radius: 4px; overflow: hidden;
+  }
+  .tol-card-hdr {
+    background: var(--black); color: var(--white);
+    padding: 6px 10px; font-size: 11px; font-weight: 700; text-transform: uppercase;
+    text-align: center; letter-spacing: .5px;
+  }
+  .tol-row {
+    display: flex; justify-content: space-between;
+    padding: 5px 10px; border-bottom: 1px solid var(--gray-mid);
+    font-size: 12px;
+  }
+  .tol-row:last-child { border-bottom: none; }
+  .tol-row .tol-key { color: var(--gray-dark); font-weight: 700; }
+  .tol-row .tol-val { font-weight: 700; font-size: 13px; }
+  .tol-val.in-spec  { color: var(--green); }
+  .tol-val.out-spec { color: var(--red); }
+  .tol-val.near-spec { color: var(--yellow); }
+  .tol-val.no-spec  { color: #bbb; }
+
+  /* ── PRINT BUTTON ── */
+  .action-bar {
+    display: flex; gap: 10px; padding: 12px; flex-wrap: wrap;
+    background: var(--gray-light); border-top: 1px solid var(--gray-mid);
+  }
+  .btn {
+    padding: 9px 18px; font-size: 13px; font-weight: 700;
+    border: none; border-radius: 3px; cursor: pointer;
+    transition: background .15s;
+  }
+  .btn-red   { background: var(--red); color: var(--white); }
+  .btn-red:hover { background: var(--red-dark); }
+  .btn-dark  { background: var(--black); color: var(--white); }
+  .btn-dark:hover { background: #333; }
+
+  /* ── STATUS BADGE ── */
+  .badge {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    text-transform: uppercase; padding: 2px 7px; border-radius: 2px;
+    vertical-align: middle; margin-left: 4px;
+  }
+  .badge-in    { background: var(--green-bg); color: var(--green); }
+  .badge-out   { background: var(--red-bg);   color: #991b1b; }
+  .badge-near  { background: var(--yellow-bg); color: var(--yellow); }
+
+  /* ── INFO BANNER ── */
+  .info-banner {
+    background: #fff8f8; border-left: 4px solid var(--red);
+    border-radius: 0 4px 4px 0; padding: 10px 14px; margin: 12px 12px 4px;
+    font-size: 12px; color: var(--black);
+  }
+
+  /* ── UNIT TOGGLE ── */
+  .unit-toggle {
+    display: inline-flex; border: 2px solid var(--red); border-radius: 3px; overflow: hidden;
+  }
+  .unit-btn {
+    padding: 4px 12px; font-size: 12px; font-weight: 700; border: none;
+    background: var(--white); color: var(--red); cursor: pointer;
+    transition: background .15s, color .15s;
+  }
+  .unit-btn.active { background: var(--red); color: var(--white); }
+
+  /* ── SUMMARY PANEL ── */
+  .summary-panel {
+    background: var(--black); border-radius: 4px; margin-top: 16px; padding: 14px 16px;
+  }
+  .summary-panel h3 { color: var(--red); font-size: 12px; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 10px; }
+  .summary-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px;
+  }
+  .sum-card { background: #2a2a2a; border-radius: 3px; padding: 8px 12px; }
+  .sum-card .sum-label { font-size: 10px; color: #888; text-transform: uppercase; margin-bottom: 3px; }
+  .sum-card .sum-val { font-size: 16px; font-weight: 700; color: var(--white); }
+  .sum-card .sum-status { font-size: 10px; margin-top: 2px; }
+  .sum-card.in-spec .sum-val { color: #4ade80; }
+  .sum-card.out-spec .sum-val { color: #f87171; }
+  .sum-card.near-spec .sum-val { color: #fbbf24; }
+
+  /* ── CONVERSION HELPER ── */
+  .conv-helper {
+    background: var(--white); border: 1px solid var(--gray-mid);
+    border-radius: 4px; padding: 10px 14px; margin-top: 14px;
+    font-size: 12px;
+  }
+  .conv-helper h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--red); margin-bottom: 6px; }
+
+  @media (max-width: 600px) {
+    .tol-grid { grid-template-columns: 1fr; }
+    .summary-grid { grid-template-columns: 1fr 1fr; }
+    .header { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .calc-table { font-size: 12px; }
+    .deg-input { width: 44px; }
+    .min-input { width: 38px; }
+  }
+
+  @media print {
+    body { background: var(--white); }
+    .page { padding: 0; }
+    .btn, .action-bar { display: none !important; }
+    .header { background: var(--black) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .sec-hdr, .calc-table th, .tol-card-hdr { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .result-cell.in-spec, .result-cell.out-spec, .result-cell.near-spec { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header" role="banner">
+    <div class="header-logo" aria-hidden="true">⊕</div>
+    <div class="header-text">
+      <div class="label">AUTOH 173 · Honda PACT — Shoreline Community College</div>
+      <h1>Alignment Angle Calculator</h1>
+      <div class="sub">Honda/Acura iN Job Aid &nbsp;·&nbsp; Degrees &amp; Minutes → Decimal Conversion &nbsp;·&nbsp; In-Spec / Out-of-Spec Evaluation</div>
+    </div>
+  </header>
+
+  <!-- TIRE SIZE -->
+  <div class="tire-bar" role="region" aria-label="Tire size input">
+    <label for="ts-width">Tire Size:</label>
+    <input class="tire-input" type="number" id="ts-width" placeholder="225" min="100" max="400" aria-label="Tire width">
+    <span class="tire-slash">/</span>
+    <input class="tire-input" type="number" id="ts-aspect" placeholder="50" min="25" max="90" aria-label="Aspect ratio">
+    <span class="tire-r">R</span>
+    <input class="tire-input" type="number" id="ts-rim" placeholder="17" min="12" max="24" aria-label="Rim diameter">
+    <span style="font-size:12px;color:#888;margin-left:6px;" id="tire-display"></span>
+  </div>
+
+  <!-- ══════════════════════════
+       CAMBER SECTION
+  ═══════════════════════════════ -->
+  <h2 class="sec-hdr">Camber</h2>
+  <div class="sec-body">
+    <div class="info-banner" role="note">
+      Enter the <strong>Service Manual Specification</strong> (sign, degrees, minutes) and the <strong>measured reading</strong>. The calculator converts to decimal and checks tolerance automatically.
+    </div>
+    <div style="overflow-x:auto;">
+    <table class="calc-table" role="table" aria-label="Camber angle calculator">
+      <thead>
+        <tr>
+          <th class="left-col" scope="col">Angle</th>
+          <th class="side-col" scope="col">Side</th>
+          <th scope="col" colspan="3">Spec (° &amp; ')</th>
+          <th scope="col" colspan="3">Tolerance (± ° ')</th>
+          <th scope="col" colspan="3">Measured (° &amp; ')</th>
+          <th scope="col">Decimal °</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Camber Front LF -->
+        <tr>
+          <td class="row-label" rowspan="2">Camber<br><span style="font-size:10px;color:#888;">Front</span></td>
+          <td class="side-label">LF</td>
+          <td><select class="sign-sel" id="cf-lf-spec-sign" aria-label="Left front camber spec sign"><option value="1">+</option><option value="-1" selected>−</option></select></td>
+          <td><input class="deg-input" type="number" id="cf-lf-spec-deg" min="0" max="10" placeholder="0" aria-label="Left front camber spec degrees"></td>
+          <td><input class="min-input" type="number" id="cf-lf-spec-min" min="0" max="59" placeholder="0" aria-label="Left front camber spec minutes"><span class="spec-label">'</span></td>
+          <td><input class="min-input" type="number" id="cf-lf-tol-deg" min="0" max="5" placeholder="0" aria-label="Left front camber tolerance degrees"></td>
+          <td><input class="min-input" type="number" id="cf-lf-tol-min" min="0" max="59" placeholder="30" aria-label="Left front camber tolerance minutes"><span class="spec-label">'</span></td>
+          <td></td>
+          <td><select class="sign-sel" id="cf-lf-meas-sign" aria-label="Left front camber measured sign"><option value="1">+</option><option value="-1" selected>−</option></select></td>
+          <td><input class="deg-input" type="number" id="cf-lf-meas-deg" min="0" max="10" placeholder="0" aria-label="Left front camber measured degrees"></td>
+          <td><input class="min-input" type="number" id="cf-lf-meas-min" min="0" max="59" placeholder="0" aria-label="Left front camber measured minutes"><span class="spec-label">'</span></td>
+          <td><span class="result-cell no-spec" id="cf-lf-dec" role="status" aria-live="polite">—</span></td>
+          <td><span class="result-cell no-spec" id="cf-lf-status" role="status" aria-live="polite">—</span></td>
+        </tr>
+        <!-- Camber Front RF -->
+        <tr class="sub-row">
+          <td class="side-label">RF</td>
+          <td><select class="sign-sel" id="cf-rf-spec-sign" aria-label="Right front camber spec sign"><option value="1">+</option><option value="-1" selected>−</option></select></td>
+          <td><input class="deg-input" type="number" id="cf-rf-spec-deg" min="0" max="10" placeholder="0" aria-label="Right front camber spec degrees"></td>
+          <td><input class="min-input" type="number" id="cf-rf-spec-min" min="0" max="59" placeholder="0" aria-label="Right front camber spec minutes"><span class="spec-label">'</span></td>
+          <td><input class="min-input" type="number" id="cf-rf-tol-deg" min="0" max="5" placeholder="0" aria-label="Right front camber tolerance degrees"></td>
+          <td><input class="min-input" type="number" id="cf-rf-tol-min" min="0" max="59" placeholder="30" aria-label="Right front camber tolerance minutes"><span class="spec-label">'</span></td>
+          <td></td>
+          <td><select class="sign-sel" id="cf-rf-meas-sign" aria-label="Right front camber measured sign"><option value="1">+</option><option value="-1" selected>−</option></select></td>
+          <td><input class="deg-input" type="number" id="cf-rf-meas-deg" min="0" max="10" placeholder="0" aria-label="Right front camber measured degrees"></td>
+          <td><input class="min-input" type="number" id="cf-rf-meas-min" min="0" max="59" placeholder="0" aria-label="Right front camber measured minutes"><span class="spec-label">'</span></td>
+          <td><span class="result-cell no-spec" id="cf-rf-dec" role="status" aria-live="polite">—</span></td>
+          <td><span class="result-cell no-spec" id="cf-rf-status" role="status" aria-live="polite">—</span></td>
+        </tr>
+        <!-- Camber Rear LR -->
+        <tr>
+          <td class="row-label" rowspan="2">Camber<br><span style="font-size:10px;color:#888;">Rear</span></td>
+          <td class="side-label">LR</td>
+          <td><select class="sign-sel" id="cr-lr-spec-sign" aria-label="Left rear camber spec sign"><option value="1">+</option><option value="-1" selected>−</option></select></td>
+          <td><input class="deg-input" type="number" id="cr-lr-spec-deg" min="0" max="10" placeholder="0" aria-label="Left rear camber spec degrees"></td>
+          <td><input class="min-input" type="number" id="cr-lr-spec-min" min="0" max="59" placeholder="0" aria-label="Left rear camber spec minutes"><span class="spec-label">'</span></td>
+          <td><input class="min-input" type="number" id="cr-lr-tol-deg" min="0" max="5" placeholder="0" aria-label="Left rear camber tolerance degrees"></td>
+          <td><input class="min-input" type="number" id="cr-lr-tol-min" min="0" max="59" placeholder="30" aria-label="Left rear camber tolerance minutes"><span class="spec-label">'</span></td>
+          <td></td>
+          <td><select class="sign-sel" id="cr-lr-meas-sign" aria-label="Left rear camber measured sign"><option value="1">+</option><option value="-1" selected>−</option></select></td>
+          <td><input class="deg-input" type="number" id="cr-lr-meas-deg" min="0" max="10" placeholder="0" aria-label="Left rear camber measured degrees"></td>
+          <td><input class="min-input" type="number" id="cr-lr-meas-min" min="0" max="59" placeholder="0" aria-label="Left rear camber measured minutes"><span class="spec-label">'</span></td>
+          <td><span class="result-cell no-spec" id="cr-lr-dec" role="status" aria-live="polite">—</span></td>
+          <td><span class="result-cell no-spec" id="cr-lr-status" role="status" aria-live="polite">—</span></td>
+        </tr>
+        <tr class="sub-row">
+          <td class="side-label">RR</td>
+          <td><select class="sign-sel" id="cr-rr-spec-sign" aria-label="Right rear camber spec sign"><option value="1">+</option><option value="-1" selected>−</option></select></td>
+          <td><input class="deg-input" type="number" id="cr-rr-spec-deg" min="0" max="10" placeholder="0" aria-label="Right rear camber spec degrees"></td>
+          <td><input class="min-input" type="number" id="cr-rr-spec-min" min="0" max="59" placeholder="0" aria-label="Right rear camber spec minutes"><span class="spec-label">'</span></td>
+          <td><input class="min-input" type="number" id="cr-rr-tol-deg" min="0" max="5" placeholder="0" aria-label="Right rear camber tolerance degrees"></td>
+          <td><input class="min-input" type="number" id="cr-rr-tol-min" min="0" max="59" placeholder="30" aria-label="Right rear camber tolerance minutes"><span class="spec-label">'</span></td>
+          <td></td>
+          <td><select class="sign-sel" id="cr-rr-meas-sign" aria-label="Right rear camber measured sign"><option value="1">+</option><option value="-1" selected>−</option></select></td>
+          <td><input class="deg-input" type="number" id="cr-rr-meas-deg" min="0" max="10" placeholder="0" aria-label="Right rear camber measured degrees"></td>
+          <td><input class="min-input" type="number" id="cr-rr-meas-min" min="0" max="59" placeholder="0" aria-label="Right rear camber measured minutes"><span class="spec-label">'</span></td>
+          <td><span class="result-cell no-spec" id="cr-rr-dec" role="status" aria-live="polite">—</span></td>
+          <td><span class="result-cell no-spec" id="cr-rr-status" role="status" aria-live="polite">—</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════
+       CASTER SECTION
+  ═══════════════════════════════ -->
+  <h2 class="sec-hdr">Caster</h2>
+  <div class="sec-body">
+    <div style="overflow-x:auto;">
+    <table class="calc-table" role="table" aria-label="Caster angle calculator">
+      <thead>
+        <tr>
+          <th class="left-col" scope="col">Angle</th>
+          <th class="side-col" scope="col">Side</th>
+          <th scope="col" colspan="3">Spec (° &amp; ')</th>
+          <th scope="col" colspan="3">Tolerance (± ° ')</th>
+          <th scope="col" colspan="3">Measured (° &amp; ')</th>
+          <th scope="col">Decimal °</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-label" rowspan="2">Caster<br><span style="font-size:10px;color:#888;">Front</span></td>
+          <td class="side-label">LF</td>
+          <td><select class="sign-sel" id="ca-lf-spec-sign" aria-label="Left front caster spec sign"><option value="1" selected>+</option><option value="-1">−</option></select></td>
+          <td><input class="deg-input" type="number" id="ca-lf-spec-deg" min="0" max="15" placeholder="0" aria-label="Left front caster spec degrees"></td>
+          <td><input class="min-input" type="number" id="ca-lf-spec-min" min="0" max="59" placeholder="0" aria-label="Left front caster spec minutes"><span class="spec-label">'</span></td>
+          <td><input class="min-input" type="number" id="ca-lf-tol-deg" min="0" max="5" placeholder="1" aria-label="Left front caster tolerance degrees"></td>
+          <td><input class="min-input" type="number" id="ca-lf-tol-min" min="0" max="59" placeholder="0" aria-label="Left front caster tolerance minutes"><span class="spec-label">'</span></td>
+          <td></td>
+          <td><select class="sign-sel" id="ca-lf-meas-sign" aria-label="Left front caster measured sign"><option value="1" selected>+</option><option value="-1">−</option></select></td>
+          <td><input class="deg-input" type="number" id="ca-lf-meas-deg" min="0" max="15" placeholder="0" aria-label="Left front caster measured degrees"></td>
+          <td><input class="min-input" type="number" id="ca-lf-meas-min" min="0" max="59" placeholder="0" aria-label="Left front caster measured minutes"><span class="spec-label">'</span></td>
+          <td><span class="result-cell no-spec" id="ca-lf-dec" role="status" aria-live="polite">—</span></td>
+          <td><span class="result-cell no-spec" id="ca-lf-status" role="status" aria-live="polite">—</span></td>
+        </tr>
+        <tr class="sub-row">
+          <td class="side-label">RF</td>
+          <td><select class="sign-sel" id="ca-rf-spec-sign" aria-label="Right front caster spec sign"><option value="1" selected>+</option><option value="-1">−</option></select></td>
+          <td><input class="deg-input" type="number" id="ca-rf-spec-deg" min="0" max="15" placeholder="0" aria-label="Right front caster spec degrees"></td>
+          <td><input class="min-input" type="number" id="ca-rf-spec-min" min="0" max="59" placeholder="0" aria-label="Right front caster spec minutes"><span class="spec-label">'</span></td>
+          <td><input class="min-input" type="number" id="ca-rf-tol-deg" min="0" max="5" placeholder="1" aria-label="Right front caster tolerance degrees"></td>
+          <td><input class="min-input" type="number" id="ca-rf-tol-min" min="0" max="59" placeholder="0" aria-label="Right front caster tolerance minutes"><span class="spec-label">'</span></td>
+          <td></td>
+          <td><select class="sign-sel" id="ca-rf-meas-sign" aria-label="Right front caster measured sign"><option value="1" selected>+</option><option value="-1">−</option></select></td>
+          <td><input class="deg-input" type="number" id="ca-rf-meas-deg" min="0" max="15" placeholder="0" aria-label="Right front caster measured degrees"></td>
+          <td><input class="min-input" type="number" id="ca-rf-meas-min" min="0" max="59" placeholder="0" aria-label="Right front caster measured minutes"><span class="spec-label">'</span></td>
+          <td><span class="result-cell no-spec" id="ca-rf-dec" role="status" aria-live="polite">—</span></td>
+          <td><span class="result-cell no-spec" id="ca-rf-status" role="status" aria-live="polite">—</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <!-- Caster side-to-side diff -->
+    <div style="padding:8px 12px;background:#f9f9f9;border-top:1px solid var(--gray-mid);display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+      <span style="font-size:12px;font-weight:700;color:var(--black);">Side-to-Side Difference:</span>
+      <span class="result-cell no-spec" id="ca-diff" style="font-size:13px;" role="status" aria-live="polite">—</span>
+      <span style="font-size:11px;color:#888;">Max allowed: 0° 30' (0.50°) — difference beyond this causes pull toward lower-caster side</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════
+       TOE SECTION
+  ═══════════════════════════════ -->
+  <h2 class="sec-hdr">Total Toe-In</h2>
+  <div class="sec-body">
+    <div class="info-banner" role="note">
+      Toe specs are entered in <strong>mm</strong>. The calculator converts to decimal degrees using the tire rolling radius computed from your tire size above. If no tire size is entered, enter the rolling radius manually.
+    </div>
+    <div style="padding:8px 12px;background:var(--gray-light);border-bottom:1px solid var(--gray-mid);display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
+      <span style="font-size:12px;font-weight:700;">Rolling Radius (mm):</span>
+      <input class="deg-input" type="number" id="rolling-radius" placeholder="310" min="200" max="420" style="width:80px;" aria-label="Tire rolling radius in millimeters">
+      <span style="font-size:11px;color:#888;">Auto-calculated from tire size above, or enter manually</span>
+    </div>
+    <div style="overflow-x:auto;">
+    <table class="calc-table" role="table" aria-label="Toe calculator">
+      <thead>
+        <tr>
+          <th class="left-col" scope="col">Angle</th>
+          <th class="side-col" scope="col">Side</th>
+          <th scope="col" colspan="2">Spec (mm)</th>
+          <th scope="col" colspan="2">Tolerance (mm)</th>
+          <th scope="col" colspan="2">Measured (mm)</th>
+          <th scope="col">Decimal °</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-label" rowspan="2">Total Toe<br><span style="font-size:10px;color:#888;">Front</span></td>
+          <td class="side-label">+/−</td>
+          <td><select class="sign-sel" id="tf-spec-sign" aria-label="Front toe spec sign" style="width:52px;"><option value="1">+</option><option value="-1">−</option></select></td>
+          <td><input class="mm-input" type="number" id="tf-spec-mm" min="0" max="20" step="0.1" placeholder="2.0" aria-label="Front toe spec millimeters"><span class="spec-label">mm</span></td>
+          <td><select class="sign-sel" id="tf-tol-sign" aria-label="Front toe tolerance sign" style="width:52px;"><option value="1">±</option></select></td>
+          <td><input class="mm-input" type="number" id="tf-tol-mm" min="0" max="10" step="0.1" placeholder="1.0" aria-label="Front toe tolerance millimeters"><span class="spec-label">mm</span></td>
+          <td><select class="sign-sel" id="tf-meas-sign" aria-label="Front toe measured sign" style="width:52px;"><option value="1">+</option><option value="-1">−</option></select></td>
+          <td><input class="mm-input" type="number" id="tf-meas-mm" min="0" max="30" step="0.1" placeholder="0.0" aria-label="Front toe measured millimeters"><span class="spec-label">mm</span></td>
+          <td><span class="result-cell no-spec" id="tf-dec" role="status" aria-live="polite">—</span></td>
+          <td><span class="result-cell no-spec" id="tf-status" role="status" aria-live="polite">—</span></td>
+        </tr>
+        <tr class="sub-row">
+          <td class="side-label" colspan="9" style="text-align:left;padding-left:12px;font-size:11px;color:#888;">
+            Individual toe per wheel = Total toe ÷ 2. Enter total toe from alignment machine printout.
+          </td>
+        </tr>
+        <!-- Rear toe -->
+        <tr>
+          <td class="row-label" rowspan="2">Total Toe<br><span style="font-size:10px;color:#888;">Rear</span></td>
+          <td class="side-label">+/−</td>
+          <td><select class="sign-sel" id="tr-spec-sign" aria-label="Rear toe spec sign" style="width:52px;"><option value="1">+</option><option value="-1">−</option></select></td>
+          <td><input class="mm-input" type="number" id="tr-spec-mm" min="0" max="20" step="0.1" placeholder="2.0" aria-label="Rear toe spec millimeters"><span class="spec-label">mm</span></td>
+          <td><select class="sign-sel" id="tr-tol-sign" style="width:52px;"><option value="1">±</option></select></td>
+          <td><input class="mm-input" type="number" id="tr-tol-mm" min="0" max="10" step="0.1" placeholder="1.0" aria-label="Rear toe tolerance millimeters"><span class="spec-label">mm</span></td>
+          <td><select class="sign-sel" id="tr-meas-sign" aria-label="Rear toe measured sign" style="width:52px;"><option value="1">+</option><option value="-1">−</option></select></td>
+          <td><input class="mm-input" type="number" id="tr-meas-mm" min="0" max="30" step="0.1" placeholder="0.0" aria-label="Rear toe measured millimeters"><span class="spec-label">mm</span></td>
+          <td><span class="result-cell no-spec" id="tr-dec" role="status" aria-live="polite">—</span></td>
+          <td><span class="result-cell no-spec" id="tr-status" role="status" aria-live="polite">—</span></td>
+        </tr>
+        <tr class="sub-row">
+          <td class="side-label" colspan="9" style="text-align:left;padding-left:12px;font-size:11px;color:#888;">
+            Rear toe incorrect = feather wear on rear tires + dog-tracking tendency.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════
+       TURNING ANGLE SECTION
+  ═══════════════════════════════ -->
+  <h2 class="sec-hdr">Front Wheel Turning Angle (Toe-Out on Turns)</h2>
+  <div class="sec-body">
+    <div class="info-banner" role="note">
+      <strong>Diagnostic angle</strong> — not adjustable. A difference from spec indicates a bent steering arm or knuckle. Measure with front wheels turned to 20° inward lock on the alignment machine.
+    </div>
+    <div style="overflow-x:auto;">
+    <table class="calc-table" role="table" aria-label="Turning angle calculator">
+      <thead>
+        <tr>
+          <th class="left-col" scope="col">Angle</th>
+          <th class="side-col" scope="col">Type</th>
+          <th scope="col" colspan="3">Spec (° &amp; ')</th>
+          <th scope="col" colspan="3">Tolerance (± ° ')</th>
+          <th scope="col" colspan="3">Measured (° &amp; ')</th>
+          <th scope="col">Decimal °</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-label" rowspan="2">Turning<br><span style="font-size:10px;color:#888;">Angle</span></td>
+          <td class="side-label">IN</td>
+          <td><select class="sign-sel" id="ta-in-spec-sign" aria-label="Inward turning angle spec sign"><option value="1" selected>+</option><option value="-1">−</option></select></td>
+          <td><input class="deg-input" type="number" id="ta-in-spec-deg" min="0" max="45" placeholder="20" aria-label="Inward turning angle spec degrees"></td>
+          <td><input class="min-input" type="number" id="ta-in-spec-min" min="0" max="59" placeholder="0" aria-label="Inward turning angle spec minutes"><span class="spec-label">'</span></td>
+          <td><input class="min-input" type="number" id="ta-in-tol-deg" min="0" max="5" placeholder="0" aria-label="Inward turning angle tolerance degrees"></td>
+          <td><input class="min-input" type="number" id="ta-in-tol-min" min="0" max="59" placeholder="30" aria-label="Inward turning angle tolerance minutes"><span class="spec-label">'</span></td>
+          <td></td>
+          <td><select class="sign-sel" id="ta-in-meas-sign" aria-label="Inward turning angle measured sign"><option value="1" selected>+</option><option value="-1">−</option></select></td>
+          <td><input class="deg-input" type="number" id="ta-in-meas-deg" min="0" max="45" placeholder="0" aria-label="Inward turning angle measured degrees"></td>
+          <td><input class="min-input" type="number" id="ta-in-meas-min" min="0" max="59" placeholder="0" aria-label="Inward turning angle measured minutes"><span class="spec-label">'</span></td>
+          <td><span class="result-cell no-spec" id="ta-in-dec" role="status" aria-live="polite">—</span></td>
+          <td><span class="result-cell no-spec" id="ta-in-status" role="status" aria-live="polite">—</span></td>
+        </tr>
+        <tr class="sub-row">
+          <td class="side-label">OUT</td>
+          <td><select class="sign-sel" id="ta-out-spec-sign" aria-label="Outward turning angle spec sign"><option value="1" selected>+</option><option value="-1">−</option></select></td>
+          <td><input class="deg-input" type="number" id="ta-out-spec-deg" min="0" max="45" placeholder="18" aria-label="Outward turning angle spec degrees"></td>
+          <td><input class="min-input" type="number" id="ta-out-spec-min" min="0" max="59" placeholder="0" aria-label="Outward turning angle spec minutes"><span class="spec-label">'</span></td>
+          <td><input class="min-input" type="number" id="ta-out-tol-deg" min="0" max="5" placeholder="0" aria-label="Outward turning angle tolerance degrees"></td>
+          <td><input class="min-input" type="number" id="ta-out-tol-min" min="0" max="59" placeholder="30" aria-label="Outward turning angle tolerance minutes"><span class="spec-label">'</span></td>
+          <td></td>
+          <td><select class="sign-sel" id="ta-out-meas-sign" aria-label="Outward turning angle measured sign"><option value="1" selected>+</option><option value="-1">−</option></select></td>
+          <td><input class="deg-input" type="number" id="ta-out-meas-deg" min="0" max="45" placeholder="0" aria-label="Outward turning angle measured degrees"></td>
+          <td><input class="min-input" type="number" id="ta-out-meas-min" min="0" max="59" placeholder="0" aria-label="Outward turning angle measured minutes"><span class="spec-label">'</span></td>
+          <td><span class="result-cell no-spec" id="ta-out-dec" role="status" aria-live="polite">—</span></td>
+          <td><span class="result-cell no-spec" id="ta-out-status" role="status" aria-live="polite">—</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════
+       TOLERANCE GRID
+  ═══════════════════════════════ -->
+  <h2 class="sec-hdr" style="margin-top:16px;">Tolerance Summary Grid</h2>
+  <div class="sec-body">
+    <div class="tol-grid" id="tol-grid" role="region" aria-label="Tolerance summary grid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+  <!-- SUMMARY PANEL -->
+  <div class="summary-panel" role="region" aria-label="All-angles summary">
+    <h3>All Angles — Summary</h3>
+    <div class="summary-grid" id="summary-grid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+  <!-- CONVERSION HELPER -->
+  <div class="conv-helper" role="region" aria-label="Quick conversion reference">
+    <h4>📐 Quick Conversion Reference — Degrees &amp; Minutes ↔ Decimal</h4>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:4px;">
+      <span style="font-size:12px;"><strong>30' = 0.50°</strong></span>
+      <span style="font-size:12px;"><strong>15' = 0.25°</strong></span>
+      <span style="font-size:12px;"><strong>45' = 0.75°</strong></span>
+      <span style="font-size:12px;"><strong>20' = 0.33°</strong></span>
+      <span style="font-size:12px;"><strong>10' = 0.17°</strong></span>
+      <span style="font-size:12px;"><strong>Formula: minutes ÷ 60 = decimal fraction</strong></span>
+    </div>
+    <div style="margin-top:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <span style="font-size:12px;font-weight:700;">Manual Converter:</span>
+      <select class="sign-sel" id="mc-sign" style="width:52px;" aria-label="Manual converter sign"><option value="1">+</option><option value="-1">−</option></select>
+      <input class="deg-input" type="number" id="mc-deg" min="0" max="30" placeholder="0" style="width:54px;" aria-label="Manual converter degrees">°
+      <input class="min-input" type="number" id="mc-min" min="0" max="59" placeholder="0" style="width:44px;" aria-label="Manual converter minutes">'
+      <span style="font-size:14px;color:#888;">=</span>
+      <strong style="font-size:16px;color:var(--red);" id="mc-result" aria-live="polite">—</strong>
+    </div>
+  </div>
+
+  <!-- ACTION BAR -->
+  <div class="action-bar" role="toolbar" aria-label="Page actions">
+    <button class="btn btn-red" onclick="window.print()" aria-label="Print this page">🖨 Print / Save PDF</button>
+    <button class="btn btn-dark" onclick="clearAll()" aria-label="Clear all fields">↺ Clear All</button>
+  </div>
+
+  <footer style="text-align:center;padding:14px 0 4px;font-size:11px;color:#999;">
+    AUTOH 173 · Honda PACT · Shoreline Community College · Instructor: R. Smith<br>
+    Reference tool only — always verify specs in Honda iN Service Express before performing alignment service
+  </footer>
+
+</div><!-- /page -->
+
+<script>
+// ─────────────────────────────────────────
+// CORE MATH
+// ─────────────────────────────────────────
+function toDec(sign, deg, min) {
+  const d = parseFloat(deg) || 0;
+  const m = parseFloat(min) || 0;
+  const s = parseFloat(sign) || 1;
+  if (isNaN(d) && isNaN(m)) return null;
+  return s * (d + m / 60);
+}
+
+function toMinStr(dec) {
+  const abs = Math.abs(dec);
+  const d = Math.floor(abs);
+  const m = Math.round((abs - d) * 60);
+  const sign = dec < 0 ? '−' : '+';
+  return `${sign}${d}° ${m}'`;
+}
+
+function fmtDec(val) {
+  if (val === null || val === undefined) return '—';
+  return (val >= 0 ? '+' : '') + val.toFixed(2) + '°';
+}
+
+function getStatus(measured, spec, tol) {
+  if (measured === null || spec === null || tol === null) return 'no-spec';
+  const diff = Math.abs(measured - spec);
+  if (diff <= tol) {
+    if (diff >= tol * 0.85) return 'near-spec'; // within 15% of limit
+    return 'in-spec';
+  }
+  return 'out-spec';
+}
+
+function statusLabel(s) {
+  const map = { 'in-spec': '✓ In Spec', 'out-spec': '✗ Out of Spec', 'near-spec': '⚠ Near Limit', 'no-spec': '—' };
+  return map[s] || '—';
+}
+
+function mmToDecDeg(mm, sign, radius) {
+  const r = parseFloat(radius);
+  if (!r || r <= 0) return null;
+  const s = parseFloat(sign) || 1;
+  return s * (parseFloat(mm) / r) * 57.2958;
+}
+
+// ─────────────────────────────────────────
+// AUTO-CALC ROLLING RADIUS FROM TIRE SIZE
+// ─────────────────────────────────────────
+function calcRollingRadius() {
+  const w = parseFloat(document.getElementById('ts-width').value);
+  const a = parseFloat(document.getElementById('ts-aspect').value);
+  const r = parseFloat(document.getElementById('ts-rim').value);
+  if (!w || !a || !r) return;
+  // sidewall = width * aspect/100
+  // rolling radius = (rim_diameter_mm / 2) + sidewall * 0.97 (loaded)
+  const sidewall = w * (a / 100);
+  const rimMm = r * 25.4;
+  const rolling = Math.round((rimMm / 2) + sidewall * 0.97);
+  document.getElementById('rolling-radius').value = rolling;
+  const ts = `${w}/${a}R${r}`;
+  document.getElementById('tire-display').textContent = `→ Rolling radius ≈ ${rolling} mm`;
+  calcAll();
+}
+
+// ─────────────────────────────────────────
+// ANGLE EVALUATOR
+// ─────────────────────────────────────────
+function evalAngle(prefix, useMm) {
+  let measured, specDec, tolDec;
+
+  if (useMm) {
+    const radius = parseFloat(document.getElementById('rolling-radius').value) || 310;
+    const specMm = parseFloat(document.getElementById(prefix + '-spec-mm').value);
+    const tolMm  = parseFloat(document.getElementById(prefix + '-tol-mm').value);
+    const measMm = parseFloat(document.getElementById(prefix + '-meas-mm').value);
+    const specSign = parseFloat(document.getElementById(prefix + '-spec-sign').value);
+    const measSign = parseFloat(document.getElementById(prefix + '-meas-sign').value);
+
+    if (isNaN(measMm)) { setResult(prefix, null, 'no-spec'); return null; }
+    measured = mmToDecDeg(measMm, measSign, radius);
+    specDec  = isNaN(specMm) ? null : mmToDecDeg(specMm, specSign, radius);
+    tolDec   = isNaN(tolMm)  ? null : mmToDecDeg(tolMm, 1, radius);
+  } else {
+    const specSign = parseFloat(document.getElementById(prefix + '-spec-sign').value);
+    const specDeg  = document.getElementById(prefix + '-spec-deg').value;
+    const specMin  = document.getElementById(prefix + '-spec-min').value;
+    const tolDeg   = document.getElementById(prefix + '-tol-deg').value;
+    const tolMin   = document.getElementById(prefix + '-tol-min').value;
+    const measSign = parseFloat(document.getElementById(prefix + '-meas-sign').value);
+    const measDeg  = document.getElementById(prefix + '-meas-deg').value;
+    const measMin  = document.getElementById(prefix + '-meas-min').value;
+
+    if (measDeg === '' && measMin === '') { setResult(prefix, null, 'no-spec'); return null; }
+    measured = toDec(measSign, measDeg, measMin);
+    specDec  = (specDeg !== '' || specMin !== '') ? toDec(specSign, specDeg, specMin) : null;
+    tolDec   = (tolDeg !== '' || tolMin !== '') ? toDec(1, tolDeg, tolMin) : null;
+  }
+
+  const status = getStatus(measured, specDec, tolDec);
+  setResult(prefix, measured, status);
+  return { measured, specDec, tolDec, status };
+}
+
+function setResult(prefix, measured, status) {
+  const decEl    = document.getElementById(prefix + '-dec');
+  const statEl   = document.getElementById(prefix + '-status');
+  if (!decEl || !statEl) return;
+
+  decEl.textContent   = fmtDec(measured);
+  decEl.className     = 'result-cell ' + status;
+  statEl.textContent  = statusLabel(status);
+  statEl.className    = 'result-cell ' + status;
+}
+
+// ─────────────────────────────────────────
+// CASTER SIDE-TO-SIDE DIFF
+// ─────────────────────────────────────────
+function calcCasterDiff() {
+  const lf = evalAngle('ca-lf', false);
+  const rf = evalAngle('ca-rf', false);
+  const diffEl = document.getElementById('ca-diff');
+  if (!lf || !rf || lf.measured === null || rf.measured === null) {
+    diffEl.textContent = '—';
+    diffEl.className = 'result-cell no-spec';
+    return;
+  }
+  const diff = Math.abs(lf.measured - rf.measured);
+  diffEl.textContent = diff.toFixed(2) + '° (' + Math.round(diff * 60) + '\')';
+  if (diff > 0.50) {
+    diffEl.className = 'result-cell out-spec';
+  } else if (diff > 0.40) {
+    diffEl.className = 'result-cell near-spec';
+  } else {
+    diffEl.className = 'result-cell in-spec';
+  }
+}
+
+// ─────────────────────────────────────────
+// SUMMARY + TOLERANCE GRID
+// ─────────────────────────────────────────
+const ANGLE_DEFS = [
+  { id: 'cf-lf', label: 'Camber LF', mm: false },
+  { id: 'cf-rf', label: 'Camber RF', mm: false },
+  { id: 'cr-lr', label: 'Camber LR', mm: false },
+  { id: 'cr-rr', label: 'Camber RR', mm: false },
+  { id: 'ca-lf', label: 'Caster LF', mm: false },
+  { id: 'ca-rf', label: 'Caster RF', mm: false },
+  { id: 'tf',    label: 'Toe Front',  mm: true  },
+  { id: 'tr',    label: 'Toe Rear',   mm: true  },
+  { id: 'ta-in', label: 'Turn IN',   mm: false },
+  { id: 'ta-out',label: 'Turn OUT',  mm: false },
+];
+
+function buildSummary() {
+  const grid = document.getElementById('summary-grid');
+  const tolGrid = document.getElementById('tol-grid');
+  grid.innerHTML = '';
+  tolGrid.innerHTML = '';
+
+  ANGLE_DEFS.forEach(def => {
+    const decEl = document.getElementById(def.id + '-dec');
+    const statEl = document.getElementById(def.id + '-status');
+    if (!decEl) return;
+    const val = decEl.textContent;
+    const status = statEl ? statEl.className.replace('result-cell ','') : 'no-spec';
+
+    // Summary card
+    const card = document.createElement('div');
+    card.className = 'sum-card ' + status;
+    card.innerHTML = `<div class="sum-label">${def.label}</div><div class="sum-val">${val}</div><div class="sum-status">${statusLabel(status)}</div>`;
+    grid.appendChild(card);
+  });
+
+  // Tolerance grid cards (matching iN format)
+  const TOL_PAIRS = [
+    { title: 'Camber (front)', lId: 'cf-lf', rId: 'cf-rf', lLabel: 'LF', rLabel: 'RF' },
+    { title: 'Camber (rear)',  lId: 'cr-lr', rId: 'cr-rr', lLabel: 'LR', rLabel: 'RR' },
+    { title: 'Caster',         lId: 'ca-lf', rId: 'ca-rf', lLabel: 'LF', rLabel: 'RF' },
+    { title: 'Total Toe (Front)', lId: 'tf', rId: null,     lLabel: 'Front', rLabel: null },
+    { title: 'Total Toe (Rear)',  lId: 'tr', rId: null,     lLabel: 'Rear',  rLabel: null },
+    { title: 'Turning Angle IN',  lId: 'ta-in', rId: null,  lLabel: 'Inward', rLabel: null },
+    { title: 'Turning Angle OUT', lId: 'ta-out',rId: null,  lLabel: 'Outward',rLabel: null },
+  ];
+
+  TOL_PAIRS.forEach(pair => {
+    const card = document.createElement('div');
+    card.className = 'tol-card';
+    const lDecEl = document.getElementById(pair.lId + '-dec');
+    const lStatEl = document.getElementById(pair.lId + '-status');
+    const rDecEl  = pair.rId ? document.getElementById(pair.rId + '-dec')  : null;
+    const rStatEl = pair.rId ? document.getElementById(pair.rId + '-status') : null;
+
+    const lVal  = lDecEl  ? lDecEl.textContent  : '—';
+    const lStat = lStatEl ? lStatEl.className.replace('result-cell ','') : 'no-spec';
+    const rVal  = rDecEl  ? rDecEl.textContent  : null;
+    const rStat = rStatEl ? rStatEl.className.replace('result-cell ','') : 'no-spec';
+
+    let html = `<div class="tol-card-hdr">${pair.title}</div>`;
+    html += `<div class="tol-row"><span class="tol-key">${pair.lLabel}</span><span class="tol-val ${lStat}">${lVal}</span><span style="font-size:11px;color:#888;">${statusLabel(lStat)}</span></div>`;
+    if (rVal !== null) {
+      html += `<div class="tol-row"><span class="tol-key">${pair.rLabel}</span><span class="tol-val ${rStat}">${rVal}</span><span style="font-size:11px;color:#888;">${statusLabel(rStat)}</span></div>`;
+    }
+    card.innerHTML = html;
+    tolGrid.appendChild(card);
+  });
+}
+
+// ─────────────────────────────────────────
+// MANUAL CONVERTER
+// ─────────────────────────────────────────
+function updateManualConverter() {
+  const sign = parseFloat(document.getElementById('mc-sign').value) || 1;
+  const deg  = document.getElementById('mc-deg').value;
+  const min  = document.getElementById('mc-min').value;
+  const result = document.getElementById('mc-result');
+  if (deg === '' && min === '') { result.textContent = '—'; return; }
+  const dec = toDec(sign, deg, min);
+  result.textContent = fmtDec(dec);
+}
+
+// ─────────────────────────────────────────
+// CALC ALL
+// ─────────────────────────────────────────
+function calcAll() {
+  evalAngle('cf-lf', false);
+  evalAngle('cf-rf', false);
+  evalAngle('cr-lr', false);
+  evalAngle('cr-rr', false);
+  calcCasterDiff();
+  const radius = document.getElementById('rolling-radius').value;
+  if (radius) {
+    evalAngle('tf', true);
+    evalAngle('tr', true);
+  }
+  evalAngle('ta-in',  false);
+  evalAngle('ta-out', false);
+  buildSummary();
+}
+
+function clearAll() {
+  document.querySelectorAll('input[type="number"]:not(#rolling-radius)').forEach(el => { el.value = ''; });
+  document.querySelectorAll('select').forEach(el => { el.selectedIndex = 0; });
+  document.getElementById('tire-display').textContent = '';
+  document.getElementById('mc-result').textContent = '—';
+  calcAll();
+}
+
+// ─────────────────────────────────────────
+// EVENT LISTENERS — wire everything
+// ─────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // All inputs trigger recalc
+  document.querySelectorAll('input, select').forEach(el => {
+    el.addEventListener('input', () => {
+      if (['ts-width','ts-aspect','ts-rim'].includes(el.id)) {
+        calcRollingRadius();
+      } else if (['mc-sign','mc-deg','mc-min'].includes(el.id)) {
+        updateManualConverter();
+      } else {
+        calcAll();
+      }
+    });
+  });
+  buildSummary();
+});
+</script>
+</body>
+</html>
