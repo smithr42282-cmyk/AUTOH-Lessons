@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wheel Alignment Fundamentals — AUTOH 173</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f2f2f2;
+    color: #1a1a1a;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .lesson-wrapper { max-width: 880px; margin: 0 auto; padding: 24px 16px 56px; }
+
+  /* HEADER */
+  .lesson-header {
+    background: #1a1a1a; border-left: 6px solid #CC0000;
+    border-radius: 4px; padding: 20px 24px; margin-bottom: 20px;
+  }
+  .lesson-header .course-label {
+    color: #CC0000; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 6px;
+  }
+  .lesson-header h1 { color: #fff; font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .lesson-header .sub { color: #ccc; font-size: 13px; }
+
+  /* PROGRESS */
+  .progress-row { display: flex; gap: 6px; margin-bottom: 18px; align-items: center; flex-wrap: wrap; }
+  .dot { width: 13px; height: 13px; border-radius: 50%; background: #ccc; transition: background .3s; flex-shrink:0; }
+  .dot.active { background: #CC0000; }
+  .dot.done { background: #888; }
+  .prog-label { font-size: 12px; color: #666; margin-left: 8px; }
+
+  /* SLIDE */
+  .slide {
+    display: none; background: #fff; border-top: 4px solid #CC0000;
+    border-radius: 4px; padding: 28px 28px 24px; margin-bottom: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .slide.active { display: block; }
+  .slide-tag {
+    background: #CC0000; color: #fff; font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px; padding: 3px 10px;
+    border-radius: 2px; display: inline-block; margin-bottom: 12px;
+  }
+  .slide h2 { font-size: 19px; font-weight: 700; color: #1a1a1a; margin-bottom: 14px; line-height: 1.3; }
+  .slide p { font-size: 14px; color: #333; margin-bottom: 12px; }
+  .slide p:last-child { margin-bottom: 0; }
+
+  /* NAV BUTTONS */
+  .nav-row { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+  .nav-btn {
+    background: #1a1a1a; color: #fff; border: none; padding: 10px 20px;
+    font-size: 14px; font-weight: 700; border-radius: 3px; cursor: pointer;
+    transition: background .2s; min-width: 120px;
+  }
+  .nav-btn:hover { background: #333; }
+  .nav-btn.primary { background: #CC0000; }
+  .nav-btn.primary:hover { background: #aa0000; }
+
+  /* ANGLE TABLE */
+  .angle-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 16px 0; }
+  .angle-table th {
+    background: #1a1a1a; color: #fff; padding: 9px 12px;
+    text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .5px;
+  }
+  .angle-table td { padding: 9px 12px; border-bottom: 1px solid #e0e0e0; vertical-align: top; }
+  .angle-table tr:nth-child(even) td { background: #f9f9f9; }
+  .angle-table .tag {
+    display: inline-block; font-size: 10px; font-weight: 700; padding: 1px 7px;
+    border-radius: 2px; text-transform: uppercase; color: #fff;
+  }
+  .tag-adj { background: #478be7; }
+  .tag-diag { background: #888; }
+  .tag-both { background: #CC0000; }
+
+  /* SVG DIAGRAM AREA */
+  .svg-wrap { background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 4px; padding: 18px; margin: 16px 0; text-align: center; }
+  .svg-wrap .svg-caption { font-size: 12px; color: #555; margin-top: 8px; font-style: italic; }
+
+  /* TWO-COL */
+  .two-col { display: flex; gap: 14px; margin: 14px 0; }
+  .two-col .col { flex: 1; background: #f5f5f5; border-top: 3px solid #CC0000; border-radius: 3px; padding: 14px; }
+  .two-col .col h4 { font-size: 13px; font-weight: 700; color: #CC0000; text-transform: uppercase; margin-bottom: 8px; }
+  .two-col .col p, .two-col .col li { font-size: 13px; color: #333; }
+  .two-col .col ul { padding-left: 16px; margin: 0; }
+  .two-col .col ul li { margin-bottom: 4px; }
+  @media (max-width: 520px) { .two-col { flex-direction: column; } }
+
+  /* CALLOUT */
+  .callout {
+    background: #fff5f5; border-left: 4px solid #CC0000;
+    border-radius: 0 4px 4px 0; padding: 12px 16px; margin: 14px 0;
+  }
+  .callout .clabel { font-size: 11px; font-weight: 700; color: #CC0000; text-transform: uppercase; margin-bottom: 5px; }
+  .callout p { font-size: 13px; color: #1a1a1a; margin: 0; }
+
+  /* INFO BANNER */
+  .info-banner {
+    background: #f0f4ff; border: 1px solid #bfd0f5; padding: 12px 16px;
+    border-radius: 4px; margin: 14px 0;
+  }
+  .info-banner p { font-size: 13px; color: #1a1a1a; margin: 0; }
+
+  /* STEP LIST */
+  .step-list { list-style: none; padding: 0; margin: 14px 0; counter-reset: steps; }
+  .step-list li {
+    counter-increment: steps; display: flex; align-items: flex-start;
+    gap: 12px; padding: 9px 12px; border-bottom: 1px solid #e0e0e0; font-size: 14px; color: #333;
+  }
+  .step-list li:last-child { border-bottom: none; }
+  .step-list li::before {
+    content: counter(steps); background: #CC0000; color: #fff;
+    font-size: 11px; font-weight: 700; min-width: 24px; height: 24px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 2px;
+  }
+
+  /* KNOWLEDGE CHECK */
+  .kc-section {
+    display: none; background: #fff; border-top: 4px solid #1a1a1a;
+    border-radius: 4px; padding: 28px 28px 24px; margin-bottom: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .kc-section.active { display: block; }
+  .kc-section h2 { font-size: 17px; font-weight: 700; color: #1a1a1a; margin-bottom: 20px; }
+  .question-block { margin-bottom: 26px; border-bottom: 1px solid #e0e0e0; padding-bottom: 22px; }
+  .question-block:last-of-type { border-bottom: none; }
+  .q-num { background: #CC0000; color: #fff; font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 2px; display: inline-block; margin-bottom: 8px; }
+  .q-text { font-size: 14px; font-weight: 700; color: #1a1a1a; margin-bottom: 12px; line-height: 1.4; }
+  .choice-btn {
+    display: block; width: 100%; text-align: left; background: #f5f5f5;
+    border: 2px solid #e0e0e0; padding: 10px 14px; margin-bottom: 7px;
+    font-size: 13px; border-radius: 3px; cursor: pointer; transition: border-color .2s, background .2s;
+  }
+  .choice-btn:hover:not(:disabled) { border-color: #CC0000; background: #fff5f5; }
+  .choice-btn.correct { background: #dcfce7; border-color: #16a34a; color: #14532d; font-weight: 700; cursor: default; }
+  .choice-btn.wrong { background: #fee2e2; border-color: #dc2626; color: #7f1d1d; cursor: default; }
+  .choice-btn:disabled { cursor: default; }
+  .feedback { display: none; margin-top: 10px; padding: 10px 14px; border-radius: 3px; font-size: 13px; }
+  .feedback.correct { background: #dcfce7; color: #14532d; border-left: 3px solid #16a34a; display: block; }
+  .feedback.wrong { background: #fee2e2; color: #7f1d1d; border-left: 3px solid #dc2626; display: block; }
+
+  /* COMPLETION */
+  .completion {
+    display: none; background: #1a1a1a; border-top: 4px solid #CC0000;
+    border-radius: 4px; padding: 28px; text-align: center; margin-bottom: 18px;
+  }
+  .completion.active { display: block; }
+  .completion h2 { color: #CC0000; font-size: 20px; margin-bottom: 10px; }
+  .completion p { color: #ccc; font-size: 14px; }
+  .score-badge {
+    display: inline-block; background: #CC0000; color: #fff;
+    font-size: 28px; font-weight: 700; padding: 14px 28px; border-radius: 4px;
+    margin: 16px 0;
+  }
+</style>
+</head>
+<body>
+<div class="lesson-wrapper">
+
+<!-- HEADER -->
+<div class="lesson-header">
+  <div class="course-label">AUTOH 173 · Honda Steering &amp; Suspension — Wheel Alignment</div>
+  <h1>Wheel Alignment Fundamentals</h1>
+  <div class="sub">SSC36 Interpreting Angles &nbsp;·&nbsp; SSC38 Diagnostic Angles &nbsp;·&nbsp; SSC42 Drift/Pull &nbsp;·&nbsp; SSC40 Proper Alignment &nbsp;·&nbsp; SSS41 Evaluating Alignment</div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-row" id="prog-row" aria-label="Lesson progress">
+  <div class="dot active" id="d0" title="Slide 1"></div>
+  <div class="dot" id="d1" title="Slide 2"></div>
+  <div class="dot" id="d2" title="Slide 3"></div>
+  <div class="dot" id="d3" title="Knowledge Check"></div>
+  <span class="prog-label" id="prog-label" aria-live="polite">Slide 1 of 3</span>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 1 — Interpreting & Diagnostic Angles
+     SSC36 + SSC38
+════════════════════════════════════════════ -->
+<section class="slide active" id="slide0" aria-labelledby="s0-title">
+  <span class="slide-tag">Slide 1 of 3 — SSC36 &amp; SSC38</span>
+  <h2 id="s0-title">Interpreting &amp; Diagnostic Alignment Angles</h2>
+
+  <p>Every alignment angle falls into one of two categories: <strong>adjustable</strong> (can be corrected with hardware) or <strong>diagnostic</strong> (non-adjustable — tells you about component condition). Knowing which is which is the foundation of accurate alignment work.</p>
+
+  <table class="angle-table" role="table" aria-label="Alignment angles reference — type, typical values, vehicle effect">
+    <thead>
+      <tr>
+        <th scope="col">Angle</th>
+        <th scope="col">Type</th>
+        <th scope="col">Typical Range</th>
+        <th scope="col">Primary Vehicle Effect</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Caster</strong></td>
+        <td><span class="tag tag-adj">Adjustable</span></td>
+        <td>+2° to +8°</td>
+        <td>Steering stability &amp; returnability; unequal side-to-side = <strong>pull toward lower caster</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Camber</strong></td>
+        <td><span class="tag tag-adj">Adjustable</span></td>
+        <td>0° to −1.5°</td>
+        <td>Tire contact &amp; wear; unequal = <strong>pull toward more positive camber</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Toe</strong></td>
+        <td><span class="tag tag-adj">Adjustable</span></td>
+        <td>0° to 0° 20' in</td>
+        <td>Directional stability; incorrect = feather-edge &amp; rapid tire wear</td>
+      </tr>
+      <tr>
+        <td><strong>Thrust Angle</strong></td>
+        <td><span class="tag tag-both">Adjustable (rear)</span></td>
+        <td>Within ±0° 10'</td>
+        <td>Rear pushes vehicle off-center; <strong>dog-tracking &amp; off-center steering wheel</strong></td>
+      </tr>
+      <tr>
+        <td><strong>SAI (Steering Axis Inclination)</strong></td>
+        <td><span class="tag tag-diag">Diagnostic</span></td>
+        <td>8° – 15°</td>
+        <td>Non-adjustable. Side-to-side difference = <strong>bent knuckle, strut, or control arm</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Included Angle</strong></td>
+        <td><span class="tag tag-diag">Diagnostic</span></td>
+        <td>SAI + Camber</td>
+        <td>SAI correct / camber off = <strong>bent spindle or strut</strong>. SAI off = structural damage</td>
+      </tr>
+      <tr>
+        <td><strong>Toe-Out on Turns (TOOT)</strong></td>
+        <td><span class="tag tag-diag">Diagnostic</span></td>
+        <td>~20° inside / 18° outside</td>
+        <td>Ackermann geometry check. Difference from spec = bent steering arm or knuckle</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout" role="note">
+    <div class="clabel">📐 Reading Degrees &amp; Minutes</div>
+    <p>Alignment specs use degrees (°) and minutes ('). There are 60 minutes in 1 degree. <strong>1° 30' = 1.5°</strong>. To convert minutes to decimal: divide by 60. Example: 0° 45' ÷ 60 = 0.75°. Never read 1° 45' as 1.45° — that is a common and costly error.</p>
+  </div>
+
+  <div class="two-col">
+    <div class="col">
+      <h4>📖 Textbook Activity</h4>
+      <p>Locate the SAI and Included Angle diagrams in your textbook. Sketch or label the angle path from the upper strut mount through the lower ball joint.</p>
+    </div>
+    <div class="col">
+      <h4>🔑 Key Rule — Side-to-Side Difference</h4>
+      <p>Most alignment specs allow a <strong>maximum 0° 30' (0.5°) side-to-side difference</strong> for caster and camber, even if both readings are individually within spec. A difference exceeding this causes pull.</p>
+    </div>
+  </div>
+
+  <div class="nav-row">
+    <button class="nav-btn primary" onclick="goTo(1)" aria-label="Next slide">Next: Drift &amp; Pull →</button>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 2 — Drift/Pull Diagnosis
+     SSC42
+════════════════════════════════════════════ -->
+<section class="slide" id="slide1" aria-labelledby="s1-title">
+  <span class="slide-tag">Slide 2 of 3 — SSC42</span>
+  <h2 id="s1-title">Diagnosing Drift &amp; Pull</h2>
+
+  <p>A vehicle that pulls or drifts to one side has a force imbalance. The technician's job is to identify <em>which</em> force is dominant. Alignment angles, tire condition, and road crown all contribute.</p>
+
+  <div class="two-col">
+    <div class="col">
+      <h4>⬅ Pull to the Left</h4>
+      <ul>
+        <li>Left caster <strong>lower</strong> than right</li>
+        <li>Left camber <strong>more positive</strong> than right</li>
+        <li>Left front brake dragging</li>
+        <li>Tire conicity pulling left</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>➡ Pull to the Right</h4>
+      <ul>
+        <li>Right caster <strong>lower</strong> than left</li>
+        <li>Right camber <strong>more positive</strong> than left</li>
+        <li>Right front brake dragging</li>
+        <li>Road crown (most roads slope right)</li>
+      </ul>
+    </div>
+  </div>
+
+  <p style="margin-top:14px;"><strong>Diagnostic workflow — pull &amp; drift:</strong></p>
+  <ol class="step-list" aria-label="Pull and drift diagnostic steps">
+    <li><strong>Rule out tires first.</strong> Swap front tires side-to-side. If the pull direction changes, a tire (conicity or pressure) is the cause.</li>
+    <li><strong>Confirm correct tire pressure</strong> at all four corners (cold). Unequal pressure mimics alignment pull.</li>
+    <li><strong>Pre-alignment inspection.</strong> Check for brake drag, worn bushings, and unequal ride height before touching alignment adjusters.</li>
+    <li><strong>Read alignment printout.</strong> Identify which angle is out of spec AND check the side-to-side difference — both matter.</li>
+    <li><strong>Caster is the strongest pull force.</strong> If caster differs more than 0° 30' side-to-side, the vehicle will pull toward the lower-caster side regardless of camber.</li>
+    <li><strong>Diagnose memory steer.</strong> If the vehicle only pulls <em>after</em> a turn in one direction, suspect a binding strut bearing or ball joint — not a caster/camber issue.</li>
+    <li><strong>Torque steer (FWD only).</strong> Pull on hard acceleration that straightens at cruise speed = unequal CV shaft length, worn engine mount, or tire issue — not correctable with alignment.</li>
+  </ol>
+
+  <div class="callout" role="note">
+    <div class="clabel">⚠ Wander vs. Pull — Know the Difference</div>
+    <p><strong>Pull</strong> = steady, consistent force to one side. <strong>Wander</strong> = vehicle drifts unpredictably in both directions, requiring constant correction. Wander suggests excessive toe, worn tie rod ends, or loose steering linkage — not a caster imbalance.</p>
+  </div>
+
+  <table class="angle-table" role="table" aria-label="Steering complaint reference — likely alignment cause">
+    <thead>
+      <tr>
+        <th scope="col">Complaint</th>
+        <th scope="col">Most Likely Alignment Cause</th>
+        <th scope="col">Also Check</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Pulls to one side (steady)</td>
+        <td>Caster or camber side-to-side difference</td>
+        <td>Tire conicity, brake drag</td>
+      </tr>
+      <tr>
+        <td>Wanders / drifts both ways</td>
+        <td>Excessive toe, low caster</td>
+        <td>Tie rod ends, steering gear</td>
+      </tr>
+      <tr>
+        <td>Off-center steering wheel</td>
+        <td>Rear thrust angle, front toe imbalance</td>
+        <td>Bent steering rack</td>
+      </tr>
+      <tr>
+        <td>Memory steer (after turns)</td>
+        <td>Not an alignment angle — structural</td>
+        <td>Strut bearing, ball joint binding</td>
+      </tr>
+      <tr>
+        <td>Torque steer (under acceleration)</td>
+        <td>Not correctable by alignment</td>
+        <td>CV shaft lengths, engine mounts</td>
+      </tr>
+      <tr>
+        <td>Feather/sawtooth tire wear</td>
+        <td>Incorrect toe</td>
+        <td>Tire rotation, tie rod ends</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="nav-row">
+    <button class="nav-btn" onclick="goTo(0)" aria-label="Previous slide">← Angles</button>
+    <button class="nav-btn primary" onclick="goTo(2)" aria-label="Next slide">Next: Proper Alignment →</button>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 3 — Proper Alignment & Evaluation
+     SSC40 + SSS41
+════════════════════════════════════════════ -->
+<section class="slide" id="slide2" aria-labelledby="s2-title">
+  <span class="slide-tag">Slide 3 of 3 — SSC40 &amp; SSS41</span>
+  <h2 id="s2-title">Performing &amp; Evaluating a Proper Alignment</h2>
+
+  <p>A proper alignment is not just entering numbers on a machine. It follows a defined sequence, requires a thorough pre-inspection, and is always verified with a final printout and road test. Skipping steps causes comebacks.</p>
+
+  <!-- SVG DIAGRAM — Alignment Sequence -->
+  <div class="svg-wrap" role="img" aria-label="Four-wheel alignment sequence diagram: Pre-Inspection, Thrust Angle, Rear Camber, Rear Toe, Front Caster, Front Camber, Front Toe, Center Steering Wheel">
+    <svg viewBox="0 0 820 140" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+      <!-- Steps -->
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#CC0000"/>
+        </marker>
+      </defs>
+      <!-- Step boxes -->
+      <rect x="2" y="30" width="96" height="56" rx="3" fill="#1a1a1a"/>
+      <text x="50" y="54" text-anchor="middle" font-family="Arial" font-size="9" fill="#CC0000" font-weight="700">STEP 1</text>
+      <text x="50" y="67" text-anchor="middle" font-family="Arial" font-size="8.5" fill="#fff">Pre-Alignment</text>
+      <text x="50" y="78" text-anchor="middle" font-family="Arial" font-size="8.5" fill="#fff">Inspection</text>
+
+      <line x1="98" y1="58" x2="108" y2="58" stroke="#CC0000" stroke-width="2" marker-end="url(#arr)"/>
+
+      <rect x="110" y="30" width="96" height="56" rx="3" fill="#CC0000"/>
+      <text x="158" y="54" text-anchor="middle" font-family="Arial" font-size="9" fill="#fff" font-weight="700">STEP 2</text>
+      <text x="158" y="67" text-anchor="middle" font-family="Arial" font-size="8.5" fill="#fff">Thrust Angle</text>
+      <text x="158" y="78" text-anchor="middle" font-family="Arial" font-size="8.5" fill="#fff">(Set Baseline)</text>
+
+      <line x1="206" y1="58" x2="216" y2="58" stroke="#CC0000" stroke-width="2" marker-end="url(#arr)"/>
+
+      <rect x="218" y="30" width="96" height="56" rx="3" fill="#1a1a1a"/>
+      <text x="266" y="54" text-anchor="middle" font-family="Arial" font-size="9" fill="#CC0000" font-weight="700">STEP 3</text>
+      <text x="266" y="67" text-anchor="middle" font-family="Arial" font-size="8.5" fill="#fff">Rear Camber</text>
+      <text x="266" y="78" text-anchor="middle" font-family="Arial" font-size="8.5" fill="#fff">&amp; Toe</text>
+
+      <line x1="314" y1="58" x2="324" y2="58" stroke="#CC0000" stroke-width="2" marker-end="url(#arr)"/>
+
+      <rect x="326" y="30" width="96" height="56" rx="3" fill="#CC0000"/>
+      <text x="374" y="54" text-anchor="middle" font-family="Arial" font-size="9" fill="#fff" font-weight="700">STEP 4</text>
+      <text x="374" y="67" text-anchor="middle" font-family="Arial" font-size="8.5" fill="#fff">Front Caster</text>
+      <text x="374" y="78" text-anchor="middle" font-family="Arial" font-size="8.5" fill="#fff">&amp; Camber</text>
+
+      <line x1="422" y1="58" x2="432" y2="58" stroke="#CC0000" stroke-width="2" marker-end="url(#arr)"/>
+
+      <rect x="434" y="30" width="96" height="56" rx="3" fill="#1a1a1a"/>
+      <text x="482" y="54" text-anchor="middle" font-family="Arial" font-size="9" fill="#CC0000" font-weight="700">STEP 5</text>
+      <text x="482" y="67" text-anchor="middle" font-family="Arial" font-size="8.5" fill="#fff">Front Toe</text>
+      <text x="482" y="78" text-anchor="middle" font-family="Arial" font-size="8.5" fill="#fff">&amp; Center SW</text>
+
+      <line x1="530" y1="58" x2="540" y2="58" stroke="#CC0000" stroke-width="2" marker-end="url(#arr)"/>
+
+      <rect x="542" y="30" width="96" height="56" rx="3" fill="#CC0000"/>
+      <text x="590" y="54" text-anchor="middle" font-family="Arial" font-size="9" fill="#fff" font-weight="700">STEP 6</text>
+      <text x="590" y="67" text-anchor="middle" font-family="Arial" font-size="8.5" fill="#fff">Print &amp; Verify</text>
+      <text x="590" y="78" text-anchor="middle" font-family="Arial" font-size="8.5" fill="#fff">All Angles</text>
+
+      <line x1="638" y1="58" x2="648" y2="58" stroke="#CC0000" stroke-width="2" marker-end="url(#arr)"/>
+
+      <rect x="650" y="30" width="168" height="56" rx="3" fill="#1a1a1a"/>
+      <text x="734" y="54" text-anchor="middle" font-family="Arial" font-size="9" fill="#CC0000" font-weight="700">STEP 7</text>
+      <text x="734" y="67" text-anchor="middle" font-family="Arial" font-size="8.5" fill="#fff">Road Test — Confirm</text>
+      <text x="734" y="78" text-anchor="middle" font-family="Arial" font-size="8.5" fill="#fff">No Pull / Straight Tracking</text>
+    </svg>
+    <div class="svg-caption">Four-wheel alignment sequence — always work rear-to-front; thrust angle sets the baseline for all other adjustments.</div>
+  </div>
+
+  <p><strong>Pre-Alignment Inspection — Required Before Machine:</strong></p>
+  <ol class="step-list" aria-label="Pre-alignment inspection checklist">
+    <li>Verify correct and equal <strong>tire pressure</strong> at all four corners (cold, per door placard).</li>
+    <li>Check and measure <strong>ride height</strong> — compare side-to-side. Unequal height shifts caster and camber readings.</li>
+    <li>Inspect <strong>ball joints and tie rod ends</strong> for play. Alignment cannot compensate for loose components.</li>
+    <li>Inspect <strong>wheel bearings</strong> — excessive play creates false camber readings on the machine.</li>
+    <li>Inspect strut upper mounts / control arm bushings for wear, cracking, or misalignment.</li>
+    <li>Inspect for any <strong>bent or damaged components</strong> — compare SAI and included angle to identify structural damage.</li>
+    <li>Confirm vehicle is at <strong>curb weight</strong> — empty trunk, full fuel tank (or note deviation).</li>
+  </ol>
+
+  <div class="two-col">
+    <div class="col">
+      <h4>📋 Evaluating the Printout (SSS41)</h4>
+      <ul>
+        <li>All four corners must be <strong>within OEM spec</strong>, not just in the green zone.</li>
+        <li>Check <strong>side-to-side differences</strong> even when both are individually in spec.</li>
+        <li>SAI and included angle confirm no structural damage — record these on the printout.</li>
+        <li>Thrust angle must be at or near zero before front toe is set.</li>
+        <li>Steering wheel must be centered — verify with a road test, not just on the machine.</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>🚗 Honda PACT — Alignment Notes</h4>
+      <ul>
+        <li>Air suspension vehicles (e.g. MDX Type-S): activate <strong>Leveling Off mode via HDS</strong> before aligning.</li>
+        <li>After strut, knuckle, or control arm replacement: <strong>alignment is mandatory</strong> — document on RO.</li>
+        <li>Reset <strong>Steering Angle Sensor (SAS)</strong> after any front alignment adjustment.</li>
+        <li>ADAS-equipped vehicles may require <strong>camera/radar recalibration</strong> after alignment — verify with iN.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info-banner" role="note">
+    <p>📚 <strong>Canvas Reference:</strong> Review the <em>Alignment Angles Reference</em> and <em>Vehicle-Specific Alignment Procedures</em> pages before the lab. Confirm SAS reset path in Honda iN for the lab vehicle.</p>
+  </div>
+
+  <div class="nav-row">
+    <button class="nav-btn" onclick="goTo(1)" aria-label="Previous slide">← Drift/Pull</button>
+    <button class="nav-btn primary" onclick="goTo(3)" aria-label="Go to knowledge check">Knowledge Check →</button>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     KNOWLEDGE CHECK — 5 Questions
+════════════════════════════════════════════ -->
+<section class="kc-section" id="kc" aria-labelledby="kc-title">
+  <h2 id="kc-title">🔍 Knowledge Check — 5 Questions</h2>
+  <p style="font-size:13px;color:#555;margin-bottom:20px;">Click an answer. Feedback is immediate — no submit button needed.</p>
+
+  <!-- Q1 -->
+  <div class="question-block" id="qb1">
+    <div class="q-num">Question 1 of 5</div>
+    <div class="q-text">A vehicle pulls steadily to the right. After swapping the front tires side-to-side, the pull remains to the right. What does this tell you?</div>
+    <button class="choice-btn" onclick="answer(1,'A')" id="q1A">A. &nbsp;The right front tire has conicity — it is the cause of the pull.</button>
+    <button class="choice-btn" onclick="answer(1,'B')" id="q1B">B. &nbsp;The pull is NOT caused by tire conicity — the cause is an alignment angle or brake drag.</button>
+    <button class="choice-btn" onclick="answer(1,'C')" id="q1C">C. &nbsp;The rear thrust angle is misaligned and pushing the vehicle right.</button>
+    <button class="choice-btn" onclick="answer(1,'D')" id="q1D">D. &nbsp;Tire pressure is unequal — inflate all tires and retest.</button>
+    <div class="feedback" id="fb1"></div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-block" id="qb2">
+    <div class="q-num">Question 2 of 5</div>
+    <div class="q-text">Caster measures +3° 30' on the left and +1° 45' on the right. OEM spec is +3° 00' ± 1° 00'. What is the most likely customer complaint?</div>
+    <button class="choice-btn" onclick="answer(2,'A')" id="q2A">A. &nbsp;Feather-edge tire wear on the right front tire.</button>
+    <button class="choice-btn" onclick="answer(2,'B')" id="q2B">B. &nbsp;The vehicle pulls to the right (toward the lower-caster side).</button>
+    <button class="choice-btn" onclick="answer(2,'C')" id="q2C">C. &nbsp;The vehicle wanders and requires constant correction.</button>
+    <button class="choice-btn" onclick="answer(2,'D')" id="q2D">D. &nbsp;No complaint — both readings are within spec.</button>
+    <div class="feedback" id="fb2"></div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-block" id="qb3">
+    <div class="q-num">Question 3 of 5</div>
+    <div class="q-text">During an alignment, SAI reads 14° 30' on the left and 12° 00' on the right. Camber on the right is within spec at −0° 30'. What is the most likely cause?</div>
+    <button class="choice-btn" onclick="answer(3,'A')" id="q3A">A. &nbsp;Right front camber needs to be adjusted — increase it to match the left.</button>
+    <button class="choice-btn" onclick="answer(3,'B')" id="q3B">B. &nbsp;The right front toe is too far out — adjust the tie rod.</button>
+    <button class="choice-btn" onclick="answer(3,'C')" id="q3C">C. &nbsp;The right front lower control arm or steering knuckle is likely bent — structural damage, not adjustable.</button>
+    <button class="choice-btn" onclick="answer(3,'D')" id="q3D">D. &nbsp;The alignment machine is reading incorrectly — re-calibrate the heads.</button>
+    <div class="feedback" id="fb3"></div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-block" id="qb4">
+    <div class="q-num">Question 4 of 5</div>
+    <div class="q-text">Convert 2° 45' to decimal degrees.</div>
+    <button class="choice-btn" onclick="answer(4,'A')" id="q4A">A. &nbsp;2.45°</button>
+    <button class="choice-btn" onclick="answer(4,'B')" id="q4B">B. &nbsp;2.75°</button>
+    <button class="choice-btn" onclick="answer(4,'C')" id="q4C">C. &nbsp;2.4°</button>
+    <button class="choice-btn" onclick="answer(4,'D')" id="q4D">D. &nbsp;2.80°</button>
+    <div class="feedback" id="fb4"></div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-block" id="qb5">
+    <div class="q-num">Question 5 of 5</div>
+    <div class="q-text">After completing a four-wheel alignment on a Honda Civic with ADAS, what two additional steps must be performed before returning the vehicle?</div>
+    <button class="choice-btn" onclick="answer(5,'A')" id="q5A">A. &nbsp;Re-torque all lug nuts and replace the cabin air filter.</button>
+    <button class="choice-btn" onclick="answer(5,'B')" id="q5B">B. &nbsp;Reset the Steering Angle Sensor (SAS) and verify/recalibrate ADAS camera and radar systems per iN.</button>
+    <button class="choice-btn" onclick="answer(5,'C')" id="q5C">C. &nbsp;Rotate the tires and reset the TPMS.</button>
+    <button class="choice-btn" onclick="answer(5,'D')" id="q5D">D. &nbsp;Print the alignment report and reset the oil life monitor.</button>
+    <div class="feedback" id="fb5"></div>
+  </div>
+
+  <div class="nav-row">
+    <button class="nav-btn" onclick="goTo(2)" aria-label="Back to slide 3">← Back to Lesson</button>
+    <button class="nav-btn primary" onclick="showCompletion()" id="finish-btn" style="display:none">See Results →</button>
+  </div>
+</section>
+
+<!-- COMPLETION -->
+<section class="completion" id="completion" aria-labelledby="comp-title">
+  <h2 id="comp-title">Lesson Complete 🎉</h2>
+  <div class="score-badge" id="score-display" aria-live="polite">— / 5</div>
+  <p id="score-msg" style="margin-bottom:16px;"></p>
+  <p style="font-size:13px;color:#888;">Review any missed questions above, then proceed to the Alignment Fundamentals Worksheet.</p>
+  <div class="nav-row" style="justify-content:center;margin-top:20px;">
+    <button class="nav-btn" onclick="restart()">↩ Restart Lesson</button>
+  </div>
+</section>
+
+</div><!-- /lesson-wrapper -->
+
+<script>
+const CORRECT = {
+  1: 'B',
+  2: 'B',
+  3: 'C',
+  4: 'B',
+  5: 'B'
+};
+const FEEDBACK = {
+  1: {
+    B: '✓ Correct! If the pull stays in the same direction after swapping tires side-to-side, the tires are not the cause. The issue is an alignment angle imbalance (most likely caster or camber side-to-side difference) or a dragging brake.',
+    wrong: '✗ Incorrect. If tire conicity caused the pull, swapping the tires would move the pull to the other side. Since the pull stayed right, look at caster, camber, or brake drag.'
+  },
+  2: {
+    B: '✓ Correct! The vehicle pulls toward the side with LOWER caster. Right caster is 1° 45\' — lower than left at 3° 30\'. The side-to-side difference is 1° 45\', which far exceeds the 0° 30\' maximum, causing a strong pull to the right.',
+    wrong: '✗ Incorrect. Caster imbalance is the strongest pull force. The vehicle pulls toward the side with lower caster — in this case, the right side where caster reads only 1° 45\' vs. 3° 30\' on the left.'
+  },
+  3: {
+    C: '✓ Correct! SAI is non-adjustable — it reflects suspension geometry. A significant side-to-side SAI difference (14° 30\' vs. 12° 00\' = 2° 30\' difference, well beyond the 1° limit) with camber in spec indicates a bent lower control arm or steering knuckle on the right side.',
+    wrong: '✗ Incorrect. SAI cannot be adjusted — it is a diagnostic angle. A 2° 30\' side-to-side SAI difference points to structural damage: a bent lower control arm or steering knuckle on the right front. No alignment adjustment can fix this.'
+  },
+  4: {
+    B: '✓ Correct! 45 minutes ÷ 60 = 0.75°. Add to the whole degrees: 2 + 0.75 = 2.75°. Never read 2° 45\' as 2.45° — minutes are not decimal digits.',
+    wrong: '✗ Incorrect. Convert minutes to decimal by dividing by 60: 45 ÷ 60 = 0.75. So 2° 45\' = 2.75°. Remember: 60 minutes = 1 degree.'
+  },
+  5: {
+    B: '✓ Correct! Any time front alignment angles are adjusted, the Steering Angle Sensor must be reset (this tells the vehicle\'s stability systems where "straight ahead" is). On ADAS-equipped vehicles, camera and radar recalibration is also required — confirm the specific procedure in Honda iN before returning the vehicle.',
+    wrong: '✗ Incorrect. After a front wheel alignment on a Honda with ADAS, two critical steps are required: (1) Reset the Steering Angle Sensor (SAS), and (2) Verify and recalibrate ADAS systems per Honda iN. Skipping these can cause ADAS malfunctions and failed inspections.'
+  }
+};
+
+let answered = {};
+let totalAnswered = 0;
+let score = 0;
+let currentSlide = 0;
+const TOTAL_SLIDES = 3;
+
+function goTo(n) {
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.kc-section').forEach(s => s.classList.remove('active'));
+  document.querySelector('.completion').classList.remove('active');
+
+  if (n < TOTAL_SLIDES) {
+    document.getElementById('slide' + n).classList.add('active');
+    currentSlide = n;
+  } else if (n === TOTAL_SLIDES) {
+    document.getElementById('kc').classList.add('active');
+    currentSlide = n;
+  }
+  updateProgress(n);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress(n) {
+  for (let i = 0; i <= 3; i++) {
+    const d = document.getElementById('d' + i);
+    if (!d) continue;
+    d.classList.remove('active', 'done');
+    if (i < n) d.classList.add('done');
+    else if (i === n) d.classList.add('active');
+  }
+  const labels = ['Slide 1 of 3', 'Slide 2 of 3', 'Slide 3 of 3', 'Knowledge Check'];
+  document.getElementById('prog-label').textContent = labels[n] || 'Complete';
+}
+
+function answer(qNum, choice) {
+  if (answered[qNum]) return;
+  answered[qNum] = true;
+  totalAnswered++;
+
+  const isCorrect = (choice === CORRECT[qNum]);
+  if (isCorrect) score++;
+
+  const opts = ['A','B','C','D'];
+  opts.forEach(opt => {
+    const btn = document.getElementById('q' + qNum + opt);
+    if (!btn) return;
+    btn.disabled = true;
+    if (opt === CORRECT[qNum]) btn.classList.add('correct');
+    else if (opt === choice && !isCorrect) btn.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('fb' + qNum);
+  const fbData = FEEDBACK[qNum];
+  fb.textContent = isCorrect ? fbData[CORRECT[qNum]] : fbData.wrong;
+  fb.className = 'feedback ' + (isCorrect ? 'correct' : 'wrong');
+
+  if (totalAnswered === 5) {
+    document.getElementById('finish-btn').style.display = 'inline-block';
+  }
+}
+
+function showCompletion() {
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  document.getElementById('kc').classList.remove('active');
+  document.querySelector('.completion').classList.add('active');
+  document.getElementById('score-display').textContent = score + ' / 5';
+  const msgs = [
+    [0,2,'Review the lesson slides again, then re-read the Alignment Angles Reference on Canvas. You\'ve got this — keep going.'],
+    [3,3,'Good effort! Focus on SAI diagnostic logic and the degrees/minutes conversion for next time.'],
+    [4,4,'Strong work! Review any missed questions and you\'re ready for the lab.'],
+    [5,5,'Perfect score! Outstanding — you understand alignment angle interpretation, pull diagnosis, and proper procedure. Ready for the lab. 🔧']
+  ];
+  let msg = msgs[0][2];
+  for (const [lo,hi,m] of msgs) { if (score >= lo && score <= hi) { msg = m; break; } }
+  document.getElementById('score-msg').textContent = msg;
+  updateProgress(4);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restart() {
+  answered = {};
+  totalAnswered = 0;
+  score = 0;
+  document.querySelectorAll('.choice-btn').forEach(b => {
+    b.disabled = false;
+    b.classList.remove('correct','wrong');
+  });
+  document.querySelectorAll('.feedback').forEach(f => f.className = 'feedback');
+  document.getElementById('finish-btn').style.display = 'none';
+  goTo(0);
+}
+</script>
+</body>
+</html>

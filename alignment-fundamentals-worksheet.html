@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wheel Alignment Fundamentals — Worksheet — AUTOH 173</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f2f2f2;
+    color: #1a1a1a;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 24px 16px 60px; }
+
+  /* HEADER */
+  .page-header {
+    background: #1a1a1a; border-left: 6px solid #CC0000;
+    border-radius: 4px; padding: 20px 24px; margin-bottom: 18px;
+  }
+  .page-header .label { color: #CC0000; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 6px; }
+  .page-header h1 { color: #fff; font-size: 21px; font-weight: 700; margin-bottom: 4px; }
+  .page-header .sub { color: #ccc; font-size: 13px; }
+
+  /* STUDENT INFO */
+  .student-bar {
+    background: #fff; border: 1px solid #e0e0e0; border-radius: 4px;
+    padding: 14px 18px; margin-bottom: 18px; display: flex; gap: 14px; flex-wrap: wrap;
+  }
+  .si-field { flex: 1; min-width: 160px; }
+  .si-field label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; color: #CC0000; margin-bottom: 4px; }
+  .si-field input { width: 100%; border: none; border-bottom: 2px solid #CC0000; padding: 4px 2px; font-size: 14px; background: transparent; color: #1a1a1a; }
+  .si-field input:focus { outline: none; border-bottom-color: #1a1a1a; }
+
+  /* SECTION HEADER */
+  .sec-hdr {
+    background: #CC0000; color: #fff; padding: 9px 16px; border-radius: 4px 4px 0 0;
+    font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px;
+    margin-top: 22px; margin-bottom: 0;
+  }
+  .sec-body { background: #fff; border: 1px solid #e0e0e0; border-top: none; border-radius: 0 0 4px 4px; padding: 18px; margin-bottom: 4px; }
+
+  /* INSTRUCTIONS BANNER */
+  .inst-banner {
+    background: #fff5f5; border-left: 4px solid #CC0000;
+    border-radius: 0 4px 4px 0; padding: 10px 14px; margin-bottom: 16px; font-size: 13px; color: #1a1a1a;
+  }
+  .inst-banner strong { color: #CC0000; }
+
+  /* FIELD */
+  .field { margin-bottom: 14px; }
+  .field .fl {
+    font-size: 13px; font-weight: 700; color: #1a1a1a; margin-bottom: 5px;
+    display: flex; gap: 8px; align-items: flex-start;
+  }
+  .field .fl .num {
+    background: #CC0000; color: #fff; font-size: 11px; font-weight: 700;
+    min-width: 22px; height: 22px; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+  }
+  textarea {
+    width: 100%; border: 1px solid #e0e0e0; border-radius: 3px;
+    padding: 9px 11px; font-size: 13px; font-family: Arial, sans-serif;
+    color: #1a1a1a; resize: vertical; min-height: 52px; background: #fafafa;
+  }
+  textarea:focus { outline: 2px solid #CC0000; background: #fff; }
+  input[type="text"] {
+    border: 1px solid #e0e0e0; border-radius: 3px; padding: 7px 10px;
+    font-size: 13px; color: #1a1a1a; background: #fafafa; width: 100%;
+  }
+  input[type="text"]:focus { outline: 2px solid #CC0000; background: #fff; }
+  select {
+    border: 1px solid #e0e0e0; border-radius: 3px; padding: 7px 10px;
+    font-size: 13px; color: #1a1a1a; background: #fafafa; width: 100%;
+  }
+  select:focus { outline: 2px solid #CC0000; background: #fff; }
+
+  /* GRID ROW */
+  .inline-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+  .inline-cell { flex: 1; min-width: 110px; }
+  .inline-cell label { display: block; font-size: 11px; font-weight: 700; color: #555; text-transform: uppercase; margin-bottom: 4px; }
+
+  /* TABLE */
+  table.ws-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 14px 0; }
+  table.ws-table th {
+    background: #1a1a1a; color: #fff; padding: 9px 10px;
+    text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .4px;
+  }
+  table.ws-table td { padding: 8px 10px; border-bottom: 1px solid #e0e0e0; vertical-align: top; }
+  table.ws-table tr:nth-child(even) td { background: #f9f9f9; }
+  table.ws-table td input[type="text"] { min-width: 80px; }
+  table.ws-table td select { min-width: 100px; }
+  table.ws-table td textarea { min-height: 40px; }
+
+  /* INFO BOX */
+  .info-box { background: #f0f4ff; border: 1px solid #bfd0f5; padding: 11px 14px; border-radius: 4px; margin: 12px 0; font-size: 13px; }
+
+  /* CANVAS REF */
+  .canvas-ref { background: #D3D3D3; padding: 8px 14px; border-radius: 3px; font-size: 12px; color: #1a1a1a; margin-top: 8px; }
+
+  /* KNOWLEDGE CHECK */
+  .kc-block { border: 1px solid #e0e0e0; border-radius: 4px; margin-bottom: 14px; overflow: hidden; }
+  .kc-q-hdr { background: #1a1a1a; padding: 9px 14px; }
+  .kc-q-hdr .kc-label { color: #CC0000; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+  .kc-q-hdr .kc-q { color: #fff; font-size: 13px; font-weight: 700; margin-top: 3px; line-height: 1.4; }
+  .kc-opts { padding: 12px 14px; background: #fff; }
+  .kc-opts label { display: flex; align-items: flex-start; gap: 10px; padding: 6px 0; font-size: 13px; color: #333; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
+  .kc-opts label:last-child { border-bottom: none; }
+  .kc-opts input[type="radio"] { margin-top: 2px; flex-shrink: 0; accent-color: #CC0000; }
+  .kc-explain { background: #f9f9f9; padding: 10px 14px; border-top: 1px solid #e0e0e0; }
+  .kc-explain label { font-size: 11px; font-weight: 700; color: #555; text-transform: uppercase; margin-bottom: 4px; display: block; }
+
+  /* GRADING */
+  .grade-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
+  .grade-table th { background: #1a1a1a; color: #fff; padding: 8px 10px; text-align: left; font-size: 12px; text-transform: uppercase; }
+  .grade-table td { padding: 8px 10px; border-bottom: 1px solid #e0e0e0; }
+  .grade-table tr:last-child td { font-weight: 700; background: #fff5f5; color: #CC0000; }
+
+  /* PRINT */
+  @media print {
+    body { background: #fff; }
+    .wrap { padding: 0; }
+    textarea, input, select { border: 1px solid #ccc !important; }
+    .page-header { background: #1a1a1a !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .sec-hdr { background: #CC0000 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    table.ws-table th, .grade-table th, .kc-q-hdr { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- PAGE HEADER -->
+<header class="page-header" role="banner">
+  <div class="label">AUTOH 173 · Honda Steering &amp; Suspension — Wheel Alignment</div>
+  <h1>Wheel Alignment Fundamentals — Worksheet</h1>
+  <div class="sub">SSC36 Interpreting Angles &nbsp;·&nbsp; SSC38 Diagnostic Angles &nbsp;·&nbsp; SSC42 Drift/Pull &nbsp;·&nbsp; SSC40 Proper Alignment &nbsp;·&nbsp; SSS41 Evaluating Alignment</div>
+</header>
+
+<!-- STUDENT INFO -->
+<div class="student-bar" role="region" aria-label="Student information">
+  <div class="si-field">
+    <label for="si-name">Student Name</label>
+    <input type="text" id="si-name" autocomplete="name" placeholder="First Last">
+  </div>
+  <div class="si-field">
+    <label for="si-date">Date</label>
+    <input type="text" id="si-date" placeholder="MM/DD/YYYY">
+  </div>
+  <div class="si-field">
+    <label for="si-period">Period</label>
+    <input type="text" id="si-period" placeholder="1 or 2">
+  </div>
+  <div class="si-field">
+    <label for="si-inst">Instructor</label>
+    <input type="text" id="si-inst" value="R. Smith">
+  </div>
+</div>
+
+<!-- ═══ PART A — SSC36 + SSC38 ═══ -->
+<h2 class="sec-hdr">Part A — Interpreting &amp; Diagnostic Angles (SSC36 · SSC38)</h2>
+<div class="sec-body" role="region" aria-label="Part A: Interpreting and Diagnostic Angles">
+
+  <div class="inst-banner">
+    <strong>📋 Directions:</strong> Use the Alignment Angles Reference on Canvas and your textbook to complete each item. Write complete sentences where a text box is provided.
+  </div>
+
+  <!-- A1 — Angle Chart -->
+  <div class="field">
+    <div class="fl"><span class="num" aria-hidden="true">1</span><span>Complete the alignment angle reference table. For each angle, identify whether it is adjustable or diagnostic, fill in a typical range, and describe its primary effect on the vehicle.</span></div>
+
+    <table class="ws-table" role="table" aria-label="Alignment angle reference table — student fill-in">
+      <thead>
+        <tr>
+          <th scope="col" style="width:15%">Angle</th>
+          <th scope="col" style="width:20%">Type<br><span style="font-size:10px;font-weight:400;">(Adjustable / Diagnostic)</span></th>
+          <th scope="col" style="width:20%">Typical Range<br><span style="font-size:10px;font-weight:400;">(Degrees &amp; Minutes)</span></th>
+          <th scope="col">Primary Effect on Vehicle / Tire Wear</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Caster</strong></td>
+          <td><input type="text" id="a1-caster-type" placeholder="Adj / Diag" aria-label="Caster type"></td>
+          <td><input type="text" id="a1-caster-range" placeholder="e.g. +2° to +8°" aria-label="Caster range"></td>
+          <td><textarea id="a1-caster-eff" style="min-height:38px;" placeholder="Effect on handling and pull direction..." aria-label="Caster effect"></textarea></td>
+        </tr>
+        <tr>
+          <td><strong>Camber</strong></td>
+          <td><input type="text" id="a1-camber-type" placeholder="Adj / Diag" aria-label="Camber type"></td>
+          <td><input type="text" id="a1-camber-range" placeholder="e.g. 0° to −1.5°" aria-label="Camber range"></td>
+          <td><textarea id="a1-camber-eff" style="min-height:38px;" placeholder="Effect on tire contact and pull..." aria-label="Camber effect"></textarea></td>
+        </tr>
+        <tr>
+          <td><strong>Toe</strong></td>
+          <td><input type="text" id="a1-toe-type" placeholder="Adj / Diag" aria-label="Toe type"></td>
+          <td><input type="text" id="a1-toe-range" placeholder="e.g. 0° to 0° 20' in" aria-label="Toe range"></td>
+          <td><textarea id="a1-toe-eff" style="min-height:38px;" placeholder="Tire wear pattern and directional effect..." aria-label="Toe effect"></textarea></td>
+        </tr>
+        <tr>
+          <td><strong>Thrust Angle</strong></td>
+          <td><input type="text" id="a1-thrust-type" placeholder="Adj / Diag" aria-label="Thrust angle type"></td>
+          <td><input type="text" id="a1-thrust-range" placeholder="e.g. 0° ±0° 10'" aria-label="Thrust angle range"></td>
+          <td><textarea id="a1-thrust-eff" style="min-height:38px;" placeholder="Effect on dog-tracking and steering wheel position..." aria-label="Thrust angle effect"></textarea></td>
+        </tr>
+        <tr>
+          <td><strong>SAI</strong></td>
+          <td><input type="text" id="a1-sai-type" placeholder="Adj / Diag" aria-label="SAI type"></td>
+          <td><input type="text" id="a1-sai-range" placeholder="e.g. 8° – 15°" aria-label="SAI range"></td>
+          <td><textarea id="a1-sai-eff" style="min-height:38px;" placeholder="What a side-to-side difference tells you..." aria-label="SAI effect"></textarea></td>
+        </tr>
+        <tr>
+          <td><strong>Included Angle</strong></td>
+          <td><input type="text" id="a1-ia-type" placeholder="Adj / Diag" aria-label="Included angle type"></td>
+          <td><input type="text" id="a1-ia-range" placeholder="SAI + Camber" aria-label="Included angle range"></td>
+          <td><textarea id="a1-ia-eff" style="min-height:38px;" placeholder="What it reveals when SAI is correct vs. incorrect..." aria-label="Included angle effect"></textarea></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- A2 — Convert minutes -->
+  <div class="field">
+    <div class="fl"><span class="num" aria-hidden="true">2</span><span>Convert each alignment reading from Degrees &amp; Minutes to decimal degrees. Show your calculation.</span></div>
+    <div class="info-box" role="note">
+      <strong>Formula:</strong> Decimal degrees = Whole degrees + (Minutes ÷ 60). Example: 1° 30' = 1 + (30 ÷ 60) = <strong>1.5°</strong>
+    </div>
+    <table class="ws-table" role="table" aria-label="Degrees and minutes conversion practice">
+      <thead>
+        <tr>
+          <th scope="col">Reading</th>
+          <th scope="col">Calculation (show work)</th>
+          <th scope="col">Decimal Degrees Answer</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>0° 45'</td>
+          <td><input type="text" id="conv1-calc" placeholder="45 ÷ 60 = ..." aria-label="Calculation for 0 degrees 45 minutes"></td>
+          <td><input type="text" id="conv1-ans" placeholder="___°" aria-label="Decimal answer for 0 degrees 45 minutes"></td>
+        </tr>
+        <tr>
+          <td>2° 15'</td>
+          <td><input type="text" id="conv2-calc" placeholder="" aria-label="Calculation for 2 degrees 15 minutes"></td>
+          <td><input type="text" id="conv2-ans" placeholder="___°" aria-label="Decimal answer for 2 degrees 15 minutes"></td>
+        </tr>
+        <tr>
+          <td>3° 30'</td>
+          <td><input type="text" id="conv3-calc" placeholder="" aria-label="Calculation for 3 degrees 30 minutes"></td>
+          <td><input type="text" id="conv3-ans" placeholder="___°" aria-label="Decimal answer for 3 degrees 30 minutes"></td>
+        </tr>
+        <tr>
+          <td>0° 20'</td>
+          <td><input type="text" id="conv4-calc" placeholder="" aria-label="Calculation for 0 degrees 20 minutes"></td>
+          <td><input type="text" id="conv4-ans" placeholder="___°" aria-label="Decimal answer for 0 degrees 20 minutes"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- A3 — SAI / Included Angle Scenario -->
+  <div class="field">
+    <div class="fl"><span class="num" aria-hidden="true">3</span><span><strong>SAI &amp; Included Angle Diagnostic Scenario:</strong> The alignment machine shows Left SAI = 13° 30' and Right SAI = 11° 00'. Right front camber reads −0° 20' (within spec). Answer both parts.</span></div>
+    <div class="inline-row">
+      <div class="inline-cell" style="flex:2;">
+        <label for="a3a">A. What is the side-to-side SAI difference? Is it within the 1° maximum?</label>
+        <input type="text" id="a3a" placeholder="Difference = ___ ° ___' — [Within / Exceeds] spec" aria-label="SAI side-to-side difference and spec comparison">
+      </div>
+    </div>
+    <div class="field" style="margin-top:10px;">
+      <label for="a3b" style="font-size:13px;font-weight:700;display:block;margin-bottom:4px;">B. What structural component is most likely damaged, and why does the fact that camber is in spec support your diagnosis? Use the Included Angle formula in your answer.</label>
+      <textarea id="a3b" style="min-height:72px;" placeholder="Because SAI is off but camber is in spec, the Included Angle calculation tells us... This means the most likely damaged component is... because..." aria-label="SAI diagnostic explanation and included angle application"></textarea>
+    </div>
+  </div>
+
+  <div class="canvas-ref" role="note">📚 <strong>Canvas Reference:</strong> Alignment Angles Reference — SAI &amp; Included Angle section · Textbook SAI diagram</div>
+</div>
+
+
+<!-- ═══ PART B — SSC42 ═══ -->
+<h2 class="sec-hdr">Part B — Diagnosing Drift &amp; Pull (SSC42)</h2>
+<div class="sec-body" role="region" aria-label="Part B: Diagnosing Drift and Pull">
+
+  <div class="inst-banner">
+    <strong>📋 Directions:</strong> Use the pull/drift diagnostic information from the micro lesson and Canvas reference to complete each scenario.
+  </div>
+
+  <!-- B1 — Tire Swap Test -->
+  <div class="field">
+    <div class="fl"><span class="num" aria-hidden="true">1</span><span>Explain the tire swap diagnostic test. What are you doing, and what does each outcome mean?</span></div>
+    <div class="field" style="margin-bottom:8px;">
+      <label for="b1-proc" style="font-size:13px;font-weight:700;display:block;margin-bottom:4px;">Procedure (what you physically do):</label>
+      <textarea id="b1-proc" style="min-height:46px;" placeholder="Swap the front tires..." aria-label="Tire swap test procedure"></textarea>
+    </div>
+    <div class="inline-row">
+      <div class="inline-cell">
+        <label for="b1-change" style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">If the pull CHANGES direction after swap → cause is:</label>
+        <textarea id="b1-change" style="min-height:46px;" placeholder="..." aria-label="Outcome if pull changes direction"></textarea>
+      </div>
+      <div class="inline-cell">
+        <label for="b1-stays" style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">If the pull STAYS in the same direction after swap → cause is:</label>
+        <textarea id="b1-stays" style="min-height:46px;" placeholder="..." aria-label="Outcome if pull stays in same direction"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- B2 — Complaint Match -->
+  <div class="field">
+    <div class="fl"><span class="num" aria-hidden="true">2</span><span>Match each customer complaint to its most likely cause. Write the letter of the best answer in the blank. Each answer is used once.</span></div>
+    <div class="info-box" role="note">
+      <strong>Answer Bank:</strong> &nbsp; A. Caster side-to-side difference &nbsp; B. Excessive toe &nbsp; C. Rear thrust angle off &nbsp; D. Memory steer — binding strut bearing or ball joint &nbsp; E. Torque steer — not correctable by alignment
+    </div>
+    <table class="ws-table" role="table" aria-label="Complaint to cause matching table">
+      <thead>
+        <tr>
+          <th scope="col" style="width:55%">Customer Complaint</th>
+          <th scope="col" style="width:15%">Answer (A–E)</th>
+          <th scope="col">Briefly Explain Your Reasoning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>"Car pulls hard to the right at highway speed — constant force."</td>
+          <td><input type="text" id="b2-1-ans" style="width:60px;text-align:center;" placeholder="___" aria-label="Answer for constant pull complaint"></td>
+          <td><textarea id="b2-1-exp" style="min-height:38px;" placeholder="..." aria-label="Explanation for constant pull complaint"></textarea></td>
+        </tr>
+        <tr>
+          <td>"After a left turn, the car keeps drifting left for a few seconds before straightening."</td>
+          <td><input type="text" id="b2-2-ans" style="width:60px;text-align:center;" placeholder="___" aria-label="Answer for drift-after-turn complaint"></td>
+          <td><textarea id="b2-2-exp" style="min-height:38px;" placeholder="..." aria-label="Explanation for drift-after-turn complaint"></textarea></td>
+        </tr>
+        <tr>
+          <td>"Car drifts left and right — I have to keep correcting it constantly."</td>
+          <td><input type="text" id="b2-3-ans" style="width:60px;text-align:center;" placeholder="___" aria-label="Answer for wander complaint"></td>
+          <td><textarea id="b2-3-exp" style="min-height:38px;" placeholder="..." aria-label="Explanation for wander complaint"></textarea></td>
+        </tr>
+        <tr>
+          <td>"Steering wheel is off-center — angled to the right even when driving straight."</td>
+          <td><input type="text" id="b2-4-ans" style="width:60px;text-align:center;" placeholder="___" aria-label="Answer for off-center wheel complaint"></td>
+          <td><textarea id="b2-4-exp" style="min-height:38px;" placeholder="..." aria-label="Explanation for off-center wheel complaint"></textarea></td>
+        </tr>
+        <tr>
+          <td>"Car pulls right ONLY when I accelerate hard — straightens out at cruise speed."</td>
+          <td><input type="text" id="b2-5-ans" style="width:60px;text-align:center;" placeholder="___" aria-label="Answer for torque steer complaint"></td>
+          <td><textarea id="b2-5-exp" style="min-height:38px;" placeholder="..." aria-label="Explanation for torque steer complaint"></textarea></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- B3 — Pull Analysis Scenario -->
+  <div class="field">
+    <div class="fl"><span class="num" aria-hidden="true">3</span><span><strong>Pull Analysis Scenario:</strong> The alignment printout shows: Left Caster = +3° 45', Right Caster = +1° 30'. OEM spec = +3° 00' ± 1° 00'.</span></div>
+    <div class="inline-row">
+      <div class="inline-cell">
+        <label for="b3-diff" style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Side-to-side caster difference (show math):</label>
+        <input type="text" id="b3-diff" placeholder="3° 45' − 1° 30' = ___° ___'" aria-label="Caster side-to-side difference calculation">
+      </div>
+      <div class="inline-cell">
+        <label for="b3-spec" style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Max allowed side-to-side difference:</label>
+        <input type="text" id="b3-spec" placeholder="0° ___'" aria-label="Maximum allowed side-to-side caster difference">
+      </div>
+    </div>
+    <div class="field" style="margin-top:8px;">
+      <label for="b3-pull" style="font-size:13px;font-weight:700;display:block;margin-bottom:4px;">Which direction will the vehicle pull, and why? Reference the angle that is most out of spec.</label>
+      <textarea id="b3-pull" style="min-height:60px;" placeholder="The vehicle will pull to the [left/right] because caster is lowest on the [left/right] at ___°. The side-to-side difference of ___° exceeds the 0° 30' maximum, creating a pull force..." aria-label="Pull direction explanation using caster data"></textarea>
+    </div>
+  </div>
+
+  <div class="canvas-ref" role="note">📚 <strong>Canvas Reference:</strong> Alignment Angles Reference — Caster section · Micro Lesson slide 2</div>
+</div>
+
+
+<!-- ═══ PART C — SSC40 ═══ -->
+<h2 class="sec-hdr">Part C — Performing a Proper Alignment (SSC40)</h2>
+<div class="sec-body" role="region" aria-label="Part C: Performing a Proper Alignment">
+
+  <div class="inst-banner">
+    <strong>📋 Directions:</strong> Describe the correct procedure for performing a four-wheel alignment. Use your own words — do not copy from the reference.
+  </div>
+
+  <!-- C1 — Pre-Alignment Inspection -->
+  <div class="field">
+    <div class="fl"><span class="num" aria-hidden="true">1</span><span>List the seven pre-alignment inspection items that must be checked before placing a vehicle on the alignment rack. For each item, explain <em>why</em> it matters.</span></div>
+    <table class="ws-table" role="table" aria-label="Pre-alignment inspection checklist — student fill-in">
+      <thead>
+        <tr>
+          <th scope="col" style="width:8%">#</th>
+          <th scope="col" style="width:30%">Inspection Item</th>
+          <th scope="col">Why It Matters (effect if skipped)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="text-align:center;font-weight:700;">1</td><td><input type="text" id="c1-i1" placeholder="..." aria-label="Pre-alignment inspection item 1"></td><td><textarea id="c1-e1" style="min-height:36px;" placeholder="..." aria-label="Why item 1 matters"></textarea></td></tr>
+        <tr><td style="text-align:center;font-weight:700;">2</td><td><input type="text" id="c1-i2" placeholder="..." aria-label="Pre-alignment inspection item 2"></td><td><textarea id="c1-e2" style="min-height:36px;" placeholder="..." aria-label="Why item 2 matters"></textarea></td></tr>
+        <tr><td style="text-align:center;font-weight:700;">3</td><td><input type="text" id="c1-i3" placeholder="..." aria-label="Pre-alignment inspection item 3"></td><td><textarea id="c1-e3" style="min-height:36px;" placeholder="..." aria-label="Why item 3 matters"></textarea></td></tr>
+        <tr><td style="text-align:center;font-weight:700;">4</td><td><input type="text" id="c1-i4" placeholder="..." aria-label="Pre-alignment inspection item 4"></td><td><textarea id="c1-e4" style="min-height:36px;" placeholder="..." aria-label="Why item 4 matters"></textarea></td></tr>
+        <tr><td style="text-align:center;font-weight:700;">5</td><td><input type="text" id="c1-i5" placeholder="..." aria-label="Pre-alignment inspection item 5"></td><td><textarea id="c1-e5" style="min-height:36px;" placeholder="..." aria-label="Why item 5 matters"></textarea></td></tr>
+        <tr><td style="text-align:center;font-weight:700;">6</td><td><input type="text" id="c1-i6" placeholder="..." aria-label="Pre-alignment inspection item 6"></td><td><textarea id="c1-e6" style="min-height:36px;" placeholder="..." aria-label="Why item 6 matters"></textarea></td></tr>
+        <tr><td style="text-align:center;font-weight:700;">7</td><td><input type="text" id="c1-i7" placeholder="..." aria-label="Pre-alignment inspection item 7"></td><td><textarea id="c1-e7" style="min-height:36px;" placeholder="..." aria-label="Why item 7 matters"></textarea></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- C2 — Alignment Sequence -->
+  <div class="field">
+    <div class="fl"><span class="num" aria-hidden="true">2</span><span>Place the alignment adjustment steps in the correct order by writing the step number (1–5) in the blank. Then explain why the thrust angle must be set <em>before</em> front toe.</span></div>
+    <table class="ws-table" role="table" aria-label="Alignment sequence ordering exercise">
+      <thead>
+        <tr>
+          <th scope="col" style="width:12%">Order #</th>
+          <th scope="col">Alignment Step</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" id="c2-ord-a" style="width:60px;text-align:center;" placeholder="___" aria-label="Order number for Front Toe and Center Steering Wheel"></td>
+          <td>Front Toe &amp; Center Steering Wheel</td>
+        </tr>
+        <tr>
+          <td><input type="text" id="c2-ord-b" style="width:60px;text-align:center;" placeholder="___" aria-label="Order number for Print and Verify All Angles"></td>
+          <td>Print Alignment Report &amp; Verify All Angles Within Spec</td>
+        </tr>
+        <tr>
+          <td><input type="text" id="c2-ord-c" style="width:60px;text-align:center;" placeholder="___" aria-label="Order number for Rear Thrust Angle"></td>
+          <td>Rear Thrust Angle — Set Baseline</td>
+        </tr>
+        <tr>
+          <td><input type="text" id="c2-ord-d" style="width:60px;text-align:center;" placeholder="___" aria-label="Order number for Front Caster and Camber"></td>
+          <td>Front Caster &amp; Camber</td>
+        </tr>
+        <tr>
+          <td><input type="text" id="c2-ord-e" style="width:60px;text-align:center;" placeholder="___" aria-label="Order number for Rear Camber and Toe"></td>
+          <td>Rear Camber &amp; Toe</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="field" style="margin-top:10px;">
+      <label for="c2-why" style="font-size:13px;font-weight:700;display:block;margin-bottom:4px;">Why must thrust angle be corrected before setting front toe?</label>
+      <textarea id="c2-why" style="min-height:56px;" placeholder="Thrust angle sets the geometric baseline because... If front toe is set before correcting thrust angle, the result will be..." aria-label="Explanation of why thrust angle is set before front toe"></textarea>
+    </div>
+  </div>
+
+  <!-- C3 — Honda-Specific Steps -->
+  <div class="field">
+    <div class="fl"><span class="num" aria-hidden="true">3</span><span>List the two Honda-specific steps required after a front wheel alignment is performed. Explain the consequence of skipping each one.</span></div>
+    <div class="inline-row" style="flex-direction:column;gap:10px;">
+      <div>
+        <label for="c3-sas" style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Step 1 — Name of procedure:</label>
+        <input type="text" id="c3-sas" placeholder="..." aria-label="Honda-specific step 1 name" style="margin-bottom:6px;">
+        <label for="c3-sas-why" style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Consequence if skipped:</label>
+        <textarea id="c3-sas-why" style="min-height:42px;" placeholder="If this step is skipped..." aria-label="Consequence if Honda step 1 is skipped"></textarea>
+      </div>
+      <div>
+        <label for="c3-adas" style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Step 2 — Name of procedure:</label>
+        <input type="text" id="c3-adas" placeholder="..." aria-label="Honda-specific step 2 name" style="margin-bottom:6px;">
+        <label for="c3-adas-why" style="font-size:12px;font-weight:700;display:block;margin-bottom:4px;">Consequence if skipped:</label>
+        <textarea id="c3-adas-why" style="min-height:42px;" placeholder="If this step is skipped..." aria-label="Consequence if Honda step 2 is skipped"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="canvas-ref" role="note">📚 <strong>Canvas Reference:</strong> Vehicle-Specific Alignment Procedures — Honda · Micro Lesson slide 3</div>
+</div>
+
+
+<!-- ═══ PART D — SSS41 ═══ -->
+<h2 class="sec-hdr">Part D — Evaluating an Alignment Printout (SSS41)</h2>
+<div class="sec-body" role="region" aria-label="Part D: Evaluating an Alignment Printout">
+
+  <div class="inst-banner">
+    <strong>📋 Directions:</strong> The following alignment data is from a 2021 Honda Accord 2.0T. Use Honda iN to find OEM specs. Enter the spec, determine the status, and explain what each reading means for the vehicle.
+  </div>
+
+  <table class="ws-table" role="table" aria-label="Alignment printout evaluation — student fill-in with given readings and student-entered specs and analysis">
+    <thead>
+      <tr>
+        <th scope="col" style="width:14%">Angle</th>
+        <th scope="col" style="width:13%">Machine Reading</th>
+        <th scope="col" style="width:20%">OEM Spec (from iN)</th>
+        <th scope="col" style="width:13%">Status</th>
+        <th scope="col">Analysis — Effect on Vehicle</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Caster Left</strong></td>
+        <td style="text-align:center;font-weight:700;">+3° 15'</td>
+        <td><input type="text" id="d-cl-sp" placeholder="Spec from iN" aria-label="OEM spec for left caster"></td>
+        <td><select id="d-cl-st" aria-label="Status for left caster"><option value="">— Select —</option><option>IN SPEC</option><option>OUT OF SPEC</option><option>NOTE</option></select></td>
+        <td><textarea id="d-cl-nt" style="min-height:38px;" placeholder="Effect on steering and pull..." aria-label="Analysis for left caster"></textarea></td>
+      </tr>
+      <tr>
+        <td><strong>Caster Right</strong></td>
+        <td style="text-align:center;font-weight:700;color:#CC0000;">+1° 30'</td>
+        <td><input type="text" id="d-cr-sp" placeholder="Spec from iN" aria-label="OEM spec for right caster"></td>
+        <td><select id="d-cr-st" aria-label="Status for right caster"><option value="">— Select —</option><option>IN SPEC</option><option>OUT OF SPEC</option><option>NOTE</option></select></td>
+        <td><textarea id="d-cr-nt" style="min-height:38px;" placeholder="Is this within spec? Side-to-side difference and pull direction..." aria-label="Analysis for right caster"></textarea></td>
+      </tr>
+      <tr>
+        <td><strong>Camber Left</strong></td>
+        <td style="text-align:center;font-weight:700;">−0° 45'</td>
+        <td><input type="text" id="d-cml-sp" placeholder="Spec from iN" aria-label="OEM spec for left camber"></td>
+        <td><select id="d-cml-st" aria-label="Status for left camber"><option value="">— Select —</option><option>IN SPEC</option><option>OUT OF SPEC</option><option>NOTE</option></select></td>
+        <td><textarea id="d-cml-nt" style="min-height:38px;" placeholder="Tire wear and pull contribution..." aria-label="Analysis for left camber"></textarea></td>
+      </tr>
+      <tr>
+        <td><strong>Camber Right</strong></td>
+        <td style="text-align:center;font-weight:700;">−0° 30'</td>
+        <td><input type="text" id="d-cmr-sp" placeholder="Spec from iN" aria-label="OEM spec for right camber"></td>
+        <td><select id="d-cmr-st" aria-label="Status for right camber"><option value="">— Select —</option><option>IN SPEC</option><option>OUT OF SPEC</option><option>NOTE</option></select></td>
+        <td><textarea id="d-cmr-nt" style="min-height:38px;" placeholder="Side-to-side camber difference..." aria-label="Analysis for right camber"></textarea></td>
+      </tr>
+      <tr>
+        <td><strong>Toe — Total Front</strong></td>
+        <td style="text-align:center;font-weight:700;">0° 30'</td>
+        <td><input type="text" id="d-tof-sp" placeholder="Spec from iN" aria-label="OEM spec for front total toe"></td>
+        <td><select id="d-tof-st" aria-label="Status for front toe"><option value="">— Select —</option><option>IN SPEC</option><option>OUT OF SPEC</option><option>NOTE</option></select></td>
+        <td><textarea id="d-tof-nt" style="min-height:38px;" placeholder="Convert to decimal. Tire wear implication?" aria-label="Analysis for front toe"></textarea></td>
+      </tr>
+      <tr>
+        <td><strong>Toe — Total Rear</strong></td>
+        <td style="text-align:center;font-weight:700;">0° 10'</td>
+        <td><input type="text" id="d-tor-sp" placeholder="Spec from iN" aria-label="OEM spec for rear total toe"></td>
+        <td><select id="d-tor-st" aria-label="Status for rear toe"><option value="">— Select —</option><option>IN SPEC</option><option>OUT OF SPEC</option><option>NOTE</option></select></td>
+        <td><textarea id="d-tor-nt" style="min-height:38px;" placeholder="Effect on rear tire wear..." aria-label="Analysis for rear toe"></textarea></td>
+      </tr>
+      <tr>
+        <td><strong>SAI Left / Right</strong></td>
+        <td style="text-align:center;font-weight:700;">14° 00' / 13° 30'</td>
+        <td><input type="text" id="d-sai-sp" placeholder="Typical range &amp; max diff" aria-label="OEM spec for SAI"></td>
+        <td><select id="d-sai-st" aria-label="Status for SAI"><option value="">— Select —</option><option>IN SPEC</option><option>OUT OF SPEC</option><option>NOTE</option></select></td>
+        <td><textarea id="d-sai-nt" style="min-height:38px;" placeholder="What does this SAI reading tell you about component condition?" aria-label="SAI diagnostic interpretation"></textarea></td>
+      </tr>
+      <tr>
+        <td><strong>Thrust Angle</strong></td>
+        <td style="text-align:center;font-weight:700;">0° 05'</td>
+        <td><input type="text" id="d-ta-sp" placeholder="Spec from iN" aria-label="OEM spec for thrust angle"></td>
+        <td><select id="d-ta-st" aria-label="Status for thrust angle"><option value="">— Select —</option><option>IN SPEC</option><option>OUT OF SPEC</option><option>NOTE</option></select></td>
+        <td><textarea id="d-ta-nt" style="min-height:38px;" placeholder="Rear tracking — dog-tracking or off-center wheel concern?" aria-label="Thrust angle analysis"></textarea></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- D2 — Summary -->
+  <div class="field" style="margin-top:12px;">
+    <div class="fl"><span class="num" aria-hidden="true">1</span><span>Based on this printout, write a complete evaluation summary. Identify: (a) the primary cause of any pull, (b) whether structural damage is likely, and (c) what corrections are required before returning the vehicle.</span></div>
+    <textarea id="d-summary" style="min-height:100px;" placeholder="Evaluation Summary:&#10;(a) Primary pull cause —&#10;(b) SAI/structural assessment —&#10;(c) Required corrections —" aria-label="Alignment printout evaluation summary"></textarea>
+  </div>
+
+  <div class="canvas-ref" role="note">📚 <strong>Canvas Reference:</strong> Alignment Angles Reference · Case Study Worksheet (reference for format) · Honda iN for OEM specs</div>
+</div>
+
+
+<!-- ═══ PART E — Knowledge Check ═══ -->
+<h2 class="sec-hdr">Part E — Knowledge Check (Multiple Choice + Explanation)</h2>
+<div class="sec-body" role="region" aria-label="Part E: Knowledge Check">
+
+  <div class="inst-banner">
+    <strong>📋 Directions:</strong> Select the best answer AND write a brief explanation of your reasoning. Unsupported answers receive half credit.
+  </div>
+
+  <!-- KC1 -->
+  <div class="kc-block" role="group" aria-labelledby="kc1-label">
+    <div class="kc-q-hdr">
+      <div class="kc-label" id="kc1-label">Question 1 of 5 · Multiple Choice</div>
+      <div class="kc-q">A vehicle pulls to the LEFT. After swapping the front tires side-to-side, it now pulls to the RIGHT. What caused the original pull?</div>
+    </div>
+    <div class="kc-opts">
+      <label><input type="radio" name="kc1" value="A" aria-label="Answer choice A for question 1"> A. &nbsp;Left front caster is lower than the right.</label>
+      <label><input type="radio" name="kc1" value="B" aria-label="Answer choice B for question 1"> B. &nbsp;Left front tire conicity — the tire itself generates the pull force.</label>
+      <label><input type="radio" name="kc1" value="C" aria-label="Answer choice C for question 1"> C. &nbsp;Rear thrust angle — the rear axle is pushing the vehicle left.</label>
+      <label><input type="radio" name="kc1" value="D" aria-label="Answer choice D for question 1"> D. &nbsp;Front toe is set too far in on the left side.</label>
+    </div>
+    <div class="kc-explain">
+      <label for="kc1-exp">Explain your reasoning:</label>
+      <textarea id="kc1-exp" style="min-height:48px;" placeholder="I chose [letter] because..." aria-label="Explanation for question 1 answer"></textarea>
+    </div>
+  </div>
+
+  <!-- KC2 -->
+  <div class="kc-block" role="group" aria-labelledby="kc2-label">
+    <div class="kc-q-hdr">
+      <div class="kc-label" id="kc2-label">Question 2 of 5 · Multiple Choice</div>
+      <div class="kc-q">SAI reads 13° 45' on the left and 11° 15' on the right. Right front camber is −0° 40' (within spec). What is the most correct next action?</div>
+    </div>
+    <div class="kc-opts">
+      <label><input type="radio" name="kc2" value="A" aria-label="Answer choice A for question 2"> A. &nbsp;Adjust right front camber to match the left.</label>
+      <label><input type="radio" name="kc2" value="B" aria-label="Answer choice B for question 2"> B. &nbsp;Adjust right front toe to bring SAI into range.</label>
+      <label><input type="radio" name="kc2" value="C" aria-label="Answer choice C for question 2"> C. &nbsp;Inspect and replace the damaged structural component — SAI cannot be adjusted.</label>
+      <label><input type="radio" name="kc2" value="D" aria-label="Answer choice D for question 2"> D. &nbsp;Re-calibrate the alignment machine heads and recheck.</label>
+    </div>
+    <div class="kc-explain">
+      <label for="kc2-exp">Explain your reasoning:</label>
+      <textarea id="kc2-exp" style="min-height:48px;" placeholder="I chose [letter] because..." aria-label="Explanation for question 2 answer"></textarea>
+    </div>
+  </div>
+
+  <!-- KC3 -->
+  <div class="kc-block" role="group" aria-labelledby="kc3-label">
+    <div class="kc-q-hdr">
+      <div class="kc-label" id="kc3-label">Question 3 of 5 · Conversion</div>
+      <div class="kc-q">An alignment spec reads +2° 45'. What is the correct decimal degree value?</div>
+    </div>
+    <div class="kc-opts">
+      <label><input type="radio" name="kc3" value="A" aria-label="Answer choice A for question 3"> A. &nbsp;2.45°</label>
+      <label><input type="radio" name="kc3" value="B" aria-label="Answer choice B for question 3"> B. &nbsp;2.4°</label>
+      <label><input type="radio" name="kc3" value="C" aria-label="Answer choice C for question 3"> C. &nbsp;2.75°</label>
+      <label><input type="radio" name="kc3" value="D" aria-label="Answer choice D for question 3"> D. &nbsp;2.80°</label>
+    </div>
+    <div class="kc-explain">
+      <label for="kc3-exp">Show your calculation:</label>
+      <textarea id="kc3-exp" style="min-height:48px;" placeholder="45 ÷ 60 = ___. So 2° 45' = 2 + ___ = ___°" aria-label="Calculation for question 3"></textarea>
+    </div>
+  </div>
+
+  <!-- KC4 -->
+  <div class="kc-block" role="group" aria-labelledby="kc4-label">
+    <div class="kc-q-hdr">
+      <div class="kc-label" id="kc4-label">Question 4 of 5 · Multiple Choice</div>
+      <div class="kc-q">Which of the following BEST describes the correct four-wheel alignment sequence?</div>
+    </div>
+    <div class="kc-opts">
+      <label><input type="radio" name="kc4" value="A" aria-label="Answer choice A for question 4"> A. &nbsp;Front caster → Front camber → Front toe → Rear toe → Thrust angle</label>
+      <label><input type="radio" name="kc4" value="B" aria-label="Answer choice B for question 4"> B. &nbsp;Thrust angle → Rear camber/toe → Front caster/camber → Front toe → Print &amp; verify</label>
+      <label><input type="radio" name="kc4" value="C" aria-label="Answer choice C for question 4"> C. &nbsp;Pre-inspection → Front toe → Rear toe → Thrust angle → Print</label>
+      <label><input type="radio" name="kc4" value="D" aria-label="Answer choice D for question 4"> D. &nbsp;Mount heads → Front camber → Rear camber → Front toe → Road test</label>
+    </div>
+    <div class="kc-explain">
+      <label for="kc4-exp">Explain your reasoning:</label>
+      <textarea id="kc4-exp" style="min-height:48px;" placeholder="I chose [letter] because..." aria-label="Explanation for question 4 answer"></textarea>
+    </div>
+  </div>
+
+  <!-- KC5 -->
+  <div class="kc-block" role="group" aria-labelledby="kc5-label">
+    <div class="kc-q-hdr">
+      <div class="kc-label" id="kc5-label">Question 5 of 5 · Multiple Choice</div>
+      <div class="kc-q">A customer says the car pulls right only when accelerating hard from a stop but tracks straight at highway speed. Which statement is most accurate?</div>
+    </div>
+    <div class="kc-opts">
+      <label><input type="radio" name="kc5" value="A" aria-label="Answer choice A for question 5"> A. &nbsp;Right front caster is too low — adjust to increase caster on that side.</label>
+      <label><input type="radio" name="kc5" value="B" aria-label="Answer choice B for question 5"> B. &nbsp;This is torque steer — a wheel alignment cannot correct this condition.</label>
+      <label><input type="radio" name="kc5" value="C" aria-label="Answer choice C for question 5"> C. &nbsp;Right front toe is set too far in — adjust the tie rod to correct.</label>
+      <label><input type="radio" name="kc5" value="D" aria-label="Answer choice D for question 5"> D. &nbsp;The thrust angle is off — correct the rear alignment first.</label>
+    </div>
+    <div class="kc-explain">
+      <label for="kc5-exp">Explain your reasoning:</label>
+      <textarea id="kc5-exp" style="min-height:48px;" placeholder="I chose [letter] because..." aria-label="Explanation for question 5 answer"></textarea>
+    </div>
+  </div>
+
+</div><!-- /Part E sec-body -->
+
+
+<!-- ═══ GRADING BREAKDOWN ═══ -->
+<h2 class="sec-hdr" style="margin-top:22px;">Grading Breakdown</h2>
+<div class="sec-body">
+  <table class="grade-table" role="table" aria-label="Grading breakdown by section">
+    <thead>
+      <tr>
+        <th scope="col">Section</th>
+        <th scope="col">Topics Covered</th>
+        <th scope="col" style="text-align:right;">Points</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Part A — Angles</td>
+        <td>Angle table, degree/minute conversion, SAI diagnostic scenario</td>
+        <td style="text-align:right;">25</td>
+      </tr>
+      <tr>
+        <td>Part B — Drift/Pull</td>
+        <td>Tire swap test, complaint matching, caster pull analysis</td>
+        <td style="text-align:right;">25</td>
+      </tr>
+      <tr>
+        <td>Part C — Proper Alignment</td>
+        <td>Pre-inspection checklist, alignment sequence, Honda-specific steps</td>
+        <td style="text-align:right;">25</td>
+      </tr>
+      <tr>
+        <td>Part D — Evaluating Printout</td>
+        <td>OEM spec lookup, status determination, evaluation summary</td>
+        <td style="text-align:right;">15</td>
+      </tr>
+      <tr>
+        <td>Part E — Knowledge Check</td>
+        <td>5 MC questions with written explanation (2 pts each)</td>
+        <td style="text-align:right;">10</td>
+      </tr>
+      <tr>
+        <td colspan="2"><strong>Total</strong></td>
+        <td style="text-align:right;"><strong>100 Points</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="inst-banner" style="margin-top:14px;">
+    <strong>📤 Submission:</strong> Complete all sections digitally and submit via Canvas, or print and submit at the end of the period. Attach your Honda iN alignment spec screenshot for Part D credit.
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div style="margin-top:20px;border-top:2px solid #e0e0e0;padding-top:10px;text-align:center;">
+  <p style="font-size:11px;color:#999;">AUTOH 173 · Honda PACT · Shoreline Community College · Instructor: R. Smith · Training reference only — verify all procedures in Honda iN before performing service</p>
+</div>
+
+</div><!-- /wrap -->
+</body>
+</html>
