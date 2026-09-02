@@ -1,0 +1,181 @@
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:800px;margin:0 auto;font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;">
+<tr>
+<td style="background-color:#1a1a1a;padding:22px 28px;border-radius:6px 6px 0 0;">
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+<tr>
+<td style="color:#ffffff;font-size:12px;letter-spacing:1px;text-transform:uppercase;font-weight:bold;">AUTOH 172 &bull; Honda Fuel &amp; Emissions Systems</td>
+</tr>
+<tr>
+<td style="color:#ffffff;font-size:24px;font-weight:bold;padding-top:6px;">Discussion: The Physics Behind Engine Design</td>
+</tr>
+<tr>
+<td style="color:#d40000;font-size:14px;font-weight:bold;padding-top:4px;">Discussion Topic &bull; Honda PACT Competency: Engine Mechanical / Combustion Fundamentals</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<tr>
+<td style="background-color:#ffffff;border:1px solid #dddddd;border-top:none;padding:26px 28px;">
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom:20px;">
+<tr>
+<td style="background-color:#fbeaea;border-left:4px solid #d40000;padding:14px 16px;">
+<span style="font-size:14px;color:#1a1a1a;"><strong>Why this matters:</strong> Air pressure, temperature, volume, displacement, and compression ratio are not five separate facts to memorize &mdash; they are one connected system. Every compression test, knock complaint, and boost-pressure fault you diagnose traces back to how these five ideas interact inside a cylinder.</span>
+</td>
+</tr>
+</table>
+
+<h2 style="color:#1a1a1a;font-size:18px;border-bottom:2px solid #d40000;padding-bottom:6px;margin-top:0;">Learning outcome</h2>
+<p style="font-size:14px;color:#333333;line-height:1.6;">By the end of this discussion, you will be able to explain air pressure, the pressure-temperature relationship, the pressure-volume relationship, displacement, and compression ratio as one connected system, and use that understanding to reason about real Honda engine design choices and diagnostic scenarios.</p>
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0 0 20px 0;">
+<tr>
+<td style="background-color:#f5f5f5;border:1px solid #dddddd;padding:14px 16px;">
+<span style="font-size:14px;color:#1a1a1a;"><strong>Before you post &mdash; review:</strong></span>
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:8px;">
+<tr>
+<td style="font-size:13px;color:#333333;line-height:1.7;padding:2px 0;">&bull; <strong>Cengage &mdash; Chapter 09: Automotive Engine Designs and Diagnosis</strong> (assigned reading; covers all 5 topics below in more depth)</td>
+</tr>
+<tr>
+<td style="font-size:13px;color:#333333;line-height:1.7;padding:2px 0;">&bull; <strong>Honda Interactive</strong> &mdash; engine operation and combustion modules</td>
+</tr>
+<tr>
+<td style="font-size:13px;color:#333333;line-height:1.7;padding:2px 0;">&bull; <strong>Honda Service Express</strong> &mdash; compression and diagnostic specs for reference vehicles (e.g., the Odyssey J35Y6)</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+
+<h2 style="color:#1a1a1a;font-size:18px;border-bottom:2px solid #d40000;padding-bottom:6px;">The 5 concepts</h2>
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #dddddd;margin-bottom:14px;">
+<tr><td style="background-color:#1a1a1a;color:#ffffff;font-size:14px;font-weight:bold;padding:8px 14px;">1. Air pressure</td></tr>
+<tr><td style="padding:12px 14px;font-size:14px;color:#333333;line-height:1.6;">
+Air pressure is the force air exerts on its surroundings, caused by air molecules in motion. In an engine, atmospheric pressure is what pushes the air-fuel charge into the cylinder on the intake stroke, and it's the baseline every gauge reading (vacuum, boost, compression) is measured against.
+</td></tr>
+</table>
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #dddddd;margin-bottom:14px;">
+<tr><td style="background-color:#1a1a1a;color:#ffffff;font-size:14px;font-weight:bold;padding:8px 14px;">2. Pressure and temperature</td></tr>
+<tr><td style="padding:12px 14px;font-size:14px;color:#333333;line-height:1.6;">
+When a gas is held in a fixed space and heated, its pressure rises &mdash; the molecules move faster and strike the cylinder walls harder. This is why cylinder pressure climbs sharply once combustion begins, and why an overheated engine or a hot intake charge is more prone to detonation.
+</td></tr>
+</table>
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #dddddd;margin-bottom:14px;">
+<tr><td style="background-color:#1a1a1a;color:#ffffff;font-size:14px;font-weight:bold;padding:8px 14px;">3. Pressure and volume</td></tr>
+<tr><td style="padding:12px 14px;font-size:14px;color:#333333;line-height:1.6;">
+When a gas is compressed into a smaller volume, its pressure rises &mdash; the same number of molecules are packed into a tighter space, so they collide more often. This is the mechanical heart of the compression stroke: shrinking cylinder volume from BDC to TDC is what builds pressure before the spark ever fires.
+</td></tr>
+</table>
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #dddddd;margin-bottom:14px;">
+<tr><td style="background-color:#1a1a1a;color:#ffffff;font-size:14px;font-weight:bold;padding:8px 14px;">4. Displacement</td></tr>
+<tr><td style="padding:12px 14px;font-size:14px;color:#333333;line-height:1.6;">
+Displacement is the total volume swept by all pistons as they travel from BDC to TDC &mdash; it's the "size" of the engine (e.g., the Odyssey's J35Y6 displaces 3.5 liters). Displacement, combined with cylinder count and configuration, sets the upper limit on how much air-fuel mixture the engine can process, which is the starting point for how much power it can produce.
+</td></tr>
+</table>
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #dddddd;margin-bottom:18px;">
+<tr><td style="background-color:#1a1a1a;color:#ffffff;font-size:14px;font-weight:bold;padding:8px 14px;">5. Compression ratio</td></tr>
+<tr><td style="padding:12px 14px;font-size:14px;color:#333333;line-height:1.6;">
+Compression ratio (CR) is the ratio of cylinder volume at BDC to cylinder volume at TDC. It ties concepts 2, 3, and 4 together: a higher CR squeezes the same displaced volume into a smaller space at TDC, driving both pressure and temperature higher. That improves thermal efficiency and torque, but also raises knock risk &mdash; which is why naturally aspirated and turbocharged engines are tuned to very different compression ratios.
+</td></tr>
+</table>
+
+<h2 style="color:#1a1a1a;font-size:18px;border-bottom:2px solid #d40000;padding-bottom:6px;">Discussion prompt</h2>
+<p style="font-size:14px;color:#333333;line-height:1.6;">In your initial post, respond to <strong>all four</strong> parts below. Use at least one specific term from each of the 5 concepts somewhere in your post.</p>
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom:16px;">
+<tr>
+<td style="padding:10px 14px;border:1px solid #dddddd;font-size:14px;color:#333333;line-height:1.6;">
+<strong>1. Build the chain.</strong> In your own words, explain how these five concepts connect: start with air pressure entering the cylinder, then explain what happens to pressure and temperature as volume shrinks during compression, and how displacement and compression ratio determine how far that squeeze goes.
+</td>
+</tr>
+<tr>
+<td style="padding:10px 14px;border:1px solid #dddddd;font-size:14px;color:#333333;line-height:1.6;">
+<strong>2. Pick a real engine.</strong> Using Honda Interactive, Service Express, or Chapter 09, look up the displacement and compression ratio of one Honda engine (the J35Y6 in the Odyssey, or another you choose). Report the specs and explain what they tell you about that engine's design priorities (efficiency, power, turbo vs. naturally aspirated).
+</td>
+</tr>
+<tr>
+<td style="padding:10px 14px;border:1px solid #dddddd;font-size:14px;color:#333333;line-height:1.6;">
+<strong>3. Apply it to diagnostics.</strong> A customer reports a knocking/pinging sound under acceleration. Using the pressure-temperature and pressure-volume relationships, list two possible root causes a technician should investigate and explain why each pushes the engine toward detonation.
+</td>
+</tr>
+<tr>
+<td style="padding:10px 14px;border:1px solid #dddddd;font-size:14px;color:#333333;line-height:1.6;">
+<strong>4. Reflect.</strong> Which of the 5 concepts was least intuitive to you before this reading, and what part of Chapter 09 or Honda Interactive helped it click?
+</td>
+</tr>
+</table>
+
+<h2 style="color:#1a1a1a;font-size:18px;border-bottom:2px solid #d40000;padding-bottom:6px;">Post requirements</h2>
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom:18px;">
+<tr>
+<td style="width:50%;vertical-align:top;padding-right:12px;">
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #dddddd;">
+<tr><td style="background-color:#f5f5f5;padding:10px 14px;font-size:14px;font-weight:bold;color:#1a1a1a;border-bottom:1px solid #dddddd;">Initial post</td></tr>
+<tr><td style="padding:12px 14px;font-size:13px;color:#333333;line-height:1.6;">
+&bull; Minimum 175 words<br>
+&bull; Addresses all 4 prompt parts<br>
+&bull; References at least one specific engine spec (displacement or CR)<br>
+&bull; Due Thursday, 11:59 PM
+</td></tr>
+</table>
+</td>
+<td style="width:50%;vertical-align:top;padding-left:12px;">
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #dddddd;">
+<tr><td style="background-color:#f5f5f5;padding:10px 14px;font-size:14px;font-weight:bold;color:#1a1a1a;border-bottom:1px solid #dddddd;">Peer replies</td></tr>
+<tr><td style="padding:12px 14px;font-size:13px;color:#333333;line-height:1.6;">
+&bull; Reply to at least 2 classmates<br>
+&bull; Minimum 50 words each<br>
+&bull; Agree, respectfully challenge, or add a different engine example<br>
+&bull; Due Sunday, 11:59 PM
+</td></tr>
+</table>
+</td>
+</tr>
+</table>
+
+<h2 style="color:#1a1a1a;font-size:18px;border-bottom:2px solid #d40000;padding-bottom:6px;">Grading rubric</h2>
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse;margin-bottom:6px;">
+<tr>
+<td style="background-color:#1a1a1a;color:#ffffff;font-size:13px;font-weight:bold;padding:8px 10px;border:1px solid #1a1a1a;">Criteria</td>
+<td style="background-color:#1a1a1a;color:#ffffff;font-size:13px;font-weight:bold;padding:8px 10px;border:1px solid #1a1a1a;text-align:center;">Points</td>
+</tr>
+<tr>
+<td style="padding:8px 10px;border:1px solid #dddddd;font-size:13px;color:#333333;">Accurately explains the 5-concept chain (air pressure &rarr; pressure/temp &rarr; pressure/volume &rarr; displacement &rarr; compression ratio)</td>
+<td style="padding:8px 10px;border:1px solid #dddddd;font-size:13px;color:#333333;text-align:center;">5</td>
+</tr>
+<tr>
+<td style="padding:8px 10px;border:1px solid #dddddd;font-size:13px;color:#333333;">Correct, specific engine spec pulled from Honda Interactive / Service Express / Chapter 09</td>
+<td style="padding:8px 10px;border:1px solid #dddddd;font-size:13px;color:#333333;text-align:center;">3</td>
+</tr>
+<tr>
+<td style="padding:8px 10px;border:1px solid #dddddd;font-size:13px;color:#333333;">Sound diagnostic reasoning on the knock scenario</td>
+<td style="padding:8px 10px;border:1px solid #dddddd;font-size:13px;color:#333333;text-align:center;">3</td>
+</tr>
+<tr>
+<td style="padding:8px 10px;border:1px solid #dddddd;font-size:13px;color:#333333;">Genuine reflection tied to the resources</td>
+<td style="padding:8px 10px;border:1px solid #dddddd;font-size:13px;color:#333333;text-align:center;">1</td>
+</tr>
+<tr>
+<td style="padding:8px 10px;border:1px solid #dddddd;font-size:13px;color:#333333;">Two substantive peer replies</td>
+<td style="padding:8px 10px;border:1px solid #dddddd;font-size:13px;color:#333333;text-align:center;">4</td>
+</tr>
+<tr>
+<td style="padding:8px 10px;border:1px solid #dddddd;font-size:13px;font-weight:bold;color:#1a1a1a;">Total</td>
+<td style="padding:8px 10px;border:1px solid #dddddd;font-size:13px;font-weight:bold;color:#1a1a1a;text-align:center;">16</td>
+</tr>
+</table>
+
+</td>
+</tr>
+
+<tr>
+<td style="background-color:#1a1a1a;padding:14px 28px;border-radius:0 0 6px 6px;">
+<span style="color:#aaaaaa;font-size:12px;">AUTOH 172 &bull; Honda PACT Program &bull; Instructor: R. Smith (rsmith@shoreline.edu)</span>
+</td>
+</tr>
+</table>
