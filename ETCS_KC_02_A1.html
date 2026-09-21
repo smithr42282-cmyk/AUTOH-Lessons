@@ -89,20 +89,13 @@
   </div>
   <div class="prog" id="progLabel" role="status" aria-live="polite">
     Page 2 of 12
-    <span class="score" id="scoreLabel">Score: 0 / 24</span>
   </div>
 </header>
 
 <div class="wrap">
-  <div class="toolbar">
-    <button class="util" onclick="window.print()">Print This Page</button>
-    <button class="util" id="saveBtn">Save Progress</button>
-    <button class="util" id="clearBtn">Clear All</button>
-  </div>
-
   <main id="main">
     <section class="pagecard" tabindex="-1" aria-labelledby="h-main">
-      <p class="eyebrow">SECTION A — CONCEPT REVIEW (AUTO-GRADED)</p>
+      <p class="eyebrow">SECTION A — CONCEPT REVIEW</p>
       <h2 id="h-main">Question 1 of 4</h2>
       
 <fieldset class="question" data-qid="a1">
@@ -176,22 +169,6 @@ document.querySelectorAll('input[type=radio]').forEach(function(r){
   if(DATA.values[key]===r.value) r.checked=true;
 });
 
-document.getElementById('saveBtn').addEventListener('click', function(){
-  saveData(DATA);
-  alert('Progress saved on this device.');
-});
-document.getElementById('clearBtn').addEventListener('click', function(){
-  if(confirm('Clear ALL saved answers across every question page? This cannot be undone.')){
-    try{ localStorage.removeItem('etcs_kc_progress_page'); }catch(e){}
-    DATA = {values:{}, autoScores:{}};
-    document.querySelectorAll('input[type=text],input[type=date]').forEach(function(i){ i.value=''; });
-    document.querySelectorAll('textarea.autoexp').forEach(function(t){ t.value=''; t.style.height='100px'; });
-    document.querySelectorAll('input[type=radio]').forEach(function(r){ r.checked=false; });
-    document.querySelectorAll('.mscore').forEach(function(m){ m.value=''; });
-    document.querySelectorAll('.feedback').forEach(function(f){ f.style.display='none'; f.textContent=''; });
-    updateScoreDisplay(DATA);
-  }
-});
 
 
 function checkMC_a1(){
