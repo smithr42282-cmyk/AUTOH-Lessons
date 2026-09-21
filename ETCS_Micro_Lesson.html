@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETCS Micro-Lesson | Honda PACT</title>
+<style>
+  :root{
+    --red:#CC0000;
+    --red-dark:#960000;
+    --black:#1a1a1a;
+    --grey:#4a4a4a;
+    --light:#f5f5f5;
+    --white:#ffffff;
+    --border:#d9d9d9;
+    --good:#1e7a34;
+    --bad:#b3261e;
+    --focus:#0b5fff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Segoe UI",Arial,Helvetica,sans-serif;
+    background:var(--light);
+    color:var(--black);
+    font-size:18px;
+    line-height:1.5;
+  }
+  .sr-only{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  }
+  .skip-link{
+    position:absolute;left:-999px;top:0;background:var(--red);color:#fff;
+    padding:10px 16px;z-index:200;border-radius:0 0 6px 0;font-weight:700;text-decoration:none;
+  }
+  .skip-link:focus{left:0;}
+  a{color:var(--red-dark);}
+  a:focus,button:focus-visible,input:focus-visible,textarea:focus-visible,.dot:focus-visible,label:focus-within{
+    outline:3px solid var(--focus);
+    outline-offset:2px;
+  }
+  header.brandbar{
+    background:var(--black);
+    color:var(--white);
+    padding:14px 24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:6px solid var(--red);
+  }
+  header.brandbar .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  header.brandbar .swatch{
+    width:22px;height:22px;background:var(--red);border-radius:3px;
+  }
+  header.brandbar h1{
+    font-size:20px;
+    margin:0;
+    font-weight:700;
+    letter-spacing:.3px;
+  }
+  header.brandbar .prog{
+    font-size:15px;
+    color:#eee;
+  }
+  .wrap{
+    max-width:900px;
+    margin:0 auto;
+    padding:24px 20px 100px;
+  }
+  .toolbar{
+    display:flex;
+    gap:10px;
+    justify-content:flex-end;
+    margin-bottom:14px;
+    flex-wrap:wrap;
+  }
+  button.util{
+    background:var(--white);
+    border:2px solid var(--black);
+    color:var(--black);
+    padding:8px 16px;
+    border-radius:6px;
+    font-size:15px;
+    cursor:pointer;
+    font-weight:600;
+  }
+  button.util:hover{background:var(--black);color:var(--white);}
+  .slide{
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:34px 36px;
+    min-height:420px;
+    box-shadow:0 2px 6px rgba(0,0,0,.06);
+    display:none;
+  }
+  .slide:focus{outline:none;}
+  .slide.active{display:block;}
+  @media (prefers-reduced-motion: no-preference){
+    .slide.active{animation:fade .25s ease;}
+  }
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .eyebrow{
+    color:var(--red-dark);
+    font-weight:700;
+    font-size:15px;
+    margin:0 0 6px;
+  }
+  h2{
+    font-size:28px;
+    margin:0 0 18px;
+    border-bottom:4px solid var(--red);
+    padding-bottom:10px;
+  }
+  h3{font-size:20px;margin:22px 0 8px;color:var(--red-dark);}
+  p{margin:0 0 12px;}
+  ul,ol{margin:0 0 14px;padding-left:26px;}
+  li{margin-bottom:8px;}
+  .obj-list li{margin-bottom:12px;}
+  .diagram{
+    background:var(--light);
+    border:2px dashed var(--border);
+    border-radius:8px;
+    padding:20px;
+    margin:16px 0;
+  }
+  .flow{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    align-items:center;
+    justify-content:center;
+    font-size:15px;
+    font-weight:600;
+  }
+  .flow .box{
+    background:var(--white);
+    border:2px solid var(--black);
+    border-radius:6px;
+    padding:10px 14px;
+    text-align:center;
+    min-width:120px;
+  }
+  .flow .box.red{border-color:var(--red);color:var(--red-dark);}
+  .flow .arrow{color:var(--red-dark);font-size:22px;}
+  .callout{
+    border-left:5px solid var(--red);
+    background:#fff4f4;
+    padding:12px 16px;
+    margin:14px 0;
+    border-radius:0 6px 6px 0;
+  }
+  .callout.safety{border-left-color:var(--bad);background:#fdecea;}
+  .callout.tip{border-left-color:var(--good);background:#eaf6ec;}
+  .callout strong{display:block;margin-bottom:4px;}
+  table.comp{
+    width:100%;
+    border-collapse:collapse;
+    margin:14px 0;
+    font-size:16px;
+  }
+  table.comp caption{ text-align:left; }
+  table.comp th,table.comp td{
+    border:1px solid var(--border);
+    padding:10px 12px;
+    text-align:left;
+    vertical-align:top;
+  }
+  table.comp th{background:var(--black);color:var(--white);}
+  table.comp tr:nth-child(even){background:var(--light);}
+  .kc-badge{
+    display:inline-block;
+    background:var(--red);
+    color:var(--white);
+    font-weight:700;
+    font-size:13px;
+    padding:4px 10px;
+    border-radius:20px;
+    margin-bottom:10px;
+    letter-spacing:.5px;
+  }
+  fieldset.question{
+    background:var(--light);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:18px 20px;
+    margin:0 0 16px;
+  }
+  fieldset.question legend.qtext{
+    font-weight:600;
+    margin-bottom:10px;
+    padding:0;
+    white-space:normal;
+    font-size:inherit;
+    color:inherit;
+  }
+  .opts label{
+    display:block;
+    background:var(--white);
+    border:2px solid var(--border);
+    border-radius:6px;
+    padding:9px 12px;
+    margin-bottom:8px;
+    cursor:pointer;
+  }
+  .opts label:hover{border-color:var(--red);}
+  .opts input{margin-right:8px;}
+  .checkbtn{
+    background:var(--red);
+    color:var(--white);
+    border:none;
+    padding:9px 18px;
+    border-radius:6px;
+    font-weight:700;
+    cursor:pointer;
+    font-size:15px;
+  }
+  .checkbtn:hover{background:var(--red-dark);}
+  .feedback{
+    margin-top:10px;
+    font-weight:700;
+    padding:8px 10px;
+    border-radius:6px;
+    display:none;
+  }
+  .feedback.correct{display:block;background:#eaf6ec;color:var(--good);}
+  .feedback.incorrect{display:block;background:#fdecea;color:var(--bad);}
+  .explain{
+    margin-top:8px;
+    font-size:15px;
+    font-weight:400;
+    color:var(--grey);
+    display:none;
+  }
+  nav.slidenav{
+    position:fixed;
+    bottom:0;left:0;right:0;
+    background:var(--white);
+    border-top:2px solid var(--black);
+    padding:12px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+  button.navbtn{
+    background:var(--black);
+    color:var(--white);
+    border:none;
+    padding:10px 20px;
+    border-radius:6px;
+    font-weight:700;
+    cursor:pointer;
+    font-size:15px;
+  }
+  button.navbtn:disabled{background:#767676;cursor:not-allowed;}
+  button.navbtn.primary{background:var(--red);}
+  button.navbtn.primary:hover{background:var(--red-dark);}
+  .dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;}
+  button.dot{
+    width:16px;height:16px;border-radius:50%;background:var(--white);
+    border:2px solid var(--border);padding:0;cursor:pointer;
+  }
+  button.dot[aria-current="true"]{background:var(--red);border-color:var(--red-dark);}
+  @media print{
+    header.brandbar,.toolbar,nav.slidenav,.skip-link{display:none;}
+    .slide{display:block !important;page-break-after:always;box-shadow:none;border:1px solid #999;}
+  }
+  @media (max-width:600px){
+    .slide{padding:22px 18px;}
+    h2{font-size:23px;}
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to lesson content</a>
+
+<header class="brandbar">
+  <div class="brand">
+    <div class="swatch" aria-hidden="true"></div>
+    <h1>Honda PACT &mdash; Electronic Throttle Control</h1>
+  </div>
+  <div class="prog" id="progLabel" role="status" aria-live="polite">Slide 1 of 14</div>
+</header>
+
+<div class="wrap">
+  <div class="toolbar">
+    <button class="util" onclick="window.print()">Print Lesson</button>
+    <button class="util" id="resetBtn">Reset Progress</button>
+  </div>
+
+  <main id="main">
+
+  <!-- SLIDE 1 -->
+  <section class="slide active" data-index="0" tabindex="-1" aria-labelledby="h-0">
+    <p class="eyebrow">MICRO-LESSON</p>
+    <h2 id="h-0">Electronic Throttle Control Systems (ETCS)</h2>
+    <p>This micro-lesson is required <strong>before</strong> you begin the ETCS Individual Skills Task (IST). It gives you the background knowledge you will apply when you look up model-specific information in <strong>Service Express</strong> and the <strong>Interactive Network (iN)</strong>.</p>
+    <div class="callout">
+      <strong>Before you start the IST, you must be able to explain:</strong>
+      How the ECM/PCM determines and controls throttle valve angle, what fail-safe strategies protect the vehicle when a fault occurs, where to find diagnostic information, and the correct procedures for servicing an ETCS-equipped throttle body.
+    </div>
+    <p>Work through each slide in order. Knowledge checks are embedded along the way &mdash; you must answer them correctly before your instructor will sign off on lesson completion.</p>
+  </section>
+
+  <!-- SLIDE 2 -->
+  <section class="slide" data-index="1" tabindex="-1" aria-labelledby="h-1">
+    <p class="eyebrow">LEARNING OBJECTIVES</p>
+    <h2 id="h-1">By the End of This Lesson You Will Be Able To&hellip;</h2>
+    <ol class="obj-list">
+      <li>Identify the sensors and actuator that make up the ETCS and describe the signal each one sends or receives.</li>
+      <li>Explain, in sequence, how the ECM/PCM converts accelerator pedal input into a commanded throttle valve angle.</li>
+      <li>List the fail-safe strategies the ECM/PCM uses when it detects an ETCS fault, and describe what the driver will experience in each case.</li>
+      <li>Locate ETCS diagnostic information &mdash; DTC definitions, symptom troubleshooting, and wiring diagrams &mdash; using Service Express and the Interactive Network.</li>
+      <li>Describe the correct precautions and procedure for servicing a throttle body, including any required relearn/reset procedure.</li>
+    </ol>
+  </section>
+
+  <!-- SLIDE 3 -->
+  <section class="slide" data-index="2" tabindex="-1" aria-labelledby="h-2">
+    <p class="eyebrow">SYSTEM OVERVIEW</p>
+    <h2 id="h-2">What Is ETCS?</h2>
+    <p>On older vehicles, a physical cable connected the accelerator pedal directly to the throttle plate. ETCS removes that cable. Instead, the driver's pedal input becomes an electrical signal, and the ECM/PCM decides how far to open the throttle plate &mdash; this is why the system is often called <strong>"drive-by-wire."</strong></p>
+    <div class="callout tip">
+      <strong>Why it matters to a technician</strong>
+      Because there is no mechanical link between the pedal and the throttle plate, you cannot diagnose a "no throttle response" complaint by inspecting a cable. Every part of the system &mdash; input, decision, and output &mdash; is electronic, so the scan tool and wiring diagrams become your primary diagnostic tools.
+    </div>
+    <p>Removing the cable also lets the ECM/PCM take control of throttle angle for reasons the driver never asked for, including idle speed control, traction/VSA intervention, cruise control, and cylinder deactivation transitions.</p>
+  </section>
+
+  <!-- SLIDE 4 -->
+  <section class="slide" data-index="3" tabindex="-1" aria-labelledby="h-3">
+    <p class="eyebrow">KEY COMPONENTS &mdash; PART 1</p>
+    <h2 id="h-3">Reading the Driver's Intent: The APP Sensor</h2>
+    <p>The <strong>Accelerator Pedal Position (APP) sensor</strong> is mounted on the pedal assembly and reports how far the pedal has been pressed.</p>
+    <table class="comp">
+      <caption class="sr-only">APP sensor component and function</caption>
+      <tr><th scope="col">Component</th><th scope="col">Function</th></tr>
+      <tr><td>APP Sensor 1 &amp; APP Sensor 2</td><td>Two potentiometer-type (or Hall-effect) sensors housed in one assembly, each producing an independent voltage signal proportional to pedal travel.</td></tr>
+    </table>
+    <div class="callout">
+      <strong>Why two sensors?</strong>
+      The ECM/PCM continuously compares APP1 and APP2. Because their voltage curves are offset (for example, one might range roughly 0.5&ndash;4.5V while the other ranges roughly 1.7&ndash;3.0V across the same pedal travel), the ECM/PCM can verify the two signals correlate correctly. This redundancy is the foundation of the system's fail-safe design, which you'll cover in a later slide.
+    </div>
+  </section>
+
+  <!-- SLIDE 5 -->
+  <section class="slide" data-index="4" tabindex="-1" aria-labelledby="h-4">
+    <p class="eyebrow">KEY COMPONENTS &mdash; PART 2</p>
+    <h2 id="h-4">Moving the Throttle Plate: TP Sensor &amp; Throttle Actuator</h2>
+    <table class="comp">
+      <caption class="sr-only">Throttle actuator and TP sensor component and function</caption>
+      <tr><th scope="col">Component</th><th scope="col">Function</th></tr>
+      <tr><td>Throttle Actuator (Motor)</td><td>A small DC motor built into the throttle body. The ECM/PCM controls its direction and speed (via a motor driver circuit, often PWM) to open or close the throttle plate.</td></tr>
+      <tr><td>Throttle Position (TP) Sensor 1 &amp; 2</td><td>Two sensors that report the <em>actual</em> angle of the throttle plate back to the ECM/PCM, again for redundancy and cross-checking.</td></tr>
+      <tr><td>Return Spring</td><td>A mechanical spring inside the throttle body that pulls the plate toward a fixed, partially-open default angle any time the motor is not energized.</td></tr>
+    </table>
+    <p>Keep that return spring in mind &mdash; it is the mechanical foundation of the fail-safe strategy you'll see in a few slides.</p>
+  </section>
+
+  <!-- SLIDE 6 -->
+  <section class="slide" data-index="5" tabindex="-1" aria-labelledby="h-5">
+    <p class="eyebrow">THE CONTROL LOOP</p>
+    <h2 id="h-5">How the ECM/PCM Controls Throttle Valve Angle</h2>
+    <p>The ECM/PCM runs a continuous closed-loop calculation, many times per second:</p>
+    <p class="sr-only">Diagram summary: APP1 and APP2 signals go in to the ECM or PCM, which calculates the desired throttle angle and energizes the motor driver, which moves the throttle plate. TP1 and TP2 signals then report the actual angle back to the ECM or PCM, which compares actual angle to desired angle and continues adjusting.</p>
+    <div class="diagram" aria-hidden="true">
+      <div class="flow">
+        <div class="box red">APP1 / APP2<br>signals in</div>
+        <div class="arrow">&rarr;</div>
+        <div class="box">ECM/PCM calculates<br>desired throttle angle</div>
+        <div class="arrow">&rarr;</div>
+        <div class="box red">Motor driver<br>energizes actuator</div>
+        <div class="arrow">&rarr;</div>
+        <div class="box">Throttle plate<br>moves</div>
+      </div>
+      <div class="flow" style="margin-top:14px;">
+        <div class="box">TP1 / TP2 signals<br>report actual angle</div>
+        <div class="arrow">&larr;</div>
+        <div class="box red">Compared to<br>desired angle</div>
+      </div>
+    </div>
+    <p>The desired angle is not simply "pedal percentage = throttle percentage." The ECM/PCM blends the driver's pedal request with other inputs before commanding the actuator, including:</p>
+    <ul>
+      <li>Engine speed and load, coolant temperature (cold-idle-up)</li>
+      <li>PCM-requested idle speed control</li>
+      <li>Cruise control, VSA/TCS traction intervention</li>
+      <li>Transmission shift quality (brief throttle "blips" during shifts, on applicable models)</li>
+      <li>Cylinder deactivation transitions, on VCM-equipped engines</li>
+    </ul>
+    <p>The TP sensor feedback closes the loop: the ECM/PCM keeps adjusting motor current until actual angle matches desired angle, then holds it there.</p>
+  </section>
+
+  <!-- SLIDE 7: KNOWLEDGE CHECK 1 -->
+  <section class="slide" data-index="6" tabindex="-1" aria-labelledby="h-6">
+    <span class="kc-badge">KNOWLEDGE CHECK 1</span>
+    <h2 id="h-6">Control Loop Check</h2>
+
+    <fieldset class="question" data-qid="q1">
+      <legend class="qtext">1. Which two sensor signals does the ECM/PCM compare to detect a pedal-sensor fault?</legend>
+      <div class="opts">
+        <label><input type="radio" name="q1" value="a"> TP1 and TP2</label>
+        <label><input type="radio" name="q1" value="b"> APP1 and APP2</label>
+        <label><input type="radio" name="q1" value="c"> MAP and MAF</label>
+        <label><input type="radio" name="q1" value="d"> Coolant temp and IAT</label>
+      </div>
+      <button type="button" class="checkbtn" onclick="checkAnswer('q1','b')">Check Answer</button>
+      <div class="feedback" role="status" aria-live="polite"></div>
+      <div class="explain">APP1 and APP2 are the two accelerator pedal position sensors. The ECM/PCM cross-checks their offset voltage curves against each other to confirm the driver's pedal input is being read correctly.</div>
+    </fieldset>
+
+    <fieldset class="question" data-qid="q2">
+      <legend class="qtext">2. What provides the ECM/PCM with feedback confirming the throttle plate actually reached the commanded angle?</legend>
+      <div class="opts">
+        <label><input type="radio" name="q2" value="a"> The return spring tension</label>
+        <label><input type="radio" name="q2" value="b"> The APP sensors</label>
+        <label><input type="radio" name="q2" value="c"> The TP sensors</label>
+        <label><input type="radio" name="q2" value="d"> The MIL circuit</label>
+      </div>
+      <button type="button" class="checkbtn" onclick="checkAnswer('q2','c')">Check Answer</button>
+      <div class="feedback" role="status" aria-live="polite"></div>
+      <div class="explain">The TP (Throttle Position) sensors report actual plate angle back to the ECM/PCM, closing the control loop.</div>
+    </fieldset>
+  </section>
+
+  <!-- SLIDE 8 -->
+  <section class="slide" data-index="7" tabindex="-1" aria-labelledby="h-7">
+    <p class="eyebrow">FAIL-SAFE STRATEGIES &mdash; PART 1</p>
+    <h2 id="h-7">Detecting a Fault: Sensor Monitoring &amp; Cross-Checks</h2>
+    <p>Because ETCS has no mechanical backup, Honda/Acura designs multiple layers of self-checking into the system. The ECM/PCM continuously monitors for:</p>
+    <ul>
+      <li><strong>APP1 vs. APP2 disagreement</strong> &mdash; the two pedal signals no longer correlate within an expected range.</li>
+      <li><strong>TP1 vs. TP2 disagreement</strong> &mdash; the two throttle position signals no longer correlate.</li>
+      <li><strong>Commanded angle vs. actual angle disagreement</strong> &mdash; the motor is told to move the plate to a position, but the TP sensors show it didn't get there (mechanical binding, motor fault, wiring fault).</li>
+      <li><strong>Circuit-level faults</strong> &mdash; open or shorted sensor/actuator circuits, out-of-range voltages, or loss of a reference voltage.</li>
+      <li><strong>Throttle actuator control (TAC) module or relay faults</strong> &mdash; loss of the ability to energize the throttle motor at all.</li>
+    </ul>
+    <div class="callout">
+      <strong>Key idea</strong>
+      Redundancy exists so the ECM/PCM never has to "trust" a single sensor with something as safety-critical as engine power output. Any disagreement between the redundant signals is treated as a potential fault.
+    </div>
+  </section>
+
+  <!-- SLIDE 9 -->
+  <section class="slide" data-index="8" tabindex="-1" aria-labelledby="h-8">
+    <p class="eyebrow">FAIL-SAFE STRATEGIES &mdash; PART 2</p>
+    <h2 id="h-8">Responding to a Fault: Limp-Home &amp; Shutdown Modes</h2>
+    <p>When the ECM/PCM confirms an ETCS fault, it responds with a strategy matched to the severity of the fault:</p>
+    <table class="comp">
+      <caption class="sr-only">Fault severity and ECM/PCM response</caption>
+      <tr><th scope="col">Fault Severity</th><th scope="col">ECM/PCM Response</th></tr>
+      <tr><td>Minor disagreement / single non-critical DTC</td><td>MIL illuminated, DTC stored, engine may continue running with limited throttle authority (reduced maximum angle) and/or a fixed elevated idle.</td></tr>
+      <tr><td>Loss of reliable APP or TP data</td><td>ECM/PCM commands a fixed, limited "default" throttle angle just enough to allow slow, engine-braked driving to a safe location &mdash; commonly called <strong>limp-home mode</strong>. Full acceleration is not available.</td></tr>
+      <tr><td>Severe/undiagnosable fault, or TAC relay commanded open</td><td>The throttle actuator control relay is de-energized, cutting all power to the throttle motor. With the motor un-powered, the <strong>return spring</strong> pulls the plate to its mechanical default position, and the engine can idle or run at low power only.</td></tr>
+    </table>
+    <div class="callout safety">
+      <strong>Safety note</strong>
+      The spring-return default position is a fixed mechanical angle, not "closed" and not "wide open." It is designed to allow just enough airflow to limp the vehicle safely, never to accelerate normally.
+    </div>
+    <p>In every case, the ECM/PCM also stores a Diagnostic Trouble Code (DTC) and illuminates the Malfunction Indicator Lamp (MIL) so the fault is recorded for you to retrieve.</p>
+  </section>
+
+  <!-- SLIDE 10: KNOWLEDGE CHECK 2 -->
+  <section class="slide" data-index="9" tabindex="-1" aria-labelledby="h-9">
+    <span class="kc-badge">KNOWLEDGE CHECK 2</span>
+    <h2 id="h-9">Fail-Safe Check</h2>
+
+    <fieldset class="question" data-qid="q3">
+      <legend class="qtext">3. If the ECM/PCM de-energizes the throttle actuator motor entirely, what brings the throttle plate to its default position?</legend>
+      <div class="opts">
+        <label><input type="radio" name="q3" value="a"> A backup electric motor</label>
+        <label><input type="radio" name="q3" value="b"> The driver's accelerator cable</label>
+        <label><input type="radio" name="q3" value="c"> The throttle body return spring</label>
+        <label><input type="radio" name="q3" value="d"> Engine vacuum</label>
+      </div>
+      <button type="button" class="checkbtn" onclick="checkAnswer('q3','c')">Check Answer</button>
+      <div class="feedback" role="status" aria-live="polite"></div>
+      <div class="explain">With the motor unpowered, the mechanical return spring inside the throttle body pulls the plate to a fixed default angle that allows limited, limp-home operation only.</div>
+    </fieldset>
+
+    <fieldset class="question" data-qid="q4">
+      <legend class="qtext">4. What is the purpose of "limp-home" throttle strategy?</legend>
+      <div class="opts">
+        <label><input type="radio" name="q4" value="a"> To improve fuel economy during normal driving</label>
+        <label><input type="radio" name="q4" value="b"> To allow limited, reduced-power driving to a safe location after a confirmed fault</label>
+        <label><input type="radio" name="q4" value="c"> To increase idle speed for cold starts</label>
+        <label><input type="radio" name="q4" value="d"> To disable the engine completely</label>
+      </div>
+      <button type="button" class="checkbtn" onclick="checkAnswer('q4','b')">Check Answer</button>
+      <div class="feedback" role="status" aria-live="polite"></div>
+      <div class="explain">Limp-home mode restricts throttle authority so the vehicle can still be driven, cautiously, to a safe stopping point &mdash; it is not meant for normal driving.</div>
+    </fieldset>
+  </section>
+
+  <!-- SLIDE 11 -->
+  <section class="slide" data-index="10" tabindex="-1" aria-labelledby="h-10">
+    <p class="eyebrow">DIAGNOSTIC RESOURCES</p>
+    <h2 id="h-10">Where to Find ETCS Diagnostic Information</h2>
+    <p>You will use these resources directly during the IST &mdash; get comfortable navigating them now.</p>
+    <table class="comp">
+      <caption class="sr-only">Diagnostic resource and its use</caption>
+      <tr><th scope="col">Resource</th><th scope="col">Use It For</th></tr>
+      <tr><td><strong>Service Express</strong></td><td>Official Honda/Acura service manual content: DTC troubleshooting flowcharts, component testing procedures, wiring diagrams, connector views, and specifications, all organized by model and year.</td></tr>
+      <tr><td><strong>Interactive Network (iN)</strong></td><td>Field-reported fixes, technical service bulletins, campaigns/recalls, and technician discussion of real-world ETCS symptoms and repair verification &mdash; useful when a DTC flowchart alone doesn't resolve an intermittent complaint.</td></tr>
+      <tr><td><strong>HDS (Honda Diagnostic System)</strong></td><td>Live data (APP1/APP2, TP1/TP2, commanded vs. actual angle), DTC retrieval, freeze-frame data, and bi-directional tests such as commanding the throttle motor.</td></tr>
+    </table>
+    <div class="callout tip">
+      <strong>IST reminder</strong>
+      Your IST will require you to look up specific, model-correct information &mdash; exact DTC definitions, specification values, or flowchart steps &mdash; in Service Express and iN. This lesson gives you the concepts; the IST asks you to apply them to a real vehicle using these tools.
+    </div>
+  </section>
+
+  <!-- SLIDE 12 -->
+  <section class="slide" data-index="11" tabindex="-1" aria-labelledby="h-11">
+    <p class="eyebrow">SERVICING PROCEDURES</p>
+    <h2 id="h-11">Servicing an ETCS Throttle Body</h2>
+    <ul>
+      <li><strong>Verify the complaint and pull DTCs first.</strong> Never disconnect or replace an ETCS component before confirming, with the scan tool, what fault is actually stored.</li>
+      <li><strong>Follow the model-specific flowchart in Service Express</strong> for the exact DTC retrieved &mdash; ETCS troubleshooting steps are not identical across all models and years.</li>
+      <li><strong>Throttle body cleaning:</strong> use only a cleaner labeled safe for oxygen sensors/throttle bodies; avoid spraying solvent directly into the throttle actuator motor or TP sensor connector, and never manually force the throttle plate open by hand against the return spring beyond the manufacturer's procedure.</li>
+      <li><strong>After replacing or disconnecting the throttle body, ECM/PCM, or battery,</strong> a throttle body/idle relearn (reset) procedure is typically required so the ECM/PCM can re-learn the closed-throttle reference position. Follow the exact steps and conditions listed in Service Express for the specific model &mdash; sequence and timing matter.</li>
+      <li><strong>Clear codes and verify the repair</strong> by retrieving live APP/TP data and confirming commanded angle matches actual angle through the full pedal range, then road test to confirm the MIL stays off.</li>
+    </ul>
+    <div class="callout safety">
+      <strong>Safety precaution</strong>
+      Because the throttle plate is motor-driven, keep hands and tools clear of the throttle bore whenever the ignition is on or the 12V system is powered &mdash; the ECM/PCM can move the plate without warning during self-tests, relearn procedures, or bi-directional scan tool commands.
+    </div>
+  </section>
+
+  <!-- SLIDE 13: KNOWLEDGE CHECK 3 -->
+  <section class="slide" data-index="12" tabindex="-1" aria-labelledby="h-12">
+    <span class="kc-badge">KNOWLEDGE CHECK 3</span>
+    <h2 id="h-12">Resources &amp; Servicing Check</h2>
+
+    <fieldset class="question" data-qid="q5">
+      <legend class="qtext">5. Which resource is the best source for field-reported fixes and technician discussion of an intermittent ETCS symptom?</legend>
+      <div class="opts">
+        <label><input type="radio" name="q5" value="a"> Service Express</label>
+        <label><input type="radio" name="q5" value="b"> Interactive Network (iN)</label>
+        <label><input type="radio" name="q5" value="c"> The owner's manual</label>
+        <label><input type="radio" name="q5" value="d"> The parts catalog</label>
+      </div>
+      <button type="button" class="checkbtn" onclick="checkAnswer('q5','b')">Check Answer</button>
+      <div class="feedback" role="status" aria-live="polite"></div>
+      <div class="explain">The Interactive Network (iN) captures real-world field fixes, bulletins, and technician-reported experience with specific symptoms.</div>
+    </fieldset>
+
+    <fieldset class="question" data-qid="q6">
+      <legend class="qtext">6. Why is a throttle body/idle relearn procedure typically required after ETCS component replacement?</legend>
+      <div class="opts">
+        <label><input type="radio" name="q6" value="a"> To reset the odometer</label>
+        <label><input type="radio" name="q6" value="b"> To let the ECM/PCM re-learn the closed-throttle reference position</label>
+        <label><input type="radio" name="q6" value="c"> To recalibrate the fuel gauge</label>
+        <label><input type="radio" name="q6" value="d"> It is never required</label>
+      </div>
+      <button type="button" class="checkbtn" onclick="checkAnswer('q6','b')">Check Answer</button>
+      <div class="feedback" role="status" aria-live="polite"></div>
+      <div class="explain">The relearn lets the ECM/PCM establish an accurate closed-throttle reference so all subsequent commanded angles are correct.</div>
+    </fieldset>
+  </section>
+
+  <!-- SLIDE 14 -->
+  <section class="slide" data-index="13" tabindex="-1" aria-labelledby="h-13">
+    <p class="eyebrow">NEXT STEP</p>
+    <h2 id="h-13">You're Ready for the IST</h2>
+    <p>You've covered how the ECM/PCM calculates and commands throttle valve angle, the fail-safe strategies it uses when a fault is detected, where to find diagnostic information, and the correct servicing procedure and precautions.</p>
+    <div class="callout">
+      <strong>Before you open the IST jobsheet:</strong>
+      <ol>
+        <li>Confirm with your instructor that all knowledge checks above are complete.</li>
+        <li>Log into Service Express and the Interactive Network for the vehicle assigned to your IST.</li>
+        <li>Use those resources to look up the model-specific DTC definitions, specifications, and procedure steps the IST jobsheet asks for &mdash; do not rely on memory or generic values.</li>
+      </ol>
+    </div>
+    <p style="text-align:center;font-weight:700;color:var(--red-dark);margin-top:24px;">Proceed to the ETCS Individual Skills Task jobsheet.</p>
+  </section>
+
+  </main>
+</div>
+
+<nav class="slidenav" aria-label="Lesson slide navigation">
+  <button class="navbtn" id="prevBtn" onclick="go(-1)">&larr; Back</button>
+  <div class="dots" id="dots" role="group" aria-label="Jump to slide"></div>
+  <button class="navbtn primary" id="nextBtn" onclick="go(1)">Next &rarr;</button>
+</nav>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+  const dotsWrap = document.getElementById('dots');
+  const answered = {};
+  const dotButtons = [];
+
+  for(let i=0;i<total;i++){
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'dot';
+    b.setAttribute('aria-label', `Go to slide ${i+1} of ${total}`);
+    b.setAttribute('aria-current', i===0 ? 'true' : 'false');
+    b.addEventListener('click', ()=>{ current = i; render(true); });
+    dotsWrap.appendChild(b);
+    dotButtons.push(b);
+  }
+
+  function render(moveFocus){
+    slides.forEach((s,i)=> s.classList.toggle('active', i===current));
+    document.getElementById('progLabel').textContent = `Slide ${current+1} of ${total}`;
+    document.getElementById('prevBtn').disabled = current===0;
+    document.getElementById('nextBtn').textContent = current===total-1 ? 'Finish' : 'Next →';
+    dotButtons.forEach((d,i)=>{
+      d.setAttribute('aria-current', i===current ? 'true' : 'false');
+    });
+    const activeSlide = slides[current];
+    if(moveFocus){
+      activeSlide.focus();
+    }
+    activeSlide.scrollIntoView({block:'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+    saveProgress();
+  }
+
+  function go(dir){
+    if(current===total-1 && dir===1) return;
+    current = Math.max(0, Math.min(total-1, current+dir));
+    render(true);
+  }
+
+  function checkAnswer(name, correctVal){
+    const chosen = document.querySelector(`input[name="${name}"]:checked`);
+    const qDiv = document.querySelector(`[data-qid="${name}"]`);
+    const fb = qDiv.querySelector('.feedback');
+    const explain = qDiv.querySelector('.explain');
+    if(!chosen){
+      fb.className = 'feedback incorrect';
+      fb.textContent = 'Select an answer first.';
+      fb.style.display='block';
+      return;
+    }
+    if(chosen.value === correctVal){
+      fb.className = 'feedback correct';
+      fb.textContent = 'Correct!';
+      answered[name] = true;
+    } else {
+      fb.className = 'feedback incorrect';
+      fb.textContent = 'Not quite — review and try again.';
+      answered[name] = false;
+    }
+    fb.style.display = 'block';
+    explain.style.display = 'block';
+    saveProgress();
+  }
+
+  function saveProgress(){
+    try{
+      localStorage.setItem('etcs_lesson_progress', JSON.stringify({current, answered}));
+    }catch(e){}
+  }
+  function loadProgress(){
+    try{
+      const raw = localStorage.getItem('etcs_lesson_progress');
+      if(raw){
+        const data = JSON.parse(raw);
+        current = data.current || 0;
+      }
+    }catch(e){}
+  }
+  document.getElementById('resetBtn').addEventListener('click', ()=>{
+    if(confirm('Reset lesson progress back to slide 1?')){
+      try{ localStorage.removeItem('etcs_lesson_progress'); }catch(e){}
+      current = 0;
+      document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
+      document.querySelectorAll('.feedback').forEach(f=>{f.style.display='none'; f.textContent='';});
+      document.querySelectorAll('.explain').forEach(f=>f.style.display='none');
+      render(false);
+    }
+  });
+
+  loadProgress();
+  render(false);
+</script>
+</body>
+</html>
