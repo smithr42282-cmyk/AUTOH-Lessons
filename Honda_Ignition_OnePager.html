@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inspecting Honda Electronic Ignition Systems | Honda PACT</title>
+<style>
+  :root{
+    --red:#CC0000; --red-dark:#960000; --black:#1a1a1a; --grey:#4a4a4a;
+    --light:#f5f5f5; --white:#ffffff; --border:#d9d9d9; --good:#1e7a34; --bad:#b3261e;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:"Segoe UI",Arial,Helvetica,sans-serif; background:var(--light);
+    color:var(--black); font-size:14.5px; line-height:1.4;
+  }
+  .sheet{
+    max-width:850px; margin:0 auto; background:var(--white);
+    padding:26px 32px 22px; box-shadow:0 2px 8px rgba(0,0,0,.08);
+  }
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    border-bottom:5px solid var(--red); padding-bottom:10px; margin-bottom:14px;
+  }
+  header .brand{display:flex;align-items:center;gap:10px;}
+  header .swatch{width:16px;height:16px;background:var(--red);border-radius:3px;}
+  header h1{font-size:19px;margin:0;color:var(--black);font-weight:700;}
+  header .tag{font-size:11px;color:var(--grey);font-weight:600;text-align:right;}
+  h2{
+    font-size:15px; color:var(--white); background:var(--red-dark);
+    margin:16px 0 8px; padding:5px 10px; border-radius:4px;
+  }
+  h2.split{margin:16px 0 8px;}
+  p{margin:0 0 8px;}
+  .intro{font-size:13.5px;color:var(--grey);margin-bottom:4px;}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .colcard{border:1px solid var(--border);border-radius:6px;padding:10px 12px;background:var(--light);}
+  .colcard h3{font-size:13.5px;margin:0 0 6px;color:var(--red-dark);font-weight:700;}
+  .colcard ul{margin:0 0 8px;padding-left:16px;font-size:12.8px;}
+  .colcard li{margin-bottom:4px;}
+  .colcard .steps{margin:6px 0 0;padding-left:16px;font-size:12.8px;}
+  .colcard .steps li{margin-bottom:3px;}
+  table.compare{width:100%;border-collapse:collapse;margin:6px 0 4px;font-size:12.3px;}
+  table.compare th,table.compare td{border:1px solid var(--border);padding:5px 7px;text-align:left;vertical-align:top;}
+  table.compare th{background:var(--black);color:var(--white);font-size:12px;}
+  table.compare tr:nth-child(even){background:var(--light);}
+  .safety{
+    border-left:4px solid var(--bad); background:#fdecea; padding:7px 10px; border-radius:0 5px 5px 0;
+    font-size:12.5px; margin-top:10px;
+  }
+  .safety strong{color:var(--bad);}
+  footer{margin-top:10px;font-size:10.5px;color:var(--grey);text-align:center;border-top:1px solid var(--border);padding-top:6px;}
+  @media print{
+    body{background:var(--white);}
+    .sheet{box-shadow:none;max-width:100%;padding:0.35in 0.5in;}
+    @page{size:letter portrait;margin:0.4in;}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <div class="brand">
+      <div class="swatch" aria-hidden="true"></div>
+      <h1>Inspecting Honda Electronic Ignition Systems</h1>
+    </div>
+    <div class="tag">Honda PACT &mdash; Quick-Reference Micro-Lesson</div>
+  </header>
+
+  <p class="intro">Honda has used two very different ignition architectures over the years. Knowing which one you're looking at &mdash; and what's actually inside it &mdash; determines how you inspect and test it.</p>
+
+  <div class="cols">
+    <div class="colcard">
+      <h3>Distributor-Based Ignition <span style="font-weight:400;color:#4a4a4a;">(1980s&ndash;90s D, B, F, H-series)</span></h3>
+      <p style="font-size:12.8px;margin-bottom:6px;">A distributor houses a pickup coil (or optical/Hall sensor) that tells the igniter when to fire. The igniter switches an <em>external</em> ignition coil, and the distributor cap/rotor route secondary voltage out to plug wires for each cylinder.</p>
+      <ul>
+        <li><strong>Distributor</strong> &mdash; cap, rotor, pickup coil/crank signal generator</li>
+        <li><strong>Igniter unit</strong> &mdash; power transistor switching primary current, often mounted on/near the distributor</li>
+        <li><strong>Ignition coil</strong> &mdash; external, separately testable primary &amp; secondary windings</li>
+        <li><strong>Spark plug wires</strong> &mdash; carry secondary voltage from cap to each plug</li>
+      </ul>
+      <p style="font-size:12.3px;font-weight:700;margin-bottom:3px;">Inspection checklist:</p>
+      <ol class="steps">
+        <li>Visually check cap &amp; rotor for cracks, carbon tracking, worn contacts</li>
+        <li>Inspect plug wires for cracked insulation; measure resistance end-to-end</li>
+        <li>Ohm the coil's primary and secondary windings against spec</li>
+        <li>Check pickup coil/sensor air gap and resistance (if applicable)</li>
+        <li>Confirm igniter triggers coil &mdash; swap-test or scope the trigger signal</li>
+      </ol>
+    </div>
+
+    <div class="colcard">
+      <h3>Coil-On-Plug (COP) <span style="font-weight:400;color:#4a4a4a;">(modern Hondas)</span></h3>
+      <p style="font-size:12.8px;margin-bottom:6px;">No distributor and no plug wires. One small coil sits directly over each spark plug, with the igniter built into the coil itself. The ECM/PCM triggers each coil individually and can detect which cylinder's circuit has a fault.</p>
+      <ul>
+        <li><strong>Coil assembly</strong> &mdash; primary/secondary windings, iron core, and igniter, all sealed as one unit per cylinder</li>
+        <li><strong>Boot &amp; spring</strong> &mdash; carries secondary voltage the short distance to the plug</li>
+        <li><strong>Connector</strong> &mdash; switched power, ground, and ECM/PCM trigger (often with a feedback signal)</li>
+        <li><strong>ECM/PCM</strong> &mdash; commands dwell and firing time per cylinder</li>
+      </ul>
+      <p style="font-size:12.3px;font-weight:700;margin-bottom:3px;">Inspection checklist:</p>
+      <ol class="steps">
+        <li>Visually check boots for cracks, carbon tracking, heat damage</li>
+        <li>Inspect connector/terminals for corrosion or a loose pin</li>
+        <li>Pull DTCs/freeze frame &mdash; specific-cylinder misfire or coil-circuit code?</li>
+        <li>Swap-test the suspect coil to another cylinder</li>
+        <li>Confirm with scan tool live data and/or a primary/secondary waveform</li>
+      </ol>
+    </div>
+  </div>
+
+  <h2 class="split">At a Glance: Key Differences</h2>
+  <table class="compare">
+    <tr><th>Feature</th><th>Distributor-Based (D/B/F/H-series)</th><th>Coil-On-Plug (Modern)</th></tr>
+    <tr><td>Number of coils</td><td>One, shared by all cylinders</td><td>One per cylinder</td></tr>
+    <tr><td>Igniter location</td><td>Separate unit, on/near distributor</td><td>Built into each coil</td></tr>
+    <tr><td>Secondary voltage path</td><td>Cap &amp; rotor &rarr; plug wires</td><td>Directly from coil to plug (no wires)</td></tr>
+    <tr><td>Timing control</td><td>Mechanical/optical trigger in distributor, some ECU input</td><td>Fully ECM/PCM-controlled per cylinder</td></tr>
+    <tr><td>Typical fault isolation</td><td>Cap/rotor/wire inspection, coil ohm test</td><td>DTC per cylinder, swap test, waveform</td></tr>
+  </table>
+
+  <div class="safety">
+    <strong>Safety:</strong> Secondary ignition voltage can exceed 20,000&ndash;40,000V on either system. Never handle a coil, wire, cap, or spark tester with the engine running or cranking.
+  </div>
+
+  <footer>Honda PACT &mdash; Automotive Technology Program &middot; Shoreline Community College</footer>
+</div>
+</body>
+</html>
