@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ignition &amp; Fuel System Analysis Worksheet</title>
+<style>
+  :root{
+    --red:#CC0000; --red-dark:#990000; --black:#111; --ink:#1d1d1d; --muted:#5a5a5a;
+    --line:#d6d6d6; --bg:#f6f6f6; --card:#fff; --ok:#1d7a36; --bad:#b00020;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  header{background:var(--black);color:#fff;border-bottom:6px solid var(--red)}
+  .hwrap{max-width:960px;margin:0 auto;padding:22px 20px 18px}
+  .kicker{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:#ff6b6b;font-weight:700}
+  h1{margin:.2rem 0 .3rem;font-size:1.75rem;line-height:1.2}
+  .sub{color:#d0d0d0;font-size:.95rem}
+  main{max-width:960px;margin:0 auto;padding:18px 20px 60px}
+  .toolbar{position:sticky;top:0;z-index:5;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+  .progress{flex:1 1 220px;min-width:200px}
+  .bar{height:10px;background:#e7e7e7;border-radius:5px;overflow:hidden}
+  .bar > span{display:block;height:100%;width:0;background:var(--red);transition:width .25s}
+  .ptext{font-size:.82rem;color:var(--muted);margin-top:3px}
+  button{font:inherit;font-size:.9rem;border:2px solid var(--black);background:#fff;color:var(--black);padding:6px 12px;border-radius:6px;cursor:pointer;font-weight:600}
+  button:hover{background:#f0f0f0}
+  button.primary{background:var(--red);border-color:var(--red);color:#fff}
+  button.primary:hover{background:var(--red-dark);border-color:var(--red-dark)}
+  button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #ffb000;outline-offset:2px}
+  .status{font-size:.82rem;color:var(--muted);min-width:120px}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin-bottom:18px}
+  h2{margin:0 0 .3rem;font-size:1.25rem;display:flex;justify-content:space-between;gap:10px;align-items:baseline;border-bottom:3px solid var(--red);padding-bottom:6px}
+  h2 .pts{font-size:.85rem;color:var(--muted);font-weight:600;white-space:nowrap}
+  h3{font-size:1.05rem;margin:1.1rem 0 .4rem}
+  .note{background:#fff5f5;border-left:4px solid var(--red);padding:8px 12px;font-size:.9rem;margin:.6rem 0}
+  .warn{background:#fff8e1;border-left:4px solid #e0a000;padding:8px 12px;font-size:.9rem;margin:.6rem 0}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 18px}
+  label.field{display:flex;flex-direction:column;font-size:.85rem;font-weight:600;gap:3px}
+  input[type=text],input[type=date],input[type=number],select,textarea{font:inherit;font-size:.95rem;padding:6px 8px;border:1px solid #9a9a9a;border-radius:5px;background:#fff;color:var(--ink)}
+  textarea{width:100%;min-height:90px;resize:vertical;overflow:hidden}
+  fieldset{border:0;padding:0;margin:0}
+  legend{font-weight:600;margin-bottom:6px;padding:0}
+  .q{padding:12px 0;border-top:1px solid #ececec}
+  .q:first-of-type{border-top:0}
+  .opts label{display:flex;gap:8px;align-items:flex-start;padding:4px 6px;border-radius:5px;cursor:pointer}
+  .opts label:hover{background:#f7f7f7}
+  .opts input{margin-top:5px}
+  table{border-collapse:collapse;width:100%}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top;font-size:.93rem}
+  th{background:#f1f1f1}
+  .defs td:first-child{width:46px;text-align:center;font-weight:700}
+  .match td:first-child{font-weight:600}
+  .match select{width:100%}
+  .steps li{margin:4px 0}
+  .scope{display:grid;grid-template-columns:minmax(260px,520px) 1fr;gap:16px;align-items:start;margin:10px 0 6px}
+  @media (max-width:760px){.scope{grid-template-columns:1fr}}
+  .screen{background:#0d1410;border:4px solid #222;border-radius:8px;padding:6px}
+  .screen svg{width:100%;height:auto;display:block}
+  .settings{font-family:Consolas,Menlo,monospace;font-size:.8rem;background:#222;color:#e8e8e8;padding:6px 8px;border-radius:0 0 5px 5px;margin-top:4px}
+  .settings b{color:#ffd400}
+  .nums .row{display:flex;align-items:center;gap:8px;margin:8px 0;flex-wrap:wrap}
+  .nums .row span.lbl{flex:1 1 100%;font-size:.92rem}
+  .nums input{width:110px}
+  .nums select{width:100%;max-width:380px}
+  .unit{font-weight:600;color:var(--muted);min-width:34px}
+  .mark{font-size:.85rem;font-weight:700;min-width:20px}
+  .mark.ok{color:var(--ok)} .mark.bad{color:var(--bad)}
+  .lab td{vertical-align:middle}
+  .lab td:first-child{width:38%;font-weight:600;background:#fafafa}
+  .lab input,.lab select{width:100%}
+  .rubric td.num{text-align:center;width:110px}
+  .rubric tr.total td{font-weight:800;background:#fff0f0;font-size:1rem}
+  .instr{background:#f4f4f4;border:1px dashed #999;border-radius:6px;padding:10px 12px;margin-top:10px}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:20;padding:16px}
+  .modal.open{display:flex}
+  .modal .box{background:#fff;border-radius:8px;max-width:640px;width:100%;padding:18px;border-top:6px solid var(--red)}
+  .modal textarea{min-height:240px;font-family:Consolas,Menlo,monospace;font-size:.82rem}
+  .sr{position:absolute;left:-9999px}
+  footer{max-width:960px;margin:0 auto;padding:0 20px 30px;font-size:.8rem;color:var(--muted)}
+  @media print{
+    body{background:#fff}
+    .toolbar,.noprint,.modal{display:none!important}
+    header{border-bottom:4px solid var(--red);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    section.card{break-inside:avoid-page;border:1px solid #bbb}
+    .screen,.settings{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    textarea{border:1px solid #999;min-height:auto}
+    .scope{grid-template-columns:1fr 1fr}
+  }
+</style>
+<style>
+  .anat{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:10px 0}
+  .anat figcaption{font-size:.85rem;font-weight:600;margin-bottom:4px}
+  .anat figure{margin:0}
+  .refbox{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+  .refbox div{background:#f4f4f4;border-radius:6px;padding:10px 12px;font-size:.9rem}
+  .refbox h4{margin:0 0 4px;font-size:.95rem;color:#990000}
+  .refbox ul{margin:0;padding-left:18px}
+  .legend{font-family:Consolas,Menlo,monospace;font-size:.78rem;color:#e8e8e8;background:#222;padding:4px 8px}
+  .legend .live{color:#ffd400}.legend .ref{color:#4fd1ff}
+  .cyl input{width:100%}
+  .cyl td,.cyl th{text-align:center}
+</style>
+</head>
+<body>
+<header>
+  <div class="hwrap">
+    <div class="kicker">Honda PACT · Shoreline Community College</div>
+    <h1>Ignition &amp; Fuel System Analysis</h1>
+    <div class="sub">Worksheet · 20 points · Secondary ignition, injector voltage and injector current waveforms</div>
+  </div>
+</header>
+
+<main>
+  <div class="toolbar noprint" role="region" aria-label="Worksheet tools">
+    <div class="progress">
+      <div class="bar" aria-hidden="true"><span id="pbar"></span></div>
+      <div class="ptext" id="ptext" aria-live="polite">0 of 0 answered</div>
+    </div>
+    <button type="button" id="btnScore" class="primary">Score my worksheet</button>
+    <button type="button" id="btnSave">Save</button>
+    <button type="button" id="btnCopy">Copy answers</button>
+    <button type="button" id="btnPrint">Print</button>
+    <button type="button" id="btnClear">Clear</button>
+    <span class="status" id="status" aria-live="polite"></span>
+  </div>
+
+  <section class="card" aria-labelledby="s-info">
+    <h2 id="s-info">Student Information</h2>
+    <div class="grid2">
+      <label class="field">Name <input type="text" id="name" autocomplete="name"></label>
+      <label class="field">Date <input type="date" id="date"></label>
+      <label class="field">Course <input type="text" id="course" value="AUTO H 171"></label>
+      <label class="field">Lab partner <input type="text" id="partner"></label>
+    </div>
+    <div class="note"><strong>Objectives:</strong> Identify the sections of a secondary ignition waveform and an injector voltage waveform; measure firing voltage, burn time, injector pulse width and inductive spike; read an injector current ramp; connect waveform changes to likely ignition and fuel faults; compare injectors across cylinders on a shop vehicle.</div>
+  </section>
+
+  <section class="card" aria-labelledby="s-ref">
+    <h2 id="s-ref">Quick Reference <span class="pts">read before you start</span></h2>
+    <div class="refbox">
+      <div>
+        <h4>Secondary ignition (per cylinder)</h4>
+        <ul>
+          <li><strong>Firing line:</strong> the voltage needed to jump the plug gap (kV). Higher resistance in the gap or the secondary circuit makes it taller.</li>
+          <li><strong>Spark line:</strong> the voltage that keeps the spark burning. Its length is the <strong>burn time</strong> (ms).</li>
+          <li><strong>Coil oscillations:</strong> energy left in the coil rings down after the spark ends.</li>
+          <li><strong>Dwell:</strong> the time the primary circuit is switched on to charge the coil.</li>
+          <li>Rule of thumb: the coil only has so much energy. A taller firing line usually comes with a shorter burn time.</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Injector (saturated, ground-side control)</h4>
+        <ul>
+          <li><strong>Supply voltage:</strong> with the injector off, you see system voltage on the control wire.</li>
+          <li><strong>Turn-on:</strong> the ECM driver pulls the circuit to ground and the injector opens.</li>
+          <li><strong>Pulse width:</strong> how long the circuit is held at ground (ms). This is the fuel command.</li>
+          <li><strong>Inductive spike:</strong> the coil's collapsing field when the driver turns off. A low spike can point to shorted windings.</li>
+          <li><strong>Current ramp:</strong> on a low-amp probe, current rises and shows a small <em>pintle hump</em> as the injector opens.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note"><strong>Honda/Acura note:</strong> Most current engines use coil-on-plug coils with the igniter built into the coil, so there's no primary winding terminal to scope. View secondary with a COP pickup probe. At the coil connector you can scope the ECM's ignition control signal. Look up pins, wire colors and specs in Service Express / iN.</div>
+    <div class="warn"><strong>Safety:</strong> Never connect a scope lead directly to secondary ignition. Use a rated COP/secondary pickup only. Keep hands and leads clear of belts and fans while the engine runs.</div>
+  </section>
+
+  <!-- PART A -->
+  <section class="card" aria-labelledby="s-a">
+    <h2 id="s-a">Part A — Waveform Anatomy <span class="pts">4 pts (0.5 each)</span></h2>
+    <p>Name the section of each waveform marked by a numbered red circle. Each name is used once.</p>
+    <div class="anat">
+      <figure>
+        <figcaption>Secondary ignition waveform (known good)</figcaption>
+        <div class="screen"><svg id="anat1" viewBox="0 0 520 400" role="img" aria-label="Secondary ignition waveform. Marker 1 at the tall vertical spike, marker 2 on the flat line after it, marker 3 on the ringing after the flat line, marker 4 on the small ringing later in the trace where the coil begins charging."></svg></div>
+      </figure>
+      <figure>
+        <figcaption>Injector voltage waveform (known good)</figcaption>
+        <div class="screen"><svg id="anat2" viewBox="0 0 520 400" role="img" aria-label="Injector voltage waveform. Marker 5 on the steady level before the drop, marker 6 where the trace drops to ground, marker 7 on the tall spike after the ground section, marker 8 on a bracket spanning the time the trace is held at ground."></svg></div>
+      </figure>
+    </div>
+    <table class="match"><tbody id="matchBody"></tbody></table>
+  </section>
+
+  <!-- PART B -->
+  <section class="card" aria-labelledby="s-b">
+    <h2 id="s-b">Part B — Ignition &amp; Fuel Concepts <span class="pts">5 pts (1 each)</span></h2>
+    <div id="mcWrap"></div>
+  </section>
+
+  <!-- PART C -->
+  <section class="card" aria-labelledby="s-c">
+    <h2 id="s-c">Part C — Analyze the Captures <span class="pts">7 pts (1 each)</span></h2>
+    <p>Each capture comes from a warm 4-cylinder engine at idle. Pick the best diagnosis and take the measurements asked for. Numeric answers within ±10% are accepted. These are training captures with training reference values; always use the spec in Service Express on a real vehicle.</p>
+
+    <h3>Capture 1 — Secondary ignition, cylinder 3</h3>
+    <div class="scope">
+      <div>
+        <div class="screen"><svg id="scr1" viewBox="0 0 520 400" role="img" aria-label="Secondary waveform: firing line rises 4 divisions above ground; spark line sits about 0.7 division up and lasts 1.2 divisions, followed by ringing and a later dwell section."></svg></div>
+        <div class="settings">COP probe · <b>5 kV/div</b> &nbsp;|&nbsp; Timebase: <b>0.5 ms/div</b> &nbsp;|&nbsp; Trig: CH A ↑ 3 kV</div>
+        <div class="legend">Training reference for cylinders 1, 2, 4: firing line ≈ 10 kV · burn time ≈ 1.5 ms</div>
+      </div>
+      <div class="nums" id="nums1"></div>
+    </div>
+
+    <h3>Capture 2 — Injector voltage, cylinder 2</h3>
+    <div class="scope">
+      <div>
+        <div class="screen"><svg id="scr2" viewBox="0 0 520 400" role="img" aria-label="Injector voltage: sits 0.7 division above ground, drops to ground for 2.5 divisions, then spikes only 1.5 divisions above ground before settling back."></svg></div>
+        <div class="settings">CH A: <b>20 V/div</b> · DC · 1:1 &nbsp;|&nbsp; Timebase: <b>1 ms/div</b> &nbsp;|&nbsp; Trig: CH A ↓ 7 V</div>
+        <div class="legend">Training reference for injectors 1, 3, 4: pulse width ≈ 2.5 ms · spike ≈ 60 V</div>
+      </div>
+      <div class="nums" id="nums2"></div>
+    </div>
+
+    <h3>Capture 3 — Injector current, cylinder 4</h3>
+    <div class="scope">
+      <div>
+        <div class="screen"><svg id="scr3" viewBox="0 0 520 400" role="img" aria-label="Injector current ramp. The blue reference trace rises with a small dip, the pintle hump, about 1.4 divisions after turn-on. The yellow live trace rises smoothly to the same peak with no hump."></svg></div>
+        <div class="settings">Low-amp probe · <b>0.2 A/div</b> &nbsp;|&nbsp; Timebase: <b>0.5 ms/div</b> &nbsp;|&nbsp; Trig: CH A ↑ 0.1 A</div>
+        <div class="legend"><span class="live">━ live: cylinder 4</span> &nbsp; <span class="ref">╌ REF (dashed): known-good injector</span></div>
+      </div>
+      <div class="nums" id="nums3"></div>
+    </div>
+  </section>
+
+  <!-- PART D -->
+  <section class="card" aria-labelledby="s-d">
+    <h2 id="s-d">Part D — Shop Lab: Injector Balance by Waveform <span class="pts">4 pts (instructor scored)</span></h2>
+    <p>With instructor approval, back-probe each injector's control wire on a shop vehicle. Capture at idle and at a steady 2,500 RPM, record the values, and compare the cylinders. Save one capture to show your instructor.</p>
+    <div class="grid2">
+      <label class="field">Vehicle
+        <select id="lVeh"><option value="">Choose…</option><option>2014 Honda Civic Si</option><option>2006 Acura TSX (race car)</option><option>Acura TSX race car (VIN …007477)</option><option>Other</option></select>
+      </label>
+      <label class="field">Injector control wire color / ECM pin (Service Express) <input type="text" id="lPin"></label>
+      <label class="field">Scope settings (V/div · time/div · trigger) <input type="text" id="lSet"></label>
+      <label class="field">Engine coolant temp at test (°F or °C) <input type="text" id="lEct"></label>
+    </div>
+    <table class="cyl" style="margin-top:12px">
+      <thead><tr><th>Cylinder</th><th>Pulse width at idle (ms)</th><th>Pulse width at 2,500 RPM (ms)</th><th>Inductive spike (V)</th></tr></thead>
+      <tbody id="cylBody"></tbody>
+    </table>
+    <div class="q">
+      <label for="lAnalysis"><strong>Analysis:</strong> Do all four injectors match within a reasonable range? Explain why the pulse width changed (or didn't) between idle and 2,500 RPM. Identify any injector that stands out and what it might mean.</label>
+      <textarea id="lAnalysis"></textarea>
+    </div>
+    <div class="instr">
+      <strong>Instructor scoring</strong>
+      <div class="grid2" style="margin-top:6px">
+        <label class="field">Capture &amp; data table (0–2)
+          <select id="d1score"><option value="">—</option><option value="0">0</option><option value="1">1</option><option value="2">2</option></select>
+        </label>
+        <label class="field">Analysis &amp; conclusion (0–2)
+          <select id="d2score"><option value="">—</option><option value="0">0</option><option value="1">1</option><option value="2">2</option></select>
+        </label>
+      </div>
+      <p style="font-size:.82rem;margin:.5rem 0 0"><strong>Capture:</strong> 2 = safe hookup, a saved capture shown, all four cylinders recorded at both conditions · 1 = partial data · 0 = no capture.<br><strong>Analysis:</strong> 2 = correct comparison that explains the pulse-width change and flags any outlier · 1 = comparison with weak reasoning · 0 = no conclusion.</p>
+    </div>
+  </section>
+
+  <!-- RUBRIC -->
+  <section class="card" aria-labelledby="s-r">
+    <h2 id="s-r">Score Summary</h2>
+    <p class="noprint" style="font-size:.9rem">Parts A–C are scored when you press <strong>Score my worksheet</strong>. Part D is entered by your instructor.</p>
+    <table class="rubric">
+      <thead><tr><th>Section</th><th class="num">Earned</th><th class="num">Possible</th></tr></thead>
+      <tbody>
+        <tr><td>Part A — Waveform anatomy</td><td class="num" id="rA">—</td><td class="num">4</td></tr>
+        <tr><td>Part B — Ignition &amp; fuel concepts</td><td class="num" id="rB">—</td><td class="num">5</td></tr>
+        <tr><td>Part C — Analyze the captures</td><td class="num" id="rC">—</td><td class="num">7</td></tr>
+        <tr><td>Part D — Injector balance lab (instructor)</td><td class="num" id="rD">—</td><td class="num">4</td></tr>
+        <tr class="total"><td>Total</td><td class="num" id="rT">—</td><td class="num">20</td></tr>
+      </tbody>
+    </table>
+    <div id="scoreLive" class="sr" aria-live="polite"></div>
+  </section>
+</main>
+
+<footer>Honda PACT · AUTO H 171 · Ignition &amp; Fuel System Analysis Worksheet. Look up model-specific values in Service Express / Interactive Network (iN).</footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="box">
+    <h2 id="mTitle" style="border:0;padding:0;margin-bottom:8px"></h2>
+    <div id="mBody"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px" id="mBtns"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var KEY="pact-ign-fuel-v1";
+
+  /* ---------- Drawing helpers ---------- */
+  var NS="http://www.w3.org/2000/svg",OX=20,W=500,H=400,D=50;
+  function mk(tag,a,p){var e=document.createElementNS(NS,tag);for(var k in a)e.setAttribute(k,a[k]);p.appendChild(e);return e;}
+  function grid(svg,gy,label){
+    mk("rect",{x:0,y:0,width:520,height:400,fill:"#0d1410"},svg);
+    for(var i=0;i<=10;i++)mk("line",{x1:OX+i*D,y1:0,x2:OX+i*D,y2:H,stroke:i===5?"#4f7a5c":"#2e4a37","stroke-width":(i===0||i===10)?2:1},svg);
+    for(var j=0;j<=8;j++)mk("line",{x1:OX,y1:j*D,x2:OX+W,y2:j*D,stroke:j===4?"#4f7a5c":"#2e4a37","stroke-width":(j===0||j===8)?2:1},svg);
+    for(var t=0;t<=50;t++){var x=OX+t*10;mk("line",{x1:x,y1:196,x2:x,y2:204,stroke:"#4f7a5c"},svg);}
+    for(var u=0;u<=40;u++){var y=u*10;mk("line",{x1:OX+246,y1:y,x2:OX+254,y2:y,stroke:"#4f7a5c"},svg);}
+    mk("polygon",{points:"2,"+(gy-8)+" 18,"+gy+" 2,"+(gy+8),fill:"#ffd400"},svg);
+    var l=mk("text",{x:3,y:gy-11,fill:"#ffd400","font-size":"11","font-family":"monospace"},svg);l.textContent=label||"A";
+  }
+  function trace(svg,pts,color,w,dash){
+    var d=pts.map(function(p,i){return(i?"L":"M")+(OX+p[0]).toFixed(1)+" "+p[1].toFixed(1);}).join(" ");
+    var at={d:d,fill:"none",stroke:color||"#ffd400","stroke-width":w||2.5,"stroke-linejoin":"round"};if(dash)at["stroke-dasharray"]=dash;
+    mk("path",at,svg);
+  }
+  function marker(svg,x,y,n){
+    mk("circle",{cx:OX+x,cy:y,r:13,fill:"#CC0000",stroke:"#fff","stroke-width":2},svg);
+    var t=mk("text",{x:OX+x,y:y+5,fill:"#fff","font-size":"14","font-weight":"700","text-anchor":"middle","font-family":"Arial"},svg);t.textContent=n;
+  }
+  // Secondary waveform builder. gy ground, fire y, spark y, start x, burn px
+  function secondary(gy,fireY,sparkY,x0,burn,dwellX){
+    var p=[[0,gy],[x0,gy],[x0+2,fireY],[x0+6,sparkY-6],[x0+10,sparkY]];
+    var e=x0+10+burn;
+    p.push([e,sparkY+4]);
+    p.push([e+3,gy+28]);
+    for(var k=0;k<10;k++){var x=e+6+k*9;var a=24*Math.exp(-k/3);p.push([x,gy+(k%2?a:-a)]);}
+    p.push([dwellX,gy]);
+    for(var m=0;m<6;m++){var xx=dwellX+3+m*6;var b=12*Math.exp(-m/2);p.push([xx,gy+(m%2?-b:b)]);}
+    p.push([500,gy]);
+    return p;
+  }
+  function injector(gy,supY,on,pw,spikeY){
+    var off=on+pw,p=[[0,supY],[on,supY],[on+1,gy],[off,gy],[off+1,spikeY],[off+8,spikeY],[off+16,supY-6],[off+30,supY+4],[off+44,supY-3],[off+60,supY+2],[off+80,supY],[500,supY]];
+    return p;
+  }
+
+  /* ---------- Part A anatomy ---------- */
+  (function(){
+    var s=document.getElementById("anat1");grid(s,350);
+    // good: 10 kV at 5 kV/div -> 2 div -> y250; spark ~0.4 div y330; burn 1.5 ms at .5ms/div = 3 div = 150px
+    trace(s,secondary(350,250,330,40,150,380));
+    marker(s,40,232,"1");marker(s,120,305,"2");marker(s,240,312,"3");marker(s,400,322,"4");
+  })();
+  (function(){
+    var s=document.getElementById("anat2");grid(s,350);
+    trace(s,injector(350,315,100,125,200));
+    marker(s,50,290,"5");marker(s,101,375,"6");marker(s,235,182,"7");
+    mk("path",{d:"M"+(OX+100)+" 385 L"+(OX+100)+" 393 L"+(OX+225)+" 393 L"+(OX+225)+" 385",stroke:"#CC0000","stroke-width":3,fill:"none"},s);
+    marker(s,162,372,"8");
+  })();
+  var PARTS=["Firing line","Spark line (burn time)","Coil oscillations","Dwell (coil charging begins)","Supply voltage (injector off)","Driver turns injector on (pulls to ground)","Inductive spike","Pulse width (on-time)"];
+  var terms=[["a1","Marker 1",0],["a2","Marker 2",1],["a3","Marker 3",2],["a4","Marker 4",3],["a5","Marker 5",4],["a6","Marker 6",5],["a7","Marker 7",6],["a8","Marker 8",7]];
+  var order=[3,6,0,7,4,1,5,2]; // display order of options (shuffled)
+  var matchBody=document.getElementById("matchBody");
+  terms.forEach(function(t){
+    var tr=document.createElement("tr");
+    var opts='<option value="">Choose…</option>'+order.map(function(i){return '<option value="'+i+'">'+PARTS[i]+'</option>';}).join("");
+    tr.innerHTML='<td style="width:110px"><label for="'+t[0]+'">'+t[1]+'</label></td><td><select id="'+t[0]+'">'+opts+'</select></td><td style="width:34px"><span class="mark" id="m_'+t[0]+'"></span></td>';
+    matchBody.appendChild(tr);
+  });
+
+  /* ---------- Part B ---------- */
+  var mcs=[
+    {id:"b1",q:"On a secondary ignition waveform, where do you measure burn time?",
+     o:["The height of the firing line","The length of the spark line, from where it starts to where it ends","The number of coil oscillations","The time between two firing lines"],a:1},
+    {id:"b2",q:"One cylinder's firing line is much taller than the others and its burn time is shorter. What is the most likely cause?",
+     o:["A fouled, carbon-tracked plug giving an easy path to ground","A rich mixture in that cylinder","High resistance in that cylinder's secondary path, such as a worn or wide plug gap or a damaged boot","Low battery voltage"],a:2},
+    {id:"b3",q:"During a snap throttle, injector pulse width gets longer. Why?",
+     o:["The injector is sticking open","The scope's time/div changed","The fuel pressure dropped to zero","The ECM is commanding more fuel for the added airflow and load"],a:3},
+    {id:"b4",q:"Compared with a known-good injector, one injector's current ramp has no pintle hump. What does this suggest?",
+     o:["The pintle may be sticking or slow to open (a mechanical problem)","The injector is opening normally","The ECM's ground is poor","The injector harness is open"],a:0},
+    {id:"b5",q:"What is the safe way to view secondary ignition on a coil-on-plug Honda engine?",
+     o:["Back-probe the spark plug terminal with a standard scope lead","Pierce the coil boot with a probe pin","Use a rated COP pickup or secondary probe set to the correct kV scaling","Connect the scope lead to the coil's 12 V feed"],a:2}
+  ];
+  var mcWrap=document.getElementById("mcWrap");
+  mcs.forEach(function(m,i){
+    var fs=document.createElement("fieldset");fs.className="q";
+    var h='<legend>'+(i+1)+'. '+m.q+' <span class="mark" id="m_'+m.id+'"></span></legend><div class="opts">';
+    m.o.forEach(function(t,j){h+='<label><input type="radio" name="'+m.id+'" value="'+j+'"> <span>'+String.fromCharCode(97+j)+') '+t+'</span></label>';});
+    fs.innerHTML=h+'</div>';mcWrap.appendChild(fs);
+  });
+
+  /* ---------- Part C ---------- */
+  var DX=["Normal / matches the training reference","High secondary resistance (tall firing line, short burn time)","Low secondary resistance or fouled plug (short firing line, long burn time)","Shorted injector winding (low inductive spike)","Sticking or slow injector pintle (missing pintle hump)","Open injector circuit (no current flow)"];
+  var items={
+    nums1:[["c1","Firing line voltage","num",20,"kV",0.1],["c2","Burn time","num",0.6,"ms",0.1],["c3","Best diagnosis","dx",1]],
+    nums2:[["c4","Pulse width","num",2.5,"ms",0.1],["c5","Inductive spike voltage","num",30,"V",0.1],["c6","Best diagnosis","dx",3]],
+    nums3:[["c7","Best diagnosis","dx",4]]
+  };
+  Object.keys(items).forEach(function(box){
+    var el=document.getElementById(box),h="";
+    items[box].forEach(function(n){
+      if(n[2]==="dx"){
+        h+='<div class="row"><span class="lbl"><label for="'+n[0]+'">'+n[1]+'</label></span><select id="'+n[0]+'"><option value="">Choose…</option>'+DX.map(function(d,i){return '<option value="'+i+'">'+d+'</option>';}).join("")+'</select><span class="mark" id="m_'+n[0]+'"></span></div>';
+      }else{
+        h+='<div class="row"><span class="lbl"><label for="'+n[0]+'">'+n[1]+'</label></span><input type="number" step="any" inputmode="decimal" id="'+n[0]+'"><span class="unit">'+n[4]+'</span><span class="mark" id="m_'+n[0]+'"></span></div>';
+      }
+    });
+    h+='<label class="field" style="margin-top:6px">Evidence: what in the capture, compared with the reference, supports your diagnosis?<textarea id="w_'+box+'" style="min-height:60px"></textarea></label>';
+    el.innerHTML=h;
+  });
+  // C1: 20 kV -> 4 div -> y150; spark line 0.7 div y315; burn 0.6 ms -> 1.2 div -> 60px
+  (function(){var s=document.getElementById("scr1");grid(s,350);trace(s,secondary(350,150,315,50,50,380));})();
+  // C2: PW 2.5 ms -> 125px; spike 30 V -> 1.5 div -> y275
+  (function(){var s=document.getElementById("scr2");grid(s,350);trace(s,injector(350,315,50,125,275));})();
+  // C3: current ramps
+  (function(){
+    var s=document.getElementById("scr3");grid(s,350);
+    var on=50,off=300;
+    function ramp(hump){
+      var p=[[0,350],[on,350]];
+      for(var x=on;x<=off;x+=2){
+        var t=(x-on)/250;var i=1.05*(1-Math.exp(-t*3.2));
+        if(hump){var c=0.30,w=0.05;i-=0.16*Math.exp(-Math.pow((t-c)/w,2));}
+        p.push([x,350-i*250]);
+      }
+      p.push([off+2,350],[500,350]);return p;
+    }
+    trace(s,ramp(false),"#ffd400",2.5);
+    trace(s,ramp(true),"#4fd1ff",2.5,"7 5");
+  })();
+
+  /* ---------- Part D table ---------- */
+  var cylBody=document.getElementById("cylBody"),cylIds=[];
+  for(var c=1;c<=4;c++){
+    var tr=document.createElement("tr");
+    var ids=["cy"+c+"i","cy"+c+"r","cy"+c+"s"];cylIds=cylIds.concat(ids);
+    tr.innerHTML='<th scope="row">'+c+'</th>'+ids.map(function(id,k){return '<td><input type="text" id="'+id+'" aria-label="Cylinder '+c+' '+["pulse width at idle","pulse width at 2500 RPM","inductive spike"][k]+'"></td>';}).join("");
+    cylBody.appendChild(tr);
+  }
+
+  /* ---------- Textarea auto-grow ---------- */
+  function grow(t){t.style.height="auto";t.style.height=(t.scrollHeight+2)+"px";}
+  Array.prototype.forEach.call(document.querySelectorAll("textarea"),function(t){t.addEventListener("input",function(){grow(t);});});
+
+  /* ---------- Fields / progress ---------- */
+  var cIds=[].concat.apply([],Object.keys(items).map(function(b){return items[b].map(function(n){return n[0];});}));
+  var labIds=["lVeh","lPin","lSet","lAnalysis"].concat(cylIds);
+  var fields=["name","date","course","partner","lEct","d1score","d2score","w_nums1","w_nums2","w_nums3"]
+    .concat(terms.map(function(t){return t[0];})).concat(cIds).concat(labIds);
+  function updateProgress(){
+    var it=[];
+    terms.forEach(function(t){it.push(document.getElementById(t[0]).value!=="");});
+    mcs.forEach(function(m){it.push(!!document.querySelector('input[name="'+m.id+'"]:checked'));});
+    cIds.concat(labIds).forEach(function(id){it.push(document.getElementById(id).value.trim()!=="");});
+    var done=it.filter(Boolean).length;
+    document.getElementById("pbar").style.width=(done/it.length*100)+"%";
+    document.getElementById("ptext").textContent=done+" of "+it.length+" answered";
+  }
+  function collect(){
+    var o={};fields.forEach(function(id){o[id]=document.getElementById(id).value;});
+    mcs.forEach(function(m){var c=document.querySelector('input[name="'+m.id+'"]:checked');o[m.id]=c?c.value:"";});
+    return o;
+  }
+  function status(msg){var s=document.getElementById("status");s.textContent=msg;clearTimeout(status.t);status.t=setTimeout(function(){s.textContent="";},3500);}
+  function save(q){try{localStorage.setItem(KEY,JSON.stringify(collect()));if(!q)status("Saved on this device.");}catch(e){if(!q)status("Saving isn't available here — use Copy answers.");}}
+  function load(){
+    var o=null;try{o=JSON.parse(localStorage.getItem(KEY)||"null");}catch(e){}
+    if(!o)return;
+    fields.forEach(function(id){if(o[id]!=null)document.getElementById(id).value=o[id];});
+    mcs.forEach(function(m){if(o[m.id]){var r=document.querySelector('input[name="'+m.id+'"][value="'+o[m.id]+'"]');if(r)r.checked=true;}});
+    Array.prototype.forEach.call(document.querySelectorAll("textarea"),grow);
+  }
+
+  /* ---------- Scoring ---------- */
+  function setMark(id,ok){var m=document.getElementById("m_"+id);if(!m)return;m.textContent=ok?"✓":"✗";m.className="mark "+(ok?"ok":"bad");m.setAttribute("aria-label",ok?"correct":"incorrect");}
+  function clearMarks(){Array.prototype.forEach.call(document.querySelectorAll(".mark"),function(m){m.textContent="";m.className="mark";m.removeAttribute("aria-label");});}
+  function fmt(n){return(Math.round(n*10)/10).toString();}
+  var last={a:null,b:null,c:null};
+  function score(){
+    var a=0,b=0,c=0;
+    terms.forEach(function(t){var v=document.getElementById(t[0]).value;var ok=v!==""&&+v===t[2];if(ok)a+=0.5;setMark(t[0],ok);});
+    mcs.forEach(function(m){var r=document.querySelector('input[name="'+m.id+'"]:checked');var ok=!!r&&+r.value===m.a;if(ok)b++;setMark(m.id,ok);});
+    Object.keys(items).forEach(function(bx){items[bx].forEach(function(n){
+      var v=document.getElementById(n[0]).value,ok;
+      if(n[2]==="dx")ok=v!==""&&+v===n[3];
+      else{var f=parseFloat(v);ok=!isNaN(f)&&Math.abs(f-n[3])<=Math.abs(n[3])*n[5]+1e-9;}
+      if(ok)c++;setMark(n[0],ok);
+    });});
+    last={a:a,b:b,c:c};totals();
+  }
+  function totals(){
+    var d1=document.getElementById("d1score").value,d2=document.getElementById("d2score").value;
+    var d=(d1===""&&d2==="")?null:(+(d1||0))+(+(d2||0));
+    document.getElementById("rA").textContent=last.a==null?"—":fmt(last.a);
+    document.getElementById("rB").textContent=last.b==null?"—":fmt(last.b);
+    document.getElementById("rC").textContent=last.c==null?"—":fmt(last.c);
+    document.getElementById("rD").textContent=d==null?"—":fmt(d);
+    var t=(last.a||0)+(last.b||0)+(last.c||0)+(d||0);
+    document.getElementById("rT").textContent=(last.a==null&&d==null)?"—":fmt(t)+(d==null?" + D":"");
+    document.getElementById("scoreLive").textContent=last.a==null?"":"Score updated: "+fmt(t)+" of 20.";
+  }
+
+  /* ---------- Modal ---------- */
+  var modal=document.getElementById("modal"),lastFocus=null;
+  function openModal(title,body,btns){
+    lastFocus=document.activeElement;
+    document.getElementById("mTitle").textContent=title;document.getElementById("mBody").innerHTML=body;
+    var bb=document.getElementById("mBtns");bb.innerHTML="";
+    btns.forEach(function(b){var e=document.createElement("button");e.type="button";e.textContent=b.label;if(b.primary)e.className="primary";e.onclick=function(){if(b.fn)b.fn();closeModal();};bb.appendChild(e);});
+    modal.classList.add("open");(bb.lastChild||bb).focus();
+  }
+  function closeModal(){modal.classList.remove("open");if(lastFocus)lastFocus.focus();}
+  modal.addEventListener("keydown",function(e){if(e.key==="Escape")closeModal();});
+
+  /* ---------- Copy ---------- */
+  function answersText(){
+    var o=collect(),L=[];
+    L.push("IGNITION & FUEL SYSTEM ANALYSIS WORKSHEET — Honda PACT");
+    L.push("Name: "+o.name+"   Date: "+o.date+"   Course: "+o.course+"   Partner: "+o.partner,"");
+    L.push("PART A");terms.forEach(function(t){L.push(t[1]+": "+(o[t[0]]===""?"—":PARTS[+o[t[0]]]));});
+    L.push("","PART B");mcs.forEach(function(m,i){L.push((i+1)+". "+(o[m.id]===""?"—":String.fromCharCode(97+ +o[m.id])));});
+    L.push("","PART C");Object.keys(items).forEach(function(b,i){L.push("Capture "+(i+1)+":");items[b].forEach(function(n){var v=o[n[0]];L.push("  "+n[1]+": "+(v===""?"—":(n[2]==="dx"?DX[+v]:v+" "+n[4])));});if(o["w_"+b])L.push("  Evidence: "+o["w_"+b]);});
+    L.push("","PART D — LAB","Vehicle: "+(o.lVeh||"—"),"Wire/pin: "+(o.lPin||"—"),"Settings: "+(o.lSet||"—"),"ECT: "+(o.lEct||"—"));
+    for(var c=1;c<=4;c++)L.push("Cyl "+c+": idle PW "+(o["cy"+c+"i"]||"—")+" ms · 2500 PW "+(o["cy"+c+"r"]||"—")+" ms · spike "+(o["cy"+c+"s"]||"—")+" V");
+    L.push("Analysis: "+(o.lAnalysis||"—"),"");
+    L.push("Score: A "+document.getElementById("rA").textContent+"/4, B "+document.getElementById("rB").textContent+"/5, C "+document.getElementById("rC").textContent+"/7, D "+document.getElementById("rD").textContent+"/4, Total "+document.getElementById("rT").textContent+"/20");
+    return L.join("\n");
+  }
+  document.getElementById("btnCopy").addEventListener("click",function(){
+    var txt=answersText();
+    function fb(){openModal("Copy your answers",'<p style="font-size:.9rem">Select all the text below and copy it (Ctrl+C / ⌘C), then paste it into Canvas or an email to your instructor.</p><textarea id="copyBox" readonly></textarea>',[{label:"Close",primary:true}]);var c=document.getElementById("copyBox");c.value=txt;c.focus();c.select();}
+    try{navigator.clipboard.writeText(txt).then(function(){status("Answers copied.");},fb);}catch(e){fb();}
+  });
+
+  /* ---------- Buttons ---------- */
+  document.getElementById("btnScore").addEventListener("click",function(){score();save(true);document.getElementById("s-r").scrollIntoView({behavior:"smooth"});});
+  document.getElementById("btnSave").addEventListener("click",function(){save(false);});
+  document.getElementById("btnPrint").addEventListener("click",function(){try{window.print();}catch(e){}status("If no print dialog opened, press Ctrl+P / ⌘P.");});
+  document.getElementById("btnClear").addEventListener("click",function(){
+    openModal("Clear all answers?","<p>This erases every answer on this worksheet and the saved copy on this device. It can't be undone.</p>",[
+      {label:"Cancel"},
+      {label:"Clear everything",primary:true,fn:function(){
+        try{localStorage.removeItem(KEY);}catch(e){}
+        fields.forEach(function(id){document.getElementById(id).value=(id==="course")?"AUTO H 171":"";});
+        Array.prototype.forEach.call(document.querySelectorAll("input[type=radio]"),function(r){r.checked=false;});
+        Array.prototype.forEach.call(document.querySelectorAll("textarea"),grow);
+        clearMarks();last={a:null,b:null,c:null};totals();updateProgress();status("Cleared.");
+      }}
+    ]);
+  });
+  ["d1score","d2score"].forEach(function(id){document.getElementById(id).addEventListener("change",function(){totals();save(true);});});
+  var st;
+  document.addEventListener("input",function(){updateProgress();clearTimeout(st);st=setTimeout(function(){save(true);},600);});
+  document.addEventListener("change",function(){updateProgress();clearTimeout(st);st=setTimeout(function(){save(true);},600);});
+
+  load();updateProgress();totals();
+})();
+</script>
+</body>
+</html>
