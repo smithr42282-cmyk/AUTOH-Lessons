@@ -54,10 +54,10 @@
   .steps li{margin:4px 0}
   .scope{display:grid;grid-template-columns:minmax(260px,520px) 1fr;gap:16px;align-items:start;margin:10px 0 6px}
   @media (max-width:760px){.scope{grid-template-columns:1fr}}
-  .screen{background:#0d1410;border:4px solid #222;border-radius:8px;padding:6px}
+  .screen{background:#fff;border:2px solid #8c96a3;border-radius:6px;padding:4px}
   .screen svg{width:100%;height:auto;display:block}
-  .settings{font-family:Consolas,Menlo,monospace;font-size:.8rem;background:#222;color:#e8e8e8;padding:6px 8px;border-radius:0 0 5px 5px;margin-top:4px}
-  .settings b{color:#ffd400}
+  .settings{font-family:Consolas,Menlo,monospace;font-size:.8rem;background:#eef1f5;color:#222;padding:6px 8px;border:1px solid #c9d0d9;border-top:0;border-radius:0 0 5px 5px}
+  .settings b{color:#1f5fbf}
   .nums .row{display:flex;align-items:center;gap:8px;margin:8px 0;flex-wrap:wrap}
   .nums .row span.lbl{flex:1 1 100%;font-size:.92rem}
   .nums input{width:110px}
@@ -95,10 +95,18 @@
   .refbox div{background:#f4f4f4;border-radius:6px;padding:10px 12px;font-size:.9rem}
   .refbox h4{margin:0 0 4px;font-size:.95rem;color:#990000}
   .refbox ul{margin:0;padding-left:18px}
-  .legend{font-family:Consolas,Menlo,monospace;font-size:.78rem;color:#e8e8e8;background:#222;padding:4px 8px}
-  .legend .live{color:#ffd400}.legend .ref{color:#4fd1ff}
+  .legend{font-family:Consolas,Menlo,monospace;font-size:.78rem;color:#222;background:#f7f7f7;border:1px solid #c9d0d9;border-top:0;padding:4px 8px}
+  .legend .live{color:#1f5fbf;font-weight:700}.legend .ref{color:#6b6b6b;font-weight:700}
   .cyl input{width:100%}
   .cyl td,.cyl th{text-align:center}
+
+  .kit{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:6px 16px;font-size:.88rem;margin:.4rem 0 0;padding:0;list-style:none}
+  .kit li{background:#f4f4f4;border-radius:5px;padding:5px 8px}
+  .kit code{font-weight:700;color:#990000;font-family:Consolas,Menlo,monospace}
+  .pico{background:#eef4fb;border-left:4px solid #1f5fbf;padding:8px 12px;font-size:.9rem;margin:.6rem 0}
+  .ctl{width:100%;border-collapse:collapse;margin:.4rem 0}
+  .ctl td,.ctl th{font-size:.88rem}
+  .ctl td:first-child{font-weight:700;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -106,7 +114,7 @@
   <div class="hwrap">
     <div class="kicker">Honda PACT · Shoreline Community College</div>
     <h1>Ignition &amp; Fuel System Analysis</h1>
-    <div class="sub">Worksheet · 20 points · Secondary ignition, injector voltage and injector current waveforms</div>
+    <div class="sub">Worksheet · 20 points · Secondary ignition, injector voltage and current with the PicoScope 4225A</div>
   </div>
 </header>
 
@@ -143,8 +151,8 @@
         <ul>
           <li><strong>Firing line:</strong> the voltage needed to jump the plug gap (kV). Higher resistance in the gap or the secondary circuit makes it taller.</li>
           <li><strong>Spark line:</strong> the voltage that keeps the spark burning. Its length is the <strong>burn time</strong> (ms).</li>
-          <li><strong>Coil oscillations:</strong> energy left in the coil rings down after the spark ends.</li>
-          <li><strong>Dwell:</strong> the time the primary circuit is switched on to charge the coil.</li>
+          <li><strong>Coil oscillations:</strong> energy left in the coil rings down after the spark ends. Pico's guide looks for <strong>at least 4 peaks</strong> (upper and lower); fewer points to a coil problem.</li>
+          <li><strong>Dwell / "drop down":</strong> a small oscillation in the opposite direction marks the coil's primary switching on to charge for the next spark.</li>
           <li>Rule of thumb: the coil only has so much energy. A taller firing line usually comes with a shorter burn time.</li>
         </ul>
       </div>
@@ -155,12 +163,19 @@
           <li><strong>Turn-on:</strong> the ECM driver pulls the circuit to ground and the injector opens.</li>
           <li><strong>Pulse width:</strong> how long the circuit is held at ground (ms). This is the fuel command.</li>
           <li><strong>Inductive spike:</strong> the coil's collapsing field when the driver turns off. A low spike can point to shorted windings.</li>
-          <li><strong>Current ramp:</strong> on a low-amp probe, current rises and shows a small <em>pintle hump</em> as the injector opens.</li>
+          <li><strong>Current ramp:</strong> with the TA473 clamp, current rises and shows a small <em>pintle hump</em> as the injector opens.</li>
         </ul>
       </div>
     </div>
-    <div class="note"><strong>Honda/Acura note:</strong> Most current engines use coil-on-plug coils with the igniter built into the coil, so there's no primary winding terminal to scope. View secondary with a COP pickup probe. At the coil connector you can scope the ECM's ignition control signal. Look up pins, wire colors and specs in Service Express / iN.</div>
-    <div class="warn"><strong>Safety:</strong> Never connect a scope lead directly to secondary ignition. Use a rated COP/secondary pickup only. Keep hands and leads clear of belts and fans while the engine runs.</div>
+    <div class="note"><strong>Honda/Acura note:</strong> Most current engines use coil-on-plug coils with the igniter built into the coil, so there's no primary winding terminal to scope. At the coil connector you can scope the ECM's ignition control signal. Look up pins, wire colors and specs in Service Express / iN.</div>
+    <h3>PicoScope 4225A setup for these tests</h3>
+    <table class="ctl"><tbody>
+      <tr><td>Secondary (COP)</td><td><strong>TA398 PicoBNC+ COP &amp; signal probe</strong> on Channel A. Clip its ground to a reliable point on the engine block, then hold the paddle flat on top of the coil with the engine running. If the waveform appears <strong>upside down</strong>, open Channel options → Probes and choose the inverted version of the probe, then capture again. On multi-coil packs, use the <strong>TA037 HT extension lead</strong> and <strong>TA397 secondary pickup</strong>.</td></tr>
+      <tr><td>Injector voltage</td><td><strong>TA404 lead</strong> with a <strong>TA161/TA162 back-pinning probe</strong> on the injector control (ground-side) wire, and the lead's ground on battery negative. The 4225A's <strong>±200 V</strong> input range handles the inductive spike <strong>without an attenuator</strong>. Start at ±100 V and 1 ms/div.</td></tr>
+      <tr><td>Injector current</td><td><strong>TA473 PicoBNC+ 60 A clamp</strong>: select the 20 A range, switch it on, and <strong>press zero before</strong> clamping around the injector's supply wire. PicoScope detects the clamp and shows amps. A fuse extension lead (TA034 / TA035) can give the clamp access to an injector fuse circuit.</td></tr>
+      <tr><td>Compare cylinders</td><td>The 4225A has 2 channels, so test one or two cylinders at a time. Copy a good cylinder into <strong>Reference waveforms</strong> and overlay the others against it.</td></tr>
+    </tbody></table>
+    <div class="warn"><strong>Safety:</strong> Never connect a test lead directly to secondary ignition. Use the TA398 COP probe or TA397 pickup only. ConnectDetect does not work with the COP probe or the current clamps because they don't touch the circuit. Keep the scope on the S-hook, and keep hands and leads clear of belts and fans while the engine runs.</div>
   </section>
 
   <!-- PART A -->
@@ -170,11 +185,11 @@
     <div class="anat">
       <figure>
         <figcaption>Secondary ignition waveform (known good)</figcaption>
-        <div class="screen"><svg id="anat1" viewBox="0 0 520 400" role="img" aria-label="Secondary ignition waveform. Marker 1 at the tall vertical spike, marker 2 on the flat line after it, marker 3 on the ringing after the flat line, marker 4 on the small ringing later in the trace where the coil begins charging."></svg></div>
+        <div class="screen"><svg id="anat1" role="img" aria-label="Secondary ignition waveform. Marker 1 at the tall vertical spike, marker 2 on the flat line after it, marker 3 on the ringing after the flat line, marker 4 on the small ringing later in the trace where the coil begins charging."></svg></div>
       </figure>
       <figure>
         <figcaption>Injector voltage waveform (known good)</figcaption>
-        <div class="screen"><svg id="anat2" viewBox="0 0 520 400" role="img" aria-label="Injector voltage waveform. Marker 5 on the steady level before the drop, marker 6 where the trace drops to ground, marker 7 on the tall spike after the ground section, marker 8 on a bracket spanning the time the trace is held at ground."></svg></div>
+        <div class="screen"><svg id="anat2" role="img" aria-label="Injector voltage waveform. Marker 5 on the steady level before the drop, marker 6 where the trace drops to ground, marker 7 on the tall spike after the ground section, marker 8 on a bracket spanning the time the trace is held at ground."></svg></div>
       </figure>
     </div>
     <table class="match"><tbody id="matchBody"></tbody></table>
@@ -189,13 +204,13 @@
   <!-- PART C -->
   <section class="card" aria-labelledby="s-c">
     <h2 id="s-c">Part C — Analyze the Captures <span class="pts">7 pts (1 each)</span></h2>
-    <p>Each capture comes from a warm 4-cylinder engine at idle. Pick the best diagnosis and take the measurements asked for. Numeric answers within ±10% are accepted. These are training captures with training reference values; always use the spec in Service Express on a real vehicle.</p>
+    <p>Each capture comes from a warm 4-cylinder engine at idle and is drawn the way PicoScope 7 shows it. Read values from the axis labels as if you had placed rulers. Pick the best diagnosis and take the measurements asked for. Numeric answers within ±10% are accepted. These are training captures with training reference values; always use the spec in Service Express on a real vehicle.</p>
 
     <h3>Capture 1 — Secondary ignition, cylinder 3</h3>
     <div class="scope">
       <div>
-        <div class="screen"><svg id="scr1" viewBox="0 0 520 400" role="img" aria-label="Secondary waveform: firing line rises 4 divisions above ground; spark line sits about 0.7 division up and lasts 1.2 divisions, followed by ringing and a later dwell section."></svg></div>
-        <div class="settings">COP probe · <b>5 kV/div</b> &nbsp;|&nbsp; Timebase: <b>0.5 ms/div</b> &nbsp;|&nbsp; Trig: CH A ↑ 3 kV</div>
+        <div class="screen"><svg id="scr1" role="img" aria-label="Blue secondary waveform: firing line rises to about 20 kilovolts; spark line sits near 3.5 kilovolts and the spark lasts 0.6 milliseconds from the firing line, followed by ringing and a later dwell section."></svg></div>
+        <div class="settings">Ch A: TA398 COP probe · <b>5 kV/div</b> &nbsp;|&nbsp; Timebase: <b>0.5 ms/div</b> &nbsp;|&nbsp; Trigger: Repeat · Rising · 3 kV</div>
         <div class="legend">Training reference for cylinders 1, 2, 4: firing line ≈ 10 kV · burn time ≈ 1.5 ms</div>
       </div>
       <div class="nums" id="nums1"></div>
@@ -204,8 +219,8 @@
     <h3>Capture 2 — Injector voltage, cylinder 2</h3>
     <div class="scope">
       <div>
-        <div class="screen"><svg id="scr2" viewBox="0 0 520 400" role="img" aria-label="Injector voltage: sits 0.7 division above ground, drops to ground for 2.5 divisions, then spikes only 1.5 divisions above ground before settling back."></svg></div>
-        <div class="settings">CH A: <b>20 V/div</b> · DC · 1:1 &nbsp;|&nbsp; Timebase: <b>1 ms/div</b> &nbsp;|&nbsp; Trig: CH A ↓ 7 V</div>
+        <div class="screen"><svg id="scr2" role="img" aria-label="Blue injector voltage: sits at about 14 volts, drops to 0 volts for 2.5 milliseconds, then spikes only to about 30 volts before settling back."></svg></div>
+        <div class="settings">Ch A: TA404 · <b>±100 V</b> (20 V/div) · DC &nbsp;|&nbsp; Timebase: <b>1 ms/div</b> &nbsp;|&nbsp; Trigger: Repeat · Falling · 7 V</div>
         <div class="legend">Training reference for injectors 1, 3, 4: pulse width ≈ 2.5 ms · spike ≈ 60 V</div>
       </div>
       <div class="nums" id="nums2"></div>
@@ -214,9 +229,9 @@
     <h3>Capture 3 — Injector current, cylinder 4</h3>
     <div class="scope">
       <div>
-        <div class="screen"><svg id="scr3" viewBox="0 0 520 400" role="img" aria-label="Injector current ramp. The blue reference trace rises with a small dip, the pintle hump, about 1.4 divisions after turn-on. The yellow live trace rises smoothly to the same peak with no hump."></svg></div>
-        <div class="settings">Low-amp probe · <b>0.2 A/div</b> &nbsp;|&nbsp; Timebase: <b>0.5 ms/div</b> &nbsp;|&nbsp; Trig: CH A ↑ 0.1 A</div>
-        <div class="legend"><span class="live">━ live: cylinder 4</span> &nbsp; <span class="ref">╌ REF (dashed): known-good injector</span></div>
+        <div class="screen"><svg id="scr3" role="img" aria-label="Injector current ramp. The gray dashed reference trace rises with a small dip, the pintle hump, about 0.75 milliseconds after turn-on. The blue live trace rises smoothly to the same peak of about 1 amp with no hump."></svg></div>
+        <div class="settings">Ch A: TA473 clamp (20 A range, zeroed) · <b>±2 A</b> (0.4 A/div) &nbsp;|&nbsp; Timebase: <b>0.5 ms/div</b> &nbsp;|&nbsp; Trigger: Repeat · Rising · 0.1 A</div>
+        <div class="legend"><span class="live">━ live: cylinder 4</span> &nbsp; <span class="ref">╌ Reference waveform (dashed): known-good injector</span></div>
       </div>
       <div class="nums" id="nums3"></div>
     </div>
@@ -225,13 +240,13 @@
   <!-- PART D -->
   <section class="card" aria-labelledby="s-d">
     <h2 id="s-d">Part D — Shop Lab: Injector Balance by Waveform <span class="pts">4 pts (instructor scored)</span></h2>
-    <p>With instructor approval, back-probe each injector's control wire on a shop vehicle. Capture at idle and at a steady 2,500 RPM, record the values, and compare the cylinders. Save one capture to show your instructor.</p>
+    <p>With instructor approval, back-pin each injector's control wire on a shop vehicle with the TA404 lead and a TA161/TA162 probe. Capture at idle and at a steady 2,500 RPM, measure with the Time and Signal rulers, and compare the cylinders. Store your first good cylinder as a <strong>Reference waveform</strong> and overlay the rest against it. Save the capture as a .psdata file to show your instructor.</p>
     <div class="grid2">
       <label class="field">Vehicle
         <select id="lVeh"><option value="">Choose…</option><option>2014 Honda Civic Si</option><option>2006 Acura TSX (race car)</option><option>Acura TSX race car (VIN …007477)</option><option>Other</option></select>
       </label>
       <label class="field">Injector control wire color / ECM pin (Service Express) <input type="text" id="lPin"></label>
-      <label class="field">Scope settings (V/div · time/div · trigger) <input type="text" id="lSet"></label>
+      <label class="field">PicoScope settings (input range · timebase · trigger mode/threshold) <input type="text" id="lSet"></label>
       <label class="field">Engine coolant temp at test (°F or °C) <input type="text" id="lEct"></label>
     </div>
     <table class="cyl" style="margin-top:12px">
@@ -274,7 +289,7 @@
   </section>
 </main>
 
-<footer>Honda PACT · AUTO H 171 · Ignition &amp; Fuel System Analysis Worksheet. Look up model-specific values in Service Express / Interactive Network (iN).</footer>
+<footer>Honda PACT · AUTO H 171 · Ignition &amp; Fuel System Analysis Worksheet · PicoScope 4225A / PicoScope 7 Automotive. Look up model-specific values in Service Express / Interactive Network (iN).</footer>
 
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
   <div class="box">
@@ -289,59 +304,88 @@
   "use strict";
   var KEY="pact-ign-fuel-v1";
 
-  /* ---------- Drawing helpers ---------- */
-  var NS="http://www.w3.org/2000/svg",OX=20,W=500,H=400,D=50;
+  /* ---------- PicoScope 7-style graph renderer ---------- */
+  var NS="http://www.w3.org/2000/svg";
+  var COL={A:"#1f5fbf",B:"#d62728",R:"#9a9a9a"};
   function mk(tag,a,p){var e=document.createElementNS(NS,tag);for(var k in a)e.setAttribute(k,a[k]);p.appendChild(e);return e;}
-  function grid(svg,gy,label){
-    mk("rect",{x:0,y:0,width:520,height:400,fill:"#0d1410"},svg);
-    for(var i=0;i<=10;i++)mk("line",{x1:OX+i*D,y1:0,x2:OX+i*D,y2:H,stroke:i===5?"#4f7a5c":"#2e4a37","stroke-width":(i===0||i===10)?2:1},svg);
-    for(var j=0;j<=8;j++)mk("line",{x1:OX,y1:j*D,x2:OX+W,y2:j*D,stroke:j===4?"#4f7a5c":"#2e4a37","stroke-width":(j===0||j===8)?2:1},svg);
-    for(var t=0;t<=50;t++){var x=OX+t*10;mk("line",{x1:x,y1:196,x2:x,y2:204,stroke:"#4f7a5c"},svg);}
-    for(var u=0;u<=40;u++){var y=u*10;mk("line",{x1:OX+246,y1:y,x2:OX+254,y2:y,stroke:"#4f7a5c"},svg);}
-    mk("polygon",{points:"2,"+(gy-8)+" 18,"+gy+" 2,"+(gy+8),fill:"#ffd400"},svg);
-    var l=mk("text",{x:3,y:gy-11,fill:"#ffd400","font-size":"11","font-family":"monospace"},svg);l.textContent=label||"A";
+  function fmtN(n){var r=Math.round(n*1000)/1000;if(Math.abs(r)<1e-9)r=0;return r.toString();}
+  // cfg: {A:{per,unit,off}, B:{...}, t:{per,unit}, traces:[{ch,pts:[[xDiv,value]],dash,color,w}], trig:{ch,x,v}}
+  function pico(svg,cfg){
+    var L=60,T=28,P=50,W=500,H=500,R=cfg.B?60:18,Bm=44;
+    svg.setAttribute("viewBox","0 0 "+(L+W+R)+" "+(T+H+Bm));
+    mk("rect",{x:0,y:0,width:L+W+R,height:T+H+Bm,fill:"#ffffff"},svg);
+    var cid="clip"+Math.random().toString(36).slice(2);
+    var cp=mk("clipPath",{id:cid},mk("defs",{},svg));mk("rect",{x:L,y:T,width:W,height:H},cp);
+    var i,j;
+    for(i=0;i<=10;i++)mk("line",{x1:L+i*P,y1:T,x2:L+i*P,y2:T+H,stroke:i===5?"#b0b0b0":"#e0e0e0","stroke-width":(i===0||i===10)?1.5:1},svg);
+    for(j=0;j<=10;j++)mk("line",{x1:L,y1:T+j*P,x2:L+W,y2:T+j*P,stroke:j===5?"#b0b0b0":"#e0e0e0","stroke-width":(j===0||j===10)?1.5:1},svg);
+    for(i=0;i<=50;i++)mk("line",{x1:L+i*10,y1:T+H/2-4,x2:L+i*10,y2:T+H/2+4,stroke:"#b0b0b0"},svg);
+    for(j=0;j<=50;j++)mk("line",{x1:L+W/2-4,y1:T+j*10,x2:L+W/2+4,y2:T+j*10,stroke:"#b0b0b0"},svg);
+    function axis(ch,side){
+      var c=cfg[ch];if(!c)return;var off=c.off||0,left=side==="L";
+      for(var j=0;j<=10;j++){
+        var tx=mk("text",{x:left?L-7:L+W+7,y:T+j*P+4,fill:COL[ch],"font-size":"13","font-family":"Arial,Helvetica,sans-serif","text-anchor":left?"end":"start"},svg);
+        tx.textContent=fmtN((5-j-off)*c.per);
+      }
+      var u=mk("text",{x:left?L-7:L+W+7,y:T-10,fill:COL[ch],"font-size":"13","font-weight":"700","font-family":"Arial,Helvetica,sans-serif","text-anchor":left?"end":"start"},svg);
+      u.textContent=c.unit;
+    }
+    axis("A","L");axis("B","R");
+    for(i=0;i<=10;i++){
+      var tl=mk("text",{x:L+i*P,y:T+H+17,fill:"#333","font-size":"13","font-family":"Arial,Helvetica,sans-serif","text-anchor":"middle"},svg);
+      tl.textContent=fmtN(i*cfg.t.per);
+    }
+    var tu=mk("text",{x:L+W,y:T+H+36,fill:"#333","font-size":"13","font-weight":"700","font-family":"Arial,Helvetica,sans-serif","text-anchor":"end"},svg);
+    tu.textContent=cfg.t.unit;
+    function X(xd){return L+xd*P;}
+    function Y(ch,v){var c=cfg[ch];return T+(5-(v/c.per+(c.off||0)))*P;}
+    var g=mk("g",{"clip-path":"url(#"+cid+")"},svg);
+    (cfg.traces||[]).forEach(function(tr){
+      var d=tr.pts.map(function(p,k){return(k?"L":"M")+X(p[0]).toFixed(1)+" "+Y(tr.ch,p[1]).toFixed(1);}).join(" ");
+      var at={d:d,fill:"none",stroke:tr.color||COL[tr.ch],"stroke-width":tr.w||2.2,"stroke-linejoin":"round"};
+      if(tr.dash)at["stroke-dasharray"]=tr.dash;
+      mk("path",at,g);
+    });
+    if(cfg.trig){
+      var tx0=X(cfg.trig.x),ty0=Y(cfg.trig.ch,cfg.trig.v);
+      mk("polygon",{points:tx0+","+(ty0-8)+" "+(tx0+8)+","+ty0+" "+tx0+","+(ty0+8)+" "+(tx0-8)+","+ty0,fill:"#ffd400",stroke:"#7a6400","stroke-width":1.2},svg);
+    }
+    return {X:X,Y:Y,mk:mk,svg:svg};
   }
-  function trace(svg,pts,color,w,dash){
-    var d=pts.map(function(p,i){return(i?"L":"M")+(OX+p[0]).toFixed(1)+" "+p[1].toFixed(1);}).join(" ");
-    var at={d:d,fill:"none",stroke:color||"#ffd400","stroke-width":w||2.5,"stroke-linejoin":"round"};if(dash)at["stroke-dasharray"]=dash;
-    mk("path",at,svg);
+  function marker(gr,xd,ch,v,n){
+    var x=gr.X(xd),y=gr.Y(ch,v);
+    mk("circle",{cx:x,cy:y,r:13,fill:"#CC0000",stroke:"#fff","stroke-width":2},gr.svg);
+    var t=mk("text",{x:x,y:y+5,fill:"#fff","font-size":"14","font-weight":"700","text-anchor":"middle","font-family":"Arial"},gr.svg);t.textContent=n;
   }
-  function marker(svg,x,y,n){
-    mk("circle",{cx:OX+x,cy:y,r:13,fill:"#CC0000",stroke:"#fff","stroke-width":2},svg);
-    var t=mk("text",{x:OX+x,y:y+5,fill:"#fff","font-size":"14","font-weight":"700","text-anchor":"middle","font-family":"Arial"},svg);t.textContent=n;
+  function px(list,per,gy){ // convert old pixel points (gy = old ground px) to [div,value]
+    return list.map(function(p){return [p[0]/50,(gy-p[1])/50*per];});
   }
-  // Secondary waveform builder. gy ground, fire y, spark y, start x, burn px
-  function secondary(gy,fireY,sparkY,x0,burn,dwellX){
-    var p=[[0,gy],[x0,gy],[x0+2,fireY],[x0+6,sparkY-6],[x0+10,sparkY]];
-    var e=x0+10+burn;
-    p.push([e,sparkY+4]);
-    p.push([e+3,gy+28]);
-    for(var k=0;k<10;k++){var x=e+6+k*9;var a=24*Math.exp(-k/3);p.push([x,gy+(k%2?a:-a)]);}
-    p.push([dwellX,gy]);
-    for(var m=0;m<6;m++){var xx=dwellX+3+m*6;var b=12*Math.exp(-m/2);p.push([xx,gy+(m%2?-b:b)]);}
-    p.push([500,gy]);
-    return p;
+
+  function secondary(fire,spark,x0,burn,dwellX){ // [div,kV]
+    var p=[[0,0],[x0,0],[x0+0.04,fire],[x0+0.12,spark+0.6],[x0+0.2,spark]],e=x0+0.2+burn;
+    p.push([e,spark-0.4],[e+0.06,-2.8]);
+    for(var k=0;k<10;k++){var a=2.4*Math.exp(-k/3);p.push([e+(6+k*9)/50,k%2?-a:a]);}
+    p.push([dwellX,0]);
+    for(var m=0;m<6;m++){var b=1.2*Math.exp(-m/2);p.push([dwellX+(3+m*6)/50,m%2?b:-b]);}
+    p.push([10,0]);return p;
   }
-  function injector(gy,supY,on,pw,spikeY){
-    var off=on+pw,p=[[0,supY],[on,supY],[on+1,gy],[off,gy],[off+1,spikeY],[off+8,spikeY],[off+16,supY-6],[off+30,supY+4],[off+44,supY-3],[off+60,supY+2],[off+80,supY],[500,supY]];
-    return p;
+  function inj(sup,on,pw,spike){
+    var off=on+pw;
+    return [[0,sup],[on,sup],[on+0.02,0],[off,0],[off+0.02,spike],[off+0.16,spike],[off+0.32,sup+2.4],[off+0.6,sup-1.6],[off+0.88,sup+1.2],[off+1.2,sup-0.8],[off+1.6,sup],[10,sup]];
   }
 
   /* ---------- Part A anatomy ---------- */
   (function(){
-    var s=document.getElementById("anat1");grid(s,350);
-    // good: 10 kV at 5 kV/div -> 2 div -> y250; spark ~0.4 div y330; burn 1.5 ms at .5ms/div = 3 div = 150px
-    trace(s,secondary(350,250,330,40,150,380));
-    marker(s,40,232,"1");marker(s,120,305,"2");marker(s,240,312,"3");marker(s,400,322,"4");
+    var g=pico(document.getElementById("anat1"),{A:{per:5,unit:"kV"},t:{per:0.5,unit:"ms"},traces:[{ch:"A",pts:secondary(10,2,0.8,3,7.6)}]});
+    marker(g,0.8,"A",13,"1");marker(g,2.4,"A",5,"2");marker(g,4.8,"A",4.5,"3");marker(g,8,"A",3.5,"4");
   })();
   (function(){
-    var s=document.getElementById("anat2");grid(s,350);
-    trace(s,injector(350,315,100,125,200));
-    marker(s,50,290,"5");marker(s,101,375,"6");marker(s,235,182,"7");
-    mk("path",{d:"M"+(OX+100)+" 385 L"+(OX+100)+" 393 L"+(OX+225)+" 393 L"+(OX+225)+" 385",stroke:"#CC0000","stroke-width":3,fill:"none"},s);
-    marker(s,162,372,"8");
+    var g=pico(document.getElementById("anat2"),{A:{per:20,unit:"V"},t:{per:1,unit:"ms"},traces:[{ch:"A",pts:inj(14,2,2.5,60)}]});
+    marker(g,1,"A",26,"5");marker(g,1.5,"A",-8,"6");marker(g,4.7,"A",70,"7");
+    mk("path",{d:"M"+g.X(2)+" "+g.Y("A",-14)+" L"+g.X(2)+" "+g.Y("A",-18)+" L"+g.X(4.5)+" "+g.Y("A",-18)+" L"+g.X(4.5)+" "+g.Y("A",-14),stroke:"#CC0000","stroke-width":3,fill:"none"},g.svg);
+    marker(g,3.25,"A",-30,"8");
   })();
-  var PARTS=["Firing line","Spark line (burn time)","Coil oscillations","Dwell (coil charging begins)","Supply voltage (injector off)","Driver turns injector on (pulls to ground)","Inductive spike","Pulse width (on-time)"];
+  var PARTS=["Firing line","Spark line (burn time)","Coil oscillations","Dwell start / drop down (coil switches on)","Supply voltage (injector off)","Driver turns injector on (pulls to ground)","Inductive spike","Pulse width (on-time)"];
   var terms=[["a1","Marker 1",0],["a2","Marker 2",1],["a3","Marker 3",2],["a4","Marker 4",3],["a5","Marker 5",4],["a6","Marker 6",5],["a7","Marker 7",6],["a8","Marker 8",7]];
   var order=[3,6,0,7,4,1,5,2]; // display order of options (shuffled)
   var matchBody=document.getElementById("matchBody");
@@ -359,11 +403,11 @@
     {id:"b2",q:"One cylinder's firing line is much taller than the others and its burn time is shorter. What is the most likely cause?",
      o:["A fouled, carbon-tracked plug giving an easy path to ground","A rich mixture in that cylinder","High resistance in that cylinder's secondary path, such as a worn or wide plug gap or a damaged boot","Low battery voltage"],a:2},
     {id:"b3",q:"During a snap throttle, injector pulse width gets longer. Why?",
-     o:["The injector is sticking open","The scope's time/div changed","The fuel pressure dropped to zero","The ECM is commanding more fuel for the added airflow and load"],a:3},
+     o:["The injector is sticking open","The PicoScope Timebase changed","The fuel pressure dropped to zero","The ECM is commanding more fuel for the added airflow and load"],a:3},
     {id:"b4",q:"Compared with a known-good injector, one injector's current ramp has no pintle hump. What does this suggest?",
      o:["The pintle may be sticking or slow to open (a mechanical problem)","The injector is opening normally","The ECM's ground is poor","The injector harness is open"],a:0},
-    {id:"b5",q:"What is the safe way to view secondary ignition on a coil-on-plug Honda engine?",
-     o:["Back-probe the spark plug terminal with a standard scope lead","Pierce the coil boot with a probe pin","Use a rated COP pickup or secondary probe set to the correct kV scaling","Connect the scope lead to the coil's 12 V feed"],a:2}
+    {id:"b5",q:"What is the safe way to view secondary ignition on a coil-on-plug Honda engine with the PicoScope kit?",
+     o:["Back-pin the spark plug terminal with the TA404 test lead","Pierce the coil boot with a back-pinning probe","Hold the TA398 COP probe paddle on the coil, with its ground clip on the engine block","Connect the TA404 lead to the coil's 12 V feed"],a:2}
   ];
   var mcWrap=document.getElementById("mcWrap");
   mcs.forEach(function(m,i){
@@ -392,25 +436,16 @@
     h+='<label class="field" style="margin-top:6px">Evidence: what in the capture, compared with the reference, supports your diagnosis?<textarea id="w_'+box+'" style="min-height:60px"></textarea></label>';
     el.innerHTML=h;
   });
-  // C1: 20 kV -> 4 div -> y150; spark line 0.7 div y315; burn 0.6 ms -> 1.2 div -> 60px
-  (function(){var s=document.getElementById("scr1");grid(s,350);trace(s,secondary(350,150,315,50,50,380));})();
-  // C2: PW 2.5 ms -> 125px; spike 30 V -> 1.5 div -> y275
-  (function(){var s=document.getElementById("scr2");grid(s,350);trace(s,injector(350,315,50,125,275));})();
-  // C3: current ramps
+  pico(document.getElementById("scr1"),{A:{per:5,unit:"kV"},t:{per:0.5,unit:"ms"},trig:{ch:"A",x:1,v:3},traces:[{ch:"A",pts:secondary(20,3.5,1,1,7.6)}]});
+  pico(document.getElementById("scr2"),{A:{per:20,unit:"V"},t:{per:1,unit:"ms"},trig:{ch:"A",x:1,v:7},traces:[{ch:"A",pts:inj(14,1,2.5,30)}]});
   (function(){
-    var s=document.getElementById("scr3");grid(s,350);
-    var on=50,off=300;
     function ramp(hump){
-      var p=[[0,350],[on,350]];
-      for(var x=on;x<=off;x+=2){
-        var t=(x-on)/250;var i=1.05*(1-Math.exp(-t*3.2));
-        if(hump){var c=0.30,w=0.05;i-=0.16*Math.exp(-Math.pow((t-c)/w,2));}
-        p.push([x,350-i*250]);
-      }
-      p.push([off+2,350],[500,350]);return p;
+      var p=[[0,0],[1,0]];
+      for(var x=1;x<=6.0001;x+=0.04){var t=(x-1)/5,i=1.05*(1-Math.exp(-t*3.2));if(hump)i-=0.24*Math.exp(-Math.pow((t-0.28)/0.065,2));p.push([x,i]);}
+      p.push([6.04,0],[10,0]);return p;
     }
-    trace(s,ramp(false),"#ffd400",2.5);
-    trace(s,ramp(true),"#4fd1ff",2.5,"7 5");
+    pico(document.getElementById("scr3"),{A:{per:0.4,unit:"A"},t:{per:0.5,unit:"ms"},trig:{ch:"A",x:1,v:0.1},
+      traces:[{ch:"A",pts:ramp(false),w:2.6},{ch:"A",pts:ramp(true),color:"#7a7a7a",dash:"7 5",w:2.4}]});
   })();
 
   /* ---------- Part D table ---------- */
