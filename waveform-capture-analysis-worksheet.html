@@ -54,10 +54,10 @@
   .steps li{margin:4px 0}
   .scope{display:grid;grid-template-columns:minmax(260px,520px) 1fr;gap:16px;align-items:start;margin:10px 0 6px}
   @media (max-width:760px){.scope{grid-template-columns:1fr}}
-  .screen{background:#0d1410;border:4px solid #222;border-radius:8px;padding:6px}
+  .screen{background:#fff;border:2px solid #8c96a3;border-radius:6px;padding:4px}
   .screen svg{width:100%;height:auto;display:block}
-  .settings{font-family:Consolas,Menlo,monospace;font-size:.8rem;background:#222;color:#e8e8e8;padding:6px 8px;border-radius:0 0 5px 5px;margin-top:4px}
-  .settings b{color:#ffd400}
+  .settings{font-family:Consolas,Menlo,monospace;font-size:.8rem;background:#eef1f5;color:#222;padding:6px 8px;border:1px solid #c9d0d9;border-top:0;border-radius:0 0 5px 5px}
+  .settings b{color:#1f5fbf}
   .nums .row{display:flex;align-items:center;gap:8px;margin:8px 0;flex-wrap:wrap}
   .nums .row span.lbl{flex:1 1 100%;font-size:.92rem}
   .nums input{width:110px}
@@ -86,6 +86,14 @@
     textarea{border:1px solid #999;min-height:auto}
     .scope{grid-template-columns:1fr 1fr}
   }
+
+  .kit{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:6px 16px;font-size:.88rem;margin:.4rem 0 0;padding:0;list-style:none}
+  .kit li{background:#f4f4f4;border-radius:5px;padding:5px 8px}
+  .kit code{font-weight:700;color:#990000;font-family:Consolas,Menlo,monospace}
+  .pico{background:#eef4fb;border-left:4px solid #1f5fbf;padding:8px 12px;font-size:.9rem;margin:.6rem 0}
+  .ctl{width:100%;border-collapse:collapse;margin:.4rem 0}
+  .ctl td,.ctl th{font-size:.88rem}
+  .ctl td:first-child{font-weight:700;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -93,7 +101,7 @@
   <div class="hwrap">
     <div class="kicker">Honda PACT · Shoreline Community College</div>
     <h1>Waveform Capture &amp; Analysis</h1>
-    <div class="sub">Worksheet · 20 points · Builds on Oscilloscope Basics: Controls &amp; Functions</div>
+    <div class="sub">Worksheet · 20 points · PicoScope 4225A with PicoScope 7 Automotive · Builds on Oscilloscope Basics</div>
   </div>
 </header>
 
@@ -119,27 +127,37 @@
       <label class="field">Course <input type="text" id="course" value="AUTO H 171"></label>
       <label class="field">Lab partner <input type="text" id="partner"></label>
     </div>
-    <div class="note"><strong>Objectives:</strong> Connect a scope safely and correctly; choose the right trigger and capture mode for the event; use cursors, zoom and reference waveforms; recognize common waveform faults; capture, measure and judge a real signal against spec.</div>
+    <div class="note"><strong>Objectives:</strong> Connect the PicoScope 4225A safely with the right kit accessories; choose the right PicoScope trigger mode for the event; use Signal and Time rulers, Windowed Zoom, the Waveform Buffer and Reference waveforms; recognize common waveform faults; capture, save and judge a real signal against spec.</div>
   </section>
 
   <section class="card" aria-labelledby="s-ref">
-    <h2 id="s-ref">Capture Workflow <span class="pts">read before you start</span></h2>
+    <h2 id="s-ref">PicoScope Capture Workflow <span class="pts">read before you start</span></h2>
     <ol class="steps">
-      <li><strong>Look it up first.</strong> Find the wiring diagram, connector pin, wire color and expected signal in Service Express / iN.</li>
-      <li><strong>Ground the scope lead</strong> to battery negative or a clean engine ground.</li>
-      <li><strong>Back-probe</strong> the signal terminal with the connector plugged in. Don't pierce the insulation.</li>
-      <li><strong>Set vertical:</strong> pick a V/div that keeps the whole expected signal on screen. Use DC coupling for most sensor work.</li>
-      <li><strong>Set horizontal:</strong> pick a time/div that shows several cycles at the test RPM, and set the record length.</li>
-      <li><strong>Set the trigger:</strong> source, a level inside the signal's range, slope, then the mode (Auto, Normal or Single).</li>
-      <li><strong>Run the test condition</strong> (key on, crank, idle, snap throttle, wiggle test) and capture.</li>
-      <li><strong>Freeze, save and analyze:</strong> measure with cursors, zoom in on suspect areas, and compare against spec and a known-good reference.</li>
+      <li><strong>Look it up first.</strong> Find the wiring diagram, connector pin, wire color and expected signal in Service Express / iN. Check the PicoScope <strong>Guided tests</strong> or <strong>Waveform Library</strong> for a known-good example.</li>
+      <li><strong>Connect the scope.</strong> Plug the PicoScope 4225A into the laptop by USB, open PicoScope 7 Automotive, and confirm the device is connected. Hang the scope on the <strong>S-hook (MI168)</strong>, clear of moving parts.</li>
+      <li><strong>Connect the lead.</strong> Use the <strong>TA404 blue lead on Channel A</strong> or the <strong>TA405 red lead on Channel B</strong>. Each has a permanent 4 mm ground. Clip the ground to battery negative or a clean engine ground with a <strong>TA158 battery clip</strong>.</li>
+      <li><strong>Back-pin the signal.</strong> Push a <strong>TA161/TA162 flexible back-pinning probe</strong> into the rear of the plugged-in connector, beside the signal wire. Don't pierce the insulation. Turn on <strong>ConnectDetect</strong>: the channel LED shows green for a good connection and red for a bad one.</li>
+      <li><strong>Channel options:</strong> choose an input range that keeps the whole signal on screen without "Channel over-range", and DC coupling for most sensor work. PicoBNC+ leads and probes are detected and set up automatically.</li>
+      <li><strong>Timebase:</strong> choose a time/div that shows several cycles at the test RPM. Start from the 20:20 rule (±20 V, 20 ms/div) if you are unsure.</li>
+      <li><strong>Trigger:</strong> Simple Edge, source channel, a threshold inside the signal's range, rising or falling, then the mode: <strong>Auto</strong>, <strong>Repeat</strong> or <strong>Single</strong>.</li>
+      <li><strong>Capture:</strong> click <strong>Stopped</strong> (or press the space bar) to start running, then create the test condition (key on, crank, idle, snap throttle, wiggle test). Click <strong>Running</strong> to stop.</li>
+      <li><strong>Analyze and save:</strong> step through the <strong>Waveform Buffer</strong>, use <strong>Windowed Zoom</strong>, measure with <strong>Signal and Time rulers</strong> (values appear in the ruler legend), compare against a <strong>Reference waveform</strong>, add <strong>Notes</strong>, and <strong>Save</strong> as a .psdata file.</li>
     </ol>
-    <div class="warn"><strong>Safety:</strong> Route leads away from belts, fans and exhaust. Never connect the scope directly to ignition secondary voltage. Use only a rated secondary pickup or attenuator. Check the probe ratio setting every time you add an attenuator.</div>
+    <h3>Kit items used in this worksheet</h3>
+    <ul class="kit">
+      <li><code>PQ177</code> PicoScope 4225A 2-channel standard kit</li>
+      <li><code>TA404 / TA405</code> PicoBNC+ test leads, blue (A) / red (B)</li>
+      <li><code>TA161 / TA162</code> flexible back-pinning probes</li>
+      <li><code>TA157 / TA158</code> battery clips, red / black</li>
+      <li><code>TA003 / TA004</code> small crocodile clips</li>
+      <li><code>MI168</code> S-hook for hanging the scope</li>
+    </ul>
+    <div class="warn"><strong>Safety:</strong> Route leads away from belts, fans and exhaust. Never connect a test lead directly to ignition secondary voltage; use the TA398 COP probe or TA397 secondary pickup. If PicoScope shows the yellow <strong>floating-input warning</strong> (more than 30 V between a lead's ground and the scope chassis), stop and recheck your ground connections against the wiring diagram. Follow the PicoScope safety guide.</div>
   </section>
 
   <!-- PART A -->
   <section class="card" aria-labelledby="s-a">
-    <h2 id="s-a">Part A — Capture Tools &amp; Functions <span class="pts">4 pts (0.5 each)</span></h2>
+    <h2 id="s-a">Part A — PicoScope 7 Capture &amp; Analysis Tools <span class="pts">4 pts (0.5 each)</span></h2>
     <p>Match each term to its definition. Each letter is used once.</p>
     <table class="defs" aria-label="Definitions"><tbody id="defsBody"></tbody></table>
     <h3>Terms</h3>
@@ -148,20 +166,20 @@
 
   <!-- PART B -->
   <section class="card" aria-labelledby="s-b">
-    <h2 id="s-b">Part B — Capture Setup Decisions <span class="pts">5 pts (1 each)</span></h2>
+    <h2 id="s-b">Part B — Capture Setup Decisions on the 4225A <span class="pts">5 pts (1 each)</span></h2>
     <div id="mcWrap"></div>
   </section>
 
   <!-- PART C -->
   <section class="card" aria-labelledby="s-c">
     <h2 id="s-c">Part C — Analyze the Capture <span class="pts">7 pts (1 each)</span></h2>
-    <p>Each screen shows a 0–5 V digital sensor signal captured at a steady idle. The known-good signal switches cleanly between about 0 V and 5 V at a steady frequency. For each capture, pick the best diagnosis, then take the measurement asked for. Numeric answers within ±10% are accepted. These are training captures, not specifications.</p>
+    <p>Each screen shows a 0–5 V digital sensor signal captured at a steady idle. The known-good signal switches cleanly between about 0 V and 5 V at a steady frequency. For each capture, pick the best diagnosis, then take the measurement asked for. Each screen is drawn the way PicoScope 7 shows it. Use the axis labels, as if you had placed Signal and Time rulers. Numeric answers within ±10% are accepted. These are training captures, not specifications.</p>
 
     <h3>Capture 1</h3>
     <div class="scope">
       <div>
-        <div class="screen"><svg id="scr1" viewBox="0 0 520 400" role="img" aria-label="Square wave switching between ground and 2.5 divisions, period 2 divisions. Around the middle of the screen one pulse is missing; the signal stays low for 3 divisions."></svg></div>
-        <div class="settings">CH A: <b>2 V/div</b> · DC · 1:1 &nbsp;|&nbsp; Timebase: <b>2 ms/div</b> &nbsp;|&nbsp; Trig: CH A ↑ 2.5 V · Normal</div>
+        <div class="screen"><svg id="scr1" role="img" aria-label="Blue 0 to 5 volt square wave with a 4 millisecond period. Near the middle of the screen one pulse is missing; the signal stays at 0 volts for 6 milliseconds."></svg></div>
+        <div class="settings">Ch A: TA404 · <b>±10 V</b> (2 V/div) · DC &nbsp;|&nbsp; Timebase: <b>2 ms/div</b> &nbsp;|&nbsp; Trigger: Repeat · Rising · 2.5 V</div>
       </div>
       <div class="nums" id="nums1"></div>
     </div>
@@ -169,8 +187,8 @@
     <h3>Capture 2</h3>
     <div class="scope">
       <div>
-        <div class="screen"><svg id="scr2" viewBox="0 0 520 400" role="img" aria-label="Square wave switching between ground and 1.5 divisions above ground, period 4 divisions, clean edges."></svg></div>
-        <div class="settings">CH A: <b>2 V/div</b> · DC · 1:1 &nbsp;|&nbsp; Timebase: <b>5 ms/div</b> &nbsp;|&nbsp; Trig: CH A ↑ 1.5 V · Normal</div>
+        <div class="screen"><svg id="scr2" role="img" aria-label="Blue square wave switching between 0 and 3 volts with a 20 millisecond period and clean edges."></svg></div>
+        <div class="settings">Ch A: TA404 · <b>±10 V</b> (2 V/div) · DC &nbsp;|&nbsp; Timebase: <b>5 ms/div</b> &nbsp;|&nbsp; Trigger: Repeat · Rising · 1.5 V</div>
       </div>
       <div class="nums" id="nums2"></div>
     </div>
@@ -178,8 +196,8 @@
     <h3>Capture 3</h3>
     <div class="scope">
       <div>
-        <div class="screen"><svg id="scr3" viewBox="0 0 520 400" role="img" aria-label="Square wave between ground and 2.5 divisions with heavy jagged hash riding on both the high and low levels."></svg></div>
-        <div class="settings">CH A: <b>2 V/div</b> · DC · 1:1 &nbsp;|&nbsp; Timebase: <b>5 ms/div</b> &nbsp;|&nbsp; Trig: CH A ↑ 2.5 V · Normal</div>
+        <div class="screen"><svg id="scr3" role="img" aria-label="Blue 0 to 5 volt square wave with heavy jagged hash riding on both the high and low levels."></svg></div>
+        <div class="settings">Ch A: TA404 · <b>±10 V</b> (2 V/div) · DC · DSP lowpass Off &nbsp;|&nbsp; Timebase: <b>5 ms/div</b> &nbsp;|&nbsp; Trigger: Repeat · Rising · 2.5 V</div>
       </div>
       <div class="nums" id="nums3"></div>
     </div>
@@ -187,8 +205,8 @@
     <h3>Capture 4</h3>
     <div class="scope">
       <div>
-        <div class="screen"><svg id="scr4" viewBox="0 0 520 400" role="img" aria-label="Square wave whose high level is 5 divisions above ground but whose low level only drops to 1.5 divisions above ground, period 4 divisions."></svg></div>
-        <div class="settings">CH A: <b>1 V/div</b> · DC · 1:1 &nbsp;|&nbsp; Timebase: <b>5 ms/div</b> &nbsp;|&nbsp; Trig: CH A ↑ 3.5 V · Normal</div>
+        <div class="screen"><svg id="scr4" role="img" aria-label="Blue square wave whose high level reaches 5 volts but whose low level only drops to 1.6 volts, 20 millisecond period."></svg></div>
+        <div class="settings">Ch A: TA404 · <b>±10 V</b> (2 V/div) · DC &nbsp;|&nbsp; Timebase: <b>5 ms/div</b> &nbsp;|&nbsp; Trigger: Repeat · Rising · 3.5 V</div>
       </div>
       <div class="nums" id="nums4"></div>
     </div>
@@ -197,21 +215,22 @@
   <!-- PART D -->
   <section class="card" aria-labelledby="s-d">
     <h2 id="s-d">Part D — Shop Lab: Capture a Real Signal <span class="pts">4 pts (instructor scored)</span></h2>
-    <p>With instructor approval, capture one sensor or actuator signal on a shop vehicle. Record your setup and measurements, then judge the signal against spec or a known-good capture. Save the capture on the scope and show it to your instructor.</p>
+    <p>With instructor approval, capture one sensor or actuator signal on a shop vehicle with the PicoScope 4225A. Record your setup and ruler measurements, then judge the signal against spec or a known-good capture (Guided test, Waveform Library or Reference waveform). Fill in <strong>Vehicle details</strong> and <strong>Notes</strong> in PicoScope, save the capture as a .psdata file, and show it to your instructor.</p>
     <table class="lab">
       <tbody>
         <tr><td><label for="lVeh">Vehicle</label></td><td><select id="lVeh" data-track><option value="">Choose…</option><option>2014 Honda Civic Si</option><option>2006 Acura TSX (race car)</option><option>Acura TSX race car (VIN …007477)</option><option>Other (note in Component field)</option></select></td></tr>
         <tr><td><label for="lComp">Component / signal tested</label></td><td><input type="text" id="lComp" data-track placeholder="e.g., CMP sensor signal"></td></tr>
         <tr><td><label for="lPin">Connector pin &amp; wire color (from Service Express)</label></td><td><input type="text" id="lPin" data-track></td></tr>
         <tr><td><label for="lCond">Test condition (key on, crank, idle, RPM)</label></td><td><input type="text" id="lCond" data-track></td></tr>
-        <tr><td><label for="lV">V/div · coupling · probe ratio</label></td><td><input type="text" id="lV" data-track></td></tr>
-        <tr><td><label for="lT">Time/div</label></td><td><input type="text" id="lT" data-track></td></tr>
-        <tr><td><label for="lTrig">Trigger: source · level · slope · mode</label></td><td><input type="text" id="lTrig" data-track></td></tr>
-        <tr><td><label for="lMax">Measured maximum voltage</label></td><td><input type="text" id="lMax" data-track></td></tr>
-        <tr><td><label for="lMin">Measured minimum voltage</label></td><td><input type="text" id="lMin" data-track></td></tr>
-        <tr><td><label for="lFreq">Frequency or period</label></td><td><input type="text" id="lFreq" data-track></td></tr>
+        <tr><td><label for="lV">Channel · lead/probe used · input range · coupling</label></td><td><input type="text" id="lV" data-track></td></tr>
+        <tr><td><label for="lT">Timebase (time/div)</label></td><td><input type="text" id="lT" data-track></td></tr>
+        <tr><td><label for="lTrig">Trigger: mode (Auto/Repeat/Single) · source · threshold · direction</label></td><td><input type="text" id="lTrig" data-track></td></tr>
+        <tr><td><label for="lMax">Maximum voltage (Signal ruler)</label></td><td><input type="text" id="lMax" data-track></td></tr>
+        <tr><td><label for="lMin">Minimum voltage (Signal ruler)</label></td><td><input type="text" id="lMin" data-track></td></tr>
+        <tr><td><label for="lFreq">Frequency or period (Time rulers or Measurements)</label></td><td><input type="text" id="lFreq" data-track></td></tr>
         <tr><td><label for="lDuty">Duty cycle or pulse width (if it applies)</label></td><td><input type="text" id="lDuty"></td></tr>
         <tr><td><label for="lSpec">Spec / known-good reference used</label></td><td><input type="text" id="lSpec" data-track></td></tr>
+        <tr><td><label for="lFile">ConnectDetect result · saved .psdata file name</label></td><td><input type="text" id="lFile" data-track></td></tr>
       </tbody>
     </table>
     <div class="q">
@@ -228,7 +247,7 @@
           <select id="d2score"><option value="">—</option><option value="0">0</option><option value="1">1</option><option value="2">2</option></select>
         </label>
       </div>
-      <p style="font-size:.82rem;margin:.5rem 0 0"><strong>Capture:</strong> 2 = safe hookup, a stable capture shown to the instructor, all setup and measurement fields filled in · 1 = capture made but setup or measurements incomplete · 0 = no capture.<br><strong>Analysis:</strong> 2 = correct good/faulty call backed by measurements and the spec · 1 = call made with weak or missing support · 0 = no conclusion.</p>
+      <p style="font-size:.82rem;margin:.5rem 0 0"><strong>Capture:</strong> 2 = safe hookup with the right kit accessories, a saved .psdata capture shown to the instructor, all setup and measurement fields filled in · 1 = capture made but setup or measurements incomplete · 0 = no capture.<br><strong>Analysis:</strong> 2 = correct good/faulty call backed by measurements and the spec · 1 = call made with weak or missing support · 0 = no conclusion.</p>
     </div>
   </section>
 
@@ -250,7 +269,7 @@
   </section>
 </main>
 
-<footer>Honda PACT · AUTO H 171 · Waveform Capture &amp; Analysis Worksheet. Look up model-specific signal values in Service Express / Interactive Network (iN).</footer>
+<footer>Honda PACT · AUTO H 171 · Waveform Capture &amp; Analysis Worksheet · PicoScope 4225A / PicoScope 7 Automotive. Look up model-specific signal values in Service Express / Interactive Network (iN).</footer>
 
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
   <div class="box">
@@ -267,17 +286,17 @@
 
   /* ---------- Part A ---------- */
   var defs={
-    A:"How much signal data the scope stores in each capture; longer means more time can be reviewed.",
-    B:"Movable lines used to measure the voltage or time between two points on a capture.",
-    C:"Connecting to a terminal through the rear of a plugged-in connector without piercing the insulation.",
-    D:"Trigger mode that updates the screen only when the trigger condition is met and holds the last capture otherwise.",
-    E:"A saved known-good capture shown alongside or over the live signal for comparison.",
-    F:"Trigger mode that keeps redrawing the trace even with no trigger event; useful for finding a signal or viewing a DC level.",
-    G:"Enlarges part of a stored capture to see detail without capturing again.",
-    H:"Trigger mode that captures one trigger event and then stops."
+    A:"Stores each capture so you can step back through them (up to 10,000 waveforms on the 4225A).",
+    B:"Draggable handles, two per channel, that measure voltage at two points; values and the difference show in the legend.",
+    C:"Feature that lights each channel LED green or red to show whether the test lead is truly connected across the component.",
+    D:"Trigger mode that waits indefinitely for the trigger condition and displays a new capture each time it is met.",
+    E:"A stored copy of a channel's signal, shown alongside the live trace for comparison.",
+    F:"Trigger mode that waits for a trigger but captures anyway after a short time if none occurs; useful for finding a signal or viewing a DC level.",
+    G:"Draw a box around an area of interest to enlarge it without capturing again.",
+    H:"Trigger mode that captures once when the trigger condition is met and then stops; one capture can fill the whole buffer memory."
   };
-  var terms=[["a1","Cursors","B"],["a2","Auto trigger mode","F"],["a3","Normal trigger mode","D"],["a4","Single (single-shot) mode","H"],
-             ["a5","Record length (buffer)","A"],["a6","Zoom","G"],["a7","Reference waveform","E"],["a8","Back-probing","C"]];
+  var terms=[["a1","Signal rulers","B"],["a2","Auto trigger mode","F"],["a3","Repeat trigger mode","D"],["a4","Single trigger mode","H"],
+             ["a5","Waveform Buffer","A"],["a6","Windowed Zoom","G"],["a7","Reference waveforms","E"],["a8","ConnectDetect","C"]];
   var defsBody=document.getElementById("defsBody");
   Object.keys(defs).forEach(function(k){var tr=document.createElement("tr");tr.innerHTML="<td>"+k+"</td><td>"+defs[k]+"</td>";defsBody.appendChild(tr);});
   var matchBody=document.getElementById("matchBody");
@@ -290,16 +309,16 @@
 
   /* ---------- Part B ---------- */
   var mcs=[
-    {id:"b1",q:"Where should the scope's ground lead connect when you measure a sensor signal?",
-     o:["Any painted bracket near the sensor","Battery negative or a clean engine ground","The sensor signal wire","Nowhere; a lab scope doesn't need a ground lead"],a:1},
-    {id:"b2",q:"What is the best way to connect to a sensor signal wire at the connector?",
-     o:["Pierce the wire insulation with a probe pin","Back-probe the terminal with a back-probe pin while the connector stays plugged in","Unplug the connector and probe the sensor pins","Clip the probe onto the outside of the insulation"],a:1},
-    {id:"b3",q:"You want to capture a crank or cam signal during the first second of cranking, a one-time event. Which trigger mode is best?",
-     o:["Auto","Normal","Single","Trigger off"],a:2},
-    {id:"b4",q:"With the key on, you just want to confirm that a sensor's 5 V reference wire is steady. Which trigger mode will show a flat DC line without a trigger event?",
-     o:["Auto","Normal","Single","None of these will show it"],a:0},
+    {id:"b1",q:"Where should the 4 mm ground of the TA404 test lead connect when you measure a sensor signal?",
+     o:["Any painted bracket near the sensor","Battery negative or a clean engine ground, using a TA158 battery clip","The sensor signal wire","Nowhere; PicoBNC+ leads don't need a ground"],a:1},
+    {id:"b2",q:"What is the best way to connect the test lead to a sensor signal wire at the connector?",
+     o:["Pierce the wire insulation with a probe pin","Push a TA161/TA162 flexible back-pinning probe into the rear of the plugged-in connector","Unplug the connector and probe the sensor pins","Clip the lead onto the outside of the insulation"],a:1},
+    {id:"b3",q:"You want to capture a crank or cam signal during the first second of cranking, a one-time event. Which PicoScope trigger mode is best?",
+     o:["Auto","Repeat","Single","None"],a:2},
+    {id:"b4",q:"With the key on, you just want to confirm that a sensor's 5 V reference wire is steady. Which trigger mode will still show a flat DC line when no trigger event happens?",
+     o:["Auto","Repeat","Single","No mode will show it"],a:0},
     {id:"b5",q:"You have a stable capture. What is the best way to decide whether the signal is good?",
-     o:["If the trace looks smooth, it is good","Compare your measurements with the spec in Service Express and a known-good capture from the same system","Compare it with any vehicle's capture of a similar sensor type","Check whether a DTC is set"],a:1}
+     o:["If the trace looks smooth, it is good","Compare ruler measurements with the spec in Service Express, and with a Reference waveform or Waveform Library capture from the same system","Compare it with any vehicle's capture of a similar sensor type","Check whether a DTC is set"],a:1}
   ];
   var mcWrap=document.getElementById("mcWrap");
   mcs.forEach(function(m,i){
@@ -316,7 +335,7 @@
     nums1:[["c1","Best diagnosis","dx",1],["c2","Frequency of the normal (good) section of the signal","num",250,"Hz",0.1]],
     nums2:[["c3","Best diagnosis","dx",2],["c4","Measured high-level voltage","num",3,"V",0.1]],
     nums3:[["c5","Best diagnosis","dx",3]],
-    nums4:[["c6","Best diagnosis","dx",4],["c7","Measured low-level voltage (bottom of the waveform)","num",1.5,"V",0.1]]
+    nums4:[["c6","Best diagnosis","dx",4],["c7","Measured low-level voltage (bottom of the waveform)","num",1.6,"V",0.1]]
   };
   Object.keys(items).forEach(function(box){
     var el=document.getElementById(box),h="";
@@ -331,52 +350,87 @@
     el.innerHTML=h;
   });
 
-  /* ---------- Scope drawings ---------- */
-  var NS="http://www.w3.org/2000/svg",OX=20,W=500,H=400,D=50;
+  /* ---------- PicoScope 7-style graph renderer ---------- */
+  var NS="http://www.w3.org/2000/svg";
+  var COL={A:"#1f5fbf",B:"#d62728",R:"#9a9a9a"};
   function mk(tag,a,p){var e=document.createElementNS(NS,tag);for(var k in a)e.setAttribute(k,a[k]);p.appendChild(e);return e;}
-  function grid(svg,gy){
-    mk("rect",{x:0,y:0,width:520,height:400,fill:"#0d1410"},svg);
-    for(var i=0;i<=10;i++)mk("line",{x1:OX+i*D,y1:0,x2:OX+i*D,y2:H,stroke:i===5?"#4f7a5c":"#2e4a37","stroke-width":(i===0||i===10)?2:1},svg);
-    for(var j=0;j<=8;j++)mk("line",{x1:OX,y1:j*D,x2:OX+W,y2:j*D,stroke:j===4?"#4f7a5c":"#2e4a37","stroke-width":(j===0||j===8)?2:1},svg);
-    for(var t=0;t<=50;t++){var x=OX+t*10;mk("line",{x1:x,y1:196,x2:x,y2:204,stroke:"#4f7a5c"},svg);}
-    for(var u=0;u<=40;u++){var y=u*10;mk("line",{x1:OX+246,y1:y,x2:OX+254,y2:y,stroke:"#4f7a5c"},svg);}
-    mk("polygon",{points:"2,"+(gy-8)+" 18,"+gy+" 2,"+(gy+8),fill:"#ffd400"},svg);
-    var l=mk("text",{x:3,y:gy-11,fill:"#ffd400","font-size":"11","font-family":"monospace"},svg);l.textContent="A";
+  function fmtN(n){var r=Math.round(n*1000)/1000;if(Math.abs(r)<1e-9)r=0;return r.toString();}
+  // cfg: {A:{per,unit,off}, B:{...}, t:{per,unit}, traces:[{ch,pts:[[xDiv,value]],dash,color,w}], trig:{ch,x,v}}
+  function pico(svg,cfg){
+    var L=60,T=28,P=50,W=500,H=500,R=cfg.B?60:18,Bm=44;
+    svg.setAttribute("viewBox","0 0 "+(L+W+R)+" "+(T+H+Bm));
+    mk("rect",{x:0,y:0,width:L+W+R,height:T+H+Bm,fill:"#ffffff"},svg);
+    var cid="clip"+Math.random().toString(36).slice(2);
+    var cp=mk("clipPath",{id:cid},mk("defs",{},svg));mk("rect",{x:L,y:T,width:W,height:H},cp);
+    var i,j;
+    for(i=0;i<=10;i++)mk("line",{x1:L+i*P,y1:T,x2:L+i*P,y2:T+H,stroke:i===5?"#b0b0b0":"#e0e0e0","stroke-width":(i===0||i===10)?1.5:1},svg);
+    for(j=0;j<=10;j++)mk("line",{x1:L,y1:T+j*P,x2:L+W,y2:T+j*P,stroke:j===5?"#b0b0b0":"#e0e0e0","stroke-width":(j===0||j===10)?1.5:1},svg);
+    for(i=0;i<=50;i++)mk("line",{x1:L+i*10,y1:T+H/2-4,x2:L+i*10,y2:T+H/2+4,stroke:"#b0b0b0"},svg);
+    for(j=0;j<=50;j++)mk("line",{x1:L+W/2-4,y1:T+j*10,x2:L+W/2+4,y2:T+j*10,stroke:"#b0b0b0"},svg);
+    function axis(ch,side){
+      var c=cfg[ch];if(!c)return;var off=c.off||0,left=side==="L";
+      for(var j=0;j<=10;j++){
+        var tx=mk("text",{x:left?L-7:L+W+7,y:T+j*P+4,fill:COL[ch],"font-size":"13","font-family":"Arial,Helvetica,sans-serif","text-anchor":left?"end":"start"},svg);
+        tx.textContent=fmtN((5-j-off)*c.per);
+      }
+      var u=mk("text",{x:left?L-7:L+W+7,y:T-10,fill:COL[ch],"font-size":"13","font-weight":"700","font-family":"Arial,Helvetica,sans-serif","text-anchor":left?"end":"start"},svg);
+      u.textContent=c.unit;
+    }
+    axis("A","L");axis("B","R");
+    for(i=0;i<=10;i++){
+      var tl=mk("text",{x:L+i*P,y:T+H+17,fill:"#333","font-size":"13","font-family":"Arial,Helvetica,sans-serif","text-anchor":"middle"},svg);
+      tl.textContent=fmtN(i*cfg.t.per);
+    }
+    var tu=mk("text",{x:L+W,y:T+H+36,fill:"#333","font-size":"13","font-weight":"700","font-family":"Arial,Helvetica,sans-serif","text-anchor":"end"},svg);
+    tu.textContent=cfg.t.unit;
+    function X(xd){return L+xd*P;}
+    function Y(ch,v){var c=cfg[ch];return T+(5-(v/c.per+(c.off||0)))*P;}
+    var g=mk("g",{"clip-path":"url(#"+cid+")"},svg);
+    (cfg.traces||[]).forEach(function(tr){
+      var d=tr.pts.map(function(p,k){return(k?"L":"M")+X(p[0]).toFixed(1)+" "+Y(tr.ch,p[1]).toFixed(1);}).join(" ");
+      var at={d:d,fill:"none",stroke:tr.color||COL[tr.ch],"stroke-width":tr.w||2.2,"stroke-linejoin":"round"};
+      if(tr.dash)at["stroke-dasharray"]=tr.dash;
+      mk("path",at,g);
+    });
+    if(cfg.trig){
+      var tx0=X(cfg.trig.x),ty0=Y(cfg.trig.ch,cfg.trig.v);
+      mk("polygon",{points:tx0+","+(ty0-8)+" "+(tx0+8)+","+ty0+" "+tx0+","+(ty0+8)+" "+(tx0-8)+","+ty0,fill:"#ffd400",stroke:"#7a6400","stroke-width":1.2},svg);
+    }
+    return {X:X,Y:Y,mk:mk,svg:svg};
   }
-  function trace(svg,pts){
-    var d=pts.map(function(p,i){return(i?"L":"M")+(OX+p[0]).toFixed(1)+" "+p[1].toFixed(1);}).join(" ");
-    mk("path",{d:d,fill:"none",stroke:"#ffd400","stroke-width":2.5,"stroke-linejoin":"round"},svg);
+  function marker(gr,xd,ch,v,n){
+    var x=gr.X(xd),y=gr.Y(ch,v);
+    mk("circle",{cx:x,cy:y,r:13,fill:"#CC0000",stroke:"#fff","stroke-width":2},gr.svg);
+    var t=mk("text",{x:x,y:y+5,fill:"#fff","font-size":"14","font-weight":"700","text-anchor":"middle","font-family":"Arial"},gr.svg);t.textContent=n;
   }
-  // square wave builder: lo/hi y, period px, high width px, start offset, skip set of pulse indexes
-  function square(lo,hi,per,wid,off,skip){
+  function px(list,per,gy){ // convert old pixel points (gy = old ground px) to [div,value]
+    return list.map(function(p){return [p[0]/50,(gy-p[1])/50*per];});
+  }
+
+  function sq(lo,hi,per,wid,off,skip){ // square wave in [div,value]
     var p=[[0,lo]],k=0;
-    for(var x=off;x<500;x+=per,k++){
+    for(var x=off;x<10;x+=per,k++){
       if(skip&&skip.indexOf(k)>=0)continue;
-      var e=Math.min(x+wid,500);
-      p.push([x,lo],[x,hi],[e,hi]);if(x+wid<=500)p.push([e,lo]);
+      var e=Math.min(x+wid,10);
+      p.push([x,lo],[x,hi],[e,hi]);if(x+wid<=10)p.push([e,lo]);
     }
-    p.push([500,p[p.length-1][1]]);return p;
+    p.push([10,p[p.length-1][1]]);return p;
   }
-  // 1: dropout. 2 V/div, ground 350, 5 V -> y225, 2 ms/div, period 2 div (100px)=4 ms -> 250 Hz
-  (function(){var s=document.getElementById("scr1");grid(s,350);trace(s,square(350,225,100,50,25,[2]));})();
-  // 2: low high level 3 V -> 1.5 div -> y275; 5 ms/div; period 4 div
-  (function(){var s=document.getElementById("scr2");grid(s,350);trace(s,square(350,275,200,100,50));})();
-  // 3: noise
+  // 1: dropout. ±10 V, 2 ms/div, period 2 div (4 ms -> 250 Hz), pulse 3 missing
+  pico(document.getElementById("scr1"),{A:{per:2,unit:"V"},t:{per:2,unit:"ms"},trig:{ch:"A",x:0.5,v:2.5},traces:[{ch:"A",pts:sq(0,5,2,1,0.5,[2])}]});
+  // 2: low high level 3 V, 5 ms/div, period 4 div
+  pico(document.getElementById("scr2"),{A:{per:2,unit:"V"},t:{per:5,unit:"ms"},trig:{ch:"A",x:1,v:1.5},traces:[{ch:"A",pts:sq(0,3,4,2,1)}]});
+  // 3: noise on 0-5 V square
   (function(){
-    var s=document.getElementById("scr3");grid(s,350);
-    var base=square(350,225,200,100,50),seed=7;
+    var base=sq(0,5,4,2,1),seed=7;
     function rnd(){seed=(seed*16807)%2147483647;return seed/2147483647;}
-    function levelAt(x){for(var i=base.length-1;i>=0;i--){if(base[i][0]<=x)return base[i][1];}return 350;}
+    function levelAt(x){for(var i=base.length-1;i>=0;i--){if(base[i][0]<=x)return base[i][1];}return 0;}
     var p=[];
-    for(var x=0;x<=500;x+=3){
-      var y=levelAt(x)+(rnd()-0.5)*26;
-      if(rnd()>0.93)y+=(rnd()-0.5)*60;
-      p.push([x,y]);
-    }
-    trace(s,p);
+    for(var x=0;x<=10.001;x+=0.06){var v=levelAt(x)+(rnd()-0.5)*1.04;if(rnd()>0.93)v+=(rnd()-0.5)*2.4;p.push([x,v]);}
+    pico(document.getElementById("scr3"),{A:{per:2,unit:"V"},t:{per:5,unit:"ms"},trig:{ch:"A",x:1,v:2.5},traces:[{ch:"A",pts:p,w:1.8}]});
   })();
-  // 4: poor pull-down. 1 V/div, ground 350, high 5 V -> y100, low 1.5 V -> y275
-  (function(){var s=document.getElementById("scr4");grid(s,350);var p=square(275,100,200,100,50);p[0][1]=275;trace(s,p);})();
+  // 4: poor pull-down, low 1.6 V, high 5 V
+  pico(document.getElementById("scr4"),{A:{per:2,unit:"V"},t:{per:5,unit:"ms"},trig:{ch:"A",x:1,v:3.5},traces:[{ch:"A",pts:sq(1.6,5,4,2,1)}]});
 
   /* ---------- Textarea auto-grow ---------- */
   function grow(t){t.style.height="auto";t.style.height=(t.scrollHeight+2)+"px";}
@@ -384,7 +438,7 @@
 
   /* ---------- Fields ---------- */
   var cIds=[].concat.apply([],Object.keys(items).map(function(b){return items[b].map(function(n){return n[0];});}));
-  var labIds=["lVeh","lComp","lPin","lCond","lV","lT","lTrig","lMax","lMin","lFreq","lSpec","lAnalysis"];
+  var labIds=["lVeh","lComp","lPin","lCond","lV","lT","lTrig","lMax","lMin","lFreq","lSpec","lFile","lAnalysis"];
   var fields=["name","date","course","partner","lDuty","d1score","d2score","w_nums1","w_nums2","w_nums3","w_nums4"]
     .concat(terms.map(function(t){return t[0];})).concat(cIds).concat(labIds);
 
@@ -462,7 +516,7 @@
     L.push("","PART B");mcs.forEach(function(m,i){L.push((i+1)+". "+(o[m.id]===""?"—":String.fromCharCode(97+ +o[m.id])));});
     L.push("","PART C");Object.keys(items).forEach(function(b,i){L.push("Capture "+(i+1)+":");items[b].forEach(function(n){var v=o[n[0]];L.push("  "+n[1]+": "+(v===""?"—":(n[2]==="dx"?DX[+v]:v+" "+n[4])));});if(o["w_"+b])L.push("  Evidence: "+o["w_"+b]);});
     L.push("","PART D — LAB");
-    [["lVeh","Vehicle"],["lComp","Component"],["lPin","Pin/wire"],["lCond","Condition"],["lV","V/div"],["lT","Time/div"],["lTrig","Trigger"],["lMax","Max V"],["lMin","Min V"],["lFreq","Freq/period"],["lDuty","Duty/PW"],["lSpec","Spec/reference"],["lAnalysis","Analysis"]].forEach(function(f){L.push(f[1]+": "+(o[f[0]]||"—"));});
+    [["lVeh","Vehicle"],["lComp","Component"],["lPin","Pin/wire"],["lCond","Condition"],["lV","V/div"],["lT","Time/div"],["lTrig","Trigger"],["lMax","Max V"],["lMin","Min V"],["lFreq","Freq/period"],["lDuty","Duty/PW"],["lSpec","Spec/reference"],["lFile","ConnectDetect/file"],["lAnalysis","Analysis"]].forEach(function(f){L.push(f[1]+": "+(o[f[0]]||"—"));});
     L.push("","Score: A "+document.getElementById("rA").textContent+"/4, B "+document.getElementById("rB").textContent+"/5, C "+document.getElementById("rC").textContent+"/7, D "+document.getElementById("rD").textContent+"/4, Total "+document.getElementById("rT").textContent+"/20");
     return L.join("\n");
   }
