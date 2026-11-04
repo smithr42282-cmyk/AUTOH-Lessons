@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fuel System Diagnosis Lab Sheet</title>
+<style>
+  :root{
+    --red:#CC0000; --red-dark:#990000; --black:#111; --ink:#1d1d1d; --muted:#5a5a5a;
+    --line:#d6d6d6; --bg:#f6f6f6; --card:#fff; --ok:#1d7a36; --bad:#b00020;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  header{background:var(--black);color:#fff;border-bottom:6px solid var(--red)}
+  .hwrap{max-width:960px;margin:0 auto;padding:22px 20px 18px}
+  .kicker{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:#ff6b6b;font-weight:700}
+  h1{margin:.2rem 0 .3rem;font-size:1.75rem;line-height:1.2}
+  .sub{color:#d0d0d0;font-size:.95rem}
+  main{max-width:960px;margin:0 auto;padding:18px 20px 60px}
+  .toolbar{position:sticky;top:0;z-index:5;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+  .progress{flex:1 1 220px;min-width:200px}
+  .bar{height:10px;background:#e7e7e7;border-radius:5px;overflow:hidden}
+  .bar > span{display:block;height:100%;width:0;background:var(--red);transition:width .25s}
+  .ptext{font-size:.82rem;color:var(--muted);margin-top:3px}
+  button{font:inherit;font-size:.9rem;border:2px solid var(--black);background:#fff;color:var(--black);padding:6px 12px;border-radius:6px;cursor:pointer;font-weight:600}
+  button:hover{background:#f0f0f0}
+  button.primary{background:var(--red);border-color:var(--red);color:#fff}
+  button.primary:hover{background:var(--red-dark);border-color:var(--red-dark)}
+  button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #ffb000;outline-offset:2px}
+  .status{font-size:.82rem;color:var(--muted);min-width:120px}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin-bottom:18px}
+  h2{margin:0 0 .3rem;font-size:1.25rem;display:flex;justify-content:space-between;gap:10px;align-items:baseline;border-bottom:3px solid var(--red);padding-bottom:6px}
+  h2 .pts{font-size:.85rem;color:var(--muted);font-weight:600;white-space:nowrap}
+  h3{font-size:1.05rem;margin:1.1rem 0 .4rem}
+  .note{background:#fff5f5;border-left:4px solid var(--red);padding:8px 12px;font-size:.9rem;margin:.6rem 0}
+  .warn{background:#fff8e1;border-left:4px solid #e0a000;padding:8px 12px;font-size:.9rem;margin:.6rem 0}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 18px}
+  label.field{display:flex;flex-direction:column;font-size:.85rem;font-weight:600;gap:3px}
+  input[type=text],input[type=date],input[type=number],select,textarea{font:inherit;font-size:.95rem;padding:6px 8px;border:1px solid #9a9a9a;border-radius:5px;background:#fff;color:var(--ink)}
+  textarea{width:100%;min-height:90px;resize:vertical;overflow:hidden}
+  fieldset{border:0;padding:0;margin:0}
+  legend{font-weight:600;margin-bottom:6px;padding:0}
+  .q{padding:12px 0;border-top:1px solid #ececec}
+  .q:first-of-type{border-top:0}
+  .opts label{display:flex;gap:8px;align-items:flex-start;padding:4px 6px;border-radius:5px;cursor:pointer}
+  .opts label:hover{background:#f7f7f7}
+  .opts input{margin-top:5px}
+  table{border-collapse:collapse;width:100%}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top;font-size:.93rem}
+  th{background:#f1f1f1}
+  .defs td:first-child{width:46px;text-align:center;font-weight:700}
+  .match td:first-child{font-weight:600}
+  .match select{width:100%}
+  .steps li{margin:4px 0}
+  .scope{display:grid;grid-template-columns:minmax(260px,520px) 1fr;gap:16px;align-items:start;margin:10px 0 6px}
+  @media (max-width:760px){.scope{grid-template-columns:1fr}}
+  .screen{background:#0d1410;border:4px solid #222;border-radius:8px;padding:6px}
+  .screen svg{width:100%;height:auto;display:block}
+  .settings{font-family:Consolas,Menlo,monospace;font-size:.8rem;background:#222;color:#e8e8e8;padding:6px 8px;border-radius:0 0 5px 5px;margin-top:4px}
+  .settings b{color:#ffd400}
+  .nums .row{display:flex;align-items:center;gap:8px;margin:8px 0;flex-wrap:wrap}
+  .nums .row span.lbl{flex:1 1 100%;font-size:.92rem}
+  .nums input{width:110px}
+  .nums select{width:100%;max-width:380px}
+  .unit{font-weight:600;color:var(--muted);min-width:34px}
+  .mark{font-size:.85rem;font-weight:700;min-width:20px}
+  .mark.ok{color:var(--ok)} .mark.bad{color:var(--bad)}
+  .lab td{vertical-align:middle}
+  .lab td:first-child{width:38%;font-weight:600;background:#fafafa}
+  .lab input,.lab select{width:100%}
+  .rubric td.num{text-align:center;width:110px}
+  .rubric tr.total td{font-weight:800;background:#fff0f0;font-size:1rem}
+  .instr{background:#f4f4f4;border:1px dashed #999;border-radius:6px;padding:10px 12px;margin-top:10px}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:20;padding:16px}
+  .modal.open{display:flex}
+  .modal .box{background:#fff;border-radius:8px;max-width:640px;width:100%;padding:18px;border-top:6px solid var(--red)}
+  .modal textarea{min-height:240px;font-family:Consolas,Menlo,monospace;font-size:.82rem}
+  .sr{position:absolute;left:-9999px}
+  footer{max-width:960px;margin:0 auto;padding:0 20px 30px;font-size:.8rem;color:var(--muted)}
+  @media print{
+    body{background:#fff}
+    .toolbar,.noprint,.modal{display:none!important}
+    header{border-bottom:4px solid var(--red);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    section.card{break-inside:avoid-page;border:1px solid #bbb}
+    .screen,.settings{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    textarea{border:1px solid #999;min-height:auto}
+    .scope{grid-template-columns:1fr 1fr}
+  }
+</style>
+<style>
+  .veh{background:#f4f4f4;border-radius:8px;padding:12px 14px;margin-top:10px}
+  .q{padding:14px 0;border-top:1px solid #ececec}
+  .q:first-of-type{border-top:0}
+  .qn{font-weight:700;color:#990000;margin-right:4px}
+  .q > label,.q > .qt{display:block;font-weight:600;margin-bottom:6px}
+  .stop{background:#111;color:#fff;border-radius:8px;padding:12px 14px;margin-top:14px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+  .stop strong{color:#ff6b6b}
+  .stop input{width:140px}
+  .stop label{display:flex;gap:6px;align-items:center;font-size:.9rem}
+  table.grid td input,table.grid td select{width:100%}
+  table.grid th{font-size:.85rem}
+  ul.tight{margin:.3rem 0 .3rem;padding-left:20px}
+  ul.tight li{margin:2px 0}
+  .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+  .cols > div{background:#f7f7f7;border-radius:6px;padding:10px 12px;font-size:.9rem}
+  .cols h4{margin:0 0 4px;color:#990000;font-size:.95rem}
+  .pico{background:#eef4fb;border-left:4px solid #1f5fbf;padding:8px 12px;font-size:.9rem;margin:.6rem 0}
+  .hint{font-size:.85rem;color:#5a5a5a;margin:2px 0 6px}
+  .rubric select{width:100%}
+</style>
+</head>
+<body>
+<header><div class="hwrap">
+  <div class="kicker">Honda PACT · Shoreline Community College</div>
+  <h1>Fuel System Diagnosis Lab Sheet</h1>
+  <div class="sub">AUTO H 171 · Fuel delivery, fuel pump control and injectors · Honda/Acura shop vehicles</div>
+</div></header>
+<main>
+  <div class="toolbar noprint" role="region" aria-label="Worksheet tools">
+    <div class="progress"><div class="bar" aria-hidden="true"><span id="pbar"></span></div><div class="ptext" id="ptext" aria-live="polite">0 answered</div></div>
+    <button type="button" id="btnSave">Save</button>
+    <button type="button" id="btnCopy">Copy answers</button>
+    <button type="button" id="btnPrint">Print</button>
+    <button type="button" id="btnClear">Clear</button>
+    <span class="status" id="status" aria-live="polite"></span>
+  </div>
+
+  <section class="card" aria-labelledby="s-info">
+    <h2 id="s-info">Student &amp; Vehicle</h2>
+    <div class="grid2">
+      <label class="field">Name <input type="text" id="name" data-l="Name" data-t placeholder=""></label>
+      <label class="field">Date <input type="date" id="date" data-l="Date"></label>
+      <label class="field">Course <input type="text" id="course" data-l="Course" value="AUTO H 171"></label>
+      <label class="field">Lab partner <input type="text" id="partner" data-l="Lab partner"  placeholder=""></label>
+    </div>
+    <div class="veh">
+      <div class="grid2">
+        <label class="field">Assigned vehicle <select id="veh" data-l="Assigned vehicle" data-t><option value="">Choose…</option><option value="0">2014 Honda Civic Si</option><option value="1">2006 Acura TSX (race car)</option><option value="2">2014 Acura TSX (race car)</option></select></label>
+        <label class="field">VIN <input type="text" id="vin" data-l="VIN" readonly></label>
+        <label class="field">Engine code (from Service Express) <input type="text" id="eng" data-l="Engine code" data-t placeholder=""></label>
+        <label class="field">Transmission <input type="text" id="trans" data-l="Transmission" data-t placeholder=""></label>
+      </div>
+      <p class="hint" style="margin-top:8px">Enter the VIN in Service Express to load the correct manual. Every connector, pin, spec and procedure on this sheet comes from <strong>your assigned vehicle's</strong> Service Express / iN and electrical wiring diagram (EWD).</p>
+    </div>
+    
+  </section>
+
+  <section class="card" aria-labelledby="s-goals">
+    <h2 id="s-goals">Outcomes, Objectives &amp; Resources</h2>
+    <div class="cols">
+      <div><h4>Learning outcomes</h4><ul class="tight">
+        <li>Identify operation of the fuel system</li><li>Diagnose fuel pump faults</li><li>Test the fuel system for contaminants</li>
+        <li>Identify the procedure to replace the fuel filter</li><li>Diagnose fuel system faults</li></ul></div>
+      <div><h4>ASE Education Foundation tasks</h4><ul class="tight">
+        <li><strong>VIII-D-1</strong> Check fuel system for contaminants; determine action needed. P2</li>
+        <li><strong>VIII-D-2</strong> Inspect and test fuel pump(s) and pump control system for pressure, regulation, and volume; determine action needed. P1</li>
+        <li><strong>VIII-D-3</strong> Replace fuel filter(s) where applicable. P2</li>
+        <li><strong>VIII-D-6</strong> Inspect, test, and/or replace fuel injectors. P2</li></ul></div>
+      <div><h4>Required resources</h4><ul class="tight">
+        <li>Assigned shop vehicle · safety glasses · uniform</li><li>Service Express / iN (service manual and EWD)</li>
+        <li>HDS scan tool · DVOM · noid light set</li><li>PicoScope 4225A: TA404/TA405 leads, TA161/TA162 back-pinning probes, TA473 60 A clamp, TA034/TA035 fuse extension leads</li>
+        <li>Fuel pressure gauge set (per Service Express) · graduated cylinder for the ethanol test</li><li>Hand tools · Professional Technician textbook</li></ul></div>
+    </div>
+    <div class="note"><strong>Lab-sheet objectives (100% accuracy):</strong> use the assigned EWD to explain the fuel circuit to your instructor; complete the theory questions with the EWD, diagnostic scenarios and service manual; measure circuit voltage with the service manual, DVOM, PicoScope and vehicle, and explain how incorrect voltage affects operation; diagnose and repair a fuel system fault with an instructor-approved diagnostic strategy.</div>
+    <div class="warn"><strong>Fuel safety:</strong> Work in a ventilated area with a fire extinguisher nearby and no sparks or open flame. Relieve fuel pressure exactly as Service Express describes before you open any fuel line. Wear eye protection, catch fuel in an approved container, and wipe up spills immediately.</div>
+  </section>
+
+  <!-- PART 1 -->
+  <section class="card" aria-labelledby="s-p1">
+    <h2 id="s-p1">Part 1 — System Basics</h2>
+    <p>Answer using Service Express / iN and the EWD for your assigned vehicle, plus the training materials. <strong>Don't go on to Part 2 until your instructor signs off.</strong></p>
+    <div class="q"><div class="qt"><span class="qn">1)</span>Based on your knowledge of the fuel system, what is the first thing you should test when a vehicle has a fuel-related concern? Why?</div><textarea id="p1_1" data-l="P1-1 First test" data-t style="min-height:78px"></textarea></div>
+    <div class="q"><div class="qt"><span class="qn">2)</span>Where is the fuel filter on your assigned vehicle? Is it serviced separately or as part of another assembly?</div><textarea id="p1_2" data-l="P1-2 Fuel filter location" data-t style="min-height:52px"></textarea></div>
+    <div class="q"><div class="qt"><span class="qn">3)</span>How do you test the fuel pump relay on your vehicle? Name the relay as Service Express does (for example, PGM-FI main relay 2 / fuel pump relay), and record its location, the terminals and the specified readings.</div><div class="grid2" style="margin-bottom:8px"><label class="field">Relay name <input type="text" id="p1_3n" data-l="P1-3 Relay name" data-t placeholder=""></label><label class="field">Location <input type="text" id="p1_3l" data-l="P1-3 Relay location" data-t placeholder=""></label></div><table class="grid"><thead><tr><th>Test</th><th>Terminals</th><th>Condition</th><th>Specified reading</th></tr></thead><tbody><tr><th scope="row">Coil (control) side</th><td><input type="text" id="p1_3t_0_1" data-l="P1-3 Relay test — Coil (control) side — Terminals" data-t aria-label="Coil (control) side Terminals"></td><td><input type="text" id="p1_3t_0_2" data-l="P1-3 Relay test — Coil (control) side — Condition" data-t aria-label="Coil (control) side Condition"></td><td><input type="text" id="p1_3t_0_3" data-l="P1-3 Relay test — Coil (control) side — Specified reading" data-t aria-label="Coil (control) side Specified reading"></td></tr><tr><th scope="row">Switch (load) side</th><td><input type="text" id="p1_3t_1_1" data-l="P1-3 Relay test — Switch (load) side — Terminals" data-t aria-label="Switch (load) side Terminals"></td><td><input type="text" id="p1_3t_1_2" data-l="P1-3 Relay test — Switch (load) side — Condition" data-t aria-label="Switch (load) side Condition"></td><td><input type="text" id="p1_3t_1_3" data-l="P1-3 Relay test — Switch (load) side — Specified reading" data-t aria-label="Switch (load) side Specified reading"></td></tr></tbody></table><div style="margin-top:8px"><textarea id="p1_3" data-l="P1-3 Relay test procedure" data-t style="min-height:78px"></textarea></div></div>
+    <div class="q"><div class="qt"><span class="qn">4)</span>Using Service Express, what is the first step in diagnosing a no-start condition related to fuel?</div><textarea id="p1_4" data-l="P1-4 No-start first step" data-t style="min-height:78px"></textarea></div>
+    <div class="q"><div class="qt"><span class="qn">5)</span>Find the fuel pump / fuel injection wiring diagram in the EWD. Print it, then trace power in one highlighter color and ground in another. Attach it to this sheet.</div><div class="grid2"><label class="field">EWD diagram name / page <input type="text" id="p1_5" data-l="P1-5 Diagram name" data-t placeholder=""></label><label class="field">Highlighted copy attached? <select id="p1_5c" data-l="P1-5 Highlighted copy attached" data-t><option value="">Choose…</option><option>Yes</option><option>No</option></select></label></div></div>
+    <div class="q"><div class="qt"><span class="qn">6)</span>What has to happen before the fuel pump will run? Include what the ECM/PCM needs to see.</div><textarea id="p1_6" data-l="P1-6 Pump operating conditions" data-t style="min-height:78px"></textarea></div>
+    <div class="q"><div class="qt"><span class="qn">7)</span>Find the fuel pump <em>power</em> terminal at the fuel pump connector in the EWD. When do you expect battery voltage on that terminal?</div><div class="grid2" style="margin-bottom:6px"><label class="field">Connector &amp; pin <input type="text" id="p1_7p" data-l="P1-7 Pump power connector/pin" data-t placeholder=""></label></div><fieldset class="opts" id="p1_7" data-l="P1-7 When is pump power present" data-mc data-t><label><input type="radio" name="p1_7" value="0"> <span>a) Key ON for a short prime period, and while cranking and running</span></label><label><input type="radio" name="p1_7" value="1"> <span>b) All of the time</span></label><label><input type="radio" name="p1_7" value="2"> <span>c) Only with the key OFF</span></label><label><input type="radio" name="p1_7" value="3"> <span>d) Only while the key is held in START</span></label></fieldset></div>
+    <div class="q"><div class="qt"><span class="qn">8)</span>With the pump running, what voltage do you expect on the fuel pump <em>ground</em> terminal (measured to battery negative)?</div><div class="grid2" style="margin-bottom:6px"><label class="field">Connector &amp; pin <input type="text" id="p1_8p" data-l="P1-8 Pump ground connector/pin" data-t placeholder=""></label></div><fieldset class="opts" id="p1_8" data-l="P1-8 Pump ground voltage" data-mc data-t><label><input type="radio" name="p1_8" value="0"> <span>a) About 12 V</span></label><label><input type="radio" name="p1_8" value="1"> <span>b) Varies 0–5 V</span></label><label><input type="radio" name="p1_8" value="2"> <span>c) 4.5–5.5 V</span></label><label><input type="radio" name="p1_8" value="3"> <span>d) About 0 V (only a small voltage drop)</span></label></fieldset></div>
+    <div class="q"><div class="qt"><span class="qn">9)</span>What controls the fuel pump relay, and which side of the relay coil does it switch?</div><textarea id="p1_9" data-l="P1-9 Relay control" data-t style="min-height:52px"></textarea></div>
+    <div class="q"><div class="qt"><span class="qn">10)</span>Two technicians are discussing the fuel system on your vehicle. Technician A says each injector gets power from a PGM-FI main relay and the ECM/PCM switches the other terminal to ground. Technician B says the fuel level sensor signal goes to the gauge control module in the instrument cluster. Use the EWD: who is correct?</div><fieldset class="opts" id="p1_10" data-l="P1-10 Technician A/B" data-mc data-t><label><input type="radio" name="p1_10" value="0"> <span>a) Technician A</span></label><label><input type="radio" name="p1_10" value="1"> <span>b) Technician B</span></label><label><input type="radio" name="p1_10" value="2"> <span>c) Both technicians</span></label><label><input type="radio" name="p1_10" value="3"> <span>d) Neither technician</span></label></fieldset><div style="margin-top:6px"><textarea id="p1_10w" data-l="P1-10 Explain with EWD evidence" data-t style="min-height:52px"></textarea></div></div>
+    <div class="q"><div class="qt"><span class="qn">11)</span>Find the service precautions for the fuel pump and fuel lines, including how to relieve fuel pressure. Record your findings.</div><textarea id="p1_11" data-l="P1-11 Service precautions" data-t style="min-height:104px"></textarea></div>
+    <div class="stop"><span><strong>Stop!</strong> Have your instructor verify your answers before you go on. Credit for this section requires a sign-off.</span>
+    <label>Instructor initials <input type="text" id="so_p1_i" data-l="Sign-off p1: initials"></label>
+    <label>Date <input type="date" id="so_p1_d" data-l="Sign-off p1: date"></label></div>
+  </section>
+
+  <!-- PART 2 -->
+  <section class="card" aria-labelledby="s-p2">
+    <h2 id="s-p2">Part 2 — Theoretical Diagnosis</h2>
+    <p>Use the scenarios below with Service Express and the EWD for your assigned vehicle.</p>
+    <div class="q"><div class="qt"><span class="qn">1)</span>The technician verifies the concern, engine runs rough, and the HDS shows DTC <strong>P0171 (System too lean)</strong>. What is the next step? List what you would check, in order.</div><textarea id="p2_1" data-l="P2-1 P0171 next step" data-t style="min-height:104px"></textarea></div>
+    <div class="q"><div class="qt"><span class="qn">2)</span>The customer says the fuel gauge won't read above empty. The technician runs the gauge control module self-diagnostic (needle sweep) and the fuel gauge needle sweeps normally. What does this indicate, and where would you test next?</div><textarea id="p2_2" data-l="P2-2 Fuel gauge self-diagnostic" data-t style="min-height:78px"></textarea></div>
+    <div class="q"><div class="qt"><span class="qn">3)</span>Two technicians are discussing injector testing. Technician A says a noid light test proves an injector is good. Technician B says all injectors should have nearly equal resistance. Who is correct, and why?</div><fieldset class="opts" id="p2_3" data-l="P2-3 Technician A/B" data-mc data-t><label><input type="radio" name="p2_3" value="0"> <span>a) Technician A</span></label><label><input type="radio" name="p2_3" value="1"> <span>b) Technician B</span></label><label><input type="radio" name="p2_3" value="2"> <span>c) Both technicians</span></label><label><input type="radio" name="p2_3" value="3"> <span>d) Neither technician</span></label></fieldset><div style="margin-top:6px"><textarea id="p2_3w" data-l="P2-3 Why" data-t style="min-height:52px"></textarea></div></div>
+    <div class="q"><div class="qt"><span class="qn">4)</span>On a no-start, the technician clamps the TA473 current clamp on the injector circuit and the PicoScope shows a flat line on every injector while cranking. What is the next step?</div><fieldset class="opts" id="p2_4" data-l="P2-4 Flat current waveform next step" data-mc data-t><label><input type="radio" name="p2_4" value="0"> <span>a) Test injector resistance</span></label><label><input type="radio" name="p2_4" value="1"> <span>b) Check the power supply to the injectors</span></label><label><input type="radio" name="p2_4" value="2"> <span>c) Check the fuse/relay only</span></label><label><input type="radio" name="p2_4" value="3"> <span>d) Test the battery</span></label></fieldset><div style="margin-top:6px"><textarea id="p2_4w" data-l="P2-4 Explain" data-t style="min-height:52px"></textarea></div></div>
+    <div class="q"><div class="qt"><span class="qn">5)</span>Diagnosing a fuel gauge concern, the technician checks continuity from the fuel level sensor signal terminal at the fuel pump module connector to the matching terminal at the gauge control module connector (both unplugged) and finds <strong>no continuity</strong>. Technician A says this is normal; continue to the next step. Technician B says it isn't normal and the harness must be repaired. Who is correct?</div><div class="grid2" style="margin-bottom:6px"><label class="field">Terminals tested (from EWD) <input type="text" id="p2_5p" data-l="P2-5 Terminals tested" data-t placeholder=""></label></div><fieldset class="opts" id="p2_5" data-l="P2-5 Technician A/B" data-mc data-t><label><input type="radio" name="p2_5" value="0"> <span>a) Technician A</span></label><label><input type="radio" name="p2_5" value="1"> <span>b) Technician B</span></label><label><input type="radio" name="p2_5" value="2"> <span>c) Both technicians</span></label><label><input type="radio" name="p2_5" value="3"> <span>d) Neither technician</span></label></fieldset></div>
+    <div class="q"><div class="qt"><span class="qn">6)</span>Look up how the fuel pump operates under each condition for your vehicle (operating time or on/off).</div><table class="grid"><thead><tr><th>Condition</th><th>Fuel pump operation (from Service Express)</th></tr></thead><tbody><tr><th scope="row">Ignition switch ON (engine not started)</th><td><input type="text" id="p2_6_0_1" data-l="P2-6 Fuel pump operation — Ignition switch ON (engine not started) — Fuel pump operation (from Service Express)" data-t aria-label="Ignition switch ON (engine not started) Fuel pump operation (from Service Express)"></td></tr><tr><th scope="row">Engine cranking and running</th><td><input type="text" id="p2_6_1_1" data-l="P2-6 Fuel pump operation — Engine cranking and running — Fuel pump operation (from Service Express)" data-t aria-label="Engine cranking and running Fuel pump operation (from Service Express)"></td></tr><tr><th scope="row">Engine stopped (ignition still ON)</th><td><input type="text" id="p2_6_2_1" data-l="P2-6 Fuel pump operation — Engine stopped (ignition still ON) — Fuel pump operation (from Service Express)" data-t aria-label="Engine stopped (ignition still ON) Fuel pump operation (from Service Express)"></td></tr><tr><th scope="row">Ignition OFF</th><td><input type="text" id="p2_6_3_1" data-l="P2-6 Fuel pump operation — Ignition OFF — Fuel pump operation (from Service Express)" data-t aria-label="Ignition OFF Fuel pump operation (from Service Express)"></td></tr></tbody></table></div>
+    <div class="q"><div class="qt"><span class="qn">7)</span>The technician measures with a DVOM between the fuel pump relay socket's coil-control terminal and the matching ECM/PCM connector terminal, with the ignition OFF and both connectors unplugged. What test is being performed?</div><fieldset class="opts" id="p2_7" data-l="P2-7 Type of test" data-mc data-t><label><input type="radio" name="p2_7" value="0"> <span>a) Continuity (resistance)</span></label><label><input type="radio" name="p2_7" value="1"> <span>b) Amperes</span></label><label><input type="radio" name="p2_7" value="2"> <span>c) Voltage drop</span></label><label><input type="radio" name="p2_7" value="3"> <span>d) Available voltage</span></label></fieldset></div>
+    <div class="stop"><span><strong>Stop!</strong> Have your instructor verify your answers before you go on. Credit for this section requires a sign-off.</span>
+    <label>Instructor initials <input type="text" id="so_p2_i" data-l="Sign-off p2: initials"></label>
+    <label>Date <input type="date" id="so_p2_d" data-l="Sign-off p2: date"></label></div>
+  </section>
+
+  <!-- PART 3 -->
+  <section class="card" aria-labelledby="s-p3">
+    <h2 id="s-p3">Part 3 — Vehicle Fault Diagnostics: Diagnostic Walk-Through</h2>
+    <p>Perform these on your assigned vehicle with instructor approval. Look up every connector and pin in the EWD first. Back-pin connectors; don't pierce wires.</p>
+    <div class="q"><div class="qt"><span class="qn">1)</span>Predict, then measure, the voltages with the key ON, engine OFF (KOEO). Measure during the pump prime period and again after it ends.</div><table class="grid"><thead><tr><th>Test point</th><th>Connector-pin (EWD)</th><th>Predicted</th><th>Measured: prime</th><th>Measured: after prime</th></tr></thead><tbody><tr><th scope="row">Fuel pump relay: battery feed in</th><td><input type="text" id="p3_1_0_1" data-l="P3-1 KOEO voltages — Fuel pump relay: battery feed in — Connector-pin (EWD)" data-t aria-label="Fuel pump relay: battery feed in Connector-pin (EWD)"></td><td><input type="text" id="p3_1_0_2" data-l="P3-1 KOEO voltages — Fuel pump relay: battery feed in — Predicted" data-t aria-label="Fuel pump relay: battery feed in Predicted"></td><td><input type="text" id="p3_1_0_3" data-l="P3-1 KOEO voltages — Fuel pump relay: battery feed in — Measured: prime" data-t aria-label="Fuel pump relay: battery feed in Measured: prime"></td><td><input type="text" id="p3_1_0_4" data-l="P3-1 KOEO voltages — Fuel pump relay: battery feed in — Measured: after prime" data-t aria-label="Fuel pump relay: battery feed in Measured: after prime"></td></tr><tr><th scope="row">Fuel pump relay: coil control (ECM side)</th><td><input type="text" id="p3_1_1_1" data-l="P3-1 KOEO voltages — Fuel pump relay: coil control (ECM side) — Connector-pin (EWD)" data-t aria-label="Fuel pump relay: coil control (ECM side) Connector-pin (EWD)"></td><td><input type="text" id="p3_1_1_2" data-l="P3-1 KOEO voltages — Fuel pump relay: coil control (ECM side) — Predicted" data-t aria-label="Fuel pump relay: coil control (ECM side) Predicted"></td><td><input type="text" id="p3_1_1_3" data-l="P3-1 KOEO voltages — Fuel pump relay: coil control (ECM side) — Measured: prime" data-t aria-label="Fuel pump relay: coil control (ECM side) Measured: prime"></td><td><input type="text" id="p3_1_1_4" data-l="P3-1 KOEO voltages — Fuel pump relay: coil control (ECM side) — Measured: after prime" data-t aria-label="Fuel pump relay: coil control (ECM side) Measured: after prime"></td></tr><tr><th scope="row">Fuel pump: power terminal</th><td><input type="text" id="p3_1_2_1" data-l="P3-1 KOEO voltages — Fuel pump: power terminal — Connector-pin (EWD)" data-t aria-label="Fuel pump: power terminal Connector-pin (EWD)"></td><td><input type="text" id="p3_1_2_2" data-l="P3-1 KOEO voltages — Fuel pump: power terminal — Predicted" data-t aria-label="Fuel pump: power terminal Predicted"></td><td><input type="text" id="p3_1_2_3" data-l="P3-1 KOEO voltages — Fuel pump: power terminal — Measured: prime" data-t aria-label="Fuel pump: power terminal Measured: prime"></td><td><input type="text" id="p3_1_2_4" data-l="P3-1 KOEO voltages — Fuel pump: power terminal — Measured: after prime" data-t aria-label="Fuel pump: power terminal Measured: after prime"></td></tr><tr><th scope="row">Fuel pump: ground terminal</th><td><input type="text" id="p3_1_3_1" data-l="P3-1 KOEO voltages — Fuel pump: ground terminal — Connector-pin (EWD)" data-t aria-label="Fuel pump: ground terminal Connector-pin (EWD)"></td><td><input type="text" id="p3_1_3_2" data-l="P3-1 KOEO voltages — Fuel pump: ground terminal — Predicted" data-t aria-label="Fuel pump: ground terminal Predicted"></td><td><input type="text" id="p3_1_3_3" data-l="P3-1 KOEO voltages — Fuel pump: ground terminal — Measured: prime" data-t aria-label="Fuel pump: ground terminal Measured: prime"></td><td><input type="text" id="p3_1_3_4" data-l="P3-1 KOEO voltages — Fuel pump: ground terminal — Measured: after prime" data-t aria-label="Fuel pump: ground terminal Measured: after prime"></td></tr><tr><th scope="row">Injector power feed (any injector)</th><td><input type="text" id="p3_1_4_1" data-l="P3-1 KOEO voltages — Injector power feed (any injector) — Connector-pin (EWD)" data-t aria-label="Injector power feed (any injector) Connector-pin (EWD)"></td><td><input type="text" id="p3_1_4_2" data-l="P3-1 KOEO voltages — Injector power feed (any injector) — Predicted" data-t aria-label="Injector power feed (any injector) Predicted"></td><td><input type="text" id="p3_1_4_3" data-l="P3-1 KOEO voltages — Injector power feed (any injector) — Measured: prime" data-t aria-label="Injector power feed (any injector) Measured: prime"></td><td><input type="text" id="p3_1_4_4" data-l="P3-1 KOEO voltages — Injector power feed (any injector) — Measured: after prime" data-t aria-label="Injector power feed (any injector) Measured: after prime"></td></tr></tbody></table></div>
+    <div class="q"><div class="qt"><span class="qn">2)</span>Predict, then measure, the same points with the key in START (cranking).</div><table class="grid"><thead><tr><th>Test point</th><th>Predicted</th><th>Measured</th></tr></thead><tbody><tr><th scope="row">Fuel pump relay: battery feed in</th><td><input type="text" id="p3_2_0_1" data-l="P3-2 Cranking voltages — Fuel pump relay: battery feed in — Predicted" data-t aria-label="Fuel pump relay: battery feed in Predicted"></td><td><input type="text" id="p3_2_0_2" data-l="P3-2 Cranking voltages — Fuel pump relay: battery feed in — Measured" data-t aria-label="Fuel pump relay: battery feed in Measured"></td></tr><tr><th scope="row">Fuel pump relay: coil control (ECM side)</th><td><input type="text" id="p3_2_1_1" data-l="P3-2 Cranking voltages — Fuel pump relay: coil control (ECM side) — Predicted" data-t aria-label="Fuel pump relay: coil control (ECM side) Predicted"></td><td><input type="text" id="p3_2_1_2" data-l="P3-2 Cranking voltages — Fuel pump relay: coil control (ECM side) — Measured" data-t aria-label="Fuel pump relay: coil control (ECM side) Measured"></td></tr><tr><th scope="row">Fuel pump: power terminal</th><td><input type="text" id="p3_2_2_1" data-l="P3-2 Cranking voltages — Fuel pump: power terminal — Predicted" data-t aria-label="Fuel pump: power terminal Predicted"></td><td><input type="text" id="p3_2_2_2" data-l="P3-2 Cranking voltages — Fuel pump: power terminal — Measured" data-t aria-label="Fuel pump: power terminal Measured"></td></tr><tr><th scope="row">Fuel pump: ground terminal</th><td><input type="text" id="p3_2_3_1" data-l="P3-2 Cranking voltages — Fuel pump: ground terminal — Predicted" data-t aria-label="Fuel pump: ground terminal Predicted"></td><td><input type="text" id="p3_2_3_2" data-l="P3-2 Cranking voltages — Fuel pump: ground terminal — Measured" data-t aria-label="Fuel pump: ground terminal Measured"></td></tr><tr><th scope="row">Injector power feed (any injector)</th><td><input type="text" id="p3_2_4_1" data-l="P3-2 Cranking voltages — Injector power feed (any injector) — Predicted" data-t aria-label="Injector power feed (any injector) Predicted"></td><td><input type="text" id="p3_2_4_2" data-l="P3-2 Cranking voltages — Injector power feed (any injector) — Measured" data-t aria-label="Injector power feed (any injector) Measured"></td></tr></tbody></table></div>
+    <div class="q"><div class="qt"><span class="qn">3)</span>Perform a noid light test on each injector while cranking. What does the test tell you, and what can't it tell you?</div><table class="grid"><thead><tr><th>Injector</th><th>Noid light result (flash / no flash / dim)</th></tr></thead><tbody><tr><th scope="row">Cylinder 1</th><td><input type="text" id="p3_3_0_1" data-l="P3-3 Noid light — Cylinder 1 — Noid light result (flash / no flash / dim)" data-t aria-label="Cylinder 1 Noid light result (flash / no flash / dim)"></td></tr><tr><th scope="row">Cylinder 2</th><td><input type="text" id="p3_3_1_1" data-l="P3-3 Noid light — Cylinder 2 — Noid light result (flash / no flash / dim)" data-t aria-label="Cylinder 2 Noid light result (flash / no flash / dim)"></td></tr><tr><th scope="row">Cylinder 3</th><td><input type="text" id="p3_3_2_1" data-l="P3-3 Noid light — Cylinder 3 — Noid light result (flash / no flash / dim)" data-t aria-label="Cylinder 3 Noid light result (flash / no flash / dim)"></td></tr><tr><th scope="row">Cylinder 4</th><td><input type="text" id="p3_3_3_1" data-l="P3-3 Noid light — Cylinder 4 — Noid light result (flash / no flash / dim)" data-t aria-label="Cylinder 4 Noid light result (flash / no flash / dim)"></td></tr></tbody></table><div style="margin-top:6px"><textarea id="p3_3w" data-l="P3-3 What the test tells you" data-t style="min-height:52px"></textarea></div></div>
+    <div class="q"><div class="qt"><span class="qn">4)</span>Graph injector voltage <em>and</em> current with the PicoScope 4225A at warm idle. Save the capture as a .psdata file and print it to discuss with your instructor.</div><div class="pico"><strong>Hookup:</strong> Channel A: TA404 lead + TA161 back-pinning probe on the injector control (ground-side) wire, ±100 V, DC. Channel B: TA473 clamp on the 20 A range, zeroed, around the injector supply wire, ±2 A. Timebase 1 ms/div. Trigger: Repeat · A · Falling · 7 V.</div><table class="grid"><thead><tr><th>Cylinder</th><th>Pulse width (ms)</th><th>Inductive spike (V)</th><th>Peak current (A)</th><th>Pintle hump seen?</th></tr></thead><tbody><tr><th scope="row">Cylinder 1</th><td><input type="text" id="p3_4_0_1" data-l="P3-4 Injector waveform — Cylinder 1 — Pulse width (ms)" data-t aria-label="Cylinder 1 Pulse width (ms)"></td><td><input type="text" id="p3_4_0_2" data-l="P3-4 Injector waveform — Cylinder 1 — Inductive spike (V)" data-t aria-label="Cylinder 1 Inductive spike (V)"></td><td><input type="text" id="p3_4_0_3" data-l="P3-4 Injector waveform — Cylinder 1 — Peak current (A)" data-t aria-label="Cylinder 1 Peak current (A)"></td><td><input type="text" id="p3_4_0_4" data-l="P3-4 Injector waveform — Cylinder 1 — Pintle hump seen?" data-t aria-label="Cylinder 1 Pintle hump seen?"></td></tr><tr><th scope="row">Cylinder 2</th><td><input type="text" id="p3_4_1_1" data-l="P3-4 Injector waveform — Cylinder 2 — Pulse width (ms)" data-t aria-label="Cylinder 2 Pulse width (ms)"></td><td><input type="text" id="p3_4_1_2" data-l="P3-4 Injector waveform — Cylinder 2 — Inductive spike (V)" data-t aria-label="Cylinder 2 Inductive spike (V)"></td><td><input type="text" id="p3_4_1_3" data-l="P3-4 Injector waveform — Cylinder 2 — Peak current (A)" data-t aria-label="Cylinder 2 Peak current (A)"></td><td><input type="text" id="p3_4_1_4" data-l="P3-4 Injector waveform — Cylinder 2 — Pintle hump seen?" data-t aria-label="Cylinder 2 Pintle hump seen?"></td></tr><tr><th scope="row">Cylinder 3</th><td><input type="text" id="p3_4_2_1" data-l="P3-4 Injector waveform — Cylinder 3 — Pulse width (ms)" data-t aria-label="Cylinder 3 Pulse width (ms)"></td><td><input type="text" id="p3_4_2_2" data-l="P3-4 Injector waveform — Cylinder 3 — Inductive spike (V)" data-t aria-label="Cylinder 3 Inductive spike (V)"></td><td><input type="text" id="p3_4_2_3" data-l="P3-4 Injector waveform — Cylinder 3 — Peak current (A)" data-t aria-label="Cylinder 3 Peak current (A)"></td><td><input type="text" id="p3_4_2_4" data-l="P3-4 Injector waveform — Cylinder 3 — Pintle hump seen?" data-t aria-label="Cylinder 3 Pintle hump seen?"></td></tr><tr><th scope="row">Cylinder 4</th><td><input type="text" id="p3_4_3_1" data-l="P3-4 Injector waveform — Cylinder 4 — Pulse width (ms)" data-t aria-label="Cylinder 4 Pulse width (ms)"></td><td><input type="text" id="p3_4_3_2" data-l="P3-4 Injector waveform — Cylinder 4 — Inductive spike (V)" data-t aria-label="Cylinder 4 Inductive spike (V)"></td><td><input type="text" id="p3_4_3_3" data-l="P3-4 Injector waveform — Cylinder 4 — Peak current (A)" data-t aria-label="Cylinder 4 Peak current (A)"></td><td><input type="text" id="p3_4_3_4" data-l="P3-4 Injector waveform — Cylinder 4 — Pintle hump seen?" data-t aria-label="Cylinder 4 Pintle hump seen?"></td></tr></tbody></table><div class="grid2" style="margin-top:6px"><label class="field">Saved file name <input type="text" id="p3_4f" data-l="P3-4 .psdata file name" data-t placeholder=""></label></div></div>
+    <div class="q"><div class="qt"><span class="qn">5)</span>Using the HDS, find the data list items and any inspection or function tests related to the fuel system. List them and describe what each tells you.</div><div class="hint">Examples to look for: short- and long-term fuel trim, fuel pump-related functions, injector-related tests. Use only what your vehicle's HDS menu offers.</div><textarea id="p3_5" data-l="P3-5 HDS fuel system tests and data" data-t style="min-height:104px"></textarea></div>
+    <div class="q"><div class="qt"><span class="qn">6)</span>Measure each injector's resistance.</div><div class="grid2" style="margin-bottom:6px"><label class="field">Specification <input type="text" id="p3_6s" data-l="P3-6 Injector resistance spec" data-t placeholder=""></label></div><table class="grid"><thead><tr><th>Injector</th><th>Measured (Ω)</th><th>OK / NG</th></tr></thead><tbody><tr><th scope="row">Cylinder 1</th><td><input type="text" id="p3_6_0_1" data-l="P3-6 Injector resistance — Cylinder 1 — Measured (Ω)" data-t aria-label="Cylinder 1 Measured (Ω)"></td><td><input type="text" id="p3_6_0_2" data-l="P3-6 Injector resistance — Cylinder 1 — OK / NG" data-t aria-label="Cylinder 1 OK / NG"></td></tr><tr><th scope="row">Cylinder 2</th><td><input type="text" id="p3_6_1_1" data-l="P3-6 Injector resistance — Cylinder 2 — Measured (Ω)" data-t aria-label="Cylinder 2 Measured (Ω)"></td><td><input type="text" id="p3_6_1_2" data-l="P3-6 Injector resistance — Cylinder 2 — OK / NG" data-t aria-label="Cylinder 2 OK / NG"></td></tr><tr><th scope="row">Cylinder 3</th><td><input type="text" id="p3_6_2_1" data-l="P3-6 Injector resistance — Cylinder 3 — Measured (Ω)" data-t aria-label="Cylinder 3 Measured (Ω)"></td><td><input type="text" id="p3_6_2_2" data-l="P3-6 Injector resistance — Cylinder 3 — OK / NG" data-t aria-label="Cylinder 3 OK / NG"></td></tr><tr><th scope="row">Cylinder 4</th><td><input type="text" id="p3_6_3_1" data-l="P3-6 Injector resistance — Cylinder 4 — Measured (Ω)" data-t aria-label="Cylinder 4 Measured (Ω)"></td><td><input type="text" id="p3_6_3_2" data-l="P3-6 Injector resistance — Cylinder 4 — OK / NG" data-t aria-label="Cylinder 4 OK / NG"></td></tr></tbody></table></div>
+    <div class="q"><div class="qt"><span class="qn">7)</span>Test the fuel pump relay per Service Express. Record the procedure and your findings.</div><textarea id="p3_7" data-l="P3-7 Relay test findings" data-t style="min-height:104px"></textarea></div>
+    <div class="q"><div class="qt"><span class="qn">8)</span>Find the fuel pump current draw specification. Perform the test, show your instructor, and explain what the result tells you.</div><div class="pico"><strong>PicoScope option:</strong> insert a TA034 (ATC) or TA035 (mini) fuse extension lead in place of the fuel pump fuse, and clamp the TA473 (20 A range, zeroed) around its loop. Timebase about 2 ms/div. Each small hump in the current is one commutator segment, so a missing or low hump points to a worn pump motor.</div><div class="grid2" style="margin-bottom:6px"><label class="field">Specification <input type="text" id="p3_8s" data-l="P3-8 Pump current spec" data-t placeholder=""></label><label class="field">Measured <input type="text" id="p3_8m" data-l="P3-8 Pump current measured" data-t placeholder=""></label></div><textarea id="p3_8" data-l="P3-8 What the result tells you" data-t style="min-height:78px"></textarea></div>
+    <div class="q"><div class="qt"><span class="qn">9)</span>Take a fuel sample. Check it for contaminants (water, dirt, debris) and test it for alcohol/ethanol content. Record the process and findings.</div><div class="grid2" style="margin-bottom:6px"><label class="field">Contaminants found <input type="text" id="p3_9c" data-l="P3-9 Contaminants" data-t placeholder=""></label><label class="field">Ethanol content (%) <input type="text" id="p3_9e" data-l="P3-9 Ethanol %" data-t placeholder=""></label></div><textarea id="p3_9" data-l="P3-9 Process and findings" data-t style="min-height:78px"></textarea></div>
+    <div class="q"><div class="qt"><span class="qn">10)</span>Find the specifications for fuel pressure and volume. Perform both tests and record the results.</div><table class="grid"><thead><tr><th>Test</th><th>Specification</th><th>Actual</th><th>OK / NG</th></tr></thead><tbody><tr><th scope="row">Fuel pressure</th><td><input type="text" id="p3_10_0_1" data-l="P3-10 Pressure and volume — Fuel pressure — Specification" data-t aria-label="Fuel pressure Specification"></td><td><input type="text" id="p3_10_0_2" data-l="P3-10 Pressure and volume — Fuel pressure — Actual" data-t aria-label="Fuel pressure Actual"></td><td><input type="text" id="p3_10_0_3" data-l="P3-10 Pressure and volume — Fuel pressure — OK / NG" data-t aria-label="Fuel pressure OK / NG"></td></tr><tr><th scope="row">Fuel volume</th><td><input type="text" id="p3_10_1_1" data-l="P3-10 Pressure and volume — Fuel volume — Specification" data-t aria-label="Fuel volume Specification"></td><td><input type="text" id="p3_10_1_2" data-l="P3-10 Pressure and volume — Fuel volume — Actual" data-t aria-label="Fuel volume Actual"></td><td><input type="text" id="p3_10_1_3" data-l="P3-10 Pressure and volume — Fuel volume — OK / NG" data-t aria-label="Fuel volume OK / NG"></td></tr></tbody></table></div>
+    <div class="q"><div class="qt"><span class="qn">11)</span>Perform a fuel injector balance test using an instructor-approved method. Record your findings.</div><table class="grid"><thead><tr><th>Cylinder</th><th>RPM before</th><th>RPM after</th><th>Change</th></tr></thead><tbody><tr><th scope="row">Cylinder 1</th><td><input type="text" id="p3_11_0_1" data-l="P3-11 Injector balance — Cylinder 1 — RPM before" data-t aria-label="Cylinder 1 RPM before"></td><td><input type="text" id="p3_11_0_2" data-l="P3-11 Injector balance — Cylinder 1 — RPM after" data-t aria-label="Cylinder 1 RPM after"></td><td><input type="text" id="p3_11_0_3" data-l="P3-11 Injector balance — Cylinder 1 — Change" data-t aria-label="Cylinder 1 Change"></td></tr><tr><th scope="row">Cylinder 2</th><td><input type="text" id="p3_11_1_1" data-l="P3-11 Injector balance — Cylinder 2 — RPM before" data-t aria-label="Cylinder 2 RPM before"></td><td><input type="text" id="p3_11_1_2" data-l="P3-11 Injector balance — Cylinder 2 — RPM after" data-t aria-label="Cylinder 2 RPM after"></td><td><input type="text" id="p3_11_1_3" data-l="P3-11 Injector balance — Cylinder 2 — Change" data-t aria-label="Cylinder 2 Change"></td></tr><tr><th scope="row">Cylinder 3</th><td><input type="text" id="p3_11_2_1" data-l="P3-11 Injector balance — Cylinder 3 — RPM before" data-t aria-label="Cylinder 3 RPM before"></td><td><input type="text" id="p3_11_2_2" data-l="P3-11 Injector balance — Cylinder 3 — RPM after" data-t aria-label="Cylinder 3 RPM after"></td><td><input type="text" id="p3_11_2_3" data-l="P3-11 Injector balance — Cylinder 3 — Change" data-t aria-label="Cylinder 3 Change"></td></tr><tr><th scope="row">Cylinder 4</th><td><input type="text" id="p3_11_3_1" data-l="P3-11 Injector balance — Cylinder 4 — RPM before" data-t aria-label="Cylinder 4 RPM before"></td><td><input type="text" id="p3_11_3_2" data-l="P3-11 Injector balance — Cylinder 4 — RPM after" data-t aria-label="Cylinder 4 RPM after"></td><td><input type="text" id="p3_11_3_3" data-l="P3-11 Injector balance — Cylinder 4 — Change" data-t aria-label="Cylinder 4 Change"></td></tr></tbody></table></div>
+    <div class="q"><div class="qt"><span class="qn">12)</span>List the Service Express procedure to replace the fuel filter (or the assembly that contains it) on your vehicle, including the precautions.</div><textarea id="p3_12" data-l="P3-12 Fuel filter replacement" data-t style="min-height:104px"></textarea></div>
+    <div class="stop"><span><strong>Stop!</strong> Have your instructor verify your answers before you go on. Credit for this section requires a sign-off.</span>
+    <label>Instructor initials <input type="text" id="so_p3_i" data-l="Sign-off p3: initials"></label>
+    <label>Date <input type="date" id="so_p3_d" data-l="Sign-off p3: date"></label></div>
+  </section>
+
+  <!-- FAULT -->
+  <section class="card" aria-labelledby="s-f1">
+    <h2 id="s-f1">On-Car Fault Diagnosis #1</h2>
+    <p><strong>Concern:</strong> Customer states the engine is running rough and the check engine light is on.</p>
+    <p class="hint">Follow an instructor-approved diagnostic strategy. Verify the concern, check DTCs and freeze frame, test, find the cause, repair, and verify the repair.</p>
+    <div class="q"><div class="qt"><span class="qn">a)</span>DTCs and freeze frame data</div><textarea id="f1_dtc" data-l="Fault 1 DTCs and freeze frame" data-t style="min-height:78px"></textarea></div>
+    <div class="q"><div class="qt"><span class="qn">b)</span>Tests performed and results (include meter or scope readings)</div><textarea id="f1_tests" data-l="Fault 1 tests and results" data-t style="min-height:104px"></textarea></div>
+    <div class="q"><div class="qt"><span class="qn">c)</span>Cause</div><textarea id="f1_cause" data-l="Fault 1 cause" data-t style="min-height:52px"></textarea></div>
+    <div class="q"><div class="qt"><span class="qn">d)</span>Correction and repair verification</div><textarea id="f1_corr" data-l="Fault 1 correction" data-t style="min-height:78px"></textarea></div>
+    <div class="stop"><span><strong>Stop!</strong> Have your instructor verify your answers before you go on. Credit for this section requires a sign-off.</span>
+    <label>Instructor initials <input type="text" id="so_f1_i" data-l="Sign-off f1: initials"></label>
+    <label>Date <input type="date" id="so_f1_d" data-l="Sign-off f1: date"></label></div>
+  </section>
+
+  <!-- RUBRIC -->
+  <section class="card" aria-labelledby="s-r">
+    <h2 id="s-r">Instructor Scoring</h2>
+    <table class="rubric">
+      <thead><tr><th>Criteria</th><th class="num">Earned</th><th class="num">Possible</th></tr></thead>
+      <tbody><tr><td><label for="r1">Part 1: system basics, with the fuel circuit explained to the instructor</label></td><td class="num"><select id="r1" data-l="Score: Part 1: system basics, with the fuel circuit explained to the instructor"><option value="">—</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></td><td class="num">4</td></tr><tr><td><label for="r2">Part 2: theoretical diagnosis</label></td><td class="num"><select id="r2" data-l="Score: Part 2: theoretical diagnosis"><option value="">—</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></td><td class="num">4</td></tr><tr><td><label for="r3">Part 3: measurements and data recorded correctly</label></td><td class="num"><select id="r3" data-l="Score: Part 3: measurements and data recorded correctly"><option value="">—</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select></td><td class="num">6</td></tr><tr><td><label for="r4">PicoScope injector capture saved and explained</label></td><td class="num"><select id="r4" data-l="Score: PicoScope injector capture saved and explained"><option value="">—</option><option value="0">0</option><option value="1">1</option><option value="2">2</option></select></td><td class="num">2</td></tr><tr><td><label for="r5">Fault diagnosis: correct cause and correction, verified</label></td><td class="num"><select id="r5" data-l="Score: Fault diagnosis: correct cause and correction, verified"><option value="">—</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></td><td class="num">4</td></tr>
+        <tr class="total"><td>Total</td><td class="num" id="rT">—</td><td class="num">20</td></tr>
+      </tbody>
+    </table>
+    <div id="scoreLive" class="sr" aria-live="polite"></div>
+  </section>
+</main>
+<footer>Honda PACT · AUTO H 171 · Fuel System Diagnosis Lab Sheet. All specs, connectors and procedures come from Service Express / iN for the assigned vehicle.</footer>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle"><div class="box"><h2 id="mTitle" style="border:0;padding:0;margin-bottom:8px"></h2><div id="mBody"></div><div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px" id="mBtns"></div></div></div>
+<script>
+(function(){"use strict";
+var KEY="pact-fuel-lab-v1";
+var VEH=[["2014 Honda Civic Si", "2HGFG4A53EH702910"], ["2006 Acura TSX (race car)", "JH4CL95816C000537"], ["2014 Acura TSX (race car)", "JH4CU2E66AC007477"]];
+var IDS=["date", "course", "vin", "veh", "name", "partner", "eng", "trans", "p1_1", "p1_2", "p1_3n", "p1_3l", "p1_3t_0_1", "p1_3t_0_2", "p1_3t_0_3", "p1_3t_1_1", "p1_3t_1_2", "p1_3t_1_3", "p1_3", "p1_4", "p1_5", "p1_6", "p1_7p", "p1_7", "p1_8p", "p1_8", "p1_9", "p1_10", "p1_10w", "p1_11", "so_p1_i", "so_p1_d", "p2_1", "p2_2", "p2_3", "p2_3w", "p2_4", "p2_4w", "p2_5p", "p2_5", "p2_6_0_1", "p2_6_1_1", "p2_6_2_1", "p2_6_3_1", "p2_7", "so_p2_i", "so_p2_d", "p3_1_0_1", "p3_1_0_2", "p3_1_0_3", "p3_1_0_4", "p3_1_1_1", "p3_1_1_2", "p3_1_1_3", "p3_1_1_4", "p3_1_2_1", "p3_1_2_2", "p3_1_2_3", "p3_1_2_4", "p3_1_3_1", "p3_1_3_2", "p3_1_3_3", "p3_1_3_4", "p3_1_4_1", "p3_1_4_2", "p3_1_4_3", "p3_1_4_4", "p3_2_0_1", "p3_2_0_2", "p3_2_1_1", "p3_2_1_2", "p3_2_2_1", "p3_2_2_2", "p3_2_3_1", "p3_2_3_2", "p3_2_4_1", "p3_2_4_2", "p3_3_0_1", "p3_3_1_1", "p3_3_2_1", "p3_3_3_1", "p3_3w", "p3_4_0_1", "p3_4_0_2", "p3_4_0_3", "p3_4_0_4", "p3_4_1_1", "p3_4_1_2", "p3_4_1_3", "p3_4_1_4", "p3_4_2_1", "p3_4_2_2", "p3_4_2_3", "p3_4_2_4", "p3_4_3_1", "p3_4_3_2", "p3_4_3_3", "p3_4_3_4", "p3_4f", "p3_5", "p3_6s", "p3_6_0_1", "p3_6_0_2", "p3_6_1_1", "p3_6_1_2", "p3_6_2_1", "p3_6_2_2", "p3_6_3_1", "p3_6_3_2", "p3_7", "p3_8s", "p3_8m", "p3_8", "p3_9c", "p3_9e", "p3_9", "p3_10_0_1", "p3_10_0_2", "p3_10_0_3", "p3_10_1_1", "p3_10_1_2", "p3_10_1_3", "p3_11_0_1", "p3_11_0_2", "p3_11_0_3", "p3_11_1_1", "p3_11_1_2", "p3_11_1_3", "p3_11_2_1", "p3_11_2_2", "p3_11_2_3", "p3_11_3_1", "p3_11_3_2", "p3_11_3_3", "p3_12", "so_p3_i", "so_p3_d", "f1_dtc", "f1_tests", "f1_cause", "f1_corr", "so_f1_i", "so_f1_d", "r1", "r2", "r3", "r4", "r5"];
+var RUB=[["r1", 4], ["r2", 4], ["r3", 6], ["r4", 2], ["r5", 4]];
+function $(i){return document.getElementById(i);}
+function grow(t){t.style.height="auto";t.style.height=(t.scrollHeight+2)+"px";}
+Array.prototype.forEach.call(document.querySelectorAll("textarea"),function(t){t.addEventListener("input",function(){grow(t);});});
+$("veh").addEventListener("change",function(){var v=VEH[this.value];$("vin").value=v?v[1]:"";});
+function val(id){var el=$(id);if(!el)return "";if(el.hasAttribute("data-mc")){var c=el.querySelector("input:checked");return c?c.value:"";}return el.value;}
+function setVal(id,v){var el=$(id);if(!el)return;if(el.hasAttribute("data-mc")){var r=el.querySelector('input[value="'+v+'"]');if(r)r.checked=true;return;}el.value=v;}
+function progress(){var t=document.querySelectorAll("[data-t]"),d=0;Array.prototype.forEach.call(t,function(el){if(val(el.id).toString().trim()!=="")d++;});
+  $("pbar").style.width=(d/t.length*100)+"%";$("ptext").textContent=d+" of "+t.length+" answered";}
+function totals(){var sum=0,any=false;RUB.forEach(function(r){var v=$(r[0]).value;if(v!==""){sum+=+v;any=true;}});$("rT").textContent=any?sum:"—";$("scoreLive").textContent=any?("Score: "+sum+" of 20"):"";}
+function collect(){var o={};IDS.forEach(function(i){o[i]=val(i);});return o;}
+function status(m){var s=$("status");s.textContent=m;clearTimeout(status.t);status.t=setTimeout(function(){s.textContent="";},3500);}
+function save(q){try{localStorage.setItem(KEY,JSON.stringify(collect()));if(!q)status("Saved on this device.");}catch(e){if(!q)status("Saving isn't available here — use Copy answers.");}}
+function load(){var o=null;try{o=JSON.parse(localStorage.getItem(KEY)||"null");}catch(e){}if(!o)return;IDS.forEach(function(i){if(o[i]!=null&&o[i]!=="")setVal(i,o[i]);});Array.prototype.forEach.call(document.querySelectorAll("textarea"),grow);}
+var modal=$("modal"),lastF=null;
+function openModal(t,b,btns){lastF=document.activeElement;$("mTitle").textContent=t;$("mBody").innerHTML=b;var bb=$("mBtns");bb.innerHTML="";btns.forEach(function(x){var e=document.createElement("button");e.type="button";e.textContent=x.label;if(x.primary)e.className="primary";e.onclick=function(){if(x.fn)x.fn();closeModal();};bb.appendChild(e);});modal.classList.add("open");(bb.lastChild||bb).focus();}
+function closeModal(){modal.classList.remove("open");if(lastF)lastF.focus();}
+modal.addEventListener("keydown",function(e){if(e.key==="Escape")closeModal();});
+function text(){var L=["FUEL SYSTEM DIAGNOSIS LAB SHEET — Honda PACT",""];IDS.forEach(function(i){var el=$(i);if(!el)return;var v=val(i);if(el.hasAttribute("data-mc")&&v!=="")v=String.fromCharCode(97+ +v);if(i==="veh"&&v!=="")v=VEH[+v][0];L.push((el.getAttribute("data-l")||i)+": "+(v===""?"—":v));});L.push("","Instructor score: "+$("rT").textContent+"/20");return L.join("\n");}
+$("btnCopy").addEventListener("click",function(){var t=text();function fb(){openModal("Copy your answers",'<p style="font-size:.9rem">Select all the text below and copy it (Ctrl+C / ⌘C).</p><textarea id="cb" readonly style="min-height:240px;font-family:Consolas,monospace;font-size:.8rem"></textarea>',[{label:"Close",primary:true}]);$("cb").value=t;$("cb").focus();$("cb").select();}try{navigator.clipboard.writeText(t).then(function(){status("Answers copied.");},fb);}catch(e){fb();}});
+$("btnSave").addEventListener("click",function(){save(false);});
+$("btnPrint").addEventListener("click",function(){try{window.print();}catch(e){}status("If no print dialog opened, press Ctrl+P / ⌘P.");});
+$("btnClear").addEventListener("click",function(){openModal("Clear all answers?","<p>This erases every answer on this sheet and the saved copy on this device. It can't be undone.</p>",[{label:"Cancel"},{label:"Clear everything",primary:true,fn:function(){try{localStorage.removeItem(KEY);}catch(e){}IDS.forEach(function(i){var el=$(i);if(!el)return;if(el.hasAttribute("data-mc")){Array.prototype.forEach.call(el.querySelectorAll("input"),function(r){r.checked=false;});}else el.value=(i==="course")?"AUTO H 171":"";});Array.prototype.forEach.call(document.querySelectorAll("textarea"),grow);totals();progress();status("Cleared.");}}]);});
+var st;function changed(){progress();totals();clearTimeout(st);st=setTimeout(function(){save(true);},600);}
+document.addEventListener("input",changed);document.addEventListener("change",changed);
+load();if($("veh").value!==""&&VEH[$("veh").value])$("vin").value=VEH[$("veh").value][1];progress();totals();
+})();
+</script>
+</body>
+</html>
