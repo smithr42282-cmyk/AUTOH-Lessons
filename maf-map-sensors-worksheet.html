@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MAF &amp; MAP Sensors: Guided Reading &amp; Lab</title>
+<style>
+  :root{
+    --red:#CC0000; --red-dark:#990000; --black:#111; --ink:#1d1d1d; --muted:#5a5a5a;
+    --line:#d6d6d6; --bg:#f6f6f6; --card:#fff; --ok:#1d7a36; --bad:#b00020;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  header{background:var(--black);color:#fff;border-bottom:6px solid var(--red)}
+  .hwrap{max-width:960px;margin:0 auto;padding:22px 20px 18px}
+  .kicker{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:#ff6b6b;font-weight:700}
+  h1{margin:.2rem 0 .3rem;font-size:1.75rem;line-height:1.2}
+  .sub{color:#d0d0d0;font-size:.95rem}
+  main{max-width:960px;margin:0 auto;padding:18px 20px 60px}
+  .toolbar{position:sticky;top:0;z-index:5;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+  .progress{flex:1 1 220px;min-width:200px}
+  .bar{height:10px;background:#e7e7e7;border-radius:5px;overflow:hidden}
+  .bar > span{display:block;height:100%;width:0;background:var(--red);transition:width .25s}
+  .ptext{font-size:.82rem;color:var(--muted);margin-top:3px}
+  button{font:inherit;font-size:.9rem;border:2px solid var(--black);background:#fff;color:var(--black);padding:6px 12px;border-radius:6px;cursor:pointer;font-weight:600}
+  button:hover{background:#f0f0f0}
+  button.primary{background:var(--red);border-color:var(--red);color:#fff}
+  button.primary:hover{background:var(--red-dark);border-color:var(--red-dark)}
+  button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #ffb000;outline-offset:2px}
+  .status{font-size:.82rem;color:var(--muted);min-width:120px}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin-bottom:18px}
+  h2{margin:0 0 .3rem;font-size:1.25rem;display:flex;justify-content:space-between;gap:10px;align-items:baseline;border-bottom:3px solid var(--red);padding-bottom:6px}
+  h2 .pts{font-size:.85rem;color:var(--muted);font-weight:600;white-space:nowrap}
+  h3{font-size:1.05rem;margin:1.1rem 0 .4rem}
+  .note{background:#fff5f5;border-left:4px solid var(--red);padding:8px 12px;font-size:.9rem;margin:.6rem 0}
+  .warn{background:#fff8e1;border-left:4px solid #e0a000;padding:8px 12px;font-size:.9rem;margin:.6rem 0}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 18px}
+  label.field{display:flex;flex-direction:column;font-size:.85rem;font-weight:600;gap:3px}
+  input[type=text],input[type=date],input[type=number],select,textarea{font:inherit;font-size:.95rem;padding:6px 8px;border:1px solid #9a9a9a;border-radius:5px;background:#fff;color:var(--ink)}
+  textarea{width:100%;min-height:90px;resize:vertical;overflow:hidden}
+  fieldset{border:0;padding:0;margin:0}
+  legend{font-weight:600;margin-bottom:6px;padding:0}
+  .q{padding:12px 0;border-top:1px solid #ececec}
+  .q:first-of-type{border-top:0}
+  .opts label{display:flex;gap:8px;align-items:flex-start;padding:4px 6px;border-radius:5px;cursor:pointer}
+  .opts label:hover{background:#f7f7f7}
+  .opts input{margin-top:5px}
+  table{border-collapse:collapse;width:100%}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top;font-size:.93rem}
+  th{background:#f1f1f1}
+  .defs td:first-child{width:46px;text-align:center;font-weight:700}
+  .match td:first-child{font-weight:600}
+  .match select{width:100%}
+  .steps li{margin:4px 0}
+  .scope{display:grid;grid-template-columns:minmax(260px,520px) 1fr;gap:16px;align-items:start;margin:10px 0 6px}
+  @media (max-width:760px){.scope{grid-template-columns:1fr}}
+  .screen{background:#0d1410;border:4px solid #222;border-radius:8px;padding:6px}
+  .screen svg{width:100%;height:auto;display:block}
+  .settings{font-family:Consolas,Menlo,monospace;font-size:.8rem;background:#222;color:#e8e8e8;padding:6px 8px;border-radius:0 0 5px 5px;margin-top:4px}
+  .settings b{color:#ffd400}
+  .nums .row{display:flex;align-items:center;gap:8px;margin:8px 0;flex-wrap:wrap}
+  .nums .row span.lbl{flex:1 1 100%;font-size:.92rem}
+  .nums input{width:110px}
+  .nums select{width:100%;max-width:380px}
+  .unit{font-weight:600;color:var(--muted);min-width:34px}
+  .mark{font-size:.85rem;font-weight:700;min-width:20px}
+  .mark.ok{color:var(--ok)} .mark.bad{color:var(--bad)}
+  .lab td{vertical-align:middle}
+  .lab td:first-child{width:38%;font-weight:600;background:#fafafa}
+  .lab input,.lab select{width:100%}
+  .rubric td.num{text-align:center;width:110px}
+  .rubric tr.total td{font-weight:800;background:#fff0f0;font-size:1rem}
+  .instr{background:#f4f4f4;border:1px dashed #999;border-radius:6px;padding:10px 12px;margin-top:10px}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:20;padding:16px}
+  .modal.open{display:flex}
+  .modal .box{background:#fff;border-radius:8px;max-width:640px;width:100%;padding:18px;border-top:6px solid var(--red)}
+  .modal textarea{min-height:240px;font-family:Consolas,Menlo,monospace;font-size:.82rem}
+  .sr{position:absolute;left:-9999px}
+  footer{max-width:960px;margin:0 auto;padding:0 20px 30px;font-size:.8rem;color:var(--muted)}
+  @media print{
+    body{background:#fff}
+    .toolbar,.noprint,.modal{display:none!important}
+    header{border-bottom:4px solid var(--red);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    section.card{break-inside:avoid-page;border:1px solid #bbb}
+    .screen,.settings{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    textarea{border:1px solid #999;min-height:auto}
+    .scope{grid-template-columns:1fr 1fr}
+  }
+</style>
+<style>
+  .veh{background:#f4f4f4;border-radius:8px;padding:12px 14px;margin-top:10px}
+  .q{padding:14px 0;border-top:1px solid #ececec}.q:first-of-type{border-top:0}
+  .qn{font-weight:700;color:#990000;margin-right:4px}
+  .qt{display:block;font-weight:600;margin-bottom:6px}
+  .hint{font-size:.85rem;color:#5a5a5a;margin:2px 0 6px}
+  .read h3{color:#990000;margin:1.2rem 0 .3rem;font-size:1.08rem}
+  .read p,.read li{font-size:.97rem}
+  .read ul{padding-left:22px;margin:.3rem 0}
+  .chain{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:.5rem 0}
+  .chain span{background:#f4f4f4;border-radius:6px;padding:6px 10px;font-weight:600;font-size:.9rem}
+  .chain b{color:#CC0000}
+  .fix{background:#fff8e1;border-left:4px solid #e0a000;padding:8px 12px;font-size:.88rem;margin:.6rem 0}
+  .stop{background:#111;color:#fff;border-radius:8px;padding:12px 14px;margin-top:14px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+  .stop strong{color:#ff6b6b}.stop input{width:140px}.stop label{display:flex;gap:6px;align-items:center;font-size:.9rem}
+  table.grid td input{width:100%} table.grid th{font-size:.85rem}
+  .pico{background:#eef4fb;border-left:4px solid #1f5fbf;padding:8px 12px;font-size:.9rem;margin:.6rem 0}
+  .cmp td:first-child{font-weight:700;background:#fafafa;width:22%}
+  .legend{font-family:Consolas,Menlo,monospace;font-size:.78rem;color:#222;background:#f7f7f7;border:1px solid #c9d0d9;border-top:0;padding:4px 8px}
+  .legend .a{color:#1f5fbf;font-weight:700}.legend .b{color:#d62728;font-weight:700}
+  .screen{background:#fff;border:2px solid #8c96a3;border-radius:6px;padding:4px}
+  .settings{font-family:Consolas,Menlo,monospace;font-size:.8rem;background:#eef1f5;color:#222;padding:6px 8px;border:1px solid #c9d0d9;border-top:0}
+  .settings b{color:#1f5fbf}
+  .rubric select{width:100%}
+</style>
+</head>
+<body>
+<header><div class="hwrap"><div class="kicker">Honda PACT · Shoreline Community College</div>
+<h1>MAF &amp; MAP Sensors: Guided Reading &amp; Lab</h1>
+<div class="sub">AUTO H 171 · Mass Air Flow and Manifold Absolute Pressure sensors · 20 points</div></div></header>
+<main>
+<div class="toolbar noprint" role="region" aria-label="Worksheet tools">
+  <div class="progress"><div class="bar" aria-hidden="true"><span id="pbar"></span></div><div class="ptext" id="ptext" aria-live="polite">0 answered</div></div>
+  <button type="button" id="btnScore" class="primary">Score Part B</button>
+  <button type="button" id="btnSave">Save</button><button type="button" id="btnCopy">Copy answers</button>
+  <button type="button" id="btnPrint">Print</button><button type="button" id="btnClear">Clear</button>
+  <span class="status" id="status" aria-live="polite"></span>
+</div>
+
+<section class="card" aria-labelledby="s-info">
+  <h2 id="s-info">Student &amp; Vehicle</h2>
+  <div class="grid2">
+    <label class="field">Name <input type="text" id="name" data-l="Name" data-t value=""></label>
+    <label class="field">Date <input type="date" id="date" data-l="Date"></label>
+    <label class="field">Course <input type="text" id="course" data-l="Course" value="AUTO H 171"></label>
+    <label class="field">Lab partner <input type="text" id="partner" data-l="Lab partner"  value=""></label>
+  </div>
+  <div class="veh"><div class="grid2">
+    <label class="field">Assigned vehicle <select id="veh" data-l="Assigned vehicle" data-t><option value="">Choose…</option><option value="0">2014 Honda Civic Si</option><option value="1">2006 Acura TSX (race car)</option><option value="2">2014 Acura TSX (race car)</option></select></label>
+    <label class="field">VIN <input type="text" id="vin" data-l="VIN" readonly></label>
+    <label class="field">Engine code (Service Express) <input type="text" id="eng" data-l="Engine code" data-t value=""></label>
+  </div></div>
+  <div class="note"><strong>Objectives:</strong> Explain how hot-wire and hot-film MAF sensors and MAP sensors measure engine air; describe the signal each one sends the ECM; compare MAF and MAP systems; measure and capture MAF and MAP signals on a shop vehicle with the HDS and the PicoScope 4225A, and judge them against spec.</div>
+</section>
+
+<section class="card read" aria-labelledby="s-a">
+  <h2 id="s-a">Part A — Reading: MAF &amp; MAP Sensors</h2>
+  <h3>What the MAF sensor does</h3>
+  <p>The Mass Air Flow (MAF) sensor measures the <strong>mass</strong> of air entering the engine. It sits in the intake duct between the air filter and the throttle body. The ECM uses that measurement to calculate how much fuel to inject for the correct air-fuel mixture. The sensor has its own electronic circuit that senses airflow and converts it into a signal the ECM can read, usually a voltage.</p>
+
+  <h3>Types of heated MAF sensors</h3>
+  <p>Two heated designs are used today:</p>
+  <ul>
+    <li><strong>Hot wire:</strong> a very fine wire, usually platinum, is stretched across the air stream. The sensor's circuit keeps the wire at a <strong>set temperature above the intake air</strong> (constant temperature). As air flows past, it carries heat away, so the circuit must send more current to keep the wire hot. That heating current is converted into the output signal. A second, unheated element measures the air temperature so the circuit always knows what "above intake air" means. Some older hot-wire sensors briefly heat the wire after shutdown to burn off dirt.</li>
+    <li><strong>Hot film:</strong> instead of a wire, thin-film resistors are printed on a small chip or ceramic plate. A heater sits between temperature sensors placed upstream and downstream. By comparing them, the sensor measures air mass and can also sense <strong>reverse flow and pulsation</strong> in the intake. Hot-film sensors are tougher and more accurate, and they are the most common type today.</li>
+  </ul>
+  <p>Most MAF sensors, including most Honda units, also have the <strong>Intake Air Temperature (IAT) sensor built into the same housing</strong>. It's a separate sensor with its own signal wire. It tells the ECM the air temperature, because cold air is denser than warm air.</p>
+
+  <h3>The resistance principle</h3>
+  <p>The sensing element is made from a metal with a high <strong>positive temperature coefficient</strong> of resistance, usually platinum (some designs use tungsten or platinum alloys). Its resistance rises when it heats up and falls when it cools, and even a small temperature change gives a measurable resistance change.</p>
+  <div class="chain"><span>More airflow</span><b>→</b><span>Element cools</span><b>→</b><span>Resistance drops</span><b>→</b><span>Circuit adds current</span><b>→</b><span>Signal rises</span><b>→</b><span>ECM adds fuel</span></div>
+  <p>Less airflow reverses the chain: less cooling, less current needed, lower signal. The circuit is always working to hold the element at the same temperature.</p>
+
+  <h3>Signal types</h3>
+  <ul>
+    <li><strong>Analog voltage:</strong> rises with airflow (most Honda MAF sensors). On the scope it's a DC analog signal.</li>
+    <li><strong>Frequency:</strong> pulses get faster as airflow rises (some other makes). On the scope it's a digital signal.</li>
+    <li>The HDS data list shows MAF in <strong>grams per second (g/s)</strong> after the ECM converts the signal.</li>
+  </ul>
+
+  <h3>Older MAF designs</h3>
+  <ul>
+    <li><strong>Vane (flap) meter:</strong> incoming air pushes a spring-loaded door connected to a potentiometer.</li>
+    <li><strong>Karman vortex:</strong> a strut in the air stream sheds small swirls (vortices); the sensor counts them, so its output is a frequency.</li>
+  </ul>
+  <p>These were replaced by heated sensors, which are smaller, have no moving parts, restrict airflow less and measure air mass directly.</p>
+
+  <h3>The MAP sensor</h3>
+  <p>The Manifold Absolute Pressure (MAP) sensor measures the pressure inside the intake manifold, <strong>after</strong> the throttle plate. "Absolute" means it's measured against a perfect vacuum (0 kPa). It's a 3-wire sensor: 5 V reference, signal and sensor ground.</p>
+  <ul>
+    <li><strong>Key on, engine off:</strong> the manifold is at outside air pressure, so MAP equals <strong>barometric pressure</strong> (about 101 kPa near sea level) and the signal voltage is high.</li>
+    <li><strong>Warm idle:</strong> the throttle is nearly closed, so manifold vacuum is high, absolute pressure is low, and the signal voltage is low.</li>
+    <li><strong>Wide open throttle:</strong> the manifold fills back toward barometric pressure, so the voltage is high again.</li>
+    <li>Vacuum = barometric pressure − manifold absolute pressure.</li>
+  </ul>
+  <p>From MAP, engine RPM and air temperature, the ECM can <em>calculate</em> airflow. This is called <strong>speed density</strong>.</p>
+
+  <h3>MAF vs. MAP</h3>
+  <table class="cmp"><tbody>
+    <tr><td></td><th>MAF</th><th>MAP</th></tr>
+    <tr><td>Measures</td><td>Mass of air flowing in</td><td>Pressure in the intake manifold</td></tr>
+    <tr><td>Location</td><td>Before the throttle body</td><td>After the throttle, on the manifold</td></tr>
+    <tr><td>Airflow</td><td>Measured directly</td><td>Calculated (speed density)</td></tr>
+    <tr><td>Fooled by</td><td>Air leaks after the sensor (unmetered air); a dirty element</td><td>A leaking or blocked vacuum passage to the sensor</td></tr>
+  </tbody></table>
+  <p>Some engines use only a MAP sensor, some only a MAF, and many use both. With both, the ECM can cross-check them, detect air leaks, and handle boost on turbocharged or supercharged engines.</p>
+  <p class="fix"><strong>Common mix-ups to avoid:</strong> a hot-wire MAF works at a constant <em>temperature</em>, not a constant voltage. "Hot film" is a thin-film chip, not a "dual wire" sensor. The IAT is a separate built-in sensor, not a redundant one. The ECM receives the sensor's finished signal, not the heating current.</p>
+</section>
+
+<section class="card" aria-labelledby="s-b">
+  <h2 id="s-b">Part B — Reading Check <span class="pts">8 pts (auto-scored)</span></h2>
+  <fieldset class="q"><legend>1. As airflow increases past a hot-wire MAF element, what does the sensor&#x27;s circuit do? <span class="mark" id="m_b1"></span></legend><div class="opts" id="b1" data-l="Part B Q1" data-mc data-t><label><input type="radio" name="b1" value="0"> <span>a) Applies a steady, constant voltage to the wire</span></label><label><input type="radio" name="b1" value="1"> <span>b) Increases the current to hold the wire at its set temperature</span></label><label><input type="radio" name="b1" value="2"> <span>c) Turns the wire off to let it cool</span></label><label><input type="radio" name="b1" value="3"> <span>d) Sends the raw wire resistance straight to the ECM</span></label></div></fieldset><fieldset class="q"><legend>2. Platinum has a positive temperature coefficient of resistance. When the element cools, its resistance… <span class="mark" id="m_b2"></span></legend><div class="opts" id="b2" data-l="Part B Q2" data-mc data-t><label><input type="radio" name="b2" value="0"> <span>a) Increases</span></label><label><input type="radio" name="b2" value="1"> <span>b) Stays the same</span></label><label><input type="radio" name="b2" value="2"> <span>c) Decreases</span></label><label><input type="radio" name="b2" value="3"> <span>d) Drops to zero</span></label></div></fieldset><fieldset class="q"><legend>3. What can a hot-film MAF sensor do that a vane (flap) meter cannot? <span class="mark" id="m_b3"></span></legend><div class="opts" id="b3" data-l="Part B Q3" data-mc data-t><label><input type="radio" name="b3" value="0"> <span>a) Measure air with no electrical power</span></label><label><input type="radio" name="b3" value="1"> <span>b) Sense reverse flow and pulsation in the intake</span></label><label><input type="radio" name="b3" value="2"> <span>c) Measure fuel pressure</span></label><label><input type="radio" name="b3" value="3"> <span>d) Replace the throttle position sensor</span></label></div></fieldset><fieldset class="q"><legend>4. What does a MAP sensor measure? <span class="mark" id="m_b4"></span></legend><div class="opts" id="b4" data-l="Part B Q4" data-mc data-t><label><input type="radio" name="b4" value="0"> <span>a) Air speed through the air filter</span></label><label><input type="radio" name="b4" value="1"> <span>b) Pressure in the intake manifold compared with a perfect vacuum</span></label><label><input type="radio" name="b4" value="2"> <span>c) Exhaust back-pressure</span></label><label><input type="radio" name="b4" value="3"> <span>d) Fuel rail pressure</span></label></div></fieldset><fieldset class="q"><legend>5. Compared with key on, engine off, what does the MAP signal do at a warm idle? <span class="mark" id="m_b5"></span></legend><div class="opts" id="b5" data-l="Part B Q5" data-mc data-t><label><input type="radio" name="b5" value="0"> <span>a) Rises, because idle creates more pressure</span></label><label><input type="radio" name="b5" value="1"> <span>b) Stays the same</span></label><label><input type="radio" name="b5" value="2"> <span>c) Drops, because high vacuum means low absolute pressure</span></label><label><input type="radio" name="b5" value="3"> <span>d) Switches between 0 V and 5 V</span></label></div></fieldset><fieldset class="q"><legend>6. A Karman vortex MAF sensor&#x27;s output is… <span class="mark" id="m_b6"></span></legend><div class="opts" id="b6" data-l="Part B Q6" data-mc data-t><label><input type="radio" name="b6" value="0"> <span>a) A frequency that rises as it counts more air swirls</span></label><label><input type="radio" name="b6" value="1"> <span>b) A DC voltage from a potentiometer</span></label><label><input type="radio" name="b6" value="2"> <span>c) A sine wave from a magnet and coil</span></label><label><input type="radio" name="b6" value="3"> <span>d) A fixed 5 V reference</span></label></div></fieldset>
+  <h3 style="margin-top:14px">Read the capture</h3>
+  <p class="hint">A snap-throttle test captured with the PicoScope 4225A. Read the values from the axis labels as if you had placed rulers. Answers within tolerance are accepted.</p>
+  <div class="scope" style="display:grid;grid-template-columns:minmax(260px,520px) 1fr;gap:16px;align-items:start">
+    <div><div class="screen"><svg id="cap" role="img" aria-label="Two-channel snap test. Blue MAF trace idles near 0.9 volts and rises to about 3.9 volts. Red MAP trace idles near 1 volt, jumps to about 4.2 volts, dips to about 0.7 volts when the throttle closes, then both settle back."></svg></div>
+      <div class="settings">Ch A (MAF): TA404 · <b>±5 V</b> · DC &nbsp;|&nbsp; Ch B (MAP): TA405 · <b>±5 V</b> · DC &nbsp;|&nbsp; <b>200 ms/div</b> &nbsp;|&nbsp; Single · A · Rising · 1.5 V</div>
+      <div class="legend"><span class="a">━ Ch A: MAF (left axis)</span> &nbsp; <span class="b">━ Ch B: MAP (right axis)</span></div></div>
+    <div><div class="row" style="display:flex;align-items:center;gap:8px;margin:8px 0;flex-wrap:wrap"><label for="c1" style="flex:1 1 100%;font-size:.92rem">MAF (Channel A, blue) idle voltage</label><input type="number" step="any" id="c1" data-l="MAF (Channel A, blue) idle voltage" data-t style="width:110px"><span class="unit">V</span><span class="mark" id="m_c1"></span></div><div class="row" style="display:flex;align-items:center;gap:8px;margin:8px 0;flex-wrap:wrap"><label for="c2" style="flex:1 1 100%;font-size:.92rem">MAP (Channel B, red) peak voltage during the snap</label><input type="number" step="any" id="c2" data-l="MAP (Channel B, red) peak voltage during the snap" data-t style="width:110px"><span class="unit">V</span><span class="mark" id="m_c2"></span></div></div>
+  </div>
+</section>
+
+<section class="card" aria-labelledby="s-c">
+  <h2 id="s-c">Part C — Explain It <span class="pts">4 pts (instructor scored)</span></h2>
+  <div class="q"><div class="qt"><span class="qn">C1)</span>In your own words, explain why a hot-wire MAF signal rises when airflow increases. Use the words <em>temperature</em>, <em>resistance</em> and <em>current</em>. <span class="mark" id="m_C1"></span></div><textarea id="c_1" data-l="C1 MAF principle" data-t style="min-height:78px"></textarea></div>
+  <div class="q"><div class="qt"><span class="qn">C2)</span>Why do many engines use both a MAF and a MAP sensor? <span class="mark" id="m_C2"></span></div><textarea id="c_2" data-l="C2 Why both" data-t style="min-height:78px"></textarea></div>
+  <div class="q"><div class="qt"><span class="qn">C3)</span>A vacuum hose splits <em>after</em> the MAF sensor. What happens to the air-fuel mixture, what will fuel trims do, and what DTC might set? <span class="mark" id="m_C3"></span></div><textarea id="c_3" data-l="C3 Unmetered air" data-t style="min-height:78px"></textarea></div>
+  <div class="q"><div class="qt"><span class="qn">C4)</span>At KOEO the HDS shows MAP = 101 kPa. At a warm idle it shows 30 kPa. How much manifold vacuum is that in kPa? Show your math. <span class="mark" id="m_C4"></span></div><textarea id="c_4" data-l="C4 Vacuum math" data-t style="min-height:52px"></textarea></div>
+  <div class="stop"><span><strong>Stop!</strong> Have your instructor check this section before you go on.</span>
+    <label>Instructor initials <input type="text" id="so_c_i" data-l="Sign-off c: initials"></label>
+    <label>Date <input type="date" id="so_c_d" data-l="Sign-off c: date"></label></div>
+</section>
+
+<section class="card" aria-labelledby="s-d">
+  <h2 id="s-d">Part D — Shop Lab: Measure MAF &amp; MAP <span class="pts">8 pts (instructor scored)</span></h2>
+  <p>With instructor approval, test the sensors on your assigned vehicle. Look up every connector, pin and spec in Service Express first. If your engine doesn't have one of the sensors, write <strong>N/A</strong>.</p>
+  <div class="q"><div class="qt"><span class="qn">D1)</span>Which air-measurement sensors does your engine have? Record locations and circuits from Service Express / the EWD. <span class="mark" id="m_D1"></span></div><table class="grid"><thead><tr><th>Sensor</th><th>Present? (Y/N)</th><th>Location</th><th>Signal pin &amp; wire color</th><th>Ref / power pin</th><th>Ground pin</th></tr></thead><tbody><tr><th scope="row">MAF</th><td><input type="text" id="d1_0_1" data-l="D1 Sensor circuits — MAF — Present? (Y/N)" data-t aria-label="MAF Present? (Y/N)"></td><td><input type="text" id="d1_0_2" data-l="D1 Sensor circuits — MAF — Location" data-t aria-label="MAF Location"></td><td><input type="text" id="d1_0_3" data-l="D1 Sensor circuits — MAF — Signal pin &amp; wire color" data-t aria-label="MAF Signal pin &amp; wire color"></td><td><input type="text" id="d1_0_4" data-l="D1 Sensor circuits — MAF — Ref / power pin" data-t aria-label="MAF Ref / power pin"></td><td><input type="text" id="d1_0_5" data-l="D1 Sensor circuits — MAF — Ground pin" data-t aria-label="MAF Ground pin"></td></tr><tr><th scope="row">IAT</th><td><input type="text" id="d1_1_1" data-l="D1 Sensor circuits — IAT — Present? (Y/N)" data-t aria-label="IAT Present? (Y/N)"></td><td><input type="text" id="d1_1_2" data-l="D1 Sensor circuits — IAT — Location" data-t aria-label="IAT Location"></td><td><input type="text" id="d1_1_3" data-l="D1 Sensor circuits — IAT — Signal pin &amp; wire color" data-t aria-label="IAT Signal pin &amp; wire color"></td><td><input type="text" id="d1_1_4" data-l="D1 Sensor circuits — IAT — Ref / power pin" data-t aria-label="IAT Ref / power pin"></td><td><input type="text" id="d1_1_5" data-l="D1 Sensor circuits — IAT — Ground pin" data-t aria-label="IAT Ground pin"></td></tr><tr><th scope="row">MAP</th><td><input type="text" id="d1_2_1" data-l="D1 Sensor circuits — MAP — Present? (Y/N)" data-t aria-label="MAP Present? (Y/N)"></td><td><input type="text" id="d1_2_2" data-l="D1 Sensor circuits — MAP — Location" data-t aria-label="MAP Location"></td><td><input type="text" id="d1_2_3" data-l="D1 Sensor circuits — MAP — Signal pin &amp; wire color" data-t aria-label="MAP Signal pin &amp; wire color"></td><td><input type="text" id="d1_2_4" data-l="D1 Sensor circuits — MAP — Ref / power pin" data-t aria-label="MAP Ref / power pin"></td><td><input type="text" id="d1_2_5" data-l="D1 Sensor circuits — MAP — Ground pin" data-t aria-label="MAP Ground pin"></td></tr></tbody></table></div>
+  <div class="q"><div class="qt"><span class="qn">D2)</span>Record the HDS data list values and back-pinned signal voltages. Warm engine, accessories off. <span class="mark" id="m_D2"></span></div><div class="hint">Rule of thumb: a healthy engine at warm idle often shows roughly 1 g/s of MAF per liter of displacement. Always compare with the spec.</div><table class="grid"><thead><tr><th>Condition</th><th>MAF (g/s)</th><th>MAF signal (V)</th><th>MAP (kPa)</th><th>MAP signal (V)</th><th>Baro (kPa)</th></tr></thead><tbody><tr><th scope="row">KOEO</th><td><input type="text" id="d2_0_1" data-l="D2 HDS and voltage readings — KOEO — MAF (g/s)" data-t aria-label="KOEO MAF (g/s)"></td><td><input type="text" id="d2_0_2" data-l="D2 HDS and voltage readings — KOEO — MAF signal (V)" data-t aria-label="KOEO MAF signal (V)"></td><td><input type="text" id="d2_0_3" data-l="D2 HDS and voltage readings — KOEO — MAP (kPa)" data-t aria-label="KOEO MAP (kPa)"></td><td><input type="text" id="d2_0_4" data-l="D2 HDS and voltage readings — KOEO — MAP signal (V)" data-t aria-label="KOEO MAP signal (V)"></td><td><input type="text" id="d2_0_5" data-l="D2 HDS and voltage readings — KOEO — Baro (kPa)" data-t aria-label="KOEO Baro (kPa)"></td></tr><tr><th scope="row">Warm idle</th><td><input type="text" id="d2_1_1" data-l="D2 HDS and voltage readings — Warm idle — MAF (g/s)" data-t aria-label="Warm idle MAF (g/s)"></td><td><input type="text" id="d2_1_2" data-l="D2 HDS and voltage readings — Warm idle — MAF signal (V)" data-t aria-label="Warm idle MAF signal (V)"></td><td><input type="text" id="d2_1_3" data-l="D2 HDS and voltage readings — Warm idle — MAP (kPa)" data-t aria-label="Warm idle MAP (kPa)"></td><td><input type="text" id="d2_1_4" data-l="D2 HDS and voltage readings — Warm idle — MAP signal (V)" data-t aria-label="Warm idle MAP signal (V)"></td><td><input type="text" id="d2_1_5" data-l="D2 HDS and voltage readings — Warm idle — Baro (kPa)" data-t aria-label="Warm idle Baro (kPa)"></td></tr><tr><th scope="row">Steady 2,500 RPM</th><td><input type="text" id="d2_2_1" data-l="D2 HDS and voltage readings — Steady 2,500 RPM — MAF (g/s)" data-t aria-label="Steady 2,500 RPM MAF (g/s)"></td><td><input type="text" id="d2_2_2" data-l="D2 HDS and voltage readings — Steady 2,500 RPM — MAF signal (V)" data-t aria-label="Steady 2,500 RPM MAF signal (V)"></td><td><input type="text" id="d2_2_3" data-l="D2 HDS and voltage readings — Steady 2,500 RPM — MAP (kPa)" data-t aria-label="Steady 2,500 RPM MAP (kPa)"></td><td><input type="text" id="d2_2_4" data-l="D2 HDS and voltage readings — Steady 2,500 RPM — MAP signal (V)" data-t aria-label="Steady 2,500 RPM MAP signal (V)"></td><td><input type="text" id="d2_2_5" data-l="D2 HDS and voltage readings — Steady 2,500 RPM — Baro (kPa)" data-t aria-label="Steady 2,500 RPM Baro (kPa)"></td></tr><tr><th scope="row">Snap-throttle peak</th><td><input type="text" id="d2_3_1" data-l="D2 HDS and voltage readings — Snap-throttle peak — MAF (g/s)" data-t aria-label="Snap-throttle peak MAF (g/s)"></td><td><input type="text" id="d2_3_2" data-l="D2 HDS and voltage readings — Snap-throttle peak — MAF signal (V)" data-t aria-label="Snap-throttle peak MAF signal (V)"></td><td><input type="text" id="d2_3_3" data-l="D2 HDS and voltage readings — Snap-throttle peak — MAP (kPa)" data-t aria-label="Snap-throttle peak MAP (kPa)"></td><td><input type="text" id="d2_3_4" data-l="D2 HDS and voltage readings — Snap-throttle peak — MAP signal (V)" data-t aria-label="Snap-throttle peak MAP signal (V)"></td><td><input type="text" id="d2_3_5" data-l="D2 HDS and voltage readings — Snap-throttle peak — Baro (kPa)" data-t aria-label="Snap-throttle peak Baro (kPa)"></td></tr></tbody></table></div>
+  <div class="q"><div class="qt"><span class="qn">D3)</span>Capture a two-channel snap-throttle test with the PicoScope 4225A. Save it as a .psdata file and show your instructor. <span class="mark" id="m_D3"></span></div><div class="pico"><strong>Hookup:</strong> Ch A: TA404 lead + TA161 back-pinning probe on the MAF signal. Ch B: TA405 lead + TA162 probe on the MAP signal. Both grounds to battery negative. ±5 V DC on both, 200 ms/div, Trigger Single · A · Rising · just above idle voltage, pre-trigger 20%. If the engine has no MAF, trigger on Ch B.</div><table class="grid"><thead><tr><th>Signal</th><th>Idle (V)</th><th>Peak (V)</th><th>Lowest after snap (V)</th><th>Time from idle to peak (ms)</th></tr></thead><tbody><tr><th scope="row">MAF (Ch A)</th><td><input type="text" id="d3_0_1" data-l="D3 Snap test readings — MAF (Ch A) — Idle (V)" data-t aria-label="MAF (Ch A) Idle (V)"></td><td><input type="text" id="d3_0_2" data-l="D3 Snap test readings — MAF (Ch A) — Peak (V)" data-t aria-label="MAF (Ch A) Peak (V)"></td><td><input type="text" id="d3_0_3" data-l="D3 Snap test readings — MAF (Ch A) — Lowest after snap (V)" data-t aria-label="MAF (Ch A) Lowest after snap (V)"></td><td><input type="text" id="d3_0_4" data-l="D3 Snap test readings — MAF (Ch A) — Time from idle to peak (ms)" data-t aria-label="MAF (Ch A) Time from idle to peak (ms)"></td></tr><tr><th scope="row">MAP (Ch B)</th><td><input type="text" id="d3_1_1" data-l="D3 Snap test readings — MAP (Ch B) — Idle (V)" data-t aria-label="MAP (Ch B) Idle (V)"></td><td><input type="text" id="d3_1_2" data-l="D3 Snap test readings — MAP (Ch B) — Peak (V)" data-t aria-label="MAP (Ch B) Peak (V)"></td><td><input type="text" id="d3_1_3" data-l="D3 Snap test readings — MAP (Ch B) — Lowest after snap (V)" data-t aria-label="MAP (Ch B) Lowest after snap (V)"></td><td><input type="text" id="d3_1_4" data-l="D3 Snap test readings — MAP (Ch B) — Time from idle to peak (ms)" data-t aria-label="MAP (Ch B) Time from idle to peak (ms)"></td></tr></tbody></table><div class="grid2" style="margin-top:8px"><label class="field">Saved file name <input type="text" id="d3f" data-l="D3 .psdata file name" data-t value=""></label></div></div>
+  <div class="q"><div class="qt"><span class="qn">D4)</span>Compare your readings with the Service Express spec and the training waveform in Part B. Are both sensors working correctly? What did you see in the MAP signal when the throttle closed, and why? <span class="mark" id="m_D4"></span></div><textarea id="d_4" data-l="D4 Analysis" data-t style="min-height:104px"></textarea></div>
+  <div class="stop"><span><strong>Stop!</strong> Have your instructor check this section before you go on.</span>
+    <label>Instructor initials <input type="text" id="so_d_i" data-l="Sign-off d: initials"></label>
+    <label>Date <input type="date" id="so_d_d" data-l="Sign-off d: date"></label></div>
+</section>
+
+<section class="card" aria-labelledby="s-r">
+  <h2 id="s-r">Score Summary</h2>
+  <table class="rubric"><thead><tr><th>Section</th><th class="num">Earned</th><th class="num">Possible</th></tr></thead><tbody>
+    <tr><td>Part B: reading check (auto)</td><td class="num" id="rB">—</td><td class="num">8</td></tr>
+    <tr><td><label for="rc">Part C: explanations (instructor)</label></td><td class="num"><select id="rc" data-l="Score: Part C: explanations (instructor)"><option value="">—</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></td><td class="num">4</td></tr><tr><td><label for="rd1">Part D: sensor circuits and data tables (instructor)</label></td><td class="num"><select id="rd1" data-l="Score: Part D: sensor circuits and data tables (instructor)"><option value="">—</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></td><td class="num">4</td></tr><tr><td><label for="rd2">Part D: PicoScope capture saved and analysis (instructor)</label></td><td class="num"><select id="rd2" data-l="Score: Part D: PicoScope capture saved and analysis (instructor)"><option value="">—</option><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></td><td class="num">4</td></tr>
+    <tr class="total"><td>Total</td><td class="num" id="rT">—</td><td class="num">20</td></tr>
+  </tbody></table><div id="scoreLive" class="sr" aria-live="polite"></div>
+</section>
+</main>
+<footer>Honda PACT · AUTO H 171 · MAF &amp; MAP Sensors. All specs, connectors and procedures come from Service Express / iN for the assigned vehicle.</footer>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle"><div class="box"><h2 id="mTitle" style="border:0;padding:0;margin-bottom:8px"></h2><div id="mBody"></div><div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px" id="mBtns"></div></div></div>
+<script>
+(function(){"use strict";
+  /* ---------- PicoScope 7-style graph renderer ---------- */
+  var NS="http://www.w3.org/2000/svg";
+  var COL={A:"#1f5fbf",B:"#d62728",R:"#9a9a9a"};
+  function mk(tag,a,p){var e=document.createElementNS(NS,tag);for(var k in a)e.setAttribute(k,a[k]);p.appendChild(e);return e;}
+  function fmtN(n){var r=Math.round(n*1000)/1000;if(Math.abs(r)<1e-9)r=0;return r.toString();}
+  // cfg: {A:{per,unit,off}, B:{...}, t:{per,unit}, traces:[{ch,pts:[[xDiv,value]],dash,color,w}], trig:{ch,x,v}}
+  function pico(svg,cfg){
+    var L=60,T=28,P=50,W=500,H=500,R=cfg.B?60:18,Bm=44;
+    svg.setAttribute("viewBox","0 0 "+(L+W+R)+" "+(T+H+Bm));
+    mk("rect",{x:0,y:0,width:L+W+R,height:T+H+Bm,fill:"#ffffff"},svg);
+    var cid="clip"+Math.random().toString(36).slice(2);
+    var cp=mk("clipPath",{id:cid},mk("defs",{},svg));mk("rect",{x:L,y:T,width:W,height:H},cp);
+    var i,j;
+    for(i=0;i<=10;i++)mk("line",{x1:L+i*P,y1:T,x2:L+i*P,y2:T+H,stroke:i===5?"#b0b0b0":"#e0e0e0","stroke-width":(i===0||i===10)?1.5:1},svg);
+    for(j=0;j<=10;j++)mk("line",{x1:L,y1:T+j*P,x2:L+W,y2:T+j*P,stroke:j===5?"#b0b0b0":"#e0e0e0","stroke-width":(j===0||j===10)?1.5:1},svg);
+    for(i=0;i<=50;i++)mk("line",{x1:L+i*10,y1:T+H/2-4,x2:L+i*10,y2:T+H/2+4,stroke:"#b0b0b0"},svg);
+    for(j=0;j<=50;j++)mk("line",{x1:L+W/2-4,y1:T+j*10,x2:L+W/2+4,y2:T+j*10,stroke:"#b0b0b0"},svg);
+    function axis(ch,side){
+      var c=cfg[ch];if(!c)return;var off=c.off||0,left=side==="L";
+      for(var j=0;j<=10;j++){
+        var tx=mk("text",{x:left?L-7:L+W+7,y:T+j*P+4,fill:COL[ch],"font-size":"13","font-family":"Arial,Helvetica,sans-serif","text-anchor":left?"end":"start"},svg);
+        tx.textContent=fmtN((5-j-off)*c.per);
+      }
+      var u=mk("text",{x:left?L-7:L+W+7,y:T-10,fill:COL[ch],"font-size":"13","font-weight":"700","font-family":"Arial,Helvetica,sans-serif","text-anchor":left?"end":"start"},svg);
+      u.textContent=c.unit;
+    }
+    axis("A","L");axis("B","R");
+    for(i=0;i<=10;i++){
+      var tl=mk("text",{x:L+i*P,y:T+H+17,fill:"#333","font-size":"13","font-family":"Arial,Helvetica,sans-serif","text-anchor":"middle"},svg);
+      tl.textContent=fmtN(i*cfg.t.per);
+    }
+    var tu=mk("text",{x:L+W,y:T+H+36,fill:"#333","font-size":"13","font-weight":"700","font-family":"Arial,Helvetica,sans-serif","text-anchor":"end"},svg);
+    tu.textContent=cfg.t.unit;
+    function X(xd){return L+xd*P;}
+    function Y(ch,v){var c=cfg[ch];return T+(5-(v/c.per+(c.off||0)))*P;}
+    var g=mk("g",{"clip-path":"url(#"+cid+")"},svg);
+    (cfg.traces||[]).forEach(function(tr){
+      var d=tr.pts.map(function(p,k){return(k?"L":"M")+X(p[0]).toFixed(1)+" "+Y(tr.ch,p[1]).toFixed(1);}).join(" ");
+      var at={d:d,fill:"none",stroke:tr.color||COL[tr.ch],"stroke-width":tr.w||2.2,"stroke-linejoin":"round"};
+      if(tr.dash)at["stroke-dasharray"]=tr.dash;
+      mk("path",at,g);
+    });
+    if(cfg.trig){
+      var tx0=X(cfg.trig.x),ty0=Y(cfg.trig.ch,cfg.trig.v);
+      mk("polygon",{points:tx0+","+(ty0-8)+" "+(tx0+8)+","+ty0+" "+tx0+","+(ty0+8)+" "+(tx0-8)+","+ty0,fill:"#ffd400",stroke:"#7a6400","stroke-width":1.2},svg);
+    }
+    return {X:X,Y:Y,mk:mk,svg:svg};
+  }
+  function marker(gr,xd,ch,v,n){
+    var x=gr.X(xd),y=gr.Y(ch,v);
+    mk("circle",{cx:x,cy:y,r:13,fill:"#CC0000",stroke:"#fff","stroke-width":2},gr.svg);
+    var t=mk("text",{x:x,y:y+5,fill:"#fff","font-size":"14","font-weight":"700","text-anchor":"middle","font-family":"Arial"},gr.svg);t.textContent=n;
+  }
+  function px(list,per,gy){ // convert old pixel points (gy = old ground px) to [div,value]
+    return list.map(function(p){return [p[0]/50,(gy-p[1])/50*per];});
+  }
+function mafV(x){if(x<2)return 0.9;if(x<=4.2)return 0.9+3.0*(1-Math.exp(-(x-2)/0.18));var pk=0.9+3.0*(1-Math.exp(-2.2/0.18));return 0.9+(pk-0.9)*Math.exp(-(x-4.2)/0.9);}
+function mapV(x){if(x<2)return 1.0;if(x<=4.2)return 1.0+3.2*(1-Math.exp(-(x-2)/0.08));return 0.6+3.6*Math.exp(-(x-4.2)/0.15)+0.4*(1-Math.exp(-(x-4.2)/2.5));}
+function mafmapPts(f){var p=[];for(var x=0;x<=10.001;x+=0.02)p.push([x,f(x)]);return p;}
+
+var g=pico(document.getElementById("cap"),{A:{per:1,unit:"V"},B:{per:1,unit:"V"},t:{per:200,unit:"ms"},trig:{ch:"A",x:2,v:1.5},traces:[{ch:"A",pts:mafmapPts(mafV),w:2.6},{ch:"B",pts:mafmapPts(mapV),w:2.6}]});
+var KEY="pact-mafmap-v1",VEH=[["2014 Honda Civic Si", "2HGFG4A53EH702910"], ["2006 Acura TSX (race car)", "JH4CL95816C000537"], ["2014 Acura TSX (race car)", "JH4CU2E66AC007477"]],IDS=["date", "course", "vin", "veh", "name", "partner", "eng", "b1", "b2", "b3", "b4", "b5", "b6", "c1", "c2", "c_1", "c_2", "c_3", "c_4", "so_c_i", "so_c_d", "d1_0_1", "d1_0_2", "d1_0_3", "d1_0_4", "d1_0_5", "d1_1_1", "d1_1_2", "d1_1_3", "d1_1_4", "d1_1_5", "d1_2_1", "d1_2_2", "d1_2_3", "d1_2_4", "d1_2_5", "d2_0_1", "d2_0_2", "d2_0_3", "d2_0_4", "d2_0_5", "d2_1_1", "d2_1_2", "d2_1_3", "d2_1_4", "d2_1_5", "d2_2_1", "d2_2_2", "d2_2_3", "d2_2_4", "d2_2_5", "d2_3_1", "d2_3_2", "d2_3_3", "d2_3_4", "d2_3_5", "d3_0_1", "d3_0_2", "d3_0_3", "d3_0_4", "d3_1_1", "d3_1_2", "d3_1_3", "d3_1_4", "d3f", "d_4", "so_d_i", "so_d_d", "rc", "rd1", "rd2"],MCS=[["b1", 1], ["b2", 2], ["b3", 1], ["b4", 1], ["b5", 2], ["b6", 0]],NUM=[["c1", 0.9, 0.12], ["c2", 4.2, 0.06]],RUB=["rc", "rd1", "rd2"];
+function $(i){return document.getElementById(i);}
+function grow(t){t.style.height="auto";t.style.height=(t.scrollHeight+2)+"px";}
+Array.prototype.forEach.call(document.querySelectorAll("textarea"),function(t){t.addEventListener("input",function(){grow(t);});});
+$("veh").addEventListener("change",function(){var v=VEH[this.value];$("vin").value=v?v[1]:"";});
+function val(id){var el=$(id);if(!el)return "";if(el.hasAttribute("data-mc")){var c=el.querySelector("input:checked");return c?c.value:"";}return el.value;}
+function setVal(id,v){var el=$(id);if(!el)return;if(el.hasAttribute("data-mc")){var r=el.querySelector('input[value="'+v+'"]');if(r)r.checked=true;return;}el.value=v;}
+function progress(){var t=document.querySelectorAll("[data-t]"),d=0;Array.prototype.forEach.call(t,function(el){if(String(val(el.id)).trim()!=="")d++;});$("pbar").style.width=(d/t.length*100)+"%";$("ptext").textContent=d+" of "+t.length+" answered";}
+var autoB=null;
+function mark(id,ok){var m=$("m_"+id);if(!m)return;m.textContent=ok?"✓":"✗";m.className="mark "+(ok?"ok":"bad");m.setAttribute("aria-label",ok?"correct":"incorrect");}
+function scoreB(){var s=0;MCS.forEach(function(m){var ok=val(m[0])!==""&&+val(m[0])===m[1];if(ok)s++;mark(m[0],ok);});NUM.forEach(function(n){var f=parseFloat(val(n[0]));var ok=!isNaN(f)&&Math.abs(f-n[1])<=Math.abs(n[1])*n[2]+1e-9;if(ok)s++;mark(n[0],ok);});autoB=s;totals();}
+function totals(){$("rB").textContent=autoB==null?"—":autoB;var sum=autoB||0,any=autoB!=null;RUB.forEach(function(r){var v=$(r).value;if(v!==""){sum+=+v;any=true;}});$("rT").textContent=any?sum:"—";$("scoreLive").textContent=any?("Score: "+sum+" of 20"):"";}
+function collect(){var o={};IDS.forEach(function(i){o[i]=val(i);});return o;}
+function status(m){var s=$("status");s.textContent=m;clearTimeout(status.t);status.t=setTimeout(function(){s.textContent="";},3500);}
+function save(q){try{localStorage.setItem(KEY,JSON.stringify(collect()));if(!q)status("Saved on this device.");}catch(e){if(!q)status("Saving isn't available here — use Copy answers.");}}
+function load(){var o=null;try{o=JSON.parse(localStorage.getItem(KEY)||"null");}catch(e){}if(!o)return;IDS.forEach(function(i){if(o[i]!=null&&o[i]!=="")setVal(i,o[i]);});Array.prototype.forEach.call(document.querySelectorAll("textarea"),grow);}
+var modal=$("modal"),lastF=null;
+function openModal(t,b,btns){lastF=document.activeElement;$("mTitle").textContent=t;$("mBody").innerHTML=b;var bb=$("mBtns");bb.innerHTML="";btns.forEach(function(x){var e=document.createElement("button");e.type="button";e.textContent=x.label;if(x.primary)e.className="primary";e.onclick=function(){if(x.fn)x.fn();closeModal();};bb.appendChild(e);});modal.classList.add("open");(bb.lastChild||bb).focus();}
+function closeModal(){modal.classList.remove("open");if(lastF)lastF.focus();}
+modal.addEventListener("keydown",function(e){if(e.key==="Escape")closeModal();});
+function text(){var L=["MAF & MAP SENSORS — GUIDED READING & LAB — Honda PACT",""];IDS.forEach(function(i){var el=$(i);if(!el)return;var v=val(i);if(el.hasAttribute("data-mc")&&v!=="")v=String.fromCharCode(97+ +v);if(i==="veh"&&v!=="")v=VEH[+v][0];L.push((el.getAttribute("data-l")||i)+": "+(v===""?"—":v));});L.push("","Part B: "+$("rB").textContent+"/8 · Total: "+$("rT").textContent+"/20");return L.join("\n");}
+$("btnCopy").addEventListener("click",function(){var t=text();function fb(){openModal("Copy your answers",'<p style="font-size:.9rem">Select all the text below and copy it (Ctrl+C / ⌘C).</p><textarea id="cb" readonly style="min-height:240px;font-family:Consolas,monospace;font-size:.8rem"></textarea>',[{label:"Close",primary:true}]);$("cb").value=t;$("cb").focus();$("cb").select();}try{navigator.clipboard.writeText(t).then(function(){status("Answers copied.");},fb);}catch(e){fb();}});
+$("btnScore").addEventListener("click",function(){scoreB();save(true);$("s-r").scrollIntoView({behavior:"smooth"});});
+$("btnSave").addEventListener("click",function(){save(false);});
+$("btnPrint").addEventListener("click",function(){try{window.print();}catch(e){}status("If no print dialog opened, press Ctrl+P / ⌘P.");});
+$("btnClear").addEventListener("click",function(){openModal("Clear all answers?","<p>This erases every answer on this sheet and the saved copy on this device. It can't be undone.</p>",[{label:"Cancel"},{label:"Clear everything",primary:true,fn:function(){try{localStorage.removeItem(KEY);}catch(e){}IDS.forEach(function(i){var el=$(i);if(!el)return;if(el.hasAttribute("data-mc")){Array.prototype.forEach.call(el.querySelectorAll("input"),function(r){r.checked=false;});}else el.value=(i==="course")?"AUTO H 171":"";});Array.prototype.forEach.call(document.querySelectorAll(".mark"),function(m){m.textContent="";m.className="mark";});Array.prototype.forEach.call(document.querySelectorAll("textarea"),grow);autoB=null;totals();progress();status("Cleared.");}}]);});
+var st;function changed(){progress();totals();clearTimeout(st);st=setTimeout(function(){save(true);},600);}
+document.addEventListener("input",changed);document.addEventListener("change",changed);
+load();if($("veh").value!==""&&VEH[$("veh").value])$("vin").value=VEH[$("veh").value][1];progress();totals();
+})();
+</script>
+</body>
+</html>
