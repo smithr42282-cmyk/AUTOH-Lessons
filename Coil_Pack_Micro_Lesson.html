@@ -2,384 +2,526 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Coil Pack Micro-Lesson | Honda PACT</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ignition Coil Packs Worksheet | Honda PACT</title>
 <style>
   :root{
-    --red:#CC0000; --red-dark:#960000; --black:#1a1a1a; --grey:#4a4a4a;
-    --light:#f5f5f5; --white:#ffffff; --border:#d9d9d9; --good:#1e7a34;
-    --bad:#b3261e; --focus:#0b5fff;
+    --red:#CC0000; --red-dark:#990000; --black:#111; --ink:#1d1d1d; --muted:#5a5a5a;
+    --line:#d6d6d6; --bg:#f6f6f6; --card:#fff; --ok:#1d7a36; --bad:#b00020;
   }
-  *{box-sizing:border-box;}
-  body{margin:0;font-family:"Segoe UI",Arial,Helvetica,sans-serif;background:var(--light);color:var(--black);font-size:18px;line-height:1.5;}
-  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
-  .skip-link{position:absolute;left:-999px;top:0;background:var(--red);color:#fff;padding:10px 16px;z-index:200;border-radius:0 0 6px 0;font-weight:700;text-decoration:none;}
-  .skip-link:focus{left:0;}
-  a:focus,button:focus-visible,input:focus-visible,.dot:focus-visible,label:focus-within{outline:3px solid var(--focus);outline-offset:2px;}
-  header.brandbar{background:var(--black);color:var(--white);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:6px solid var(--red);flex-wrap:wrap;gap:8px;}
-  header.brandbar .brand{display:flex;align-items:center;gap:12px;}
-  header.brandbar .swatch{width:22px;height:22px;background:var(--red);border-radius:3px;}
-  header.brandbar h1{font-size:20px;margin:0;font-weight:700;letter-spacing:.3px;}
-  header.brandbar .prog{font-size:15px;color:#eee;}
-  .wrap{max-width:900px;margin:0 auto;padding:24px 20px 100px;}
-  .slide{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:34px 36px;min-height:420px;box-shadow:0 2px 6px rgba(0,0,0,.06);display:none;}
-  .slide:focus{outline:none;}
-  .slide.active{display:block;}
-  @media (prefers-reduced-motion: no-preference){ .slide.active{animation:fade .25s ease;} }
-  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
-  .eyebrow{color:var(--red-dark);font-weight:700;font-size:15px;margin:0 0 6px;}
-  h2{font-size:28px;margin:0 0 18px;border-bottom:4px solid var(--red);padding-bottom:10px;}
-  h3{font-size:20px;margin:22px 0 8px;color:var(--red-dark);}
-  p{margin:0 0 12px;}
-  ul,ol{margin:0 0 14px;padding-left:26px;}
-  li{margin-bottom:8px;}
-  .obj-list li{margin-bottom:12px;}
-  .diagram{background:var(--light);border:2px dashed var(--border);border-radius:8px;padding:20px;margin:16px 0;}
-  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;font-size:15px;font-weight:600;}
-  .flow .box{background:var(--white);border:2px solid var(--black);border-radius:6px;padding:10px 14px;text-align:center;min-width:110px;}
-  .flow .box.red{border-color:var(--red);color:var(--red-dark);}
-  .flow .arrow{color:var(--red-dark);font-size:22px;}
-  .callout{border-left:5px solid var(--red);background:#fff4f4;padding:12px 16px;margin:14px 0;border-radius:0 6px 6px 0;}
-  .callout.safety{border-left-color:var(--bad);background:#fdecea;}
-  .callout.tip{border-left-color:var(--good);background:#eaf6ec;}
-  .callout strong{display:block;margin-bottom:4px;}
-  table.comp{width:100%;border-collapse:collapse;margin:14px 0;font-size:16px;}
-  table.comp th,table.comp td{border:1px solid var(--border);padding:10px 12px;text-align:left;vertical-align:top;}
-  table.comp th{background:var(--black);color:var(--white);}
-  table.comp tr:nth-child(even){background:var(--light);}
-  .kc-badge{display:inline-block;background:var(--red);color:var(--white);font-weight:700;font-size:13px;padding:4px 10px;border-radius:20px;margin-bottom:10px;letter-spacing:.5px;}
-  fieldset.question{background:var(--light);border:1px solid var(--border);border-radius:8px;padding:18px 20px;margin:0 0 16px;}
-  fieldset.question legend.qtext{font-weight:600;margin-bottom:10px;padding:0;white-space:normal;font-size:inherit;color:inherit;}
-  .opts label{display:block;background:var(--white);border:2px solid var(--border);border-radius:6px;padding:9px 12px;margin-bottom:8px;cursor:pointer;}
-  .opts label:hover{border-color:var(--red);}
-  .opts input{margin-right:8px;}
-  .checkbtn{background:var(--red);color:var(--white);border:none;padding:9px 18px;border-radius:6px;font-weight:700;cursor:pointer;font-size:15px;}
-  .checkbtn:hover{background:var(--red-dark);}
-  .feedback{margin-top:10px;font-weight:700;padding:8px 10px;border-radius:6px;display:none;}
-  .feedback.correct{display:block;background:#eaf6ec;color:var(--good);}
-  .feedback.incorrect{display:block;background:#fdecea;color:var(--bad);}
-  .explain{margin-top:8px;font-size:15px;font-weight:400;color:var(--grey);display:none;}
-  nav.slidenav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:2px solid var(--black);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
-  button.navbtn{background:var(--black);color:var(--white);border:none;padding:10px 20px;border-radius:6px;font-weight:700;cursor:pointer;font-size:15px;}
-  button.navbtn:disabled{background:#767676;cursor:not-allowed;}
-  button.navbtn.primary{background:var(--red);}
-  button.navbtn.primary:hover{background:var(--red-dark);}
-  .dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;}
-  button.dot{width:16px;height:16px;border-radius:50%;background:var(--white);border:2px solid var(--border);padding:0;cursor:pointer;}
-  button.dot[aria-current="true"]{background:var(--red);border-color:var(--red-dark);}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  header{background:var(--black);color:#fff;border-bottom:6px solid var(--red)}
+  .hwrap{max-width:960px;margin:0 auto;padding:22px 20px 18px}
+  .kicker{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:#ff6b6b;font-weight:700}
+  h1{margin:.2rem 0 .3rem;font-size:1.75rem;line-height:1.2}
+  .sub{color:#d0d0d0;font-size:.95rem}
+  main{max-width:960px;margin:0 auto;padding:18px 20px 60px}
+  .toolbar{position:sticky;top:0;z-index:5;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+  .progress{flex:1 1 220px;min-width:200px}
+  .bar{height:10px;background:#e7e7e7;border-radius:5px;overflow:hidden}
+  .bar > span{display:block;height:100%;width:0;background:var(--red);transition:width .25s}
+  .ptext{font-size:.82rem;color:var(--muted);margin-top:3px}
+  button{font:inherit;font-size:.9rem;border:2px solid var(--black);background:#fff;color:var(--black);padding:6px 12px;border-radius:6px;cursor:pointer;font-weight:600}
+  button:hover{background:#f0f0f0}
+  button.primary{background:var(--red);border-color:var(--red);color:#fff}
+  button.primary:hover{background:var(--red-dark);border-color:var(--red-dark)}
+  button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #ffb000;outline-offset:2px}
+  .status{font-size:.82rem;color:var(--muted);min-width:120px}
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin-bottom:18px}
+  h2{margin:0 0 .3rem;font-size:1.25rem;display:flex;justify-content:space-between;gap:10px;align-items:baseline;border-bottom:3px solid var(--red);padding-bottom:6px}
+  h2 .pts{font-size:.85rem;color:var(--muted);font-weight:600;white-space:nowrap}
+  h3{font-size:1.05rem;margin:1.1rem 0 .4rem}
+  .note{background:#fff5f5;border-left:4px solid var(--red);padding:8px 12px;font-size:.9rem;margin:.6rem 0}
+  .warn{background:#fff8e1;border-left:4px solid #e0a000;padding:8px 12px;font-size:.9rem;margin:.6rem 0}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 18px}
+  label.field{display:flex;flex-direction:column;font-size:.85rem;font-weight:600;gap:3px}
+  input[type=text],input[type=date],input[type=number],select,textarea{font:inherit;font-size:.95rem;padding:6px 8px;border:1px solid #9a9a9a;border-radius:5px;background:#fff;color:var(--ink)}
+  textarea{width:100%;min-height:90px;resize:vertical;overflow:hidden}
+  fieldset{border:0;padding:0;margin:0}
+  legend{font-weight:600;margin-bottom:6px;padding:0}
+  .q{padding:12px 0;border-top:1px solid #ececec}
+  .q:first-of-type{border-top:0}
+  .opts label{display:flex;gap:8px;align-items:flex-start;padding:4px 6px;border-radius:5px;cursor:pointer}
+  .opts label:hover{background:#f7f7f7}
+  .opts input{margin-top:5px}
+  table{border-collapse:collapse;width:100%}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top;font-size:.93rem}
+  th{background:#f1f1f1}
+  .defs td:first-child{width:46px;text-align:center;font-weight:700}
+  .match td:first-child{font-weight:600}
+  .match select{width:100%}
+  .steps li{margin:4px 0}
+  .scope{display:grid;grid-template-columns:minmax(260px,520px) 1fr;gap:16px;align-items:start;margin:10px 0 6px}
+  @media (max-width:760px){.scope{grid-template-columns:1fr}}
+  .screen{background:#fff;border:2px solid #8c96a3;border-radius:6px;padding:4px}
+  .screen svg{width:100%;height:auto;display:block}
+  .settings{font-family:Consolas,Menlo,monospace;font-size:.8rem;background:#eef1f5;color:#222;padding:6px 8px;border:1px solid #c9d0d9;border-top:0;border-radius:0 0 5px 5px}
+  .settings b{color:#1f5fbf}
+  .nums .row{display:flex;align-items:center;gap:8px;margin:8px 0;flex-wrap:wrap}
+  .nums .row span.lbl{flex:1 1 100%;font-size:.92rem}
+  .nums input{width:110px}
+  .nums select{width:100%;max-width:380px}
+  .unit{font-weight:600;color:var(--muted);min-width:34px}
+  .mark{font-size:.85rem;font-weight:700;min-width:20px}
+  .mark.ok{color:var(--ok)} .mark.bad{color:var(--bad)}
+  .lab td{vertical-align:middle}
+  .lab td:first-child{width:38%;font-weight:600;background:#fafafa}
+  .lab input,.lab select{width:100%}
+  .rubric td.num{text-align:center;width:110px}
+  .rubric tr.total td{font-weight:800;background:#fff0f0;font-size:1rem}
+  .instr{background:#f4f4f4;border:1px dashed #999;border-radius:6px;padding:10px 12px;margin-top:10px}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:20;padding:16px}
+  .modal.open{display:flex}
+  .modal .box{background:#fff;border-radius:8px;max-width:640px;width:100%;padding:18px;border-top:6px solid var(--red)}
+  .modal textarea{min-height:240px;font-family:Consolas,Menlo,monospace;font-size:.82rem}
+  .sr{position:absolute;left:-9999px}
+  footer{max-width:960px;margin:0 auto;padding:0 20px 30px;font-size:.8rem;color:var(--muted)}
   @media print{
-    header.brandbar,nav.slidenav,.skip-link{display:none;}
-    .slide{display:block !important;page-break-after:always;box-shadow:none;border:1px solid #999;}
+    body{background:#fff}
+    .toolbar,.noprint,.modal{display:none!important}
+    header{border-bottom:4px solid var(--red);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    section.card{break-inside:avoid-page;border:1px solid #bbb}
+    .screen,.settings{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    textarea{border:1px solid #999;min-height:auto}
+    .scope{grid-template-columns:1fr 1fr}
   }
-  @media (max-width:600px){ .slide{padding:22px 18px;} h2{font-size:23px;} }
+
+  .kit{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:6px 16px;font-size:.88rem;margin:.4rem 0 0;padding:0;list-style:none}
+  .kit li{background:#f4f4f4;border-radius:5px;padding:5px 8px}
+  .kit code{font-weight:700;color:#990000;font-family:Consolas,Menlo,monospace}
+  .pico{background:#eef4fb;border-left:4px solid #1f5fbf;padding:8px 12px;font-size:.9rem;margin:.6rem 0}
+  .ctl{width:100%;border-collapse:collapse;margin:.4rem 0}
+  .ctl td,.ctl th{font-size:.88rem}
+  .ctl td:first-child{font-weight:700;white-space:nowrap}
 </style>
 </head>
 <body>
-
-<a class="skip-link" href="#main">Skip to lesson content</a>
-
-<header class="brandbar">
-  <div class="brand">
-    <div class="swatch" aria-hidden="true"></div>
-    <h1>Honda PACT &mdash; Ignition Coil Packs</h1>
+<header>
+  <div class="hwrap">
+    <div class="kicker">Honda PACT · Shoreline Community College</div>
+    <h1>Ignition Coil Packs</h1>
+    <div class="sub">Worksheet · 20 points · Honda coil-on-plug components and testing · HDS, DVOM and PicoScope 4225A</div>
   </div>
-  <div class="prog" id="progLabel" role="status" aria-live="polite">Slide 1 of 12</div>
 </header>
 
-<div class="wrap">
-  <main id="main">
-
-  <!-- SLIDE 1 -->
-  <section class="slide active" data-index="0" tabindex="-1" aria-labelledby="h-0">
-    <p class="eyebrow">MICRO-LESSON</p>
-    <h2 id="h-0">Honda Coil-On-Plug Ignition: Components &amp; Testing</h2>
-    <p>Honda gasoline engines use a <strong>coil-on-plug (COP)</strong> ignition system &mdash; one ignition coil mounted directly over each spark plug, with no distributor and no external plug wires. This lesson covers what each part of the coil does, how the ECM/PCM fires it, and the step-by-step process for confirming whether a coil pack is actually the cause of a misfire.</p>
-    <div class="callout">
-      <strong>By the end of this lesson you should be able to&hellip;</strong>
-      Identify each part of a COP ignition coil, explain how the ECM/PCM triggers spark, and run through a logical testing sequence &mdash; visual inspection, resistance check, swap test, scan tool data, and waveform test &mdash; to confirm a coil fault before replacing it.
+<main>
+  <div class="toolbar noprint" role="region" aria-label="Worksheet tools">
+    <div class="progress">
+      <div class="bar" aria-hidden="true"><span id="pbar"></span></div>
+      <div class="ptext" id="ptext" aria-live="polite">0 of 0 answered</div>
     </div>
+    <button type="button" id="btnScore" class="primary">Score my worksheet</button>
+    <button type="button" id="btnSave">Save</button>
+    <button type="button" id="btnCopy">Copy answers</button>
+    <button type="button" id="btnPrint">Print</button>
+    <button type="button" id="btnClear">Clear</button>
+    <span class="status" id="status" aria-live="polite"></span>
+  </div>
+
+  <section class="card" aria-labelledby="s-info">
+    <h2 id="s-info">Student Information</h2>
+    <div class="grid2">
+      <label class="field">Name <input type="text" id="name" autocomplete="name"></label>
+      <label class="field">Date <input type="date" id="date"></label>
+      <label class="field">Course <input type="text" id="course" value="AUTO H 171"></label>
+      <label class="field">Lab partner <input type="text" id="partner"></label>
+    </div>
+    <div class="note"><strong>Objectives:</strong> Identify each part of a Honda coil-on-plug (COP) ignition coil; explain how the ECM/PCM fires it; link symptoms and DTCs to the right test; read a secondary ignition waveform; and follow a logical test sequence (visual, DTCs and freeze frame, swap test, live data, waveform) to confirm a coil fault before replacing anything.</div>
   </section>
 
-  <!-- SLIDE 2: COMPONENTS -->
-  <section class="slide" data-index="1" tabindex="-1" aria-labelledby="h-1">
-    <p class="eyebrow">COMPONENTS &mdash; PART 1</p>
-    <h2 id="h-1">What's Inside a Coil Pack</h2>
-    <table class="comp">
-      <caption class="sr-only">Coil pack internal components and function</caption>
-      <tr><th scope="col">Component</th><th scope="col">Function</th></tr>
-      <tr><td>Primary winding</td><td>A few hundred turns of heavier-gauge wire. The ECM/PCM grounds and ungrounds this circuit (through the igniter) to build and collapse a magnetic field.</td></tr>
-      <tr><td>Secondary winding</td><td>Thousands of turns of fine wire wrapped around the same iron core. When the primary field collapses, it induces a very high voltage (tens of thousands of volts) in this winding.</td></tr>
-      <tr><td>Iron core</td><td>Concentrates the magnetic field shared by the primary and secondary windings, improving coupling efficiency.</td></tr>
-      <tr><td>Igniter (coil driver)</td><td>A power transistor, built into the coil assembly on most modern Honda COP coils, that switches the primary circuit on and off exactly when the ECM/PCM commands it.</td></tr>
+  <section class="card" aria-labelledby="s-ref">
+<h2 id="s-ref">How a Honda COP Coil Works <span class="pts">read before you start</span></h2>
+<p>Honda gasoline engines use <strong>coil-on-plug (COP)</strong> ignition: one coil sits directly on each spark plug, with no distributor and no plug wires. On most Honda COP coils the <strong>igniter</strong> (driver transistor) is built into the coil.</p>
+<h3>What's inside the coil</h3>
+<ul class="kit">
+<li><strong>Primary winding:</strong> a few hundred turns of heavier wire. The igniter switches current through it to build a magnetic field.</li>
+<li><strong>Secondary winding:</strong> thousands of turns of fine wire around the same iron core. It makes the high voltage for the plug.</li>
+<li><strong>Iron core:</strong> laminated steel that concentrates the magnetic field.</li>
+<li><strong>Igniter:</strong> switches the primary on and off when the ECM/PCM commands it.</li>
+<li><strong>Boot and spring:</strong> carry secondary voltage to the plug. The boot is the most common failure point.</li>
+<li><strong>Connector:</strong> switched power, ground and the ECM/PCM trigger signal.</li>
+<li><strong>Retaining bolt:</strong> holds the coil fully seated; a loose coil can cause an intermittent misfire.</li>
+</ul>
+<h3>How the ECM/PCM fires the coil</h3>
+<ol class="steps">
+<li>The ECM/PCM sends the trigger (dwell) signal; the igniter grounds the primary and a magnetic field builds.</li>
+<li>At the commanded ignition timing, the ECM/PCM ends the signal and the igniter turns the primary off.</li>
+<li>The field collapses quickly and induces tens of thousands of volts in the secondary, firing the plug.</li>
+</ol>
+<p><strong>Dwell</strong> is how long the primary stays on (how much energy the coil stores). <strong>Ignition timing</strong> is when the coil fires, based on crank and cam position, load, RPM and knock feedback.</p>
+<h3>Symptoms and codes</h3>
+<ul class="kit">
+<li>Rough idle or a miss, often worse hot or in damp weather (a cracked boot can carbon-track).</li>
+<li><code>P0301–P0306</code> misfire on a specific cylinder · <code>P0351–P0356</code> ignition coil A–F circuit.</li>
+<li><code>P0300</code> random misfire: more than one cylinder, which usually points to a shared cause (fuel, vacuum leak, wiring or ground), not one coil.</li>
+</ul>
+<h3>Test sequence</h3>
+<ol class="steps">
+<li><strong>Visual:</strong> boot cracks or carbon tracking, connector and terminals, oil in the plug well, the spark plug itself, coil seated and bolt torqued.</li>
+<li><strong>DTCs and freeze frame (HDS):</strong> which cylinder, and under what conditions (RPM, load, temperature).</li>
+<li><strong>Swap test:</strong> swap the suspect coil with another cylinder's coil, clear codes, run it. Misfire follows the coil = bad coil. Misfire stays = look at the plug, injector, compression or wiring for that cylinder.</li>
+<li><strong>Live data:</strong> HDS misfire counters per cylinder.</li>
+<li><strong>Waveform:</strong> scope the trigger wire at the connector (0–5 V pulse) and the secondary with the <strong>TA398 COP probe</strong>. Compare cylinder to cylinder.</li>
+</ol>
+<h3>Kit items used in this worksheet</h3>
+<ul class="kit">
+<li><code>TA398</code> COP probe (secondary ignition pickup)</li>
+<li><code>TA404 / TA405</code> PicoBNC+ test leads, blue (A) / red (B)</li>
+<li><code>TA161 / TA162</code> flexible back-pinning probes · <code>TA158</code> battery clip</li>
+</ul>
+<div class="warn"><strong>Safety:</strong> Secondary voltage can exceed 20,000–40,000 volts. Never handle a coil, boot or spark tester with the engine running or cranking. Never connect a test lead directly to secondary ignition; use the TA398 COP probe. Never run a coil with the boot off a plug and no spark tester. Get specs, pinouts and torque values from Service Express.</div>
+</section>
+
+  <!-- PART A -->
+  <section class="card" aria-labelledby="s-a">
+    <h2 id="s-a">Part A — Coil Components <span class="pts">4 pts (0.5 each)</span></h2>
+    <p>Match each term to its definition. Each letter is used once.</p>
+    <table class="defs" aria-label="Definitions"><tbody id="defsBody"></tbody></table>
+    <h3>Terms</h3>
+    <table class="match"><tbody id="matchBody"></tbody></table>
+  </section>
+
+  <!-- PART B -->
+  <section class="card" aria-labelledby="s-b">
+    <h2 id="s-b">Part B — Operation, Symptoms &amp; Codes <span class="pts">5 pts (1 each)</span></h2>
+    <div id="mcWrap"></div>
+  </section>
+
+  <!-- PART C -->
+  <section class="card" aria-labelledby="s-c">
+<h2 id="s-c">Part C — Read the Waveform &amp; the Swap Test <span class="pts">7 pts (1 each)</span></h2>
+<p>Captures 1 and 2 are secondary ignition waveforms taken at a warm idle with the TA398 COP probe on Channel A. Use the grid (or rulers) to read the values, then pick the best diagnosis. Numeric answers within ±10% are accepted. Scenarios 3 and 4 are swap tests. These are training captures, not specifications.</p>
+<h3>Capture 1</h3>
+<div class="scope"><div><div class="screen"><svg id="scr1" role="img" aria-label="Secondary ignition capture 1: firing line up to 10 kilovolts, a spark line near 1.5 kilovolts lasting 3 divisions, then 3 or 4 coil oscillations."></svg></div>
+<div class="settings">Ch A: TA398 COP probe · <b>5 kV/div</b> · 0 kV one division above the bottom &nbsp;|&nbsp; Timebase: <b>0.5 ms/div</b> &nbsp;|&nbsp; Trigger: Repeat · Rising</div></div>
+<div class="nums" id="nums1"></div></div>
+<h3>Capture 2</h3>
+<div class="scope"><div><div class="screen"><svg id="scr2" role="img" aria-label="Secondary ignition capture 2: firing line up to 20 kilovolts, a short sloped spark line lasting a little over one division, then oscillations."></svg></div>
+<div class="settings">Ch A: TA398 COP probe · <b>5 kV/div</b> · 0 kV one division above the bottom &nbsp;|&nbsp; Timebase: <b>0.5 ms/div</b> &nbsp;|&nbsp; Trigger: Repeat · Rising</div></div>
+<div class="nums" id="nums2"></div></div>
+<h3>Scenario 3</h3>
+<p>A 2014 Civic Si sets <code>P0302</code>. You swap the cylinder 2 coil with the cylinder 4 coil, clear codes and idle the engine. The HDS now shows <code>P0304</code> and the cylinder 4 misfire counter is climbing.</p>
+<div class="nums" id="nums3"></div>
+<h3>Scenario 4</h3>
+<p>A TSX sets <code>P0303</code>. You swap the cylinder 3 coil with the cylinder 1 coil, clear codes and run the engine. The code comes back as <code>P0303</code> and the cylinder 3 counter is climbing again.</p>
+<div class="nums" id="nums4"></div>
+</section>
+
+  <!-- PART D -->
+  <section class="card" aria-labelledby="s-d">
+<h2 id="s-d">Part D — Shop Lab: Test a Coil <span class="pts">4 pts (instructor scored)</span></h2>
+<p>With instructor approval, test one coil on a shop vehicle. Record what you find at each step of the test sequence, then decide whether the coil is good or faulty. Save your PicoScope capture as a .psdata file and show it to your instructor.</p>
+<table class="lab"><tbody>
+<tr><td><label for="lVeh">Vehicle</label></td><td><select id="lVeh" data-track><option value="">Choose…</option><option>2014 Honda Civic Si</option><option>2006 Acura TSX (race car)</option><option>Acura TSX race car (VIN …007477)</option><option>Other (note in Cylinder field)</option></select></td></tr>
+<tr><td><label for="lCyl">Cylinder / coil tested</label></td><td><input type="text" id="lCyl" data-track></td></tr>
+<tr><td><label for="lDtc">DTCs and freeze frame (RPM, load, ECT)</label></td><td><input type="text" id="lDtc" data-track></td></tr>
+<tr><td><label for="lCount">HDS misfire counters (per cylinder)</label></td><td><input type="text" id="lCount" data-track></td></tr>
+<tr><td><label for="lVis">Visual: boot, connector, plug well, spark plug</label></td><td><input type="text" id="lVis" data-track></td></tr>
+<tr><td><label for="lPwr">Connector: power (key on) and ground voltage drop</label></td><td><input type="text" id="lPwr" data-track></td></tr>
+<tr><td><label for="lTrig">Trigger signal on the scope (present? height?) · pin &amp; wire color</label></td><td><input type="text" id="lTrig" data-track></td></tr>
+<tr><td><label for="lSwap">Swap test: coils swapped and result</label></td><td><input type="text" id="lSwap" data-track></td></tr>
+<tr><td><label for="lKv">Secondary (TA398): firing line kV</label></td><td><input type="text" id="lKv" data-track></td></tr>
+<tr><td><label for="lSpark">Secondary: spark line duration (ms)</label></td><td><input type="text" id="lSpark" data-track></td></tr>
+<tr><td><label for="lFile">Saved .psdata file name</label></td><td><input type="text" id="lFile" data-track></td></tr>
+</tbody></table>
+<div class="q"><label for="lAnalysis"><strong>Conclusion:</strong> Is the coil good or faulty? Back up your answer with your swap test, misfire counters and waveform, and name the next step (replace coil, check plug, injector, compression or wiring).</label><textarea id="lAnalysis" data-track></textarea></div>
+<div class="instr"><strong>Instructor scoring</strong>
+<div class="grid2" style="margin-top:6px">
+<label class="field">Test procedure &amp; measurements (0–2) <select id="d1score"><option value="">—</option><option value="0">0</option><option value="1">1</option><option value="2">2</option></select></label>
+<label class="field">Conclusion &amp; next step (0–2) <select id="d2score"><option value="">—</option><option value="0">0</option><option value="1">1</option><option value="2">2</option></select></label>
+</div>
+<p style="font-size:.82rem;margin:.5rem 0 0"><strong>Procedure:</strong> 2 = safe test following the sequence, swap test done, capture saved and shown, all fields filled in · 1 = some steps or measurements missing · 0 = no test.<br><strong>Conclusion:</strong> 2 = correct good/faulty call backed by the swap test and measurements, with the right next step · 1 = call made with weak support · 0 = no conclusion.</p>
+</div>
+</section>
+
+  <!-- RUBRIC -->
+  <section class="card" aria-labelledby="s-r">
+    <h2 id="s-r">Score Summary</h2>
+    <p class="noprint" style="font-size:.9rem">Parts A–C are scored when you press <strong>Score my worksheet</strong>. Part D is entered by your instructor.</p>
+    <table class="rubric">
+      <thead><tr><th>Section</th><th class="num">Earned</th><th class="num">Possible</th></tr></thead>
+      <tbody>
+        <tr><td>Part A — Coil components</td><td class="num" id="rA">—</td><td class="num">4</td></tr>
+        <tr><td>Part B — Operation, symptoms &amp; codes</td><td class="num" id="rB">—</td><td class="num">5</td></tr>
+        <tr><td>Part C — Waveform &amp; swap test</td><td class="num" id="rC">—</td><td class="num">7</td></tr>
+        <tr><td>Part D — Shop lab coil test (instructor)</td><td class="num" id="rD">—</td><td class="num">4</td></tr>
+        <tr class="total"><td>Total</td><td class="num" id="rT">—</td><td class="num">20</td></tr>
+      </tbody>
     </table>
+    <div id="scoreLive" class="sr" aria-live="polite"></div>
   </section>
+</main>
 
-  <!-- SLIDE 3: COMPONENTS PART 2 -->
-  <section class="slide" data-index="2" tabindex="-1" aria-labelledby="h-2">
-    <p class="eyebrow">COMPONENTS &mdash; PART 2</p>
-    <h2 id="h-2">Getting Spark to the Plug</h2>
-    <table class="comp">
-      <caption class="sr-only">External coil pack components and function</caption>
-      <tr><th scope="col">Component</th><th scope="col">Function</th></tr>
-      <tr><td>Spark plug boot &amp; spring</td><td>Carries secondary voltage from the coil tower down to the spark plug terminal; the spring maintains contact pressure.</td></tr>
-      <tr><td>Coil body / boot insulation</td><td>Rubber boot and internal potting insulate the high-voltage secondary path from the cylinder head and from the primary circuit &mdash; this is the most common failure point.</td></tr>
-      <tr><td>Electrical connector</td><td>Typically carries: switched power (ignition or main relay), ground, and a trigger/control signal from the ECM/PCM (and sometimes a separate low-voltage confirmation signal back to the ECM/PCM).</td></tr>
-      <tr><td>Retaining bolt</td><td>Holds the coil seated fully over the spark plug well; under-torque or a loose coil is a common cause of an intermittent misfire that looks electrical but isn't.</td></tr>
-    </table>
-    <div class="callout tip">
-      <strong>Tech tip</strong>
-      Because the igniter is built into most modern COP coils, you typically cannot separately test "primary" and "secondary" resistance the way you could on an older remote coil. Treat the coil as a sealed assembly and lean on function tests (spark, waveform, swap) rather than trying to ohm out the windings, unless Service Express specifically publishes a resistance spec for that coil.
-    </div>
-  </section>
+<footer>Honda PACT · AUTO H 171 · Ignition Coil Packs Worksheet · HDS, DVOM and PicoScope 4225A / PicoScope 7 Automotive. Look up model-specific specs, pinouts and torque values in Service Express / Interactive Network (iN).</footer>
 
-  <!-- SLIDE 4: HOW IT WORKS -->
-  <section class="slide" data-index="3" tabindex="-1" aria-labelledby="h-3">
-    <p class="eyebrow">HOW IT WORKS</p>
-    <h2 id="h-3">How the ECM/PCM Fires the Coil</h2>
-    <p class="sr-only">Diagram summary: the ECM or PCM sends a dwell signal to the igniter, which turns on the primary circuit to build a magnetic field, then turns it off at the commanded ignition timing. The collapsing field induces high voltage in the secondary winding, which fires the spark plug.</p>
-    <div class="diagram" aria-hidden="true">
-      <div class="flow">
-        <div class="box red">ECM/PCM sends<br>dwell (on) signal</div>
-        <div class="arrow">&rarr;</div>
-        <div class="box">Igniter grounds<br>primary circuit</div>
-        <div class="arrow">&rarr;</div>
-        <div class="box red">Magnetic field<br>builds in coil</div>
-      </div>
-      <div class="flow" style="margin-top:14px;">
-        <div class="box">ECM/PCM commands<br>coil off (ignition timing)</div>
-        <div class="arrow">&rarr;</div>
-        <div class="box red">Field collapses<br>rapidly</div>
-        <div class="arrow">&rarr;</div>
-        <div class="box">High voltage induced,<br>spark plug fires</div>
-      </div>
-    </div>
-    <p>Two things the ECM/PCM controls precisely:</p>
-    <ul>
-      <li><strong>Dwell time</strong> &mdash; how long the primary circuit stays energized before firing, which determines how much energy is stored in the coil's magnetic field.</li>
-      <li><strong>Ignition timing</strong> &mdash; the exact crankshaft position at which the coil is commanded to fire, based on crank/cam position, load, RPM, knock feedback, and other inputs.</li>
-    </ul>
-    <p>On many Honda applications, each coil also has a feedback/confirmation circuit that reports back to the ECM/PCM that the primary circuit actually switched &mdash; this is part of how the ECM/PCM can detect a specific cylinder's coil circuit fault and set a coil-specific DTC.</p>
-  </section>
-
-  <!-- SLIDE 5: KNOWLEDGE CHECK 1 -->
-  <section class="slide" data-index="4" tabindex="-1" aria-labelledby="h-4">
-    <span class="kc-badge">KNOWLEDGE CHECK 1</span>
-    <h2 id="h-4">Components &amp; Operation Check</h2>
-    <fieldset class="question" data-qid="q1">
-      <legend class="qtext">1. What induces the high secondary voltage that fires the spark plug?</legend>
-      <div class="opts">
-        <label><input type="radio" name="q1" value="a"> Battery voltage applied directly to the plug</label>
-        <label><input type="radio" name="q1" value="b"> The rapid collapse of the primary winding's magnetic field</label>
-        <label><input type="radio" name="q1" value="c"> Heat from the exhaust manifold</label>
-        <label><input type="radio" name="q1" value="d"> The knock sensor signal</label>
-      </div>
-      <button type="button" class="checkbtn" onclick="checkAnswer('q1','b')">Check Answer</button>
-      <div class="feedback" role="status" aria-live="polite"></div>
-      <div class="explain">When the ECM/PCM commands the igniter to turn the primary circuit off, the collapsing magnetic field induces a very high voltage in the secondary winding, firing the plug.</div>
-    </fieldset>
-    <fieldset class="question" data-qid="q2">
-      <legend class="qtext">2. On most modern Honda COP coils, the igniter (driver transistor) is&hellip;</legend>
-      <div class="opts">
-        <label><input type="radio" name="q2" value="a"> A separate module mounted on the fender</label>
-        <label><input type="radio" name="q2" value="b"> Built into the coil assembly itself</label>
-        <label><input type="radio" name="q2" value="c"> Part of the spark plug</label>
-        <label><input type="radio" name="q2" value="d"> Not used on COP systems</label>
-      </div>
-      <button type="button" class="checkbtn" onclick="checkAnswer('q2','b')">Check Answer</button>
-      <div class="feedback" role="status" aria-live="polite"></div>
-      <div class="explain">The igniter is typically integrated into the coil assembly, which is why COP coils are usually tested and replaced as a sealed unit rather than opened up.</div>
-    </fieldset>
-  </section>
-
-  <!-- SLIDE 6: SYMPTOMS -->
-  <section class="slide" data-index="5" tabindex="-1" aria-labelledby="h-5">
-    <p class="eyebrow">RECOGNIZING A FAULT</p>
-    <h2 id="h-5">Common Coil Pack Symptoms</h2>
-    <ul>
-      <li><strong>Rough idle or a miss</strong> that may come and go with engine temperature (a cracked boot can carbon-track and leak voltage only once the engine is hot and the boot expands).</li>
-      <li><strong>MIL illuminated</strong> with a specific-cylinder misfire code (P0301&ndash;P0306, cylinder 1&ndash;6) or an ignition coil primary/secondary circuit code (P0351&ndash;P0356, coil 1&ndash;6).</li>
-      <li><strong>Hesitation or lack of power</strong> under load, when the misfire is intermittent rather than constant.</li>
-      <li><strong>Random misfire code (P0300)</strong> when more than one cylinder is affected, which can point to a shared cause (fuel, wiring harness, ECM ground) rather than a single bad coil &mdash; don't assume it's "a coil" without confirming which cylinder(s).</li>
-    </ul>
-    <div class="callout safety">
-      <strong>Safety note</strong>
-      Ignition secondary voltage can exceed 20,000&ndash;40,000 volts. Never handle a coil, boot, or spark tester with the engine running or cranking, and keep hands clear of the primary/secondary circuit while testing for spark.
-    </div>
-  </section>
-
-  <!-- SLIDE 7: TEST STEP 1-2 -->
-  <section class="slide" data-index="6" tabindex="-1" aria-labelledby="h-6">
-    <p class="eyebrow">TESTING &mdash; STEP 1 &amp; 2</p>
-    <h2 id="h-6">Visual Inspection &amp; DTC/Freeze Frame Review</h2>
-    <h3>Step 1: Visual inspection</h3>
-    <ul>
-      <li>Remove the coil and inspect the boot for cracks, carbon tracking (a thin black trail), or heat discoloration.</li>
-      <li>Check the connector and terminals for corrosion, a bent pin, or a loose/burnt connection.</li>
-      <li>Inspect the spark plug itself &mdash; excessive gap, fouling, or damage can overload a coil and cause a secondary fault code even when the coil is good.</li>
-      <li>Confirm the coil is seated fully and the retaining bolt is torqued to spec.</li>
-    </ul>
-    <h3>Step 2: Pull DTCs and freeze frame data first</h3>
-    <p>Before swapping or testing any coil, retrieve codes with the HDS. Note whether the code is a specific-cylinder misfire, a coil circuit code, or a random misfire, and check freeze frame data (RPM, load, coolant temp) for conditions under which it set &mdash; this tells you whether to chase a hot-engine intermittent or a constant fault.</p>
-  </section>
-
-  <!-- SLIDE 8: TEST STEP 3 -->
-  <section class="slide" data-index="7" tabindex="-1" aria-labelledby="h-7">
-    <p class="eyebrow">TESTING &mdash; STEP 3</p>
-    <h2 id="h-7">The Swap Test</h2>
-    <p>The fastest way to confirm a suspect coil on a COP system:</p>
-    <ol>
-      <li>Note which cylinder the misfire/DTC points to (e.g., P0302 = cylinder 2).</li>
-      <li>Swap the coil from the suspect cylinder with a coil from a different cylinder.</li>
-      <li>Clear codes, run the engine, and monitor for the misfire.</li>
-    </ol>
-    <div class="callout">
-      <strong>Interpreting the result</strong>
-      If the misfire <em>follows the coil</em> to its new cylinder (e.g., now shows as P0304 if you swapped coil 2 into cylinder 4), the coil is confirmed faulty. If the misfire <em>stays with the original cylinder</em> (still shows as cylinder 2), the coil is not the cause &mdash; look at the plug, injector, compression, or wiring/ground for that cylinder instead.
-    </div>
-  </section>
-
-  <!-- SLIDE 9: TEST STEP 4 -->
-  <section class="slide" data-index="8" tabindex="-1" aria-labelledby="h-8">
-    <p class="eyebrow">TESTING &mdash; STEP 4</p>
-    <h2 id="h-8">Scan Tool Live Data</h2>
-    <p>With the HDS connected, live data can narrow things down without removing anything:</p>
-    <ul>
-      <li><strong>Misfire counters</strong> &mdash; most Honda PCMs track a misfire count per cylinder; a counter climbing on one cylinder while idling or under load confirms which cylinder to chase.</li>
-      <li><strong>Fuel trims</strong> &mdash; a coil/misfire problem on one cylinder is usually electrical/mechanical, not fuel-trim related; if trims are also skewed, consider injector or air/vacuum issues alongside the coil.</li>
-      <li><strong>Bi-directional coil test</strong> (where supported) &mdash; some HDS applications let you command individual coils or cut fuel/spark per cylinder to isolate which one changes idle quality the most.</li>
-    </ul>
-    <p>Live data narrows the search; it doesn't replace the swap test or a waveform check for confirming the coil itself is the fault.</p>
-  </section>
-
-  <!-- SLIDE 10: KNOWLEDGE CHECK 2 -->
-  <section class="slide" data-index="9" tabindex="-1" aria-labelledby="h-9">
-    <span class="kc-badge">KNOWLEDGE CHECK 2</span>
-    <h2 id="h-9">Testing Sequence Check</h2>
-    <fieldset class="question" data-qid="q3">
-      <legend class="qtext">3. After a coil is swapped between cylinders, the misfire code now points to the new cylinder location. This means&hellip;</legend>
-      <div class="opts">
-        <label><input type="radio" name="q3" value="a"> The coil is confirmed faulty</label>
-        <label><input type="radio" name="q3" value="b"> The problem is fuel-related</label>
-        <label><input type="radio" name="q3" value="c"> The coil is fine and something else is causing the misfire</label>
-        <label><input type="radio" name="q3" value="d"> The spark plug gap is too small</label>
-      </div>
-      <button type="button" class="checkbtn" onclick="checkAnswer('q3','a')">Check Answer</button>
-      <div class="feedback" role="status" aria-live="polite"></div>
-      <div class="explain">If the misfire follows the coil to its new cylinder, the coil itself is the common factor and is confirmed as the cause.</div>
-    </fieldset>
-    <fieldset class="question" data-qid="q4">
-      <legend class="qtext">4. Why should you pull DTCs and freeze frame data before testing a coil?</legend>
-      <div class="opts">
-        <label><input type="radio" name="q4" value="a"> It's not necessary, testing can start immediately</label>
-        <label><input type="radio" name="q4" value="b"> To identify which cylinder is affected and the conditions under which the fault occurs</label>
-        <label><input type="radio" name="q4" value="c"> To reset the odometer</label>
-        <label><input type="radio" name="q4" value="d"> To check tire pressure</label>
-      </div>
-      <button type="button" class="checkbtn" onclick="checkAnswer('q4','b')">Check Answer</button>
-      <div class="feedback" role="status" aria-live="polite"></div>
-      <div class="explain">Freeze frame conditions (RPM, load, temperature) tell you whether you're chasing a constant fault or a hot/cold intermittent, which shapes the rest of your test plan.</div>
-    </fieldset>
-  </section>
-
-  <!-- SLIDE 11: WAVEFORM TEST -->
-  <section class="slide" data-index="10" tabindex="-1" aria-labelledby="h-10">
-    <p class="eyebrow">TESTING &mdash; STEP 5</p>
-    <h2 id="h-10">Waveform (Scope) Testing</h2>
-    <p>When the swap test and live data aren't conclusive &mdash; especially for an intermittent miss &mdash; a lab scope gives the clearest picture:</p>
-    <ul>
-      <li><strong>Primary pattern</strong> (probe the trigger/control wire at the connector): confirms the ECM/PCM is commanding dwell and firing at the correct time, and shows dwell duration.</li>
-      <li><strong>Secondary/ignition pattern</strong> (using an appropriate secondary pickup where the system allows it): shows firing voltage (kV needed to jump the plug gap), spark line duration and slope, and coil oscillations after spark &mdash; a weak or unstable pattern points to a coil, a fouled/gapped plug, or a lean cylinder.</li>
-      <li><strong>Compare cylinder to cylinder</strong> on a multi-channel scope where possible; a pattern that looks different only on the suspect cylinder strongly supports a coil (or plug) fault on that cylinder specifically.</li>
-    </ul>
-    <div class="callout tip">
-      <strong>Tech tip</strong>
-      Look up the exact connector pinout and any published waveform reference in Service Express before probing &mdash; pin assignments and available test points differ by model and coil design, and backprobing the wrong pin can give you a misleading pattern.
-    </div>
-  </section>
-
-  <!-- SLIDE 12: SERVICING & WRAP-UP -->
-  <section class="slide" data-index="11" tabindex="-1" aria-labelledby="h-11">
-    <p class="eyebrow">SERVICING &amp; WRAP-UP</p>
-    <h2 id="h-11">Replacing a Coil the Right Way</h2>
-    <ul>
-      <li>Confirm the fault with at least one function test (swap, live data, or waveform) before replacing a coil &mdash; don't parts-cannon based on a code alone.</li>
-      <li>Inspect and, if needed, replace the spark plug at the same time; a bad plug can damage a new coil the same way it damaged the old one.</li>
-      <li>Seat the coil fully over the plug well and torque the retaining bolt to the Service Express specification &mdash; over- or under-torque both cause comebacks.</li>
-      <li>Clear codes, road test, and recheck live misfire counters to confirm the repair before returning the vehicle.</li>
-    </ul>
-    <div class="callout">
-      <strong>Recap</strong>
-      Primary and secondary windings build and release the magnetic field that creates spark; the igniter switches the primary circuit on the ECM/PCM's command; and a logical test sequence &mdash; visual, DTCs/freeze frame, swap test, live data, then waveform &mdash; confirms a coil fault before you replace anything.
-    </div>
-  </section>
-
-  </main>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="box">
+    <h2 id="mTitle" style="border:0;padding:0;margin-bottom:8px"></h2>
+    <div id="mBody"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px" id="mBtns"></div>
+  </div>
 </div>
 
-<nav class="slidenav" aria-label="Lesson slide navigation">
-  <button class="navbtn" id="prevBtn" onclick="go(-1)">&larr; Back</button>
-  <div class="dots" id="dots" role="group" aria-label="Jump to slide"></div>
-  <button class="navbtn primary" id="nextBtn" onclick="go(1)">Next &rarr;</button>
-</nav>
-
 <script>
-  const slides = document.querySelectorAll('.slide');
-  const total = slides.length;
-  let current = 0;
-  const dotsWrap = document.getElementById('dots');
-  const dotButtons = [];
+(function(){
+  "use strict";
+  var KEY="pact-coil-packs-v1";
 
-  for(let i=0;i<total;i++){
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'dot';
-    b.setAttribute('aria-label', `Go to slide ${i+1} of ${total}`);
-    b.setAttribute('aria-current', i===0 ? 'true' : 'false');
-    b.addEventListener('click', ()=>{ current = i; render(true); });
-    dotsWrap.appendChild(b);
-    dotButtons.push(b);
-  }
+  /* ---------- Part A ---------- */
+  var defs={
+    A:"Hundreds of turns of heavier wire; the igniter switches current through it to build a magnetic field.",
+    B:"Thousands of turns of fine wire; the collapsing field induces tens of thousands of volts here.",
+    C:"Laminated steel that concentrates the magnetic field shared by both windings.",
+    D:"Power transistor built into most Honda COP coils; switches the primary on the ECM/PCM's command.",
+    E:"Carries secondary voltage down to the spark plug terminal and keeps contact pressure.",
+    F:"Carries switched power, ground and the ECM/PCM trigger signal to the coil.",
+    G:"How long the primary stays energized before firing; sets how much energy the coil stores.",
+    H:"Holds the coil fully seated over the plug well; if loose, it can cause an intermittent misfire."
+  };
+  var terms=[["a1","Igniter","D"],["a2","Secondary winding","B"],["a3","Retaining bolt","H"],["a4","Primary winding","A"],
+             ["a5","Dwell time","G"],["a6","Boot and spring","E"],["a7","Iron core","C"],["a8","Electrical connector","F"]];
+  var defsBody=document.getElementById("defsBody");
+  Object.keys(defs).forEach(function(k){var tr=document.createElement("tr");tr.innerHTML="<td>"+k+"</td><td>"+defs[k]+"</td>";defsBody.appendChild(tr);});
+  var matchBody=document.getElementById("matchBody");
+  terms.forEach(function(t,i){
+    var tr=document.createElement("tr");
+    var opts='<option value="">Choose…</option>'+Object.keys(defs).map(function(k){return '<option value="'+k+'">'+k+'</option>';}).join("");
+    tr.innerHTML='<td><label for="'+t[0]+'">'+(i+1)+'. '+t[1]+'</label></td><td style="width:160px"><select id="'+t[0]+'">'+opts+'</select></td><td style="width:34px"><span class="mark" id="m_'+t[0]+'"></span></td>';
+    matchBody.appendChild(tr);
+  });
 
-  function render(moveFocus){
-    slides.forEach((s,i)=> s.classList.toggle('active', i===current));
-    document.getElementById('progLabel').textContent = `Slide ${current+1} of ${total}`;
-    document.getElementById('prevBtn').disabled = current===0;
-    document.getElementById('nextBtn').textContent = current===total-1 ? 'Finish' : 'Next →';
-    dotButtons.forEach((d,i)=> d.setAttribute('aria-current', i===current ? 'true' : 'false'));
-    const activeSlide = slides[current];
-    if(moveFocus){ activeSlide.focus(); }
-    activeSlide.scrollIntoView({block:'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
-  }
+  /* ---------- Part B ---------- */
+  var mcs=[
+    {id:"b1",q:"What induces the high secondary voltage that fires the spark plug?",
+     o:["Battery voltage applied directly to the plug","The rapid collapse of the primary winding's magnetic field","Heat from the exhaust manifold","The knock sensor signal"],a:1},
+    {id:"b2",q:"On most modern Honda COP coils, where is the igniter (driver transistor)?",
+     o:["In a separate module on the fender","Inside the spark plug","Built into the coil assembly","COP systems don't use an igniter"],a:2},
+    {id:"b3",q:"A car sets P0300 (random misfire) with misfires on three cylinders. What does that usually point to?",
+     o:["A shared cause such as fuel delivery, a vacuum leak, or a wiring or ground problem","Three coils that all failed at once","A bad spark plug in cylinder 1","A faulty knock sensor only"],a:0},
+    {id:"b4",q:"What does P0352 tell you?",
+     o:["Cylinder 2 misfire detected","Random misfire","Crankshaft position sensor circuit","Ignition coil B (cylinder 2) primary/secondary circuit fault"],a:3},
+    {id:"b5",q:"Why do you pull DTCs and freeze frame data before testing a coil?",
+     o:["Clearing them first makes testing faster","To find which cylinder is affected and the conditions when the fault set","Freeze frame resets the misfire counters","It isn't necessary on COP systems"],a:1}
+  ];
+  var mcWrap=document.getElementById("mcWrap");
+  mcs.forEach(function(m,i){
+    var fs=document.createElement("fieldset");fs.className="q";
+    var h='<legend>'+(i+1)+'. '+m.q+' <span class="mark" id="m_'+m.id+'"></span></legend><div class="opts">';
+    m.o.forEach(function(t,j){h+='<label><input type="radio" name="'+m.id+'" value="'+j+'"> <span>'+String.fromCharCode(97+j)+') '+t+'</span></label>';});
+    fs.innerHTML=h+'</div>';mcWrap.appendChild(fs);
+  });
 
-  function go(dir){
-    if(current===total-1 && dir===1) return;
-    current = Math.max(0, Math.min(total-1, current+dir));
-    render(true);
-  }
+  /* ---------- Part C ---------- */
+  var DX=["Normal coil and plug","High secondary resistance (worn plug, wide gap or lean cylinder)","Coil confirmed faulty: the misfire followed the coil","Coil is not the cause: check the plug, injector, compression or wiring for that cylinder","Shorted coil winding (low firing line, few or no oscillations)"];
+  // [id, label, type('dx'|'num'), answer, unit, tolerance fraction]
+  var items={
+    nums1:[["c1","Firing line (peak) voltage","num",10,"kV",0.1],["c2","Spark line duration","num",1.5,"ms",0.1],["c3","Best diagnosis","dx",0]],
+    nums2:[["c4","Firing line (peak) voltage","num",20,"kV",0.1],["c5","Best diagnosis","dx",1]],
+    nums3:[["c6","Best diagnosis","dx",2]],
+    nums4:[["c7","Best diagnosis","dx",3]]
+  };
+  Object.keys(items).forEach(function(box){
+    var el=document.getElementById(box),h="";
+    items[box].forEach(function(n){
+      if(n[2]==="dx"){
+        h+='<div class="row"><span class="lbl"><label for="'+n[0]+'">'+n[1]+'</label></span><select id="'+n[0]+'"><option value="">Choose…</option>'+DX.map(function(d,i){return '<option value="'+i+'">'+d+'</option>';}).join("")+'</select><span class="mark" id="m_'+n[0]+'"></span></div>';
+      }else{
+        h+='<div class="row"><span class="lbl"><label for="'+n[0]+'">'+n[1]+'</label></span><input type="number" step="any" inputmode="decimal" id="'+n[0]+'"><span class="unit">'+n[4]+'</span><span class="mark" id="m_'+n[0]+'"></span></div>';
+      }
+    });
+    h+='<label class="field" style="margin-top:6px">What tells you this? (evidence)<textarea id="w_'+box+'" style="min-height:60px"></textarea></label>';
+    el.innerHTML=h;
+  });
 
-  function checkAnswer(name, correctVal){
-    const chosen = document.querySelector(`input[name="${name}"]:checked`);
-    const qDiv = document.querySelector(`[data-qid="${name}"]`);
-    const fb = qDiv.querySelector('.feedback');
-    const explain = qDiv.querySelector('.explain');
-    if(!chosen){
-      fb.className = 'feedback incorrect';
-      fb.textContent = 'Select an answer first.';
-      fb.style.display='block';
-      return;
+  /* ---------- PicoScope 7-style graph renderer ---------- */
+  var NS="http://www.w3.org/2000/svg";
+  var COL={A:"#1f5fbf",B:"#d62728",R:"#9a9a9a"};
+  function mk(tag,a,p){var e=document.createElementNS(NS,tag);for(var k in a)e.setAttribute(k,a[k]);p.appendChild(e);return e;}
+  function fmtN(n){var r=Math.round(n*1000)/1000;if(Math.abs(r)<1e-9)r=0;return r.toString();}
+  // cfg: {A:{per,unit,off}, B:{...}, t:{per,unit}, traces:[{ch,pts:[[xDiv,value]],dash,color,w}], trig:{ch,x,v}}
+  function pico(svg,cfg){
+    var L=60,T=28,P=50,W=500,H=500,R=cfg.B?60:18,Bm=44;
+    svg.setAttribute("viewBox","0 0 "+(L+W+R)+" "+(T+H+Bm));
+    mk("rect",{x:0,y:0,width:L+W+R,height:T+H+Bm,fill:"#ffffff"},svg);
+    var cid="clip"+Math.random().toString(36).slice(2);
+    var cp=mk("clipPath",{id:cid},mk("defs",{},svg));mk("rect",{x:L,y:T,width:W,height:H},cp);
+    var i,j;
+    for(i=0;i<=10;i++)mk("line",{x1:L+i*P,y1:T,x2:L+i*P,y2:T+H,stroke:i===5?"#b0b0b0":"#e0e0e0","stroke-width":(i===0||i===10)?1.5:1},svg);
+    for(j=0;j<=10;j++)mk("line",{x1:L,y1:T+j*P,x2:L+W,y2:T+j*P,stroke:j===5?"#b0b0b0":"#e0e0e0","stroke-width":(j===0||j===10)?1.5:1},svg);
+    for(i=0;i<=50;i++)mk("line",{x1:L+i*10,y1:T+H/2-4,x2:L+i*10,y2:T+H/2+4,stroke:"#b0b0b0"},svg);
+    for(j=0;j<=50;j++)mk("line",{x1:L+W/2-4,y1:T+j*10,x2:L+W/2+4,y2:T+j*10,stroke:"#b0b0b0"},svg);
+    function axis(ch,side){
+      var c=cfg[ch];if(!c)return;var off=c.off||0,left=side==="L";
+      for(var j=0;j<=10;j++){
+        var tx=mk("text",{x:left?L-7:L+W+7,y:T+j*P+4,fill:COL[ch],"font-size":"13","font-family":"Arial,Helvetica,sans-serif","text-anchor":left?"end":"start"},svg);
+        tx.textContent=fmtN((5-j-off)*c.per);
+      }
+      var u=mk("text",{x:left?L-7:L+W+7,y:T-10,fill:COL[ch],"font-size":"13","font-weight":"700","font-family":"Arial,Helvetica,sans-serif","text-anchor":left?"end":"start"},svg);
+      u.textContent=c.unit;
     }
-    if(chosen.value === correctVal){
-      fb.className = 'feedback correct';
-      fb.textContent = 'Correct!';
-    } else {
-      fb.className = 'feedback incorrect';
-      fb.textContent = 'Not quite — review and try again.';
+    axis("A","L");axis("B","R");
+    for(i=0;i<=10;i++){
+      var tl=mk("text",{x:L+i*P,y:T+H+17,fill:"#333","font-size":"13","font-family":"Arial,Helvetica,sans-serif","text-anchor":"middle"},svg);
+      tl.textContent=fmtN(i*cfg.t.per);
     }
-    fb.style.display = 'block';
-    explain.style.display = 'block';
+    var tu=mk("text",{x:L+W,y:T+H+36,fill:"#333","font-size":"13","font-weight":"700","font-family":"Arial,Helvetica,sans-serif","text-anchor":"end"},svg);
+    tu.textContent=cfg.t.unit;
+    function X(xd){return L+xd*P;}
+    function Y(ch,v){var c=cfg[ch];return T+(5-(v/c.per+(c.off||0)))*P;}
+    var g=mk("g",{"clip-path":"url(#"+cid+")"},svg);
+    (cfg.traces||[]).forEach(function(tr){
+      var d=tr.pts.map(function(p,k){return(k?"L":"M")+X(p[0]).toFixed(1)+" "+Y(tr.ch,p[1]).toFixed(1);}).join(" ");
+      var at={d:d,fill:"none",stroke:tr.color||COL[tr.ch],"stroke-width":tr.w||2.2,"stroke-linejoin":"round"};
+      if(tr.dash)at["stroke-dasharray"]=tr.dash;
+      mk("path",at,g);
+    });
+    if(cfg.trig){
+      var tx0=X(cfg.trig.x),ty0=Y(cfg.trig.ch,cfg.trig.v);
+      mk("polygon",{points:tx0+","+(ty0-8)+" "+(tx0+8)+","+ty0+" "+tx0+","+(ty0+8)+" "+(tx0-8)+","+ty0,fill:"#ffd400",stroke:"#7a6400","stroke-width":1.2},svg);
+    }
+    return {X:X,Y:Y,mk:mk,svg:svg};
+  }
+  function marker(gr,xd,ch,v,n){
+    var x=gr.X(xd),y=gr.Y(ch,v);
+    mk("circle",{cx:x,cy:y,r:13,fill:"#CC0000",stroke:"#fff","stroke-width":2},gr.svg);
+    var t=mk("text",{x:x,y:y+5,fill:"#fff","font-size":"14","font-weight":"700","text-anchor":"middle","font-family":"Arial"},gr.svg);t.textContent=n;
+  }
+  function px(list,per,gy){ // convert old pixel points (gy = old ground px) to [div,value]
+    return list.map(function(p){return [p[0]/50,(gy-p[1])/50*per];});
   }
 
-  render(false);
+  function sec(fire,sparkKv,sparkDiv,slope,osc){ // secondary waveform in [div,kV]
+    var p=[[0,0],[1.2,0],[1.3,-1.2],[1.45,0.8],[1.6,0],[2,0],[2.02,fire],[2.06,sparkKv+0.8],[2.12,sparkKv]];
+    var e=2.12+sparkDiv;
+    p.push([e,sparkKv+slope]);
+    var x=e,amp=sparkKv+slope+1.5;
+    for(var i=0;i<osc;i++){p.push([x+0.12,-amp*0.9]);p.push([x+0.24,amp*0.75]);x+=0.24;amp*=0.55;}
+    p.push([x+0.15,0],[10,0]);
+    // next dwell start
+    p.splice(p.length-1,0,[8.4,0],[8.5,-1.2],[8.65,0.8],[8.8,0]);
+    return p;
+  }
+  pico(document.getElementById("scr1"),{A:{per:5,unit:"kV",off:-4},t:{per:0.5,unit:"ms"},traces:[{ch:"A",pts:sec(10,1.5,2.88,0.3,4)}]});
+  pico(document.getElementById("scr2"),{A:{per:5,unit:"kV",off:-4},t:{per:0.5,unit:"ms"},traces:[{ch:"A",pts:sec(20,3,1.1,1.2,3)}]});
+
+  /* ---------- Textarea auto-grow ---------- */
+  function grow(t){t.style.height="auto";t.style.height=(t.scrollHeight+2)+"px";}
+  Array.prototype.forEach.call(document.querySelectorAll("textarea"),function(t){t.addEventListener("input",function(){grow(t);});});
+
+  /* ---------- Fields ---------- */
+  var cIds=[].concat.apply([],Object.keys(items).map(function(b){return items[b].map(function(n){return n[0];});}));
+  var labIds=["lVeh","lCyl","lDtc","lCount","lVis","lPwr","lTrig","lSwap","lKv","lSpark","lFile","lAnalysis"];
+  var fields=["name","date","course","partner","d1score","d2score","w_nums1","w_nums2","w_nums3","w_nums4"]
+    .concat(terms.map(function(t){return t[0];})).concat(cIds).concat(labIds);
+
+  function updateProgress(){
+    var it=[];
+    terms.forEach(function(t){it.push(document.getElementById(t[0]).value!=="");});
+    mcs.forEach(function(m){it.push(!!document.querySelector('input[name="'+m.id+'"]:checked'));});
+    cIds.concat(labIds).forEach(function(id){it.push(document.getElementById(id).value.trim()!=="");});
+    var done=it.filter(Boolean).length;
+    document.getElementById("pbar").style.width=(done/it.length*100)+"%";
+    document.getElementById("ptext").textContent=done+" of "+it.length+" answered";
+  }
+  function collect(){
+    var o={};fields.forEach(function(id){o[id]=document.getElementById(id).value;});
+    mcs.forEach(function(m){var c=document.querySelector('input[name="'+m.id+'"]:checked');o[m.id]=c?c.value:"";});
+    return o;
+  }
+  function status(msg){var s=document.getElementById("status");s.textContent=msg;clearTimeout(status.t);status.t=setTimeout(function(){s.textContent="";},3500);}
+  function save(q){try{localStorage.setItem(KEY,JSON.stringify(collect()));if(!q)status("Saved on this device.");}catch(e){if(!q)status("Saving isn't available here — use Copy answers.");}}
+  function load(){
+    var o=null;try{o=JSON.parse(localStorage.getItem(KEY)||"null");}catch(e){}
+    if(!o)return;
+    fields.forEach(function(id){if(o[id]!=null)document.getElementById(id).value=o[id];});
+    mcs.forEach(function(m){if(o[m.id]){var r=document.querySelector('input[name="'+m.id+'"][value="'+o[m.id]+'"]');if(r)r.checked=true;}});
+    Array.prototype.forEach.call(document.querySelectorAll("textarea"),grow);
+  }
+
+  /* ---------- Scoring ---------- */
+  function setMark(id,ok){var m=document.getElementById("m_"+id);if(!m)return;m.textContent=ok?"✓":"✗";m.className="mark "+(ok?"ok":"bad");m.setAttribute("aria-label",ok?"correct":"incorrect");}
+  function clearMarks(){Array.prototype.forEach.call(document.querySelectorAll(".mark"),function(m){m.textContent="";m.className="mark";m.removeAttribute("aria-label");});}
+  function fmt(n){return(Math.round(n*10)/10).toString();}
+  var last={a:null,b:null,c:null};
+  function score(){
+    var a=0,b=0,c=0;
+    terms.forEach(function(t){var ok=document.getElementById(t[0]).value===t[2];if(ok)a+=0.5;setMark(t[0],ok);});
+    mcs.forEach(function(m){var r=document.querySelector('input[name="'+m.id+'"]:checked');var ok=!!r&&+r.value===m.a;if(ok)b++;setMark(m.id,ok);});
+    Object.keys(items).forEach(function(bx){items[bx].forEach(function(n){
+      var v=document.getElementById(n[0]).value,ok;
+      if(n[2]==="dx")ok=v!==""&&+v===n[3];
+      else{var f=parseFloat(v);ok=!isNaN(f)&&Math.abs(f-n[3])<=Math.abs(n[3])*n[5]+1e-9;}
+      if(ok)c++;setMark(n[0],ok);
+    });});
+    last={a:a,b:b,c:c};totals();
+  }
+  function totals(){
+    var d1=document.getElementById("d1score").value,d2=document.getElementById("d2score").value;
+    var d=(d1===""&&d2==="")?null:(+(d1||0))+(+(d2||0));
+    document.getElementById("rA").textContent=last.a==null?"—":fmt(last.a);
+    document.getElementById("rB").textContent=last.b==null?"—":fmt(last.b);
+    document.getElementById("rC").textContent=last.c==null?"—":fmt(last.c);
+    document.getElementById("rD").textContent=d==null?"—":fmt(d);
+    var t=(last.a||0)+(last.b||0)+(last.c||0)+(d||0);
+    document.getElementById("rT").textContent=(last.a==null&&d==null)?"—":fmt(t)+(d==null?" + D":"");
+    document.getElementById("scoreLive").textContent=last.a==null?"":"Score updated: "+fmt(t)+" of 20.";
+  }
+
+  /* ---------- Modal ---------- */
+  var modal=document.getElementById("modal"),lastFocus=null;
+  function openModal(title,body,btns){
+    lastFocus=document.activeElement;
+    document.getElementById("mTitle").textContent=title;document.getElementById("mBody").innerHTML=body;
+    var bb=document.getElementById("mBtns");bb.innerHTML="";
+    btns.forEach(function(b){var e=document.createElement("button");e.type="button";e.textContent=b.label;if(b.primary)e.className="primary";e.onclick=function(){if(b.fn)b.fn();closeModal();};bb.appendChild(e);});
+    modal.classList.add("open");(bb.lastChild||bb).focus();
+  }
+  function closeModal(){modal.classList.remove("open");if(lastFocus)lastFocus.focus();}
+  modal.addEventListener("keydown",function(e){if(e.key==="Escape")closeModal();});
+
+  /* ---------- Copy ---------- */
+  function answersText(){
+    var o=collect(),L=[];
+    L.push("IGNITION COIL PACKS WORKSHEET — Honda PACT");
+    L.push("Name: "+o.name+"   Date: "+o.date+"   Course: "+o.course+"   Partner: "+o.partner,"");
+    L.push("PART A");terms.forEach(function(t,i){L.push((i+1)+". "+t[1]+": "+(o[t[0]]||"—"));});
+    L.push("","PART B");mcs.forEach(function(m,i){L.push((i+1)+". "+(o[m.id]===""?"—":String.fromCharCode(97+ +o[m.id])));});
+    L.push("","PART C");Object.keys(items).forEach(function(b,i){L.push((i<2?"Capture ":"Scenario ")+(i+1)+":");items[b].forEach(function(n){var v=o[n[0]];L.push("  "+n[1]+": "+(v===""?"—":(n[2]==="dx"?DX[+v]:v+" "+n[4])));});if(o["w_"+b])L.push("  Evidence: "+o["w_"+b]);});
+    L.push("","PART D — SHOP LAB");
+    [["lVeh","Vehicle"],["lCyl","Cylinder/coil"],["lDtc","DTCs/freeze frame"],["lCount","Misfire counters"],["lVis","Visual"],["lPwr","Power/ground"],["lTrig","Trigger signal/pin"],["lSwap","Swap test"],["lKv","Firing line kV"],["lSpark","Spark line ms"],["lFile","File"],["lAnalysis","Conclusion"]].forEach(function(f){L.push(f[1]+": "+(o[f[0]]||"—"));});
+    L.push("","Score: A "+document.getElementById("rA").textContent+"/4, B "+document.getElementById("rB").textContent+"/5, C "+document.getElementById("rC").textContent+"/7, D "+document.getElementById("rD").textContent+"/4, Total "+document.getElementById("rT").textContent+"/20");
+    return L.join("\n");
+  }
+  document.getElementById("btnCopy").addEventListener("click",function(){
+    var txt=answersText();
+    function fb(){openModal("Copy your answers",'<p style="font-size:.9rem">Select all the text below and copy it (Ctrl+C / ⌘C), then paste it into Canvas or an email to your instructor.</p><textarea id="copyBox" readonly></textarea>',[{label:"Close",primary:true}]);var c=document.getElementById("copyBox");c.value=txt;c.focus();c.select();}
+    try{navigator.clipboard.writeText(txt).then(function(){status("Answers copied.");},fb);}catch(e){fb();}
+  });
+
+  /* ---------- Buttons ---------- */
+  document.getElementById("btnScore").addEventListener("click",function(){score();save(true);document.getElementById("s-r").scrollIntoView({behavior:"smooth"});});
+  document.getElementById("btnSave").addEventListener("click",function(){save(false);});
+  document.getElementById("btnPrint").addEventListener("click",function(){try{window.print();}catch(e){}status("If no print dialog opened, press Ctrl+P / ⌘P.");});
+  document.getElementById("btnClear").addEventListener("click",function(){
+    openModal("Clear all answers?","<p>This erases every answer on this worksheet and the saved copy on this device. It can't be undone.</p>",[
+      {label:"Cancel"},
+      {label:"Clear everything",primary:true,fn:function(){
+        try{localStorage.removeItem(KEY);}catch(e){}
+        fields.forEach(function(id){document.getElementById(id).value=(id==="course")?"AUTO H 171":"";});
+        Array.prototype.forEach.call(document.querySelectorAll("input[type=radio]"),function(r){r.checked=false;});
+        Array.prototype.forEach.call(document.querySelectorAll("textarea"),grow);
+        clearMarks();last={a:null,b:null,c:null};totals();updateProgress();status("Cleared.");
+      }}
+    ]);
+  });
+  ["d1score","d2score"].forEach(function(id){document.getElementById(id).addEventListener("change",function(){totals();save(true);});});
+  var st;
+  document.addEventListener("input",function(){updateProgress();clearTimeout(st);st=setTimeout(function(){save(true);},600);});
+  document.addEventListener("change",function(){updateProgress();clearTimeout(st);st=setTimeout(function(){save(true);},600);});
+
+  load();updateProgress();totals();
+})();
 </script>
 </body>
 </html>
